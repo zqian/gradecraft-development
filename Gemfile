@@ -60,7 +60,6 @@ gem 'uglifier'
 gem 'whenever'
 gem 'sinatra', '>= 1.3.0', :require => nil
 
-
 group :development do
   gem 'haml-rails'
   gem 'valid_attribute'
@@ -81,4 +80,5 @@ group :test, :development do
   gem 'debugger'
   gem 'launchy'
   gem 'database_cleaner'
+  gem 'rspec-rails', '~> 3.0.0.beta2'
 end
