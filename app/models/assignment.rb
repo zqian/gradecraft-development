@@ -121,6 +121,10 @@ class Assignment < ActiveRecord::Base
     grades.graded.average('grades.score').to_i if grades.graded.present?
   end
 
+  def has_rubric?
+    !! rubric
+  end
+
   #average of above-zero grades for an assignment
   def earned_average
     if grades.graded.present?
