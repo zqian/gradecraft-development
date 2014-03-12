@@ -1,1 +1,1 @@
-@gradecraft = angular.module('gradecraft', [])
+@gradecraft = angular.module('gradecraft', ['restangular', 'ui.sortable'])

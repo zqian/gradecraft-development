@@ -22,6 +22,8 @@
 //= require angular
 //= require angular-resource
 //= require ./angular/main.js
+//= require ./angular/ui/sortable
+//= require ./angular/vendor/restangular.min
 //= require_tree ./angular
 
 //= require bootstrap-datetimepicker

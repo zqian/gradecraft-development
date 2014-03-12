@@ -1,9 +1,11 @@
 class MetricsController < ApplicationController
   before_action :find_metric, except: [:new, :create]
-  after_action :respond_with_metric
+
+  respond_to :html, :json
 
   def new
     @metric = Metric.new params[:metric]
+    respond_with @metric, layout: false
   end
 
   def edit
@@ -27,9 +29,5 @@ class MetricsController < ApplicationController
   private
   def find_metric
     @metric = Metric.find params[:id]
-  end
-
-  def respond_with_metric
-    respond_with @metric
   end
 end

@@ -3,17 +3,23 @@
     %br
     %br
     %h3 Create Rubric for "#{@assignment.name}"
-    #new_rubric(ng-app="gradecraft" ng-controller="RubricController")
+    #new_rubric(ng-app="gradecraft" ng-controller="RubricCtrl")
       {{test}}
       %br
       %br
 
-      %form(ng-submit="createRubric")
-        .row
+      %form(ui-sortable ng-submit="createRubric")
+        .row(ng-repeat="metric in metrics")
           .small-3.columns(style="background: #eee; border: 1px solid #ccc; padding: 24px")
-            %h4 {{goggles}}
-            %input(type="text" ng-model="MetricName" placeholder="Name")
-            %input(type="text" ng-model="MetricPoints" placeholder="Points")
-            %input(type="text" ng-model="MetricDescription" placeholder="Description")
+            .row
+              .small-8.columns(style="padding:0")
+                %input(type="text" ng-model="MetricName" placeholder="Name" value="{{metric.name}}")
+              .small-4.columns(style="padding:0")
+                %input(type="text" ng-model="MetricPoints" placeholder="Points" value="{{metric.points}}")
+            .row
+              %input(type="text" ng-model="MetricDescription" placeholder="Description" value="{{metric.description}}")
+            %input(type="hidden" value="{{$index}}")
+
+      %button(type="button" ng-click="newMetric()")
       
   .clearfix
