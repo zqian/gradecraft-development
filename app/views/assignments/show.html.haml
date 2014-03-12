@@ -12,6 +12,11 @@
       .right= render "assignments/description"
   .clearfix
   - if current_user.is_staff?
+    .small-12.columns
+      - if @assignment.has_rubric?
+        Display Rubric
+      - else
+        %h3!= link_to "Add Rubric", new_assignment_rubric_path(@assignment)
     - if @assignment.has_groups?
       = render "group_show"
     - else
@@ -22,12 +27,6 @@
         = render "grades/group_show"
       - else
         = render "grades/individual_show"
-
-  .small-12.columns
-    - if @assignment.has_rubric?
-      Display Rubric
-    - else
-      != new_assignment_rubric_path
 
   .clearfix
       

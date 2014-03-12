@@ -67,6 +67,9 @@ group :development do
   gem 'quiet_assets'
   gem 'foreman'
   gem 'rubystats'
+  gem 'rack-mini-profiler'
+  gem 'spring'
+  # gem 'guard-spring'
 end
 
 group :test do
