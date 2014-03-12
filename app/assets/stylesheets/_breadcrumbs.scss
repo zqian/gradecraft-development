@@ -1,9 +1,8 @@
 /* Tab menu system */
 .sub-nav {
   height: 32px;
-  position: absolute;
   margin-left: 0 !important;
-  top: 0px !important;
+  margin-top: -48px !important;
 
   /* Individual Tabs */
   .navbar-nav {
