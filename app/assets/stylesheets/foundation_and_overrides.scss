@@ -19,7 +19,7 @@
 // $base-line-height: 150%;
 
 // This is the default html and body font-size for the base rem value.
-// $rem-base: 16px;
+// $rem-base: 16px; 
 
 // We use this to control whether or not CSS classes come through in the gem files.
 // $include-html-classes: true;
@@ -48,12 +48,6 @@ $body-font-family: "Avenir", "Helvetica Neue", "Helvetica", Helvetica, Arial, sa
 // $text-direction: ltr;
 // $opposite-direction: right;
 // $default-float: left;
-
-// We use these as default colors throughout
- $primary-color: #274E56;
- $secondary-color: #58d0eb;
- $alert-color: #f04124;
- $success-color: #67CF30;
 
 // We use these to make sure border radius matches unless we want it different.
 $global-radius: 0.5rem;
@@ -104,12 +98,12 @@ $large-range: (67.063em, 90em);
 // $cursor-text-value: text;
 
 // We use these to control header font sizes
-$h1-font-size: rem-calc(44);
-$h2-font-size: 1.7rem;
+$h1-font-size: 2.2rem;
+$h2-font-size: 1.8rem;
 $h3-font-size: 1.4rem;
-$h4-font-size: .9rem;
-$h5-font-size: rem-calc(18);
-$h6-font-size: 1rem;
+$h4-font-size: 1.2rem;
+$h5-font-size: .8rem;
+$h6-font-size: .6rem;
 
 // Accordion
 
@@ -209,7 +203,7 @@ $crumb-font-size: rem-calc(18);
 
 // Sets the margin for the right side by default, and the left margin if right-to-left direction is used
 // $button-bar-margin-opposite: rem-calc(10);
-$button-group-border-width: 0px;
+$button-group-border-width: 1px;
 
 // Clearing
 
@@ -617,7 +611,7 @@ $off-canvas-link-padding: 1rem;
 // $include-html-panel-classes: $include-html-classes;
 
 // We use these to control the background and border styles
-// $panel-bg: darken(#fff, 5%);
+$panel-bg: darken(#fff, 2%);
 // $panel-border-style: solid;
 // $panel-border-size: 1px;
 

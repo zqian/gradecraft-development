@@ -1,18 +1,23 @@
 
 /** Table Styles **/
 
+#gradebook {
+  overflow: auto !important; 
+}
+
 /* Set the tables to be full width of the page*/
 table.responsive {
   width: 100%;
   border-spacing: 0 !important;
+  margin-bottom: 1rem;
 
   a:hover {
-    color: $green;
+    color: $secondary-color;
   }
 
   .button {
     margin-bottom: 0;
-  }
+   }
 
   td {
     line-height: 1.5rem;
@@ -33,46 +38,22 @@ table.responsive {
   }
 }
 
-table th.sortable {
-  cursor: pointer;
-}
-
 table .button-group li a.button.tiny {
   margin: 0;
   border-radius: 0;
   padding: .4rem .5rem;
 }
 
-/* Highlight the sorted columns */
-th.sorting-desc, th.sorting-asc {
-  color: $secondary-color;
-  background-color: $primary-color;
-}
-
 .button.tiny.aindex {
   width: auto !important;
-  background-color: $secondary-color;
   right: 0;
   position: relative;
   top: -2.8rem;
   margin-bottom: -4.8rem;
 }
 
-.button.tiny.aindex:hover {
-  background-color: $darkblue;
-  color: #FFF;
-}
-
-.button-column {
-    width: 300px;
-  }
-
 @media (max-width: 1279px)  {
   
-  table .button-group {
-    display: inline;
-  }
-
   table .button-group li a.button.tiny  {
   padding: .25rem;
   border-radius: none;
@@ -87,8 +68,6 @@ th.sorting-desc, th.sorting-asc {
   }
 }
 
-
-
 @media (max-width: 640px) {
   table .button-group li a.button.tiny  {
   padding: .75rem;
@@ -98,7 +77,7 @@ th.sorting-desc, th.sorting-asc {
 }
 
 /* Styling pattern tables for assignment outcome overview */ 
-td.complete, tr.achieved {
+td.complete, tr.achieved, tr.complete {
   background-color: #d7fae0;
 }
 

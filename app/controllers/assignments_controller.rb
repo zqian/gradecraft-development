@@ -1,4 +1,5 @@
 class AssignmentsController < ApplicationController
+  
   before_filter :ensure_staff?, :except => [:feed, :show]
 
   def index
@@ -65,7 +66,7 @@ class AssignmentsController < ApplicationController
   end
 
   def update
-    @assignment = current_course.assignments.find(params[:id])
+    @assignment = current_course.assignments.includes(:assignment_score_levels).find(params[:id])
     respond_to do |format|
       self.check_uploads
       @assignment.assign_attributes(params[:assignment])

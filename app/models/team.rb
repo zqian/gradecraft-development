@@ -1,10 +1,12 @@
 class Team < ActiveRecord::Base
-  attr_accessible :name, :course, :course_id, :student_ids, :score, :students, :teams_leaderboard, :in_team_leaderboard
+  attr_accessible :name, :course, :course_id, :student_ids, :score, :students, :teams_leaderboard, :in_team_leaderboard, :banner
 
   belongs_to :course
 
   has_many :team_memberships
   has_many :students, :through => :team_memberships
+
+  mount_uploader :banner, ThumbnailUploader
 
   has_many :earned_badges, :through => :students
 
@@ -40,7 +42,7 @@ class Team < ActiveRecord::Base
   def average_grade
     total_score = 0
     students.each do |student|
-      total_score += student.score_for_course(course)
+      total_score += (student.cached_score_for_course(course) || 0 )
     end
     if member_count > 0
       average_grade = total_score / member_count
@@ -48,7 +50,7 @@ class Team < ActiveRecord::Base
   end
 
   def challenge_grade_score
-    challenge_grades.pluck('score').sum || 0
+    challenge_grades.sum('score') || 0
   end
 
   private
@@ -58,9 +60,7 @@ class Team < ActiveRecord::Base
         self.score = average_grade
       end
     else
-      if self.score_changed?
-        self.score = challenge_grades.pluck('score').sum
-      end
+      self.score = challenge_grades.sum('score')
     end
   end
 

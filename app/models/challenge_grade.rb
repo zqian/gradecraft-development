@@ -14,6 +14,10 @@ class ChallengeGrade < ActiveRecord::Base
 
   delegate :name, :description, :due_at, :point_total, :to => :challenge
 
+  def score
+    super.presence || 0
+  end
+  
   private
 
   def save_team
@@ -21,4 +25,5 @@ class ChallengeGrade < ActiveRecord::Base
       team.save
     end
   end
+
 end
