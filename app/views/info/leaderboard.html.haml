@@ -27,7 +27,7 @@
       - if @team
         - students = current_course_data.students_for_team(@team)
       - else
-        - students = current_course_data.students
+        - students = current_course.students.order_by_high_score
       - i = 1
       - students.each do |student|
         %tr
