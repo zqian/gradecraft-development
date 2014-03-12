@@ -8,14 +8,25 @@ h2 a.button.tiny {
 /* Attendance rate visuals */
 i.fi-male.present {
   font-size: 150%;
-  color: $primary-color-3;
+  color: $secondary-color;
 }
 
 i.fi-male.absent {
   font-size: 150%;
-  text-shadow: 1px 1px $primary-color;
+  text-shadow: 0px 0px 3px $secondary-color-2;
   color: white;
 }
+
+.partial-container {
+  height: 10px !important;
+  overflow: hidden;
+}
+
+i.fi-male.partial {
+  font-size: 150%;
+  color: $secondary-color;
+}
+
 
 /* Option dropdowns for small screens */
 .button.tiny.dropdown {
