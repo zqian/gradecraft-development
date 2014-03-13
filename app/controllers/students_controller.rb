@@ -18,6 +18,10 @@ class StudentsController < ApplicationController
     end
   end
 
+  def syllabus
+    @assignments = current_course.assignments.chronological.alphabetical
+  end
+
   # Course timeline, displays all assignments that are determined by the instructor to belong on the timeline + team challenges if present
   def timeline
     if current_user.is_student?
