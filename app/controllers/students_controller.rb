@@ -41,7 +41,7 @@ class StudentsController < ApplicationController
 
   def show
     self.current_student = current_course.students.where(id: params[:id]).first
-    
+    @assignments = current_course.assignments.chronological.alphabetical
     scores = []
     current_course.assignment_types.each do |assignment_type|
       scores << { data: [current_student.grades.released.where(assignment_type: assignment_type).score], name: assignment_type.name }

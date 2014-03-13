@@ -9,7 +9,7 @@
     .small-12.columns
       
       .assignments
-        - current_course_data.by_assignment_type.each do |assignment_type, assignments|
+        - @assignments.group_by(&:assignment_type).each do |assignment_type, assignments|
           .assignment_type{:id => "assignment-type-#{assignment_type.id}" }
             %h3.collapse= "#{assignment_type.name} – #{points assignment_type.max_value} points"
             %div

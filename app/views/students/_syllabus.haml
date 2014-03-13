@@ -1,6 +1,6 @@
 - cache current_student_data.cache_key('v1', current_user.is_staff?, :assignment_weights_key, :assignments_key, :grades_key, :submissions_key) do
   // Display top headers for expandable list of assignments.
-  - current_course_data.by_assignment_type.each do |assignment_type, assignments|
+  - @assignments.group_by(&:assignment_type).each do |assignment_type, assignments|
     .assignment_type{:id => "assignment-type-#{assignment_type.id}" }
       // Display the student's points out of assignment total, if there is an assignment max value. Else
       // display the student's points out of the the current point total for assignment. 
