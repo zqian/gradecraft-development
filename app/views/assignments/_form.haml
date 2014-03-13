@@ -98,7 +98,6 @@
     - if @assignment.assignment_type.present? && ! @assignment.assignment_type.notify_released?
       .small-12.large-4.columns
         = f.label :notify_released, "Notify by email?"
-        = f.input :notify_released
         .form_label Do you want to notify students by email when a grade is awarded? If grade release is necessary, this email will not be sent out until the grade is officially released.
 
   .panel
