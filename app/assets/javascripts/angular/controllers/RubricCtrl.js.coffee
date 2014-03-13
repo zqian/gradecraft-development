@@ -5,8 +5,15 @@
   # $http.get("metrics/new.json")
   
   $scope.metrics = []
+
+  MetricPrototype = ()->
+  MetricPrototype.prototype =
+    tiers: []
+    addTier: ()->
+      this.tiers.push {}
+
   $scope.newMetric = ()->
-    $scope.metrics.push {}
+    $scope.metrics.push new(MetricPrototype)
 
   $scope.getNewMetric = ()->
     $scope.newerMetric = Restangular.one('metrics', 'new.json').getList().then ()->
