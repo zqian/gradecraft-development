@@ -23,6 +23,9 @@
     $scope.newerMetric = Restangular.one('metrics', 'new.json').getList().then ()->
       alert("waffles!")
 
+  $scope.destroyMetric = (index)->
+    $scope.metrics.splice(index,1)
+
   $scope.sortableOptions =
     update: (e, ui) ->
       if ui.item.scope().item == "can't be moved"

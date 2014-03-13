@@ -20,7 +20,8 @@
               %input(type="text" ng-model="MetricDescription" placeholder="Description" value="{{metric.description}}")
               {{metric.tiers.length}}
             %input(type="hidden" value="{{$index}}")
-            %button(type="button" ng-click="metric.addTier()") Add
+            %button(type="button" ng-click="metric.addTier()") Add Tier
+            %button(type="button" ng-click="destroyMetric($index)") Delete Metric
           .small-3.columns(ng-repeat="tier in metric.tiers" style="background: #eee; border: 1px solid #ccc; padding: 24px")
             .row
               .small-8.columns(style="padding:0")
