@@ -8,15 +8,13 @@
 
   MetricPrototype = ()->
     this.tiers = []
-    this.addTier()
-    this.removeTier()
+    this.initialize()
   MetricPrototype.prototype =
+    initialize: ()->
     addTier: ()->
-      self = this
-      self.tiers.push {}
-    removeTier: ()->
-      self = this
-      self.tiers.remove(-1)
+      this.tiers.push {}
+    removeTier: (index)->
+      this.tiers.splice(index,1)
 
   $scope.newMetric = ()->
     $scope.metrics.push new(MetricPrototype)
