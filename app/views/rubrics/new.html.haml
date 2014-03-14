@@ -10,29 +10,14 @@
 
       %form(ui-sortable ng-submit="createRubric")
         .row(ng-repeat="metric in metrics")
-          .small-3.columns(style="background: #eee; border: 1px solid #ccc; padding: 24px")
-            .row
-              .small-8.columns(style="padding:0")
-                %input(type="text" ng-model="MetricName" placeholder="Name" value="{{metric.name}}")
-              .small-4.columns(style="padding:0")
-                %input(type="text" ng-model="MetricMaxPoints" placeholder="Max Points" value="{{metric.max_points}}")
-            .row
-              %input(type="text" ng-model="MetricDescription" placeholder="Description" value="{{metric.description}}")
-              {{metric.tiers.length}}
-            %input(type="hidden" value="{{$index}}")
-            %button(type="button" ng-click="metric.addTier()") Add Tier
-            %button(type="button" ng-click="destroyMetric($index)") Delete Metric
-          .small-3.columns(ng-repeat="tier in metric.tiers" style="background: #eee; border: 1px solid #ccc; padding: 24px")
-            .row
-              .small-8.columns(style="padding:0")
-                %input(type="text" ng-model="TierName" placeholder="Tier" value="{{tier.name}}")
-                {{TierName}}
-              .small-4.columns(style="padding:0")
-                %input(type="text" ng-model="TierMaxPoints" placeholder="Point Value" value="{{tier.max_points}}")
-            .row
-              %input(type="text" ng-model="TierDescription" placeholder="Description" value="{{tier.description}}")
-            %button(type="button" ng-click="metric.removeTier($index)") Delete
-            {{$index}}
+          .metric.small-3.columns(ng-show="metric.isNew()")
+            = render "rubrics/new_metric"
+          .metric.small-3.columns(ng-hide="metric.isNew()")
+            = render "rubrics/saved_metric"
+          .tier.small-3.columns(ng-repeat="tier in metric.tiers" ng-show="tier.isNew()")
+            = render "rubrics/new_tier"
+          .tier.small-3.columns(ng-repeat="tier in metric.tiers" ng-hide="tier.isNew()")
+            = render "rubrics/saved_tier"
 
       %button(type="button" ng-click="newMetric()") + Add Metric
       

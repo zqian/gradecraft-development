@@ -1,13 +1,10 @@
 @gradecraft.controller 'RubricCtrl', ($scope, Restangular, $http) -> 
 
-  # $scope.metrics.get()
-  # $scope.metrics.push Restangular.one("metrics", "new").get()
-  # $http.get("metrics/new.json")
-  
   $scope.metrics = []
 
   MetricPrototype = ()->
     this.tiers = []
+    this.id = null
     this.initialize()
   MetricPrototype.prototype =
     initialize: ()->
@@ -15,6 +12,8 @@
       this.tiers.push {}
     removeTier: (index)->
       this.tiers.splice(index,1)
+    isNew: ()->
+      this.id is not null
 
   $scope.newMetric = ()->
     $scope.metrics.push new(MetricPrototype)
@@ -30,6 +29,9 @@
     update: (e, ui) ->
       if ui.item.scope().item == "can't be moved"
         ui.item.sortable.cancel()
+
+
+
 
 #   # This is the rubric we use for the form
 #   $scope.rubric = new Rubric()
