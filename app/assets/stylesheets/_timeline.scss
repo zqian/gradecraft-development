@@ -2,7 +2,6 @@
 .vco-storyjs h1,.vco-storyjs h2,.vco-storyjs h3,.vco-storyjs h4,.vco-storyjs h5,.vco-storyjs h6,.vco-storyjs p,.vco-storyjs blockquote,.vco-storyjs pre,.vco-storyjs a,.vco-storyjs abbr,.vco-storyjs acronym,.vco-storyjs address,.vco-storyjs cite,.vco-storyjs code,.vco-storyjs del,.vco-storyjs dfn,.vco-storyjs em,.vco-storyjs img,.vco-storyjs q,.vco-storyjs s,.vco-storyjs samp,.vco-storyjs small,.vco-storyjs strike,.vco-storyjs strong,.vco-storyjs sub,.vco-storyjs sup,.vco-storyjs tt,.vco-storyjs var,.vco-storyjs dd,.vco-storyjs dl,.vco-storyjs dt,.vco-storyjs li,.vco-storyjs ol,.vco-storyjs ul,.vco-storyjs fieldset,.vco-storyjs form,.vco-storyjs label,.vco-storyjs legend,.vco-storyjs button,.vco-storyjs table,.vco-storyjs caption,.vco-storyjs tbody,.vco-storyjs tfoot,.vco-storyjs thead,.vco-storyjs tr,.vco-storyjs th,.vco-storyjs td,.vco-storyjs .vco-container,.vco-storyjs .content-container,.vco-storyjs .media,.vco-storyjs .text,.vco-storyjs .vco-slider,.vco-storyjs .slider,.vco-storyjs .date,.vco-storyjs .title,.vco-storyjs .messege,.vco-storyjs .map,.vco-storyjs .credit,.vco-storyjs .caption,.vco-storyjs .vco-feedback,.vco-storyjs .vco-feature,.vco-storyjs .toolbar,.vco-storyjs .marker,.vco-storyjs .dot,.vco-storyjs .line,.vco-storyjs .flag,.vco-storyjs .time,.vco-storyjs .era,.vco-storyjs .major,.vco-storyjs .minor,.vco-storyjs .vco-navigation,.vco-storyjs .start,.vco-storyjs .active{margin:0;padding:0;border:0;font-weight:normal;font-style:normal;font-size:100%;line-height:1;font-family:inherit;width:auto;float:none}
 .vco-storyjs h1,.vco-storyjs h2,.vco-storyjs h3,.vco-storyjs h4,.vco-storyjs h5,.vco-storyjs h6{clear:none}
 .vco-storyjs table{border-collapse:collapse;border-spacing:0}
-.vco-storyjs ol,.vco-storyjs ul{list-style:none}
 .vco-storyjs q:before,.vco-storyjs q:after,.vco-storyjs blockquote:before,.vco-storyjs blockquote:after{content:""}
 .vco-storyjs a:focus{outline:thin dotted}
 .vco-storyjs a:hover,.vco-storyjs a:active{outline:0}
@@ -24,7 +23,7 @@
 .vco-storyjs{font-family:"Georgia",Times New Roman,Times,serif;}.vco-storyjs .twitter,.vco-storyjs .vcard,.vco-storyjs .messege,.vco-storyjs .credit,.vco-storyjs .caption,.vco-storyjs .zoom-in,.vco-storyjs .zoom-out,.vco-storyjs .back-home,.vco-storyjs .time-interval div,.vco-storyjs .time-interval-major div,.vco-storyjs .nav-container{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif !important}
 .vco-storyjs h1.date,.vco-storyjs h2.date,.vco-storyjs h3.date,.vco-storyjs h4.date,.vco-storyjs h5.date,.vco-storyjs h6.date{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif !important}
 .vco-storyjs .timenav h1,.vco-storyjs .flag-content h1,.vco-storyjs .era h1,.vco-storyjs .timenav h2,.vco-storyjs .flag-content h2,.vco-storyjs .era h2,.vco-storyjs .timenav h3,.vco-storyjs .flag-content h3,.vco-storyjs .era h3,.vco-storyjs .timenav h4,.vco-storyjs .flag-content h4,.vco-storyjs .era h4,.vco-storyjs .timenav h5,.vco-storyjs .flag-content h5,.vco-storyjs .era h5,.vco-storyjs .timenav h6,.vco-storyjs .flag-content h6,.vco-storyjs .era h6{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif !important}
-.vco-storyjs p,.vco-storyjs blockquote,.vco-storyjs blockquote p,.vco-storyjs .twitter blockquote p{font-family:"Georgia",Times New Roman,Times,serif !important}
+.vco-storyjs p,.vco-storyjs blockquote,.vco-storyjs blockquote p,.vco-storyjs .twitter blockquote p{ }
 .vco-storyjs .vco-feature h1,.vco-storyjs .vco-feature h2,.vco-storyjs .vco-feature h3,.vco-storyjs .vco-feature h4,.vco-storyjs .vco-feature h5,.vco-storyjs .vco-feature h6{font-family:"Georgia",Times New Roman,Times,serif}
 .timeline-tooltip{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif}
 .thumbnail{background-image:image-url("timeline.png")}
@@ -35,6 +34,8 @@
 .vco-storyjs .vco-feature p{color:#666}
 .vco-storyjs .vco-feature blockquote,.vco-storyjs .vco-feature blockquote p{color:#000}
 .vco-storyjs .date a,.vco-storyjs .title a{color:#999}
+.vco-storyjs ul { margin: 1rem;} 
+.vco-storyjs ul li { margin-bottom: .5rem;}
 .vco-storyjs .hyphenate{-webkit-hyphens:auto;-moz-hyphens:auto;-ms-hyphens:auto;hyphens:auto;word-wrap:break-word}
 .vco-storyjs h1,.vco-storyjs h2,.vco-storyjs h3,.vco-storyjs h4,.vco-storyjs h5,.vco-storyjs h6{font-weight:normal;color:#000;text-transform:none}.vco-storyjs h1 a,.vco-storyjs h2 a,.vco-storyjs h3 a,.vco-storyjs h4 a,.vco-storyjs h5 a,.vco-storyjs h6 a{color:#999}
 .vco-storyjs h1 small,.vco-storyjs h2 small,.vco-storyjs h3 small,.vco-storyjs h4 small,.vco-storyjs h5 small,.vco-storyjs h6 small{color:#999}

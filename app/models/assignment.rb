@@ -290,7 +290,7 @@ class Assignment < ActiveRecord::Base
     CSV.generate(options) do |csv|
       csv << ["First Name", "Last Name", "Email", "Score", "Grade", "Statement", "Feedback" ]
       course.students.each do |student|
-        csv << [student.first_name, student.last_name, student.email, student.score_for_course(course)]
+        csv << [student.first_name, student.last_name, student.email, student.cached_score_for_course(course)]
       end
     end
   end

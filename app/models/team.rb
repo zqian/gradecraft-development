@@ -28,7 +28,7 @@ class Team < ActiveRecord::Base
   end
 
   def sorted_students
-    students.sort_by{ |student| - student.score_for_course(course) }
+    students.sort_by{ |student| - student.cached_score_for_course(course) }
   end
 
   def member_count
