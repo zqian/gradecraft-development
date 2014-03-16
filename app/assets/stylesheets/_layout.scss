@@ -8,10 +8,11 @@ body.logged-in, body.logged-out {
 
 /* Primary page content */ 
 .mainContent {
-  margin-top: 2rem;
   background-color: #FFF;
   min-height: 750px;
+  position: relative;
   height: 100% !important;
+  margin-top: 1.8rem;
   margin-right: 0;
   margin-bottom: 1rem;
   padding: 1rem 0;
@@ -64,11 +65,6 @@ body.logged-in, body.logged-out {
   /*margin-bottom: 0;*/
 }
 
-
-/* Force the alert to be below the navigation */ 
-.alert-box {
-  margin-bottom: 0.5rem;
-}
 
 /* Allow other things to appear above the timeline */
 .vco-storyjs {
