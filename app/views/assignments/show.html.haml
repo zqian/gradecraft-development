@@ -6,8 +6,10 @@
     - else
       = render "students/student_profile_tabs"
 
-  .pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
-
+  %span.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
+  - if @assignment.description.present?
+    .small-12.medium-4.columns.right
+      .right= render "assignments/description"
   - if current_user.is_staff?
     - if @assignment.has_groups?
       = render "group_show"

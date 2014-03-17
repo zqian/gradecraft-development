@@ -35,10 +35,10 @@
             = i
             = gravatar_for student, :size => 30
           %td= link_to student.first_name, student_path(student)
-          %td= student.last_name
+          %td= link_to student.last_name, student_path(student)
           - if current_course.has_teams?
             %td#team_for_course
-              = link_to student.team_for_course(current_course).name, student.team_for_course(current_course).name if student.teams.present?
+              = link_to student.team_for_course(current_course).name, student.team_for_course(current_course) if student.teams.present?
           %td= points student.cached_score_for_course(current_course)
           %td
             = student.grade_letter_for_course(current_course)
