@@ -23,4 +23,8 @@ class ScoreLevel < ActiveRecord::Base
     end
   end
 
+  def formatted_name
+    "#{name} - #{value} points"
+  end
+
 end

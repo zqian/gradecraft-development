@@ -1,5 +1,6 @@
 = simple_form_for([@badge, @earned_badge]) do |f|
-  %h3= "You are awarding the #{@badge.name} #{term_for :badge} to..."
+  .small-12.columns
+    %h5= "You are awarding the #{@badge.name} #{term_for :badge} to..."
 
   = hidden_field_tag :badge_id, @badge.id
   .small-12.medium-4.columns
@@ -7,10 +8,11 @@
   
   .clearfix
 
-  .small-12.columns
+  .small-12.columns.textarea
     = f.bootsy_area :feedback
     .form_label Enter a message to the #{term_for :student} regarding their work
 
   .right
+    %br
     = f.button :submit, "#{@earned_badge.persisted? ? 'Update' : 'Award '} #{term_for :badge}",  :class => "button tiny radius"
     = link_to 'Cancel', badge_path(@badge), :class => 'button tiny radius transparent'

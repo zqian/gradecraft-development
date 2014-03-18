@@ -4,6 +4,7 @@ class AssignmentsController < ApplicationController
 
   def index
     @title = "#{term_for :assignment} Index"
+    @assignments = current_course.assignments.chronological.alphabetical
   end
 
   def show

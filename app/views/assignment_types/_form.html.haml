@@ -94,7 +94,11 @@
       = f.check_box :notify_released
       .form_label Do you want to notify students by email when a grade is awarded? If grade release is necessary, this email will not be sent out until the grade is officially released.
 
-    %h5 Self-Grading
+    .clearfix
+    %br
+    .clearfix
+
+    %h5.bold Self-Grading
     .small-12.large-4.columns
       = f.label :student_logged_button_text, "Button Text"
       = f.text_field :student_logged_button_text

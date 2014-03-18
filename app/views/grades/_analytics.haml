@@ -7,7 +7,7 @@
       = link_to image_tag(asset_path('boxplot.png'), :width => 80), "#boxplot"
     %dd
       = link_to image_tag(asset_path('halfcircle.png'), :width => 80), "#submitted"
-    %dd.active
+    %dd
       = link_to image_tag(asset_path('pie.png'), :width => 80), "#levels"
 
   .tabs-content{:style => "background-color: #FFFFFF;"}
@@ -19,9 +19,13 @@
 
 
     .content.small-12#submitted.center
-      #myStat{:"data-type" => "half", "data-info" => "#{term_for :students} Submitted", "data-percent" => "#{@assignment.completion_rate(current_course)}", "data-fgcolor" => "#61a9dc", "data-text" => "#{@assignment.positive_grade_count}", "data-dimension" => "250", "data-fontsize" => "38"  }
+      - if @assignment.accepts_submissions?
+        #myStat{:"data-type" => "half", "data-info" => "#{term_for :students} Submitted", "data-percent" => "#{@assignment.submission_rate(current_course)}", "data-fgcolor" => "#61a9dc", "data-text" => "#{@assignment.submissions.count}", "data-dimension" => "250", "data-fontsize" => "38"  }
 
-    .content.small-12#levels.active
-      #levels_per_assignment{'data-levels' =>  @assignment.percentage_score_earned.to_json}
+      - else
+        #myStat{:"data-type" => "half", "data-info" => "#{term_for :students} Participated", "data-percent" => "#{@assignment.completion_rate(current_course)}", "data-fgcolor" => "#61a9dc", "data-text" => "#{@assignment.positive_grade_count}", "data-dimension" => "250", "data-fontsize" => "38"  }
+
+    .content.small-12#levels{:style => "width: 100%"}
+      .small-12#levels_per_assignment{'data-levels' =>  @assignment.percentage_score_earned.to_json }
 
 .clearfix

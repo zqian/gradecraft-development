@@ -9,7 +9,7 @@ class Badge < ActiveRecord::Base
   has_many :tasks, :as => :assignment, :dependent => :destroy
   belongs_to :course
 
-  accepts_nested_attributes_for :earned_badges, allow_destroy: true
+  accepts_nested_attributes_for :earned_badges, allow_destroy: true, :reject_if => proc { |a| a['score'].blank? }
 
   has_many :submissions, as: :assignment
 

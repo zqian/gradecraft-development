@@ -31,11 +31,7 @@ class CourseData < Struct.new(:course)
   end
 
   def by_assignment_type
-    @by_assignment_type ||= assignments.alphabetical.chronological.group_by(&:assignment_type)
-  end
-
-  def by_assignment_type
-    @by_assignment_type ||= assignments.alphabetical.chronological.group_by(&:assignment_type)
+    @by_assignment_type ||= assignments.chronological.alphabetical.group_by(&:assignment_type)
   end
 
   def grade_for_student_and_assignment(student, assignment)

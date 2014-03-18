@@ -4,7 +4,7 @@
 
   
   - if @assignment.is_individual?
-    .pagetitle= "#{@grade.student.name}'s #{ @assignment.name }"
+    .pagetitle= "#{current_student.name}'s #{ @assignment.name }"
 
     .small-12.columns= render "individual_show"
     
@@ -12,3 +12,5 @@
     .pagetitle #{@group.try(:name)}'s #{@assignment.name}
       
     .small-12.columns= render "group_show"
+
+  .clearfix

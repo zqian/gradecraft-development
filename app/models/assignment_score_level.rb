@@ -6,4 +6,8 @@ class AssignmentScoreLevel < ActiveRecord::Base
   validates_presence_of :value, :name
   scope :order_by_value, -> { order 'value DESC' }
 
+  def formatted_name
+    "#{name} - #{value} points"
+  end
+
 end

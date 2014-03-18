@@ -18,6 +18,10 @@ class StudentsController < ApplicationController
     end
   end
 
+  def syllabus
+    @assignments = current_course.assignments.chronological.alphabetical
+  end
+
   # Course timeline, displays all assignments that are determined by the instructor to belong on the timeline + team challenges if present
   def timeline
     if current_user.is_student?
@@ -27,6 +31,9 @@ class StudentsController < ApplicationController
       @events = current_course.assignments.timelineable.to_a + current_course.challenges
     else
       @events = current_course.timelineable.to_a
+    end
+    if current_user.is_staff?
+      @scores_for_current_course = current_student.scores_for_course(current_course)
     end
   end
 
@@ -41,7 +48,10 @@ class StudentsController < ApplicationController
 
   def show
     self.current_student = current_course.students.where(id: params[:id]).first
-    
+    @assignments = current_course.assignments.chronological.alphabetical
+    if current_user.is_staff?
+      @scores_for_current_course = current_student.scores_for_course(current_course)
+    end
     scores = []
     current_course.assignment_types.each do |assignment_type|
       scores << { data: [current_student.grades.released.where(assignment_type: assignment_type).score], name: assignment_type.name }
@@ -58,6 +68,9 @@ class StudentsController < ApplicationController
   def course_progress
     @grade_scheme_elements = current_course.grade_scheme_elements
     @title = "Your Course Progress"
+    if current_user.is_staff?
+      @scores_for_current_course = current_student.scores_for_course(current_course)
+    end
   end
 
   # Display the grade predictor

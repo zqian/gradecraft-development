@@ -36,9 +36,8 @@
 //= require stupidtable
 //= require submissions
 //= require submission_file
-//=require timelineJS/embed
+//= require timelineJS/embed
 //= require timeline_settings
-//= require turbolinks
 //= require earned_badges
 //= require highcharts
 //= require datetimepicker

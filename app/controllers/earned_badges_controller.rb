@@ -54,7 +54,7 @@ class EarnedBadgesController < ApplicationController
     respond_to do |format|
       if @earned_badge.save
         NotificationMailer.earned_badge_awarded(@earned_badge.id).deliver
-        format.html { redirect_to badge_path(@badge), notice: '#{term_for :badge} was successfully awarded.' }
+        format.html { redirect_to badge_path(@badge), notice: "#{term_for :badge} was successfully awarded." }
       else
         format.html { render action: "new" }
         format.json { render json: @earned_badge.errors, status: :unprocessable_entity }
@@ -87,23 +87,34 @@ class EarnedBadgesController < ApplicationController
     user_search_options = {}
     user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
     @students = current_course.students.includes(:teams).where(user_search_options).alpha
-    @earned_badges = @students.map do |s|
-      @badge.earned_badges.where(:student_id => s).first || @badge.earned_badges.new(:student => s, :badge => @badge)
+    if @badge.can_earn_multiple_times?
+      @earned_badges = @students.map do |s|
+        @badge.earned_badges.new(:student => s, :badge => @badge)
+      end
+    else
+      @earned_badges = @students.map do |s|
+        @badge.earned_badges.where(:student_id => s).first || @badge.earned_badges.new(:student => s, :badge => @badge)
+      end
     end
   end
 
   def mass_update
     @badge = current_course.badges.find(params[:id])
     if @badge.update_attributes(params[:badge])
-      expire_fragment "earned_badges"
       respond_with @badge
     else
       @title = "Quick Award #{@badge.name}"
       user_search_options = {}
       user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
       @students = current_course.users.students.includes(:teams).where(user_search_options).alpha
-      @earned_badges = @students.map do |s|
-        @badge.earned_badges.where(:student_id => s).first || @badge.earned_badges.new(:student => s)
+      if @badge.can_earn_multiple_times?
+        @earned_badges = @students.map do |s|
+          @badge.earned_badges.new(:student => s, :badge => @badge)
+        end
+      else
+        @earned_badges = @students.map do |s|
+          @badge.earned_badges.where(:student_id => s).first || @badge.earned_badges.new(:student => s)
+        end
       end
     end
   end
