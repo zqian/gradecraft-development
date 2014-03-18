@@ -32,6 +32,23 @@ $(document).ready(function() {
         color: "#FFFFFF"
       }
     },
+    colors: [
+     '#1A1EB2',
+     '#303285',
+     '#6dd8f0',
+     '#080B74',
+     '#00BD39',
+     '#238D43',
+     '#007B25',
+     '#37DE6A',
+     '#64DE89',
+     '#FFCC00',
+     '#BFBD30',
+     '#A6A400',
+     '#FFFD40',
+     '#FFFD73'
+  ],
+
     credits: {
       enabled: false
     },

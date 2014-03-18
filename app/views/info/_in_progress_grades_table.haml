@@ -1,0 +1,48 @@
+.pagetitle
+  = "In Progress Grades"
+  .label.alert.round= @count_in_progress
+
+- @in_progress_grades.group_by(&:assignment).each do |assignment, grades|
+  .small-12.columns
+    %h5.bold
+      = link_to assignment.name, assignment
+      = link_to 'Quick Grade', mass_grade_assignment_path(assignment), :class => "button tiny round success"
+
+  %table.responsive.columns
+    %thead
+      %tr
+        - if assignment.is_individual?
+          %th.sortable{"data-sort" => "string"} Name
+          - if current_course.has_teams?
+            %th= "#{term_for :team}"
+        - elsif assignment.has_groups?
+          %th.sortable{"data-sort" => "string"} Group
+        %th Score
+        %th Feedback
+        %th 
+        %th
+          .button-bar
+            %ul.button-group.right.round
+              %li
+                %button.select-all.tiny= "Check"
+              %li
+                %button.select-none.tiny= "Uncheck"
+    %tbody
+      - grades.each do |g|
+        %tr
+          - if assignment.is_individual?
+            %td= link_to g.student.try(:name), student_path(g.student)
+            %td
+              - if current_course.has_teams? && g.student.present? && g.student.team_for_course(current_course).present?
+                = link_to g.student.team_for_course(current_course).try(:name), g.student.team_for_course(current_course)
+            %td= points g.score
+            %td{:style => "width: 430px" }= raw g.feedback
+          %td
+            .button-bar
+              %ul.button-group.right.round
+                %li
+                  = link_to "See", assignment_grade_path(g.assignment, :student_id => g.student_id), :class => "button tiny alert"
+                %li= link_to 'Edit', edit_assignment_grade_path("assignment_id"=>assignment.id, :student_id => g.student.try(:id)), :class => "button tiny alert"
+          %td.text-center
+            = check_box_tag "grade_ids[]", g.id
+

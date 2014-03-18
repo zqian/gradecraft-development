@@ -94,7 +94,11 @@ i.absent {
 }
 
 td.partial, td.need_to_be_released {
-  background-color: $secondary-color;
+  background-color: $secondary-color-5;
+}
+
+td.in_progress {
+  background-color: $alert-color-5;
 }
 
 i.partial {

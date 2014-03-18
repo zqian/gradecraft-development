@@ -21,8 +21,10 @@ class InfoController < ApplicationController
     user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
     @ungraded_submissions = current_course.submissions.ungraded
     @unreleased_grades = current_course.grades.not_released
+    @in_progress_grades = current_course.grades.in_progress
     @count_unreleased = @unreleased_grades.not_released.count
     @count_ungraded = @ungraded_submissions.count
+    @count_in_progress = @in_progress_grades.count
     @badges = current_course.badges.includes(:tasks)
   end
 
