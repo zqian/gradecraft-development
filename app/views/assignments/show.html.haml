@@ -10,6 +10,7 @@
   - if @assignment.description.present?
     .small-12.medium-4.columns.right
       .right= render "assignments/description"
+  .clearfix
   - if current_user.is_staff?
     - if @assignment.has_groups?
       = render "group_show"

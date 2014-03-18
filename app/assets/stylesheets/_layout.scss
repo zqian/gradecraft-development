@@ -65,6 +65,11 @@ body.logged-in, body.logged-out {
   /*margin-bottom: 0;*/
 }
 
+.panel.callout {
+  background-color: lighten(#666, 50%);
+  border-color: #CCC;
+}
+
 
 /* Allow other things to appear above the timeline */
 .vco-storyjs {
