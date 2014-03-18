@@ -280,6 +280,10 @@ class Assignment < ActiveRecord::Base
    ((grade_count / course.graded_student_count.to_f) * 100).round(2)
   end
 
+  def submission_rate(course)
+    ((submissions.count / course.graded_student_count.to_f) * 100).round(2)
+  end
+
   #Calculates attendance rate as an integer.
    def attendance_rate_int(course)
    ((positive_grade_count / course.graded_student_count.to_f) * 100).to_i

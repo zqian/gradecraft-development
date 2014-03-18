@@ -159,3 +159,8 @@ ul.dropdown-menu {
   border-bottom-right-radius: $global-radius;
   border-bottom-left-radius: $global-radius;
 }
+
+.inline-list > li > * {
+  display: block;
+  width: 100%;
+  }
