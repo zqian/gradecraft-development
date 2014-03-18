@@ -7,21 +7,24 @@
   /* Individual Tabs */
   .navbar-nav {
     display: inline;
-      li {
+    li {
+      height: 2rem;
       background-color: $secondary-color;
       border-top-left-radius: $global-radius;
       border-top-right-radius: $global-radius;
       margin: 0 0.2rem;
-      padding: .5rem 1rem;
-
+      padding: 0.5rem 0;
       a {
         color: #FFF;
-        padding: .5rem 0 !important;
+        padding: 1em !important;
       }
+    }
+
+    li.active {
+      padding: .5rem !important;
     }
   }
 }
-
 /* Setting the active tab and hover styles to be the dark green */
 .navbar-nav li.active, .sub-nav .navbar-nav li:hover {
   background-color: $secondary-color-2;

@@ -21,7 +21,7 @@
     .content.small-12#submitted.center
       #myStat{:"data-type" => "half", "data-info" => "#{term_for :students} Submitted", "data-percent" => "#{@assignment.completion_rate(current_course)}", "data-fgcolor" => "#61a9dc", "data-text" => "#{@assignment.positive_grade_count}", "data-dimension" => "250", "data-fontsize" => "38"  }
 
-    .content.small-12#levels
-      #levels_per_assignment{'data-levels' =>  @assignment.percentage_score_earned.to_json}
+    .content.small-12#levels{:style => "width: 100%"}
+      .small-12#levels_per_assignment{'data-levels' =>  @assignment.percentage_score_earned.to_json }
 
 .clearfix
