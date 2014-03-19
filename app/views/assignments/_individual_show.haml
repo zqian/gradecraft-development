@@ -48,7 +48,9 @@
             - if grade.is_released?
               %td= "Released" 
             - elsif grade.is_graded?
-              %td.need_to_be_released= "Graded" 
+              %td.need_to_be_released= "Graded"
+            - elsif grade.in_progress?
+              %td.in_progress= "In Progress"
             - else
               %td
           %td

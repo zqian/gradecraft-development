@@ -40,6 +40,7 @@ class Grade < ActiveRecord::Base
 
   scope :completion, -> { where(order: "assignments.due_at ASC", :joins => :assignment) }
   scope :graded, -> { where('status = ?', 'Graded') }
+  scope :in_progress, -> { where('status = ?', 'In Progress') }
   scope :released, -> { joins(:assignment).where("status = 'Released' OR (status = 'Graded' AND NOT assignments.release_necessary)") }
   scope :not_released, -> { joins(:assignment).where("status != 'Released' AND (status != 'Graded' OR assignments.release_necessary)")}
 
