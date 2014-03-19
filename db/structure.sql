@@ -722,6 +722,39 @@ ALTER SEQUENCE challenge_grades_id_seq OWNED BY challenge_grades.id;
 
 
 --
+-- Name: challenge_score_levels; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE challenge_score_levels (
+    id integer NOT NULL,
+    challenge_id integer,
+    name character varying(255),
+    value integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: challenge_score_levels_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE challenge_score_levels_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: challenge_score_levels_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE challenge_score_levels_id_seq OWNED BY challenge_score_levels.id;
+
+
+--
 -- Name: challenges; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2141,6 +2174,13 @@ ALTER TABLE ONLY challenge_grades ALTER COLUMN id SET DEFAULT nextval('challenge
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY challenge_score_levels ALTER COLUMN id SET DEFAULT nextval('challenge_score_levels_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY challenges ALTER COLUMN id SET DEFAULT nextval('challenges_id_seq'::regclass);
 
 
@@ -2487,6 +2527,14 @@ ALTER TABLE ONLY challenge_files
 
 ALTER TABLE ONLY challenge_grades
     ADD CONSTRAINT challenge_grades_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: challenge_score_levels_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY challenge_score_levels
+    ADD CONSTRAINT challenge_score_levels_pkey PRIMARY KEY (id);
 
 
 --
@@ -3150,3 +3198,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140304230129');
 INSERT INTO schema_migrations (version) VALUES ('20140305040029');
 
 INSERT INTO schema_migrations (version) VALUES ('20140307194848');
+
+INSERT INTO schema_migrations (version) VALUES ('20140319000428');

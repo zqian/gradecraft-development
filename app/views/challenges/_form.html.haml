@@ -65,7 +65,22 @@
     .form_label What do the #{term_for :teams} need to do to succeed?
 
   .clearfix
-  %br
+  
+  .panel
+    %h4.bold Grade Levels
+    .small-12.columns
+      .challenge-score-levels
+        %p.hint Example: You could create three levels to produce a quick grading scheme for just this #{term_for :challenge} - Complete (5000 points), Finalist (7000 points), and Winner (10,000 points). These levels will then show in the quick grade, and when students are setting goals in the grade predictor.
+        %script(id="challenge-score-level-template" type="text/x-template")
+          %fieldset.challenge-score-level
+            = f.simple_fields_for :challenge_score_levels, ChallengeScoreLevel.new, class: 'form-inline', child_index: 'child_index' do |slf|
+              = render 'challenge_score_level_fields', f: slf
+        - @challenge.challenge_score_levels.each do |challenge_score_level|
+          %fieldset.challenge-score-level
+            = f.simple_fields_for :challenge_score_levels, challenge_score_level, class: 'form-inline' do |slf|
+              = render 'challenge_score_level_fields', f: slf
+      = link_to 'Add a Level', '#', class: 'add-challenge-score-level button tiny radius'
+    .clearfix
 
   .right
     = f.button :submit, "#{@challenge.persisted? ? 'Update' : 'Create'} #{term_for :challenge }", :class => "button tiny radius"

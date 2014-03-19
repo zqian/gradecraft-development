@@ -28,6 +28,20 @@
       $link.prev('input.destroy').val(true);
       $link.closest('fieldset.assignment-score-level').hide();
       return false;
+    });
+
+    $form.on('click', '.add-challenge-score-level', function(e) {
+      var $wrapper = $('.challenge-score-levels');
+      var template = $('#challenge-score-level-template').html().replace(/child_index/g, $wrapper.children('.assignment-score-level').length);
+      $wrapper.append(template);
+      return false;
+    });
+
+    $form.on('click', '.remove-challenge-score-level', function(e) {
+      var $link = $(this);
+      $link.prev('input.destroy').val(true);
+      $link.closest('fieldset.challenge-score-level').hide();
+      return false;
     })
   };
   $(init);

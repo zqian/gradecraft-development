@@ -36,8 +36,6 @@
 
     %hr
 
-    %h3 Predictions
-
     #predictorPage{ 'data-student-name' => current_student.name, 'data-course-total' => current_student_data.point_total }
       %ul.slides.small-12.columns
         - if current_user.is_staff?
