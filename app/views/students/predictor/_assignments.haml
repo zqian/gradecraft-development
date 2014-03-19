@@ -46,6 +46,7 @@
               - elsif assignment.slider?
                 %span.pScore= "0 "
                 = "/ #{points current_student_data.point_total_for_assignment(assignment)} possible points"
+                .score-level-name
                 .small-5.right.slider{:id => "slider-#{assignment.id}", :max => current_student_data.point_total_for_assignment(assignment) , :value => "#{current_student_data.grade_for_assignment(assignment).predicted_score}", :'data-scorelevelvals' => "#{assignment.assignment_score_levels.map(&:value)}", :'data-scorelevelnames' => "#{assignment.assignment_score_levels.map(&:name)}", :'data-highlight' => "true"}
               - elsif assignment.select?
                 = "#{points current_student_data.point_total_for_assignment(assignment)} possible points"

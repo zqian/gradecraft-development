@@ -266,7 +266,7 @@ $(document).ready(function() {
           });
           $(this).slider("value", closest);
           $(slider).siblings("div.assignment > span.pScore").html(closest);
-          $(slider).siblings("div.assignment > span.score-level-name").html("(Score Level: " + scoreNames[scoreValues.indexOf(+closest)] + ")");
+          $(slider).siblings("div.assignment > div.score-level-name").html("(Level: " + scoreNames[scoreValues.indexOf(+closest)] + ")");
           return false;
         }
         else {
