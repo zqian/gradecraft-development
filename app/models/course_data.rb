@@ -17,12 +17,12 @@ class CourseData < Struct.new(:course)
 
   #Displays only visible assignments
   def assignments
-    @assignments ||= course.assignments.includes(:course, assignment_type: [:score_levels]).alphabetical.chronological
+    @assignments ||= course.assignments.includes(:course, assignment_type: [:score_levels]).chronological.alphabetical
   end
 
   #Display all assignments - even invisible ones.
   def all_assignments
-    @assignments ||= course.assignments.includes(:course, assignment_type: [:score_levels]).alphabetical.chronological
+    @assignments ||= course.assignments.includes(:course, assignment_type: [:score_levels]).chronological.alphabetical
   end
 
   #Assignments that must be completed by a group of students working together
@@ -31,7 +31,7 @@ class CourseData < Struct.new(:course)
   end
 
   def by_assignment_type
-    @by_assignment_type ||= assignments.chronological.alphabetical.group_by(&:assignment_type)
+    @by_assignment_type ||= assignments.group_by(&:assignment_type)
   end
 
   def grade_for_student_and_assignment(student, assignment)
