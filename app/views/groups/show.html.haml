@@ -10,14 +10,12 @@
 
   .small-12.columns
 
-    %hr
-
-    %h3 Assignment(s)
+    %h4 Assignment(s)
     %ul
       - @group.assignment_groups.each do |ag|
         %li= link_to ag.assignment.name, ag.assignment
 
-    %h3 Members: 
+    %h4 Members: 
     %ul
       - @group.group_memberships.each do |gm|
         - if current_user.is_staff?

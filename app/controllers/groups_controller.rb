@@ -33,18 +33,14 @@ class GroupsController < ApplicationController
     @group = current_course.groups.find(params[:id])
     @assignments = current_course.assignments.group_assignments
     @title = "Editing #{@group.name} Details"
-    if current_user.is_student?
-      @student = current_student
-      @group.students << current_student
-    end
+    # if current_user.is_student? 
+    #   @student = current_student
+    #   @group.students << current_student
+    # end
   end
 
   def update
     @group = current_course.groups.find(params[:id])
-    if current_user.is_student?
-      @student = current_student
-      @group.students << current_student
-    end
     @group.update_attributes(params[:group])
     respond_with @group
   end

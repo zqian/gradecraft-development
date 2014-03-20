@@ -266,11 +266,11 @@ $(document).ready(function() {
           });
           $(this).slider("value", closest);
           $(slider).siblings("div.assignment > span.pScore").html(closest);
-          $(slider).siblings("div.assignment > div.score-level-name").html("(Level: " + scoreNames[scoreValues.indexOf(+closest)] + ")");
+          $(slider).siblings("div.assignmentData > span.score-level-name").html("(Level: " + scoreNames[scoreValues.indexOf(+closest)] + ")");
           return false;
         }
         else {
-          $(slider).siblings("div.assignment > span.pScore").html(ui.value);
+          $(slider).siblings("div.assignmentData > span.pScore").html(ui.value);
         }
       }
     });
@@ -278,12 +278,12 @@ $(document).ready(function() {
 
   $('.slider').each(function(i,slider) {
     $slider = $(slider)
-    $(slider).siblings("div.assignment > span.pScore").html($slider.attr('value'));
+    $(slider).siblings("div.assignmentData > span.pScore").html($slider.attr('value'));
     $slider.slider({
       max: parseInt($slider.attr('max')),
       value: parseInt($slider.attr('value')),
       stop: function(event, ui) {
-        assignment_id = $(slider).parent().data("assignment");
+        assignment_id = $(slider).parent().data("assignmentData");
         if(!isStaff()){
           $.ajax({
               url: '/assignments/' + assignment_id + '/grades/predict_score',
@@ -295,13 +295,13 @@ $(document).ready(function() {
       }
     });
     $slider.on('slide', function(event, ui){
-      $(slider).siblings("div.assignment > span.pScore").html(ui.value)
+      $(slider).siblings("div.assignmentData > span.pScore").html(ui.value)
     });
   });
 
 
   $('#predictor').on('click', ':checkbox', function() {
-    var assignment_id = $(this).parent().data("assignment");
+    var assignment_id = $(this).parent().data("assignmentData");
     if(this.checked){
       var value = $(this).val();
     }else{
@@ -318,7 +318,7 @@ $(document).ready(function() {
   })
 
   $("select.point-value").change(function(){
-    var assignment_id = $(this).parent().data("assignment");
+    var assignment_id = $(this).parent().data("assignmentData");
     var value = $(this).val().length ? $(this).val() : 0;
     if(!isStaff()){
       $.ajax({
