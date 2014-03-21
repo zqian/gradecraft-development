@@ -2,18 +2,17 @@
 %li{:id => "slide-#{assignment_type.id}", :'data-assignment-type-id' => assignment_type.id, :'data-assignment-type-name' => assignment_type.name}
   .slide-panel
     .assignmentType
-      .assignmentType
-        %h3.bold
-          = assignment_type.name
-          .right.label.radius
-            = "#{points current_student_data.score_for_assignment_type(assignment_type)} / "
-            - if assignment_type.max_value?
-              = "#{points assignment_type.max_value} possible points"
-            - else
-              = "#{points current_student_data.point_total_for_assignment_type(assignment_type)} possible points"
-          .clearfix
+      %h3.bold
+        = assignment_type.name
+        .right.label.radius
+          = "#{points current_student_data.score_for_assignment_type(assignment_type)} / "
+          - if assignment_type.max_value?
+            = "#{points assignment_type.max_value} possible points"
+          - else
+            = "#{points current_student_data.point_total_for_assignment_type(assignment_type)} possible points"
+        .clearfix
     - assignments.each do |assignment|
-      - if assignment.point_total > 0
+      - if assignment.point_total && assignment.try(:point_total) > 0
         .assignment
           .small-12.medium-7.columns
             - if assignment.required?
