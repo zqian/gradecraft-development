@@ -264,7 +264,7 @@ $(document).ready(function() {
               closest = this;
             }
           });
-          $(this).slider("value", closest);
+          $(this).slider("value", closest); 
           $(slider).siblings("div.assignment > span.pScore").html(closest);
           $(slider).siblings("div.assignmentData > span.score-level-name").html("(Level: " + scoreNames[scoreValues.indexOf(+closest)] + ")");
           return false;
