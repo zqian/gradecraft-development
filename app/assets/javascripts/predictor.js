@@ -193,7 +193,7 @@ var PredictorView = Backbone.View.extend({
     });
     if (e) {
       var $item = $(e.target),
-          $assignment = $item.closest('.assignment'),
+          $assignment = $item.closest('.assignmentData'),
           assignmentId = $assignment.data('assignment'),
           score = getScore($item),
           possibleScore = $assignment.data('possible-points'),
@@ -265,7 +265,7 @@ $(document).ready(function() {
             }
           });
           $(this).slider("value", closest); 
-          $(slider).siblings("div.assignment > span.pScore").html(closest);
+          $(slider).siblings("div.assignmentData > span.pScore").html(closest);
           $(slider).siblings("div.assignmentData > span.score-level-name").html("(Level: " + scoreNames[scoreValues.indexOf(+closest)] + ")");
           return false;
         }
@@ -283,7 +283,7 @@ $(document).ready(function() {
       max: parseInt($slider.attr('max')),
       value: parseInt($slider.attr('value')),
       stop: function(event, ui) {
-        assignment_id = $(slider).parent().data("assignmentData");
+        assignment_id = $(slider).parent().data("assignment");
         if(!isStaff()){
           $.ajax({
               url: '/assignments/' + assignment_id + '/grades/predict_score',
@@ -300,14 +300,14 @@ $(document).ready(function() {
   });
 
 
-  $('#predictor').on('click', ':checkbox', function() {
-    var assignment_id = $(this).parent().data("assignmentData");
+  $('#predictorPage').on('click', ':checkbox', function() {
+    var assignment_id = $(this).parent().data("assignment");
     if(this.checked){
       var value = $(this).val();
     }else{
       var value = 0;
     }
-    if(!is_staff()){
+    if(!isStaff()){
       $.ajax({
         url: '/assignments/' + assignment_id + '/grades/predict_score',
         type: "POST",
@@ -318,7 +318,7 @@ $(document).ready(function() {
   })
 
   $("select.point-value").change(function(){
-    var assignment_id = $(this).parent().data("assignmentData");
+    var assignment_id = $(this).parent().data("assignment");
     var value = $(this).val().length ? $(this).val() : 0;
     if(!isStaff()){
       $.ajax({
