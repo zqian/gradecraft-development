@@ -299,6 +299,7 @@ grinding_assignments = []
 
 1.upto(30).each do |n|
   grinding_assignments << assignment_types[:attendance].assignments.create! do |a|
+    a.course = course
     a.name = "Class #{n}"
     a.point_total = 5000
     a.due_at = rand(n - 6).weeks.from_now
@@ -313,6 +314,7 @@ grinding_assignments = []
   end
 
   grinding_assignments << assignment_types[:reading_reaction].assignments.create! do |a|
+    a.course = course
     a.name = "Reading Reaction #{n}"
     a.due_at = rand(n - 6).weeks.ago
     a.accepts_submissions = false
@@ -356,6 +358,7 @@ blog_assignments = []
 
 1.upto(5).each do |n|
   blog_assignments << Assignment.create! do |a|
+    a.course = course
     a.assignment_type = assignment_types[:blogging]
     a.name = "Blog Post #{n}"
     a.point_total = 5000
@@ -366,6 +369,7 @@ blog_assignments = []
   end
 
   blog_assignments << Assignment.create! do |a|
+    a.course = course
     a.assignment_type = assignment_types[:blogging]
     a.name = "Blog Comment #{n}"
     a.point_total = 2000
@@ -407,6 +411,7 @@ puts "Blogging scores have been posted!"
 assignments = []
 
 assignments << Assignment.create! do |a|
+  a.course = course
   a.assignment_type = assignment_types[:lfpg]
   a.name = "Game Selection Paper"
   a.point_total = 80000
@@ -439,6 +444,7 @@ end
 puts "Game Selection Paper has been posted!"
 
 assignments << Assignment.create! do |a|
+  a.course = course
   a.assignment_type = assignment_types[:lfpg]
   a.name = "Game Play Update Paper 1"
   a.point_total = 120000
@@ -451,6 +457,7 @@ end
 puts "Game Play Update Paper 1 has been posted!"
 
 assignments << Assignment.create! do |a|
+  a.course = course
   a.assignment_type = assignment_types[:lfpg]
   a.name = "Game Play Update Paper 2"
   a.point_total = 120000
@@ -463,6 +470,7 @@ end
 puts "Game Play Update Paper 2 has been posted!"
 
 assignments << Assignment.create! do |a|
+  a.course = course
   a.assignment_type = assignment_types[:lfpg]
   a.name = "Game Play Reflection Paper"
   a.point_total = 160000
@@ -475,6 +483,7 @@ end
 puts "Game Play Reflection Paper has been posted!"
 
 ip1_assignment = Assignment.create! do |a|
+  a.course = course
   a.assignment_type = assignment_types[:boss_battle]
   a.name = "Individual Paper/Project 1"
   a.point_total = 200000
@@ -494,6 +503,7 @@ puts "Individual Project 1 has been posted!"
 end
 
 ip2_assignment = Assignment.create! do |a|
+  a.course = course
   a.assignment_type = assignment_types[:boss_battle]
   a.name = "Individual Paper/Project 2"
   a.point_total = 300000

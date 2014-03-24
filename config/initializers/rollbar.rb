@@ -9,6 +9,12 @@ if %w(development test).include? Rails.env
   config.enabled = false
 end
 
+ # Ignoring 404 errors
+  config.exception_level_filters.merge!({
+    'ActionController::RoutingError' => 'ignore',
+    'AbstractController::ActionNotFound' => 'ignore'
+  })
+
   # By default, Rollbar will try to call the `current_user` controller method
   # to fetch the logged-in user object, and then call that object's `id`,
   # `username`, and `email` methods to fetch those properties. To customize:

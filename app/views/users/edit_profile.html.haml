@@ -37,7 +37,7 @@
 
           .small-12.medium-4.columns
             = f.label :default_course_id, "Default Course"
-            = f.select :default_course_id, options_from_collection_for_select(@default_course_options, "id", "name")
+            = f.select_tag :default_course_id, options_from_collection_for_select(@default_course_options, "id", "name")
             .form_label This course will be automatically loaded when you log in to GradeCraft
 
           
