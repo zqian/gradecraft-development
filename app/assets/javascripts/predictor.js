@@ -193,7 +193,7 @@ var PredictorView = Backbone.View.extend({
     });
     if (e) {
       var $item = $(e.target),
-          $assignment = $item.closest('.assignment'),
+          $assignment = $item.closest('.assignmentData'),
           assignmentId = $assignment.data('assignment'),
           score = getScore($item),
           possibleScore = $assignment.data('possible-points'),
@@ -264,13 +264,13 @@ $(document).ready(function() {
               closest = this;
             }
           });
-          $(this).slider("value", closest);
-          $(slider).siblings("div.assignment > span.pScore").html(closest);
-          $(slider).siblings("div.assignment > div.score-level-name").html("(Level: " + scoreNames[scoreValues.indexOf(+closest)] + ")");
+          $(this).slider("value", closest); 
+          $(slider).siblings("div.assignmentData > span.pScore").html(closest);
+          $(slider).siblings("div.assignmentData > span.score-level-name").html("(Level: " + scoreNames[scoreValues.indexOf(+closest)] + ")");
           return false;
         }
         else {
-          $(slider).siblings("div.assignment > span.pScore").html(ui.value);
+          $(slider).siblings("div.assignmentData > span.pScore").html(ui.value);
         }
       }
     });
@@ -278,7 +278,7 @@ $(document).ready(function() {
 
   $('.slider').each(function(i,slider) {
     $slider = $(slider)
-    $(slider).siblings("div.assignment > span.pScore").html($slider.attr('value'));
+    $(slider).siblings("div.assignmentData > span.pScore").html($slider.attr('value'));
     $slider.slider({
       max: parseInt($slider.attr('max')),
       value: parseInt($slider.attr('value')),
@@ -295,19 +295,19 @@ $(document).ready(function() {
       }
     });
     $slider.on('slide', function(event, ui){
-      $(slider).siblings("div.assignment > span.pScore").html(ui.value)
+      $(slider).siblings("div.assignmentData > span.pScore").html(ui.value)
     });
   });
 
 
-  $('#predictor').on('click', ':checkbox', function() {
+  $('#predictorPage').on('click', ':checkbox', function() {
     var assignment_id = $(this).parent().data("assignment");
     if(this.checked){
       var value = $(this).val();
     }else{
       var value = 0;
     }
-    if(!is_staff()){
+    if(!isStaff()){
       $.ajax({
         url: '/assignments/' + assignment_id + '/grades/predict_score',
         type: "POST",

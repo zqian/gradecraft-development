@@ -12,7 +12,7 @@
           %h4
             Predicted points:
             - if current_user.is_staff?
-              %span.bold
+              %span#predictor-score-display.bold
                 = points current_course.score_for_student(current_student)
             - else
               %span#predictor-score-display.bold

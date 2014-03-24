@@ -77,7 +77,7 @@
                         = f.submit (present ? assignment_type.student_logged_revert_button_text : assignment_type.student_logged_button_text), :class => "button #{present ? 'alert' : 'success'} tiny"
                   - if assignment.has_groups?
                     %td
-                      - if current_student.group_for_assignment(assignment)
+                      - if current_student.group_for_assignment(assignment).present?
                         = link_to "See Group", group_path(current_student.group_for_assignment(assignment)), :class => "button tiny radius"
                         - if assignment.accepts_submissions?
                           = render "students/group_submissions", assignment: assignment, group: current_student.group_for_assignment(assignment)

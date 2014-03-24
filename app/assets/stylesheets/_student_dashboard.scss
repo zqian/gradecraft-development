@@ -16,6 +16,18 @@
 
 }
 
+.assignment {
+  display: block;
+  padding: 0.5rem 0rem;
+  margin-bottom: 1rem;
+  border: 1px solid #eee;
+  border-radius: $global-radius;
+
+  select {
+    margin: 0;
+  }
+}
+
 /* Styling the space where students actually predict their grades */ 
 #predictorPage ul.slides, #predictorPage ul.slides li {
   list-style-type: none;
