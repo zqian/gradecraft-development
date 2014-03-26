@@ -2,7 +2,7 @@
 
   $scope.metrics = []
   INTEGER_REGEXP = /^\-?\d+$/
-  Restangular.setRequestSuffix('.json');
+  Restangular.setRequestSuffix('.json')
 
   MetricPrototype = ()->
     this.tiers = []
@@ -21,17 +21,26 @@
       this.id is null
     isSaved: ()->
       this.id > 0
+    params: ()-> {
+      name: this.name,
+      max_points: this.max_points,
+      order: this.order(),
+      description: this.description
+    }
     order: ()->
       1
     create: ()->
-      this.id = 1
-      Restangular.all('metrics').post({
-        name: this.name,
-        max_points: this.max_points,
-        order: this.order()
-      })
+      Restangular.all('metrics').post(this.params())
+        .then (response)->
+          this.id = response.id
+
     update: ()->
-      alert("update!")
+      Restangular.one('metrics', this.id).put(this.params())
+        .then (response)->
+          alert(response.id)
+    delete: ()->
+      if this.isSaved() and confirm("Are you sure you want to delete this metric?")
+        Restangular.one('metrics', this.id).remove
 
   $scope.newMetric = ()->
     $scope.metrics.push new(MetricPrototype)
