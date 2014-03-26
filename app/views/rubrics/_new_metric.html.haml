@@ -1,12 +1,12 @@
 .row
   .small-8.columns(style="padding:0")
-    %input(type="text" ng-model="metric.name" name="name" placeholder="Metric Name" value="{{metric.name}}" required)
+    %input(type="text" ng-model="metric.name" name="name" placeholder="Metric Name" value="{{metric.name}}" required ng-blur="metric.update()" ng-change="metric.change()")
   .small-4.columns(style="padding:0")
-    %input(type="number" ng-model="metric.max_points" name="maxPoints" placeholder="Max Points" value="{{metric.max_points}}" required min=0 max=100)
-    %span(ng-show="max_points.$error.integer") This is not valid integer!
+    %input(type="number" ng-model="metric.max_points" name="maxPoints" placeholder="Max Points" value="{{metric.max_points}}" required min=0 max=100 ng-blur="metric.update()" ng-change="metric.change()")
+    %span(ng-show="maxPoints.$error.integer") This is not valid integer!
 
 .row
-  %input(type="text" ng-model="metric.description" placeholder="Description" value="{{metric.description}}")
+  %input(type="text" ng-model="metric.description" placeholder="Description" value="{{metric.description}}" ng-change="metric.change()" ng-blur="metric.update()")
   {{metric.tiers.length}}
 %input(type="hidden" value="{{$index}}")
 %button.create(type="button" ng-click="metric.create()" ng-show="metric.isNew()" ng-disabled="metricForm.$invalid") Submit

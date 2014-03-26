@@ -10,9 +10,8 @@
     this.name = ""
     this.max_points = null
     this.description = ""
-    this.initialize()
+    this.resetChanges()
   MetricPrototype.prototype =
-    initialize: ()->
     addTier: ()->
       this.tiers.push {id: null}
     removeTier: (index)->
@@ -21,6 +20,12 @@
       this.id is null
     isSaved: ()->
       this.id > 0
+    change: ()->
+      self = this
+      if this.isSaved()
+        self.hasChanges = true
+    resetChanges: ()->
+      this.hasChanges = false
     params: ()-> {
       name: this.name,
       max_points: this.max_points,
@@ -30,14 +35,19 @@
     order: ()->
       1
     create: ()->
+      self = this
       Restangular.all('metrics').post(this.params())
         .then (response)->
-          this.id = response.id
+          self.id = response.id
 
     update: ()->
-      Restangular.one('metrics', this.id).put(this.params())
-        .then (response)->
-          alert(response.id)
+      self = this
+      if this.hasChanges
+        Restangular.one('metrics', self.id).customPUT(self.params())
+          .then (response)->
+            alert(response)
+            self.resetChanges()
+
     delete: ()->
       if this.isSaved() and confirm("Are you sure you want to delete this metric?")
         Restangular.one('metrics', this.id).remove
