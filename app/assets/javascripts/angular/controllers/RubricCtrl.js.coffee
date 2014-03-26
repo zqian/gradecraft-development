@@ -18,6 +18,10 @@
       this.tiers.splice(index,1)
     isNew: ()->
       this.id is null
+    create: ()->
+      alert("create!")
+    update: ()->
+      alert("update!")
 
   $scope.newMetric = ()->
     $scope.metrics.push new(MetricPrototype)

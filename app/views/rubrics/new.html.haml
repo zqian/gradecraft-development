@@ -8,15 +8,17 @@
       %br
       %br
 
-      %form(ui-sortable ng-submit="createRubric")
+      #metric-box(ui-sortable)
         .row(ng-repeat="metric in metrics")
-          .metric.small-3.columns(ng-show="metric.isNew()")
+          .metric.small-3.columns(name="newMetric" ng-show="metric.isNew()" ng-form ng-submit="metric.create()")
             = render "rubrics/new_metric"
-          .metric.small-3.columns(ng-hide="metric.isNew()")
+            %span(ng-show="newMetric.$invalid")This shit is invalid
+            %span(ng-show="newMetric.$valid")This shit is valid
+          .metric.small-3.columns(name="savedMetric" ng-hide="metric.isNew()" ng-form ng-submit="metric.update()")
             = render "rubrics/saved_metric"
-          .tier.small-3.columns(ng-repeat="tier in metric.tiers" ng-show="tier.isNew()")
+          .tier.small-3.columns(name="newTier" ng-repeat="tier in metric.tiers" ng-show="tier.isNew()" ng-form ng-submit="tier.create()")
             = render "rubrics/new_tier"
-          .tier.small-3.columns(ng-repeat="tier in metric.tiers" ng-hide="tier.isNew()")
+          .tier.small-3.columns(name="savedTier" ng-repeat="tier in metric.tiers" ng-hide="tier.isNew()" ng-form ng-submit="tier.update()")
             = render "rubrics/saved_tier"
 
       %button(type="button" ng-click="newMetric()") + Add Metric
