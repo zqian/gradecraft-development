@@ -1,6 +1,7 @@
 class Metric < ActiveRecord::Base
   belongs_to :rubric
   has_many :tiers
+  attr_accessible :name, :max_points, :description, :order
 
   validates :max_points, presence: true
   validates :name, presence: true

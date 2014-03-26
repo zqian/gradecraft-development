@@ -196,6 +196,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.7.0)
     newrelic_rpm (3.6.5.130)
+    ng-rails-csrf (0.1.0)
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
     oauth (0.4.7)
@@ -396,6 +397,7 @@ DEPENDENCIES
   minitest-rails
   mongoid!
   newrelic_rpm
+  ng-rails-csrf
   nokogiri (= 1.6.0)
   oink
   omniauth

@@ -2,6 +2,7 @@
 
   $scope.metrics = []
   INTEGER_REGEXP = /^\-?\d+$/
+  Restangular.setRequestSuffix('.json');
 
   MetricPrototype = ()->
     this.tiers = []
@@ -20,8 +21,15 @@
       this.id is null
     isSaved: ()->
       this.id > 0
+    order: ()->
+      1
     create: ()->
       this.id = 1
+      Restangular.all('metrics').post({
+        name: this.name,
+        max_points: this.max_points,
+        order: this.order()
+      })
     update: ()->
       alert("update!")
 
@@ -39,7 +47,3 @@
     update: (e, ui) ->
       if ui.item.scope().item == "can't be moved"
         ui.item.sortable.cancel()
-
-
-
-

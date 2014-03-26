@@ -13,6 +13,7 @@ class MetricsController < ApplicationController
 
   def create
     @metric = Metric.create params[:metric]
+    respond_with @metric, layout: false
   end
 
   def destroy
