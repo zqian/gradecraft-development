@@ -10,12 +10,10 @@
 
       #metric-box(ui-sortable)
         .row(ng-repeat="metric in metrics")
-          .metric.small-3.columns(name="newMetric" ng-show="metric.isNew()" ng-form ng-submit="metric.create()")
+          .metric.small-3.columns(name="metricForm" ng-form ng-submit="metric.create()")
             = render "rubrics/new_metric"
             %span(ng-show="newMetric.$invalid")This shit is invalid
             %span(ng-show="newMetric.$valid")This shit is valid
-          .metric.small-3.columns(name="savedMetric" ng-hide="metric.isNew()" ng-form ng-submit="metric.update()")
-            = render "rubrics/saved_metric"
           .tier.small-3.columns(name="newTier" ng-repeat="tier in metric.tiers" ng-show="tier.isNew()" ng-form ng-submit="tier.create()")
             = render "rubrics/new_tier"
           .tier.small-3.columns(name="savedTier" ng-repeat="tier in metric.tiers" ng-hide="tier.isNew()" ng-form ng-submit="tier.update()")

@@ -9,5 +9,6 @@
   %input(type="text" ng-model="metric.description" placeholder="Description" value="{{metric.description}}")
   {{metric.tiers.length}}
 %input(type="hidden" value="{{$index}}")
-%button.create(type="button" ng-click="metric.addTier()" ng-show="newMetric.$valid") New Tier
+%button.create(type="button" ng-click="metric.create()" ng-show="metric.isNew()" ng-disabled="metricForm.$invalid") Submit
+%button.create(type="button" ng-click="metric.addTier()" ng-show="metric.isSaved()") New Tier
 %button.delete(type="button" ng-click="destroyMetric($index)") Delete Metric

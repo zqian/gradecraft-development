@@ -18,8 +18,10 @@
       this.tiers.splice(index,1)
     isNew: ()->
       this.id is null
+    isSaved: ()->
+      this.id > 0
     create: ()->
-      alert("create!")
+      this.id = 1
     update: ()->
       alert("update!")
 
