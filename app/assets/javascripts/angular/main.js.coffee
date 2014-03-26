@@ -17,7 +17,7 @@ INTEGER_REGEXP = /^\-?\d+$/
     return
 
 FLOAT_REGEXP = /^\-?\d+((\.|\,)\d+)?$/
-app.directive "smartFloat", ->
+@gradecraft.directive "smartFloat", ->
   require: "ngModel"
   link: (scope, elm, attrs, ctrl) ->
     ctrl.$parsers.unshift (viewValue) ->
