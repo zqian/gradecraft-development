@@ -15,7 +15,9 @@
       - @group.assignment_groups.each do |ag|
         %li= link_to ag.assignment.name, ag.assignment
 
-    %h4 Members: 
+    %h4 
+      Members: 
+      = link_to "Edit", edit_group_path(@group), :class => "button tiny radius"
     %ul
       - @group.group_memberships.each do |gm|
         - if current_user.is_staff?

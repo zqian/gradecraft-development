@@ -25,8 +25,16 @@ class GroupsController < ApplicationController
     @group = current_course.groups.new(params[:group])
     @assignments = current_course.assignments.group_assignments
     @group.students << current_user if current_user.is_student?
-    @group.save
-    respond_with @group
+    respond_to do |format|
+      if @group.save
+        @professor = current_course.professor
+        format.html { respond_with @group }
+      else
+        @title = "Start a #{term_for :group}"
+        format.html { render action: "new" }
+        format.json { render json: @group.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def edit
