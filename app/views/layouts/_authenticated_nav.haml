@@ -1,14 +1,14 @@
 %section.top-bar-section
   %ul.right
-    / - if current_user.is_staff?
-    /   %li.has-form.hide-for-small.hide-for-medium
-    /     .row.collapse
-    /       .large-8.small-9.columns
-    /         :javascript
-    /           Gradecraft.preloadStore.set('users', #{autocomplete_items.to_json});
-    /         %input.search-query{ :type => "text", :placeholder => "Search #{term_for :students}", :label => false }
-    /       .large-4.small-3.columns
-    /         %a.alert.button.expand{ :href => "#" } Search
+    - if current_user.is_staff?
+      %li.has-form.hide-for-small.hide-for-medium
+        .row.collapse
+          .large-8.small-9.columns
+            :javascript
+              window.autocompleteUsers = #{autocomplete_items.to_json};
+            %input.search-query{ :type => "text", :placeholder => "Search #{term_for :students}", :label => false }
+          .large-4.small-3.columns
+            %a.alert.button.expand{ :href => "#" } Search
     %li.has-dropdown.course_switch.show-for-medium-up
       %a My Courses
       %ul.dropdown

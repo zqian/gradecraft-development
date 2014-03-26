@@ -34,6 +34,7 @@ class User < ActiveRecord::Base
   has_one :student_academic_history, :foreign_key => :student_id, :dependent => :destroy, :class_name => 'StudentAcademicHistory'
   accepts_nested_attributes_for :student_academic_history
   has_many :courses, :through => :course_memberships
+  has_many :course_users, :through => :courses, :source => 'users'
   accepts_nested_attributes_for :courses
   accepts_nested_attributes_for :course_memberships
   belongs_to :default_course, :class_name => 'Course'

@@ -1,6 +1,6 @@
 !function(app, $) {
   $(document).ready(function() {
-    var users = app.preloadStore.get('users');
+    var users = window.autocompleteUsers;
     $('.search-query').omniselect({
       source: users,
       resultsClass: 'typeahead dropdown-menu',

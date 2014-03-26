@@ -32,7 +32,7 @@ module ApplicationHelper
   # Search items 
   def autocomplete_items
     return [] unless current_user.is_staff?
-    User.students.map do |u|
+    current_user.course_users.students.map do |u|
       { :name => [u.first_name, u.last_name].join(' '), :id => u.id }
     end
   end
