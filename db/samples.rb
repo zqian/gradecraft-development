@@ -227,7 +227,7 @@ assignment_types[:reading_reaction] = AssignmentType.create! do |at|
   at.due_date_present = true
   at.order_placement = 2
   at.mass_grade = true
-  at.mass_grade_type = "Select"
+  at.mass_grade_type = "Select List"
   at.student_weightable = true
 end
 puts "Do your readings."
@@ -258,7 +258,7 @@ http://www.katehart.net/2012/06/citing-sources-quick-and-graphic-guide.html
 You can blog as much as you want, but only one post/week can earn points."
   at.order_placement = 3
   at.mass_grade = true
-  at.mass_grade_type = "Radio"
+  at.mass_grade_type = "Radio Buttons"
   at.student_weightable = true
 end
 puts "Blogging is great for filling in missed points in other areas"

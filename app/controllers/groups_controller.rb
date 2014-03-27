@@ -21,13 +21,19 @@ class GroupsController < ApplicationController
     @title = "Start a #{term_for :group}"
   end
 
+  def review
+    @group = current_course.groups.find(params[:id])
+    @title = "Reviewing #{@group.name}"
+  end
+
   def create
     @group = current_course.groups.new(params[:group])
     @assignments = current_course.assignments.group_assignments
     @group.students << current_user if current_user.is_student?
     respond_to do |format|
       if @group.save
-        @professor = current_course.professor
+        NotificationMailer.group_created(@group.id).deliver
+        NotificationMailer.group_notify(@group.id).deliver
         format.html { respond_with @group }
       else
         @title = "Start a #{term_for :group}"

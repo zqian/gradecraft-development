@@ -318,7 +318,10 @@ CREATE TABLE assignment_types (
     notify_released boolean DEFAULT true,
     include_in_timeline boolean DEFAULT true,
     include_in_predictor boolean DEFAULT true,
-    include_in_to_do boolean DEFAULT true
+    include_in_to_do boolean DEFAULT true,
+    is_attendance boolean,
+    has_winners boolean,
+    num_winner_levels integer
 );
 
 
@@ -1522,7 +1525,7 @@ CREATE TABLE groups (
     updated_at timestamp without time zone,
     course_id integer,
     approved character varying(255),
-    proposal character varying(255),
+    text_feedback character varying(255),
     text_proposal text
 );
 
@@ -3199,4 +3202,14 @@ INSERT INTO schema_migrations (version) VALUES ('20140305040029');
 
 INSERT INTO schema_migrations (version) VALUES ('20140307194848');
 
+INSERT INTO schema_migrations (version) VALUES ('20140318185301');
+
+INSERT INTO schema_migrations (version) VALUES ('20140318193449');
+
 INSERT INTO schema_migrations (version) VALUES ('20140319000428');
+
+INSERT INTO schema_migrations (version) VALUES ('20140322144725');
+
+INSERT INTO schema_migrations (version) VALUES ('20140322145345');
+
+INSERT INTO schema_migrations (version) VALUES ('20140326223322');

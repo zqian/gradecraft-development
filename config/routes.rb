@@ -10,7 +10,7 @@ GradeCraft::Application.routes.draw do
   #4. Assignment Type Weights
   #5. Badges
   #6. Categories
-  #7. Challenges
+  #7. challenges
   #8. Courses
   #9. Groups
   #10. Informational Pages
@@ -153,7 +153,11 @@ GradeCraft::Application.routes.draw do
   get 'all_grades' => 'courses#all_grades'
 
   #9. Groups
-  resources :groups
+  resources :groups do 
+    collection do
+      get :review
+    end
+  end
   resources :group_memberships
 
   #10. Informational Pages
