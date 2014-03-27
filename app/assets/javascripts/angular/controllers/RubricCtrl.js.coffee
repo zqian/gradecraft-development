@@ -90,20 +90,22 @@
             alert("shit blew up!")
         )
 
-    modify: ()->
-      if this.isNew()
-        this.create()
-      else
-        this.update()
+    modify: (form)->
+      if form.$valid
+        if this.isNew()
+          this.create()
+        else
+          this.update()
 
     update: ()->
-      self = this
-      Restangular.one('tiers', self.id).customPUT(self.params())
-        .then(
-          ()-> alert("shit worked!"),
-          ()-> alert("shit broke!")
-        )
-        self.resetChanges()
+      if this.hasChanges
+        self = this
+        Restangular.one('tiers', self.id).customPUT(self.params())
+          .then(
+            ()-> alert("shit worked!"),
+            ()-> alert("shit broke!")
+          )
+          self.resetChanges()
     delete: ()->
       if this.isSaved() and confirm("Are you sure you want to delete this metric?")
         Restangular.one('tier', this.id).remove

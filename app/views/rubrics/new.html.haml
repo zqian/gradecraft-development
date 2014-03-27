@@ -11,9 +11,9 @@
 
       #metric-box(ui-sortable)
         .row(ng-repeat="metric in metrics")
-          .metric.small-3.columns(name="metricForm" ng-form ng-submit="metric.create()" ng-class="{created: metric.isSaved()}")
+          .metric.small-3.columns(name="metricForm" ng-form ng-submit="metric.create()" ng-class="{saved: metric.isSaved()}")
             = render "rubrics/new_metric"
-          .tier.small-3.columns(name="newTier" ng-repeat="tier in metric.tiers" ng-show="tier.isNew()" ng-form ng-submit="tier.create()")
+          .tier.small-3.columns(name="tierForm" ng-repeat="tier in metric.tiers" ng-form ng-submit="tier.create()" ng-class="{saved: tier.isSaved()}")
             = render "rubrics/new_tier"
 
       %button(type="button" ng-click="newMetric()") + Add Metric

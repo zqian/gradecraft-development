@@ -16,13 +16,9 @@ $dark_green: #54BA3F
     padding: 24px
     float: left
 
-    &.created
+    &.saved
       border: 1px solid $dark_green
       background: #EDF5EC
-
-    input.ng-invalid
-      border: 1px solid #E84846
-      background: #FDD
 
     input.ng-pristine.ng-invalid
       border: 1px solid #6CC7EC
@@ -31,6 +27,10 @@ $dark_green: #54BA3F
     input.ng-valid-required
       border: 1px solid #54BA3F
       background: $light_green
+
+    input.ng-invalid
+      border: 1px solid #E84846
+      background: #FDD
 
     button
       padding: 6px 12px
@@ -48,6 +48,10 @@ $dark_green: #54BA3F
     padding: 24px
     float: left
     
+    &.saved
+      border: 1px solid $dark_green
+      background: #EDF5EC
+
     button
       padding: 4px 8px
       font-size: 12px
@@ -58,15 +62,16 @@ $dark_green: #54BA3F
       &.delete
         background: red
 
-    input.ng-invalid
-      border: 1px solid #E84846
-      background: #FDD
+    input.ng-valid-required
+      border: 1px solid $dark_green
+      background: $light_green
 
     input.ng-pristine.ng-invalid
       border: 1px solid #6CC7EC
       background: #F0FBFF
 
-    input.ng-valid-required
-      border: 1px solid $dark_green
-      background: $light_green
+    input.ng-invalid
+      border: 1px solid #E84846
+      background: #FDD
+
 
