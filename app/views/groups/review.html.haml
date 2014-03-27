@@ -1,0 +1,48 @@
+.small-12.columns.mainContent
+  = content_nav do
+    = render "tabs"
+  .pagetitle= "#{term_for :group}: #{@group.name}"
+  = link_to "Edit", edit_group_path(@group), :class => "button tiny radius"
+
+  .small-12.columns
+
+    .small-12.medium-3.columns
+      %h4 Assignment(s)
+      %ul
+        - @group.assignment_groups.each do |ag|
+          %li= link_to ag.assignment.name, ag.assignment
+
+    .small-12.medium-3.columns
+      %h4 
+        Members: 
+      %ul
+        - @group.group_memberships.each do |gm|
+          - if current_user.is_staff?
+            %li= link_to gm.student.name, student_path(gm.student)
+          - else
+            %li= gm.student.name
+
+    .small-12.medium-6.columns
+      - if @group.text_proposal?
+        %h3 Proposal:
+        %p= raw @group.try(:text_proposal)
+
+    %hr
+
+    = simple_form_for @group do |f|
+      .small-12.medium-4
+        = f.label :approved, "Status"
+        = f.select :approved, [[], ["Approved"], ["Rejected"]]
+        .form_label If rejected, this #{term_for :group} will be unable to submit any further work for these assignments
+
+      %br
+
+      .small-12.textarea
+        = f.bootsy_area :text_feedback
+        .form_label #{term_for :group} Feedback
+
+      %br
+
+      .right
+        = submit_tag "#{@group.persisted? ? 'Update' : 'Create'} #{ term_for :group } ",  :class => 'button tiny radius'
+        = link_to 'Cancel', groups_path, :class => 'button tiny radius transparent'

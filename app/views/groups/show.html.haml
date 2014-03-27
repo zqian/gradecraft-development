@@ -7,24 +7,35 @@
       = render "students/student_profile_tabs"
 
   .pagetitle= "#{term_for :group}: #{@group.name}"
+  = link_to "Edit", edit_group_path(@group), :class => "button tiny radius"
 
   .small-12.columns
+    .label.right.radius
+      Status:
+      = @group.try(:approved)
+    
+    .small-12.medium-3.columns
+      %h4 Assignment(s)
+      %ul
+        - @group.assignment_groups.each do |ag|
+          %li= link_to ag.assignment.name, ag.assignment
 
-    %h4 Assignment(s)
-    %ul
-      - @group.assignment_groups.each do |ag|
-        %li= link_to ag.assignment.name, ag.assignment
-
-    %h4 Members: 
-    %ul
-      - @group.group_memberships.each do |gm|
-        - if current_user.is_staff?
-          %li= link_to gm.student.name, student_path(gm.student)
-        - else
-          %li= gm.student.name
-
-    - if @group.text_proposal?
-      %h3 Proposal:
-      %p= raw @group.try(:proposal)
+    .small-12.medium-3.columns
+      %h4 
+        Members: 
+      %ul
+        - @group.group_memberships.each do |gm|
+          - if current_user.is_staff?
+            %li= link_to gm.student.name, student_path(gm.student)
+          - else
+            %li= gm.student.name
+    .small-12.columns
+      - if @group.text_proposal?
+        %h3 Proposal:
+        %p= raw @group.try(:text_proposal)
+    .small-12.columns 
+      - if @group.text_feedback?
+        %h3 Instructor Feedback:
+        %p= raw @group.try(:text_feedback)
 
   .clearfix

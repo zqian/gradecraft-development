@@ -21,12 +21,26 @@ class GroupsController < ApplicationController
     @title = "Start a #{term_for :group}"
   end
 
+  def review
+    @group = current_course.groups.find(params[:id])
+    @title = "Reviewing #{@group.name}"
+  end
+
   def create
     @group = current_course.groups.new(params[:group])
     @assignments = current_course.assignments.group_assignments
     @group.students << current_user if current_user.is_student?
-    @group.save
-    respond_with @group
+    respond_to do |format|
+      if @group.save
+        NotificationMailer.group_created(@group.id).deliver
+        NotificationMailer.group_notify(@group.id).deliver
+        format.html { respond_with @group }
+      else
+        @title = "Start a #{term_for :group}"
+        format.html { render action: "new" }
+        format.json { render json: @group.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def edit

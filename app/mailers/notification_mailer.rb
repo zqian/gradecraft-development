@@ -39,6 +39,29 @@ class NotificationMailer < ActionMailer::Base
     end
   end
 
+  def group_created(group_id)
+    @group = Group.find group_id
+    @course = @group.course
+    @professor = @group.course.professor
+    mail(:to => @professor.email, :subject => "#{@course.courseno} - New Group to Review") do |format|
+      format.text
+      format.html
+    end
+  end
+
+  def group_notify(group_id)
+    @group = Group.find group_id
+    @course = @group.course
+    @group_members = @group.students
+    @group_members.each do |gm|
+      mail(:to => gm.email, :subject => "#{@course.courseno} - New Group to Review") do |format|
+        @gm = gm
+        format.text
+        format.html
+      end
+    end
+  end
+
   def earned_badge_awarded(earned_badge_id)
     @earned_badge = EarnedBadge.find earned_badge_id
     @user = @earned_badge.student

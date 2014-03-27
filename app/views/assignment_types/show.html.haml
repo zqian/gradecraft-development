@@ -25,6 +25,7 @@
               %td
                 .button-bar
                   %ul.button-group.right.round
+                    %li= link_to "Quick Grade", mass_grade_assignment_path(assignment), :class => "button tiny alert"
                     %li= link_to "Grade", assignment_path(assignment), :class => "button tiny alert"
                     %li= link_to "Edit", edit_assignment_path(assignment), :class => 'button tiny alert'
                     %li

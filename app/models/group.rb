@@ -3,8 +3,8 @@ class Group < ActiveRecord::Base
 
   APPROVED_STATUSES = ['Pending', 'Approved', 'Rejected']
 
-  attr_accessible :name, :proposal, :approved, :assignment_id, :assignment_ids, :student_ids,
-    :text_proposal, :assignment_groups_attributes, :group_membership_attributes
+  attr_accessible :name, :approved, :assignment_id, :assignment_ids, :student_ids,
+    :text_proposal, :assignment_groups_attributes, :group_membership_attributes, :text_feedback
 
   attr_reader :student_tokens
 
@@ -50,7 +50,7 @@ class Group < ActiveRecord::Base
   private
 
   def clean_html
-    self.proposal = Sanitize.clean(proposal, Sanitize::Config::BASIC)
+    self.text_proposal = Sanitize.clean(text_proposal, Sanitize::Config::BASIC)
   end
 
   def min_group_number_met

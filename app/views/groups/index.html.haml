@@ -29,7 +29,7 @@
             %td
               .button-bar
                 %ul.button-group.round.right
-                  %li= link_to "See #{term_for :group}", group_path(group), :class => 'button tiny secondary'
+                  %li= link_to "Review #{term_for :group}", review_groups_path(:id => group), :class => 'button tiny secondary'
                   %li= link_to 'Edit', edit_group_path(group), :class => 'button tiny secondary'
                   %li= link_to 'Delete', group_path(group), :class => 'button tiny secondary', :data => { confirm: 'Are you sure?' }, :method => :delete
 
