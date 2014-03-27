@@ -8,6 +8,8 @@
 
 $light_green: #EFFFED 
 $dark_green: #54BA3F
+$inactive_red: #DC9A9A
+$dark_red: #B40D0D
 
 #rubric
   .metric
@@ -40,7 +42,15 @@ $dark_green: #54BA3F
       &.create
         background: $dark_green
       &.delete
-        background: red
+        padding: 3px 6px
+        background: $inactive_red
+        position: absolute
+        top: 0
+        right: 0
+        font-weight: bold
+
+        &:hover
+          background: $dark_red
 
   .tier
     background: #eee
@@ -60,7 +70,16 @@ $dark_green: #54BA3F
       &.create
         background: green
       &.delete
-        background: red
+        padding: 3px 6px
+        font-weight: bold
+        position: absolute
+        top: 0
+        right: 0
+        background: $inactive_red
+
+        &:hover
+          background: $dark_red
+
 
     input.ng-valid-required
       border: 1px solid $dark_green

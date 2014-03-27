@@ -5,5 +5,5 @@
     %input(type="number" ng-model="tier.points" placeholder="Points" min=0 ng-max="metric.max_points" ng-blur="tier.modify(tierForm)" ng-change="tier.change()" required)
 .row
   %input(type="text" ng-model="TierDescription" placeholder="Description" value="{{tier.description}}" ng-blur="tier.modify(tierForm)" ng-change="tier.change()")
-%button.delete(type="button" ng-click="metric.removeTier($index)") Delete
+%button.delete(type="button" ng-click="metric.removeTier($index)") X
 {{$index}}
