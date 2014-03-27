@@ -27,7 +27,7 @@ class RubricsController < ApplicationController
 
   def update
     @rubric.update_attributes params[:rubric]
-    respond_with @rubric
+    respond_with @rubric, status: :not_found
   end
 
   private

@@ -13,7 +13,9 @@
     this.resetChanges()
   MetricPrototype.prototype =
     addTier: ()->
-      this.tiers.push {id: null}
+      self = this
+      newTier = new TierPrototype(self.id)
+      this.tiers.push newTier
     removeTier: (index)->
       this.tiers.splice(index,1)
     isNew: ()->
@@ -44,13 +46,67 @@
       self = this
       if this.hasChanges
         Restangular.one('metrics', self.id).customPUT(self.params())
-          .then (response)->
-            alert(response)
-            self.resetChanges()
+          .then(
+            ()-> alert("shit worked!"),
+            ()-> alert("shit broke!")
+          )
+          self.resetChanges()
 
     delete: ()->
       if this.isSaved() and confirm("Are you sure you want to delete this metric?")
         Restangular.one('metrics', this.id).remove
+
+  TierPrototype = (metric_id)->
+    this.id = null
+    this.metric_id = metric_id
+    this.name = ""
+    this.points = null
+    this.description = ""
+    this.resetChanges()
+  TierPrototype.prototype =
+    isNew: ()->
+      this.id is null
+    isSaved: ()->
+      this.id > 0
+    change: ()->
+      self = this
+      if this.isSaved()
+        self.hasChanges = true
+    resetChanges: ()->
+      this.hasChanges = false
+    params: ()->
+      name: this.name,
+      points: this.points,
+      description: this.description,
+      metric_id: this.metric_id
+    create: ()->
+      self = this
+      Restangular.all('tiers').post(this.params())
+        .then(
+          (response)->
+            self.id = response.id
+            alert("shit worked!")
+          (response)->
+            alert("shit blew up!")
+        )
+
+    modify: ()->
+      if this.isNew()
+        this.create()
+      else
+        this.update()
+
+    update: ()->
+      self = this
+      Restangular.one('tiers', self.id).customPUT(self.params())
+        .then(
+          ()-> alert("shit worked!"),
+          ()-> alert("shit broke!")
+        )
+        self.resetChanges()
+    delete: ()->
+      if this.isSaved() and confirm("Are you sure you want to delete this metric?")
+        Restangular.one('tier', this.id).remove
 
   $scope.newMetric = ()->
     $scope.metrics.push new(MetricPrototype)

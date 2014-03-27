@@ -3,4 +3,7 @@ class Tier < ActiveRecord::Base
 
   validates :points, presence: true
   validates :name, presence: true
+
+  attr_accessible :name, :description, :points
+
 end

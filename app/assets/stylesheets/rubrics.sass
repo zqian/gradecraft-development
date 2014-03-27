@@ -8,12 +8,17 @@
 
 $light_green: #EFFFED 
 $dark_green: #54BA3F
+
 #rubric
   .metric
     background: #eee
     border: 1px solid #ccc
     padding: 24px
     float: left
+
+    &.created
+      border: 1px solid $dark_green
+      background: #EDF5EC
 
     input.ng-invalid
       border: 1px solid #E84846
@@ -23,7 +28,7 @@ $dark_green: #54BA3F
       border: 1px solid #6CC7EC
       background: #F0FBFF
 
-    input.ng-valid
+    input.ng-valid-required
       border: 1px solid #54BA3F
       background: $light_green
 
@@ -61,7 +66,7 @@ $dark_green: #54BA3F
       border: 1px solid #6CC7EC
       background: #F0FBFF
 
-    input.ng-valid
+    input.ng-valid-required
       border: 1px solid $dark_green
       background: $light_green
 

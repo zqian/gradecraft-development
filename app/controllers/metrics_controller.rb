@@ -25,7 +25,7 @@ class MetricsController < ApplicationController
 
   def update
     @metric.update_attributes params[:metric]
-    respond_with @metric, layout: false, status: :ok
+    respond_with @metric, layout: false
   end
 
   private

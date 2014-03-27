@@ -82,9 +82,8 @@ GradeCraft::Application.routes.draw do
     resource :rubric
   end
 
-  resources :metrics do
-    resources :tiers
-  end
+  resources :metrics
+  resources :tiers
   resources :graded_metrics
 
   resources :score_levels
