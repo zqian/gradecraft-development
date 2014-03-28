@@ -1,0 +1,7 @@
+Hi <%= @gm.first_name %>,
+
+Your group, <%= @group.name %> has been <%= @group.approved %>. Log in to read your feedback. 
+
+Play on!
+
+GradeCraft

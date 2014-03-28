@@ -54,7 +54,20 @@ class NotificationMailer < ActionMailer::Base
     @course = @group.course
     @group_members = @group.students
     @group_members.each do |gm|
-      mail(:to => gm.email, :subject => "#{@course.courseno} - New Group to Review") do |format|
+      mail(:to => gm.email, :subject => "#{@course.courseno} - New Group") do |format|
+        @gm = gm
+        format.text
+        format.html
+      end
+    end
+  end
+
+  def group_status_updated(group_id)
+    @group = Group.find group_id
+    @course = @group.course
+    @group_members = @group.students
+    @group_members.each do |gm|
+      mail(:to => gm.email, :subject => "#{@course.courseno} - Group #{@group.approved}") do |format|
         @gm = gm
         format.text
         format.html
