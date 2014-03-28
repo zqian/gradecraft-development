@@ -47,16 +47,17 @@ class GroupsController < ApplicationController
     @group = current_course.groups.find(params[:id])
     @assignments = current_course.assignments.group_assignments
     @title = "Editing #{@group.name} Details"
-    # if current_user.is_student? 
-    #   @student = current_student
-    #   @group.students << current_student
-    # end
   end
 
   def update
     @group = current_course.groups.find(params[:id])
     @group.update_attributes(params[:group])
-    respond_with @group
+    respond_to do |format|
+      if @group.approved.present?
+        NotificationMailer.group_status_updated(@group.id).deliver
+        format.html { respond_with @group }
+      end
+    end
   end
 
   def destroy
