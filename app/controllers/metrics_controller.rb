@@ -18,6 +18,7 @@ class MetricsController < ApplicationController
 
   def destroy
     @metric.destroy
+    respond_with @metric, layout: false
   end
 
   def show

@@ -28,6 +28,8 @@
         self.hasChanges = true
     resetChanges: ()->
       this.hasChanges = false
+    resourceUrl: ()->
+      "/metrics/#{self.id}"
     params: ()-> {
       name: this.name,
       max_points: this.max_points,
@@ -36,6 +38,10 @@
     }
     order: ()->
       1
+    destroy: ()->
+
+    remove:(index)->
+      $scope.metrics.splice(index,1)
     create: ()->
       self = this
       Restangular.all('metrics').post(this.params())
@@ -52,9 +58,19 @@
           )
           self.resetChanges()
 
-    delete: ()->
-      if this.isSaved() and confirm("Are you sure you want to delete this metric?")
-        Restangular.one('metrics', this.id).remove
+    delete: (index)->
+      self = this
+      if confirm("Are you sure you want to delete this metric? Deleting this metric will delete its tiers as well.")
+        if this.isSaved()
+          $http.delete("/metrics/#{self.id}").success(
+            (data,status)->
+              self.remove(index)
+          )
+          .error((err)->
+            alert("delete failed!")
+          )
+        else
+          self.remove(index)
 
   TierPrototype = (metric_id)->
     this.id = null
@@ -106,9 +122,22 @@
             ()-> alert("shit broke!")
           )
           self.resetChanges()
-    delete: ()->
-      if this.isSaved() and confirm("Are you sure you want to delete this metric?")
-        Restangular.one('tier', this.id).remove
+
+     delete: ()->
+      self = this
+      if confirm("Are you sure you want to delete this tier?")
+        if this.isSaved()
+          $http.delete("/tiers/#{self.id}").success(
+            (data,status)->
+              self.remove(index)
+          )
+          .error((err)->
+            alert("delete failed!")
+          )
+        else
+          self.remove(index)
+
+
 
   $scope.newMetric = ()->
     $scope.metrics.push new(MetricPrototype)
@@ -116,9 +145,6 @@
   $scope.getNewMetric = ()->
     $scope.newerMetric = Restangular.one('metrics', 'new.json').getList().then ()->
       alert("waffles!")
-
-  $scope.destroyMetric = (index)->
-    $scope.metrics.splice(index,1)
 
   $scope.sortableOptions =
     update: (e, ui) ->
