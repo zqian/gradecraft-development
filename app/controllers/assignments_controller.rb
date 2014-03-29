@@ -7,6 +7,12 @@ class AssignmentsController < ApplicationController
     @assignments = current_course.assignments.chronological.alphabetical
   end
 
+  #Gives the instructor the chance to quickly check all assignment settings for the whole course
+  def settings
+    @title = "Review #{term_for :assignment} Settings"
+    @assignments = current_course.assignments.chronological.alphabetical
+  end
+
   def show
     @assignment = current_course.assignments.find(params[:id])
     @title = @assignment.name

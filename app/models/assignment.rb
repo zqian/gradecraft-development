@@ -205,7 +205,7 @@ class Assignment < ActiveRecord::Base
 
   #Checking to see if an assignment is still accepted - there's often a grey space between due and no longer accepted
   def still_accepted?
-    (accepts_submissions_until.present? && accepts_submissions_until >= Time.now) || (due_at.present? && due_at >= Time.now ) || (due_at == nil && accepts_submissions_until == nil)
+    (accepts_submissions_until.present? && accepts_submissions_until >= Time.now) || (accepts_submissions_until == nil)
   end
 
   #Checking to see if the assignment has submissions that don't have grades
@@ -250,15 +250,23 @@ class Assignment < ActiveRecord::Base
   end
 
   def grade_select?
-    assignment_type.mass_grade_type == "Select List" || self.mass_grade_type == "Select List"
+    (assignment_type.mass_grade_type == "Select List" && assignment_type.score_levels.present?) || (self.mass_grade_type == "Select List" && self.assignment_score_levels.present?)
   end
 
   def grade_radio?
-    assignment_type.mass_grade_type == "Radio Buttons" || self.mass_grade_type == "Radio Buttons"
+    (assignment_type.mass_grade_type == "Radio Buttons" && assignment_type.score_levels.present?) ||(self.mass_grade_type == "Radio Buttons" && self.assignment.score_levels.present?)
   end
 
   def grade_text?
     assignment_type.mass_grade_type == "Text" || self.mass_grade_type == "Text"
+  end
+
+  def score_levels_set
+    if assignment_type.score_levels.present?
+      assignment_type.score_levels
+    elsif self.assignment_score_levels.present?
+      assignment_score_levels
+    end
   end
 
   #Checking to see if the assignment is still open and accepting submissons

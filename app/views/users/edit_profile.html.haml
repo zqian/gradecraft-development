@@ -36,8 +36,7 @@
                 .form_label What will you contribute to your #{term_for :team}?"
 
           .small-12.medium-4.columns
-            = f.label :default_course_id, "Default Course"
-            = f.select_tag :default_course_id, options_from_collection_for_select(@default_course_options, "id", "name")
+            = f.input :default_course_id, :collection => (@default_course_options)
             .form_label This course will be automatically loaded when you log in to GradeCraft
 
           

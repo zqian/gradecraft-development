@@ -17,6 +17,10 @@ class GroupsController < ApplicationController
 
   def new
     @group = current_course.groups.new
+    if current_user.is_student?
+      @other_students = { current_course.students - current_user }
+    end
+    @group_students << current_user if current_user.is_student?
     @assignments = current_course.assignments.group_assignments
     @title = "Start a #{term_for :group}"
   end

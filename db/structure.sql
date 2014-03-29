@@ -1525,7 +1525,7 @@ CREATE TABLE groups (
     updated_at timestamp without time zone,
     course_id integer,
     approved character varying(255),
-    text_feedback character varying(255),
+    text_feedback text,
     text_proposal text
 );
 
@@ -3213,3 +3213,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140322144725');
 INSERT INTO schema_migrations (version) VALUES ('20140322145345');
 
 INSERT INTO schema_migrations (version) VALUES ('20140326223322');
+
+INSERT INTO schema_migrations (version) VALUES ('20140328212428');

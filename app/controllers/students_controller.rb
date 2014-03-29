@@ -32,9 +32,6 @@ class StudentsController < ApplicationController
     else
       @events = current_course.timelineable.to_a
     end
-    if current_user.is_staff?
-      @scores_for_current_course = current_student.scores_for_course(current_course)
-    end
   end
 
   # Exporting student grades 

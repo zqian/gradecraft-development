@@ -35,11 +35,15 @@ class UsersController < ApplicationController
   def edit
     session[:return_to] = request.referer
     @teams = current_course.teams
-
-    if current_user.is_staff?
+    @user = current_course.users.find(params[:id])
+    if @user.is_staff?
+      @courses = Course.all
+      @teams_for_course = @user.teams.map do |t|
+        t.id 
+      end
+    elsif current_user.is_staff?
       @courses = Course.all
     end
-    @user = current_course.users.find(params[:id])
     @course_membership = @user.course_memberships.where(course_id: current_course).first
     @title = "Editing #{@user.name}"
     @academic_history = @user.student_academic_history

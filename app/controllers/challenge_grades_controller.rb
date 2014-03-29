@@ -34,7 +34,7 @@ class ChallengeGradesController < ApplicationController
     @challenge = current_course.challenges.find(params[:challenge_id])
     @teams = current_course.teams
     @title = "Quick Grade #{@challenge.name}"
-    @score_levels = @challenge.score_levels
+    @challenge_score_levels = @challenge.challenge_score_levels
     @students = current_course.users.students
     @challenge_grades = @teams.map do |t|
       @challenge.challenge_grades.where(:team_id => t).first || @challenge.challenge_grades.new(:team => t, :challenge => @challenge)

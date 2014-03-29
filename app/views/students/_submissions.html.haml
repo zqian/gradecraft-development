@@ -3,4 +3,4 @@
 - elsif assignment.future? || assignment.still_accepted?
   = link_to "Submit", new_assignment_submission_path(assignment, :student_id => current_student), :class => 'button tiny secondary radius'
   - if assignment.past?
-    .label.alert.radius= "Past due"
+    .label.alert.radius= "Late!"

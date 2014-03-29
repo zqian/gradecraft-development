@@ -38,7 +38,7 @@
             %td= user.role.capitalize
             %td
               - user.teams.each do |team|
-                = link_to team.name, team
+                %li= link_to team.name, team
             %td
               - if user.is_student?
                 = points user.score_for_course(current_course) if user.respond_to?(:grades)
