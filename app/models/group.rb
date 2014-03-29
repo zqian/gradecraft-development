@@ -1,6 +1,5 @@
 class Group < ActiveRecord::Base
-  MAX_MEMBERS = 6
-
+  
   APPROVED_STATUSES = ['Pending', 'Approved', 'Rejected']
 
   attr_accessible :name, :approved, :assignment_id, :assignment_ids, :student_ids,

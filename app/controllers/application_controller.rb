@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
 
   respond_to :html
 
-  protect_from_forgery
+  protect_from_forgery with: :null_session
 
   Rails.env.production? do
     before_filter :check_url
