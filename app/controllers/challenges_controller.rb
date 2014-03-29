@@ -39,10 +39,10 @@ class ChallengesController < ApplicationController
   end
 
   def update
-    @challenge = current_course.challenges.find(params[:id])
-
+    @challenge = current_course.challenges.includes(:challenge_score_levels).find(params[:id])
+    @challenge.assign_attributes(params[:challenge])
     respond_to do |format|
-      if @challenge.update_attributes(params[:challenge])
+      if @challenge.save
         self.check_uploads
         format.html { redirect_to @challenge }
         format.json { head :ok }

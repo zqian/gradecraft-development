@@ -1,5 +1,7 @@
 %li{class: ("active" if current_page?(assignments_path)) }
   = link_to_unless_current "See All #{current_course.assignment_term}s", assignments_path
+%li{class: ("active" if current_page?(settings_assignments_path))}
+  = link_to_unless_current "Review #{current_course.assignment_term} Settings", settings_assignments_path
 %li{class: ("active" if current_page?(new_assignment_path)) }
   = link_to_unless_current "Create a New #{term_for :assignment}", new_assignment_path
 %li{class: ("active" if current_page?(assignment_types_path)) }

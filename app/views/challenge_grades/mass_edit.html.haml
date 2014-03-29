@@ -17,10 +17,13 @@
               %td
                 = f.simple_fields_for :challenge_grades, cg do |cgf|
                   = cgf.hidden_field :team_id
-                  - if cg.persisted?
-                    = cgf.text_field :score, data: {autonumeric: true, "m-dec" => "0"}
+                  - if @challenge.challenge_score_levels.present?
+                    = cgf.select :score, options_from_collection_for_select(@challenge_score_levels, :value, :name, cg.try(:score)), include_blank: true
                   - else
-                    = cgf.text_field :score, :value => nil, data: {autonumeric: true, "m-dec" => "0"}
+                    - if cg.persisted?
+                      = cgf.text_field :score, data: {autonumeric: true, "m-dec" => "0"}
+                    - else
+                      = cgf.text_field :score, :value => nil, data: {autonumeric: true, "m-dec" => "0"}
               %td= " / #{points  @challenge.point_total} points"
         .right
           = f.button :submit, "Submit", :class => "button tiny radius"

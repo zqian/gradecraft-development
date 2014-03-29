@@ -10,9 +10,8 @@
         %h3.collapse #{assignment_type.try(:name)} • #{ points current_student_data.score_for_assignment_type(assignment_type) }/#{points current_student_data.point_total_for_assignment_type(assignment_type)}
       .small-12.columns
         // If the course and particular assignment uses weights, display assignment weighting options
-        // with appropriate terminology, if the course accepts weighting. If a student has already set a
-        // weight, give the option to change weight; else if the student has not yet set a weight, 
-        // give the option to set weights for the assignment.
+        // with appropriate terminology. If a student has already set a weight, give the option to change 
+        // weight; else if the student has not yet set a weight, give the option to set weights for the assignment.
         - if assignment_type.student_weightable? && current_course.assignment_weight_open?
           .small-2.right
             - if current_student_data.weighted_assignments?
