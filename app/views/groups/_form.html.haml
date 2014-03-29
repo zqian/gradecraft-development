@@ -21,7 +21,7 @@
 
     .small-12.medium-6
       - if current_user.is_student? 
-        = f.association :students, :collection => @other_students, as: :select, 
+        = f.association :students, :collection => current_course_data.students, as: :select 
       - if current_user.is_staff?
         = f.association :students, :collection => current_course_data.students, as: :select
       %br
