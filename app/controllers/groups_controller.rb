@@ -17,6 +17,9 @@ class GroupsController < ApplicationController
 
   def new
     @group = current_course.groups.new
+    if current_user.is_student?
+      @other_students = current_course.students.where.not(id: current_user.id)
+    end
     @assignments = current_course.assignments.group_assignments
     @title = "Start a #{term_for :group}"
   end

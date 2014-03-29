@@ -21,11 +21,13 @@
 
     .small-12.medium-6
       - if current_user.is_student? 
-        = f.association :students, :collection => current_course_data.students, as: :select 
+        = f.association :students, :collection => @other_students, as: :select 
+        %span.italic= "You (#{current_student.name }) will be automatically included in this group."
       - if current_user.is_staff?
         = f.association :students, :collection => current_course_data.students, as: :select
       %br
-      .form_label Enter a #{term_for :student}'s name to add them to this #{term_for :group}. Only one #{term_for :student} needs to create the #{term_for :group}, after which all #{term_for :group} members will be able to submit work, see submitted materials, and see instructor grades and feedback.
+      %br
+      .form_label Enter a fellow student's name to add them to this #{term_for :group}. Only one student needs to create the #{term_for :group}, after which all #{term_for :group} members will be able to submit work, see submitted materials, and see instructor grades and feedback.
 
     %br
 
