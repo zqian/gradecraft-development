@@ -254,7 +254,7 @@ class Assignment < ActiveRecord::Base
   end
 
   def grade_radio?
-    (assignment_type.mass_grade_type == "Radio Buttons" && assignment_type.score_levels.present?) ||(self.mass_grade_type == "Radio Buttons" && self.assignment.score_levels.present?)
+    (assignment_type.mass_grade_type == "Radio Buttons" && assignment_type.score_levels.present?) ||(self.mass_grade_type == "Radio Buttons" && self.assignment_score_levels.present?)
   end
 
   def grade_text?
