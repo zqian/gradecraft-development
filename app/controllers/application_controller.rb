@@ -51,7 +51,7 @@ class ApplicationController < ActionController::Base
 
   # Getting the course scores to display the box plot results 
   def get_course_scores
-    if current_user.present? && current_student.present? 
+    if current_user.present? && current_user.is_student?
       @scores_for_current_course = current_student.scores_for_course(current_course)
     end
   end
