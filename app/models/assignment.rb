@@ -261,6 +261,14 @@ class Assignment < ActiveRecord::Base
     assignment_type.mass_grade_type == "Text" || self.mass_grade_type == "Text"
   end
 
+  def score_levels_set
+    if assignment_type.score_levels.present?
+      assignment_type.score_levels
+    elsif self.assignment_score_levels.present?
+      assignment_score_levels
+    end
+  end
+
   #Checking to see if the assignment is still open and accepting submissons
   def open?
     (open_at != nil && open_at < Time.now) && (due_at != nil && due_at > Time.now)

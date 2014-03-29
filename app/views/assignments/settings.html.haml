@@ -87,10 +87,12 @@
                           %i.fi-check
                       %td
                         - if assignment.grade_select?
-                          = select_tag(:score_levels, options_from_collection_for_select(assignment.assignment_score_levels, :value, :name))
+                          = select_tag(:score_levels, options_from_collection_for_select(assignment.score_levels_set, :value, :name))
                         - elsif assignment.grade_radio?
-                          - assignment.score_levels.each do |asl|
-                            = radio_button_tag(:score_levels, :value, :name)
+                          - assignment.score_levels_set.each do |asl|
+                            = radio_button_tag(asl.name, asl.value)
+                            %span.not_bold= label_tag(asl.name)
+                            %br
                         - elsif assignment.grade_checkboxes?
                           = check_box_tag 'score'
                         - else
