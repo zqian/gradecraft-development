@@ -34,8 +34,8 @@ class InfoController < ApplicationController
     respond_to do |format|
       format.html
       format.json { render json: current_course.assignments }
-      format.csv { send_data current_course.assignments.gradebook_for_course(current_course) }
-      format.xls { send_data current_course.assignments.to_csv(col_sep: "\t") }
+      format.csv { send_data current_course.gradebook_for_course(current_course) }
+      format.xls { send_data current_course.gradebook_for_course(current_course).to_csv(col_sep: "\t") }
     end
   end
   

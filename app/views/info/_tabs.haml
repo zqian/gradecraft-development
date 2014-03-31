@@ -12,4 +12,4 @@
 
 / Link to download csv of total gradebook. Should probably be updated to trigger a background job and send the instructor an email when the download is ready
 %li{class: ("active" if current_page?(gradebook_path)) }
-  = link_to_unless_current "Gradebook", gradebook_path
+  = link_to_unless_current "Download Gradebook", gradebook_path(:csv)

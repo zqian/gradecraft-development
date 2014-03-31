@@ -157,7 +157,8 @@ GradeCraft::Application.routes.draw do
   resources :groups do 
     collection do
       get :review
-    end
+    end  
+    resources :proposals
   end
   resources :group_memberships
 

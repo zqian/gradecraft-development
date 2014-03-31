@@ -3,7 +3,8 @@ class Group < ActiveRecord::Base
   APPROVED_STATUSES = ['Pending', 'Approved', 'Rejected']
 
   attr_accessible :name, :approved, :assignment_id, :assignment_ids, :student_ids,
-    :text_proposal, :assignment_groups_attributes, :group_membership_attributes, :text_feedback
+    :assignment_groups_attributes, :group_membership_attributes, :text_feedback,
+    :proposals_attributes, :proposal
 
   attr_reader :student_tokens
 
@@ -18,6 +19,8 @@ class Group < ActiveRecord::Base
   accepts_nested_attributes_for :group_memberships
 
   has_many :grades
+  has_many :proposals
+  accepts_nested_attributes_for :proposals, allow_destroy: true
 
   has_many :submissions
 

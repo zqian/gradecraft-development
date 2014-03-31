@@ -53,14 +53,12 @@ class GroupsController < ApplicationController
   end
 
   def update
-    @group = current_course.groups.find(params[:id])
+    @group = current_course.groups.includes(:proposals).find(params[:id])
     @group.update_attributes(params[:group])
-    respond_to do |format|
-      if @group.approved.present?
-        NotificationMailer.group_status_updated(@group.id).deliver
-        format.html { respond_with @group }
-      end
+    if @group.approved.present?
+      NotificationMailer.group_status_updated(@group.id).deliver
     end
+    respond_with @group
   end
 
   def destroy

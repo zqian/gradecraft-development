@@ -20,9 +20,11 @@
     %br
 
     .small-12.medium-6
-      - if current_user.is_student? 
-        = f.association :students, :collection => @other_students, as: :select 
+      - if current_user.is_student? && !@group.persisted?
+        = f.association :students, :collection => @other_students, as: :select
         %span.italic= "You (#{current_student.name }) will be automatically included in this group."
+      - elsif current_user.is_student?
+        = f.association :students, :collection => current_course_data.students, as: :select
       - if current_user.is_staff?
         = f.association :students, :collection => current_course_data.students, as: :select
       %br
@@ -32,8 +34,21 @@
     %br
 
     .small-12.textarea
-      = f.bootsy_area :text_proposal
-      .form_label #{term_for :group} Proposal
+      .proposals
+        %script(id="proposal-template" type="text/x-template")
+          %fieldset.proposal.callout.panel
+            = f.simple_fields_for :proposals, Proposal.new, class: 'form-inline', child_index: 'child_index' do |pf|
+              = render 'proposal_fields', f: pf
+        - i = 1
+        - @group.proposals.order_by_creation_date.each do |proposal|
+          %fieldset.proposal.panel
+            %span.columns
+              %h4.bold= "Proposal ##{i}: #{proposal.title}" 
+              %h6= "Created: #{proposal.created_at}"
+              %p= proposal.proposal
+              - i += 1
+              = f.hidden_field :id
+      = link_to 'Add a Proposal', '#', class: 'add-proposal button tiny radius'
 
     %br
 
