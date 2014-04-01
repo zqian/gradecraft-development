@@ -1,6 +1,13 @@
 @gradecraft.controller 'RubricCtrl', ($scope, Restangular, $http) -> 
 
   $scope.metrics = []
+  $scope.viewMetrics = ()->
+    $scope.displayMetrics = []
+    angular.forEach($scope.metrics, (value, key)->
+      $scope.displayMetrics.push(value.name)
+    )
+    $scope.displayMetrics
+
   INTEGER_REGEXP = /^\-?\d+$/
   Restangular.setRequestSuffix('.json')
 
@@ -36,6 +43,8 @@
       order: this.order(),
       description: this.description
     }
+    index: ()->
+      index = jQuery.inArray(this, $scope.metrics)
     order: ()->
       1
     destroy: ()->
@@ -155,5 +164,38 @@
 
   $scope.sortableOptions =
     update: (e, ui) ->
+      alert("snakes!")
       if ui.item.scope().item == "can't be moved"
         ui.item.sortable.cancel()
+    axis: 'y'
+
+
+SortableCTRL = ($scope) ->
+  sortableEle = undefined
+  $scope.sortableArray = [
+    "One"
+    "Two"
+    "Three"
+  ]
+  $scope.add = ->
+    $scope.sortableArray.push "Item: " + $scope.sortableArray.length
+    sortableEle.refresh()
+    return
+
+  $scope.dragStart = (e, ui) ->
+    ui.item.data "start", ui.item.index()
+    return
+
+  $scope.dragEnd = (e, ui) ->
+    start = ui.item.data("start")
+    end = ui.item.index()
+    $scope.sortableArray.splice end, 0, $scope.sortableArray.splice(start, 1)[0]
+    $scope.$apply()
+    return
+
+  sortableEle = $("#sortable").sortable(
+    start: $scope.dragStart
+    update: $scope.dragEnd
+  )
+  return
+
