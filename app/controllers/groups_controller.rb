@@ -55,9 +55,9 @@ class GroupsController < ApplicationController
   def update
     @group = current_course.groups.includes(:proposals).find(params[:id])
     @group.update_attributes(params[:group])
-    # if @group.approved.present?
-    #   NotificationMailer.group_status_updated(@group.id).deliver
-    # end
+    if @group.approved.present?
+      NotificationMailer.group_status_updated(@group.id).deliver
+    end
     respond_with @group
   end
 

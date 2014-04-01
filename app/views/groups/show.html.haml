@@ -39,7 +39,6 @@
         %p= raw @group.try(:text_feedback)
 
     .small-12.columns
-      = raw @group.text_proposal
       - i = 1
       - @group.proposals.order_by_creation_date.each do |p|
         .panel
