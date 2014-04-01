@@ -48,13 +48,20 @@
         .then (response)->
           self.id = response.id
 
+    modify: (form)->
+      if form.$valid
+        if this.isNew()
+          this.create()
+        else
+          this.update()
+
     update: ()->
       self = this
       if this.hasChanges
         Restangular.one('metrics', self.id).customPUT(self.params())
           .then(
-            ()-> alert("shit worked!"),
-            ()-> alert("shit broke!")
+            ()-> , #success
+            ()-> # failure
           )
           self.resetChanges()
 
