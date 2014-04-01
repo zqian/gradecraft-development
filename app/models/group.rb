@@ -33,6 +33,10 @@ class Group < ActiveRecord::Base
 
   validate :max_group_number_not_exceeded, :min_group_number_met
 
+  scope :approved, -> { where approved: "Approved" }
+  scope :rejected, -> { where approved: "Rejected" }
+  scope :pending, -> { where approved: "Pending" }
+
   #Grades
 
   def submissions_by_assignment_id
