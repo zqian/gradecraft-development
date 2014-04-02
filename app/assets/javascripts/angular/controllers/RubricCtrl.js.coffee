@@ -33,10 +33,8 @@
   MetricPrototype.prototype =
     addTier: ()->
       self = this
-      newTier = new TierPrototype(self.id)
+      newTier = new TierPrototype(self)
       this.tiers.push newTier
-    removeTier: (index)->
-      this.tiers.splice(index,1)
     isNew: ()->
       this.id is null
     isSaved: ()->
@@ -101,9 +99,10 @@
         else
           self.remove(index)
 
-  TierPrototype = (metric_id)->
+  TierPrototype = (metric)->
     this.id = null
-    this.metric_id = metric_id
+    this.metric = metric
+    this.metric_id = metric.id
     this.name = ""
     this.points = null
     this.description = ""
@@ -152,19 +151,26 @@
           )
           self.resetChanges()
 
-     delete: ()->
+     metricName: ()->
+       alert this.metric.name
+
+     delete: (index)->
       self = this
       if confirm("Are you sure you want to delete this tier?")
         if this.isSaved()
           $http.delete("/tiers/#{self.id}").success(
             (data,status)->
-              self.remove(index)
+              self.removeFromMetric(index)
+              return true
           )
           .error((err)->
             alert("delete failed!")
+            return false
           )
         else
-          self.remove(index)
+          self.removeFromMetric(index)
+     removeFromMetric: (index)->
+       this.metric.tiers.splice(index,1)
 
   # declare a sortableEle variable for the sortable function
   sortableEle = undefined

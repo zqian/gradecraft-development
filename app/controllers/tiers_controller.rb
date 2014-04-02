@@ -17,6 +17,7 @@ class TiersController < ApplicationController
 
   def destroy
     @tier.destroy
+    respond_with @tier, layout: false
   end
 
   def show
