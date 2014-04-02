@@ -9,8 +9,7 @@
       %br
       %br
 
-      #metric-box(ui-sortable="sortableOptions")
-
+      #metric-box
         .row(ng-repeat="metric in metrics")
           .metric.small-3.columns(name="metricForm" ng-form ng-submit="metric.create()" ng-class="{saved: metric.isSaved()}")
 
@@ -26,6 +25,4 @@
 
       %button(type="button" ng-click="newMetric()") + Add Metric
 
-      %pre(ng-bind="viewMetrics()")
-      
   .clearfix

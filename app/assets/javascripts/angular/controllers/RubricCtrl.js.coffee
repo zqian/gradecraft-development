@@ -1,15 +1,27 @@
 @gradecraft.controller 'RubricCtrl', ($scope, Restangular, $http) -> 
 
-  $scope.metrics = []
-  $scope.viewMetrics = ()->
-    $scope.displayMetrics = []
-    angular.forEach($scope.metrics, (value, key)->
-      $scope.displayMetrics.push(value.name)
-    )
-    $scope.displayMetrics
-
   INTEGER_REGEXP = /^\-?\d+$/
   Restangular.setRequestSuffix('.json')
+  $scope.metrics = []
+  $scope.savedMetricCount = 0
+
+  $scope.countSavedMetric = () ->
+    $scope.savedMetricCount += 1
+
+  $scope.newMetric = ()->
+    $scope.metrics.push new(MetricPrototype)
+
+  $scope.getNewMetric = ()->
+    $scope.newerMetric = Restangular.one('metrics', 'new.json').getList().then ()->
+      alert("waffles!")
+
+  $scope.viewMetrics = ()->
+    if $scope.metrics.length > 0
+      $scope.displayMetrics = []
+      angular.forEach($scope.metrics, (value, key)->
+        $scope.displayMetrics.push(value.name)
+      )
+      $scope.displayMetrics
 
   MetricPrototype = ()->
     this.tiers = []
@@ -28,7 +40,7 @@
     isNew: ()->
       this.id is null
     isSaved: ()->
-      this.id > 0
+      this.id != null
     change: ()->
       self = this
       if this.isSaved()
@@ -43,10 +55,10 @@
       order: this.order(),
       description: this.description
     }
-    index: ()->
-      index = jQuery.inArray(this, $scope.metrics)
     order: ()->
-      1
+      jQuery.inArray(this, $scope.metrics)
+    index: ()->
+      this.order()
     destroy: ()->
 
     remove:(index)->
@@ -56,6 +68,7 @@
       Restangular.all('metrics').post(this.params())
         .then (response)->
           self.id = response.id
+          $scope.countSavedMetric()
 
     modify: (form)->
       if form.$valid
@@ -153,47 +166,40 @@
         else
           self.remove(index)
 
-
-
-  $scope.newMetric = ()->
-    $scope.metrics.push new(MetricPrototype)
-
-  $scope.getNewMetric = ()->
-    $scope.newerMetric = Restangular.one('metrics', 'new.json').getList().then ()->
-      alert("waffles!")
-
-  $scope.sortableOptions =
-    update: (e, ui) ->
-      alert("snakes!")
-      if ui.item.scope().item == "can't be moved"
-        ui.item.sortable.cancel()
-    axis: 'y'
-
-
-SortableCTRL = ($scope) ->
+  # declare a sortableEle variable for the sortable function
   sortableEle = undefined
-  $scope.sortableArray = [
-    "One"
-    "Two"
-    "Three"
-  ]
-  $scope.add = ->
-    $scope.sortableArray.push "Item: " + $scope.sortableArray.length
-    sortableEle.refresh()
-    return
 
+  # action when a sortable drag begins
   $scope.dragStart = (e, ui) ->
     ui.item.data "start", ui.item.index()
     return
 
+  # action when a sortable drag completes
   $scope.dragEnd = (e, ui) ->
     start = ui.item.data("start")
     end = ui.item.index()
-    $scope.sortableArray.splice end, 0, $scope.sortableArray.splice(start, 1)[0]
+    $scope.metrics.splice end, 0, $scope.metrics.splice(start, 1)[0]
     $scope.$apply()
+    $scope.updateMetricOrder()
     return
 
-  sortableEle = $("#sortable").sortable(
+  # send the metric order to the server with ids
+  $scope.updateMetricOrder = ()->
+    if $scope.savedMetricCount > 0
+      $http.put("/metrics/update_order", metric_order: $scope.orderedMetrics()).success(
+      )
+      .error(
+      )
+
+  # distill key/value pairs for metric ids and relative order
+  $scope.orderedMetrics = ()->
+    metrics = {}
+    angular.forEach($scope.metrics, (value, index)->
+      metrics[value.id] = {order: index} if value.id != null
+    )
+    metrics
+
+  sortableEle = $("#metric-box").sortable(
     start: $scope.dragStart
     update: $scope.dragEnd
   )

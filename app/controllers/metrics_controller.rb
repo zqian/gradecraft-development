@@ -1,5 +1,5 @@
 class MetricsController < ApplicationController
-  before_action :find_metric, except: [:new, :create]
+  before_action :find_metric, only: [:update, :destroy]
 
   respond_to :html, :json
 
@@ -27,6 +27,11 @@ class MetricsController < ApplicationController
   def update
     @metric.update_attributes params[:metric]
     respond_with @metric, layout: false
+  end
+
+  def update_order
+    Metric.update params[:metric_order].keys, params[:metric_order].values
+    render nothing: true
   end
 
   private

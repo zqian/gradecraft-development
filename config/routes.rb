@@ -82,7 +82,9 @@ GradeCraft::Application.routes.draw do
     resource :rubric
   end
 
-  resources :metrics
+  resources :metrics do
+    put :update_order, on: :collection
+  end
   resources :tiers
   resources :graded_metrics
 
