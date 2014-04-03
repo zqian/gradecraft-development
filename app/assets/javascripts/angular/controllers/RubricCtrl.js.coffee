@@ -1,52 +1,30 @@
 @gradecraft.controller 'RubricCtrl', ($scope, Restangular, $http) -> 
 
-  $scope.init = (rubricId, metrics)->
-    alert(metrics)
-    $scope.rubricId = rubricId
-    $scope.addMetrics(metrics)
-
-  $scope.addMetrics = (metrics)->
-    angular.forEach(metrics, (metric, index)->
-      metric = new MetricPrototype(metric)
-    )
-
-  $scope.showMetric = (attrs)->
-    new MetricPrototype(attrs)
-
   INTEGER_REGEXP = /^\-?\d+$/
   Restangular.setRequestSuffix('.json')
   $scope.metrics = []
   $scope.savedMetricCount = 0
 
+  $scope.init = (rubricId, metrics)->
+    alert(metrics)
+    $scope.rubricId = rubricId
+    $scope.addMetrics(metrics)
+
+  $scope.showMetric = (attrs)->
+    new MetricPrototype(attrs)
+
   $scope.countSavedMetric = () ->
     $scope.savedMetricCount += 1
 
-  $scope.newMetric = ()->
-    $scope.metrics.push new(MetricPrototype)
-
-  $scope.getNewMetric = ()->
-    $scope.newerMetric = Restangular.one('metrics', 'new.json').getList().then ()->
-      alert("waffles!")
-
-  $scope.viewMetrics = ()->
-    if $scope.metrics.length > 0
-      $scope.displayMetrics = []
-      angular.forEach($scope.metrics, (value, key)->
-        $scope.displayMetrics.push(value.name)
-      )
-      $scope.displayMetrics
-
-  $scope.existingMetrics = []
-
   MetricPrototype = (attrs={})->
-    this.tiers = []
-    this.addTiers(attrs["tiers"]) if attrs["tiers"] #add tiers if passed on init
-    this.id = attrs["id"] || null
-    this.name = attrs["name"] || ""
-    this.rubricId = attrs["rubric_id"] || $scope.rubricId
-    this.max_points = attrs["max_points"] || null
-    this.description = attrs["description"] || ""
-    this.resetChanges()
+#    this.tiers = []
+#    # this.addTiers(attrs["tiers"]) if attrs["tiers"] #add tiers if passed on init
+#    this.id = if attrs.id then attrs.id else null
+#    this.name = if attrs.name then attrs.name else ""
+#    this.rubricId = if attrs.rubric_id then attrs.rubric_id else $scope.rubricId
+#    this.max_points = if attrs.max_points then attrs.max_points else null
+#    this.description = if attrs.description then attrs.description else ""
+#    this.hasChanges = false
   MetricPrototype.prototype =
     addTier: (attrs={})->
       self = this
@@ -117,6 +95,31 @@
           )
         else
           self.remove(index)
+
+  $scope.addMetrics = (existingMetrics)->
+    alert(existingMetrics.length)
+    angular.forEach(existingMetrics, (em, index)->
+      alert em.id
+      emProto = new(MetricPrototype(em))
+      # $scope.metrics.push emProto
+    )
+
+  $scope.newMetric = ()->
+    $scope.metrics.push new(MetricPrototype)
+
+  $scope.getNewMetric = ()->
+    $scope.newerMetric = Restangular.one('metrics', 'new.json').getList().then ()->
+      alert("waffles!")
+
+  $scope.viewMetrics = ()->
+    if $scope.metrics.length > 0
+      $scope.displayMetrics = []
+      angular.forEach($scope.metrics, (value, key)->
+        $scope.displayMetrics.push(value.name)
+      )
+      $scope.displayMetrics
+
+  $scope.existingMetrics = []
 
   TierPrototype = (metric, attrs={})->
     this.id = null
