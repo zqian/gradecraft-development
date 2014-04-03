@@ -4,11 +4,10 @@
     %br
     %br
     %h3 Create Rubric for "#{@assignment.name}"
-    #rubric(ng-app="gradecraft" ng-controller="RubricCtrl" ng-init="init(#{@rubric[:id]})")
+    #rubric(ng-app="gradecraft" ng-controller="RubricCtrl" ng-init="init(#{@rubric[:id]}, #{@metrics})")
       {{test}}
       %br
       %br
-      = render partial: "rubrics/existing_metrics.js.coffee"
 
       #metric-box
         .row(ng-repeat="metric in metrics")

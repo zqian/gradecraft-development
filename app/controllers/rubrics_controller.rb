@@ -6,7 +6,7 @@ class RubricsController < ApplicationController
   def design
     @assignment = Assignment.find params[:assignment_id]
     @rubric = Rubric.find_or_create_by(assignment_id: @assignment.id)
-    @metrics = @rubric.metrics.order(:order).includes(:tiers)
+    @metrics = @rubric.metrics.order(:order).includes(:tiers).as_json(include: :tiers)
     respond_with @rubric
   end
 

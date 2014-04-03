@@ -1,7 +1,14 @@
 @gradecraft.controller 'RubricCtrl', ($scope, Restangular, $http) -> 
 
-  $scope.init = (rubricId)->
+  $scope.init = (rubricId, metrics)->
+    alert(metrics)
     $scope.rubricId = rubricId
+    $scope.addMetrics(metrics)
+
+  $scope.addMetrics = (metrics)->
+    angular.forEach(metrics, (metric, index)->
+      metric = new MetricPrototype(metric)
+    )
 
   $scope.showMetric = (attrs)->
     new MetricPrototype(attrs)
@@ -31,6 +38,7 @@
 
   MetricPrototype = (attrs={})->
     this.tiers = []
+    this.addTiers(attrs["tiers"]) if attrs["tiers"] #add tiers if passed on init
     this.id = attrs["id"] || null
     this.name = attrs["name"] || ""
     this.rubricId = attrs["rubric_id"] || $scope.rubricId
