@@ -1,14 +1,4 @@
-@gradecraft.controller 'RubricCtrl', ($scope, Restangular, $http) -> 
-
-  $scope.init = (rubricId)->
-    $scope.rubricId = rubricId
-    alert(rubricId)
-
-    $scope.existingMetrics = Restangular.one('rubrics', rubricId).one('metrics').getList().then(
-      ()->
-      ()->
-    )
-
+@gradecraft.controller 'EditRubricCtrl', ($scope, Restangular, $http) -> 
 
   INTEGER_REGEXP = /^\-?\d+$/
   Restangular.setRequestSuffix('.json')
@@ -37,7 +27,6 @@
     this.tiers = []
     this.id = null
     this.name = ""
-    this.rubricId = $scope.rubricId
     this.max_points = null
     this.description = ""
     this.resetChanges()
@@ -62,8 +51,7 @@
       name: this.name,
       max_points: this.max_points,
       order: this.order(),
-      description: this.description,
-      rubric_id: this.rubricId
+      description: this.description
     }
     order: ()->
       jQuery.inArray(this, $scope.metrics)

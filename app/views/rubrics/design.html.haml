@@ -1,0 +1,28 @@
+= csrf_meta_tag
+.small-12.panel.mainContent
+  .small-12.columns
+    %br
+    %br
+    %h3 Create Rubric for "#{@assignment.name}"
+    #rubric(ng-app="gradecraft" ng-controller="RubricCtrl" ng-init="init(#{@rubric[:id]})")
+      {{test}}
+      %br
+      %br
+
+      #metric-box
+        .row(ng-repeat="metric in metrics")
+          .metric.small-3.columns(name="metricForm" ng-form ng-submit="metric.create()" ng-class="{saved: metric.isSaved()}")
+
+            {{metricForm.name.$error}}
+            {{metricForm.maxPoints.$error}}
+            metric index:{{metric.index()}}
+            = render "rubrics/new_metric"
+          .tier.small-3.columns(name="tierForm" ng-repeat="tier in metric.tiers" ng-form ng-submit="tier.create()" ng-class="{saved: tier.isSaved()}")
+            = render "rubrics/new_tier"
+          .tier.small-3.columns(name="newTier" ng-click="metric.addTier()" ng-show="metric.isSaved()")
+            Add Tier
+            +
+
+      %button(type="button" ng-click="newMetric()") + Add Metric
+
+  .clearfix

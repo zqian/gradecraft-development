@@ -1,10 +1,20 @@
 class RubricsController < ApplicationController
-  before_action :find_rubric, except: [:new, :create]
+  before_action :find_rubric, except: [:design, :create]
 
-  def new
+  respond_to :html, :json
+
+  def design
     @assignment = Assignment.find params[:assignment_id]
-    @rubric = @assignment.build_rubric
+    @rubric = Rubric.find_or_create_by(assignment_id: @assignment.id)
     respond_with @rubric
+  end
+
+  def metrics
+    respond_to do |format|
+      format.json do
+        render json: @rubric.metrics.includes(:tiers)
+      end
+    end
   end
 
   def edit

@@ -79,12 +79,17 @@ GradeCraft::Application.routes.draw do
     resource :grade, only: [:show, :edit, :update, :destroy] do
       resources :earned_badges
     end
-    resource :rubric
+    resource :rubric do
+      resources :metrics
+      get :design, on: :collection
+    end
   end
 
   resources :metrics do
     put :update_order, on: :collection
   end
+  get '/rubrics/:id/metrics', to: 'rubrics#metrics', format: true#, as: 'patient'
+
   resources :tiers
   resources :graded_metrics
 
