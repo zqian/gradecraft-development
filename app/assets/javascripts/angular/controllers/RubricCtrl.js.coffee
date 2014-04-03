@@ -2,13 +2,9 @@
 
   $scope.init = (rubricId)->
     $scope.rubricId = rubricId
-    alert(rubricId)
 
-    $scope.existingMetrics = Restangular.one('rubrics', rubricId).one('metrics').getList().then(
-      ()->
-      ()->
-    )
-
+  $scope.showMetric = (attrs)->
+    new MetricPrototype(attrs)
 
   INTEGER_REGEXP = /^\-?\d+$/
   Restangular.setRequestSuffix('.json')
@@ -33,18 +29,18 @@
       )
       $scope.displayMetrics
 
-  MetricPrototype = ()->
+  MetricPrototype = (attrs={})->
     this.tiers = []
-    this.id = null
-    this.name = ""
-    this.rubricId = $scope.rubricId
-    this.max_points = null
-    this.description = ""
+    this.id = attrs["id"] || null
+    this.name = attrs["name"] || ""
+    this.rubricId = attrs["rubric_id"] || $scope.rubricId
+    this.max_points = attrs["max_points"] || null
+    this.description = attrs["description"] || ""
     this.resetChanges()
   MetricPrototype.prototype =
-    addTier: ()->
+    addTier: (attrs={})->
       self = this
-      newTier = new TierPrototype(self)
+      newTier = new TierPrototype(self, attrs)
       this.tiers.push newTier
     isNew: ()->
       this.id is null
@@ -111,13 +107,13 @@
         else
           self.remove(index)
 
-  TierPrototype = (metric)->
+  TierPrototype = (metric, attrs={})->
     this.id = null
     this.metric = metric
     this.metric_id = metric.id
-    this.name = ""
-    this.points = null
-    this.description = ""
+    this.name = attrs["name"] || ""
+    this.points = attrs["points"] || null
+    this.description = attrs["description"] || ""
     this.resetChanges()
   TierPrototype.prototype =
     isNew: ()->

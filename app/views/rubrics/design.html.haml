@@ -8,11 +8,11 @@
       {{test}}
       %br
       %br
+      = render partial: "rubrics/existing_metrics.js.coffee"
 
       #metric-box
         .row(ng-repeat="metric in metrics")
           .metric.small-3.columns(name="metricForm" ng-form ng-submit="metric.create()" ng-class="{saved: metric.isSaved()}")
-
             {{metricForm.name.$error}}
             {{metricForm.maxPoints.$error}}
             metric index:{{metric.index()}}
