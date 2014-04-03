@@ -113,9 +113,8 @@
     .clearfix
 
     .small-12.large-4.columns
-      = f.label :badge_value, "Will badges have points attached to them?"
-      = f.radio_button :badges_value, "Yes"
-      = f.radio_button :badges_value, "No"
+      = f.input :badges_value, :label =>"Attach points to badges."
+
 
     .clearfix
 
