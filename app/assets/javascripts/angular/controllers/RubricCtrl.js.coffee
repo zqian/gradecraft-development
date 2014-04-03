@@ -36,6 +36,8 @@
       )
       $scope.displayMetrics
 
+  $scope.existingMetrics = []
+
   MetricPrototype = (attrs={})->
     this.tiers = []
     this.addTiers(attrs["tiers"]) if attrs["tiers"] #add tiers if passed on init
