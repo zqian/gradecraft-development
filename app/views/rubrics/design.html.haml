@@ -5,9 +5,6 @@
     %br
     %h3 Create Rubric for "#{@assignment.name}"
     #rubric(ng-app="gradecraft" ng-controller="RubricCtrl" ng-init="init(#{@rubric[:id]}, #{@metrics})")
-      #existing-metrics
-        - @metrics.each do |metric|
-          .row(ng-repeat="metric in existingMetrics")
 
       {{test}}
       %br

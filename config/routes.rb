@@ -88,7 +88,6 @@ GradeCraft::Application.routes.draw do
   resources :metrics do
     put :update_order, on: :collection
   end
-  get '/rubrics/:id/metrics', to: 'rubrics#metrics', format: true#, as: 'patient'
 
   resources :tiers
   resources :graded_metrics

@@ -83,6 +83,7 @@
       self = this
       Restangular.all('metrics').post(this.params())
         .then (response)->
+          alert(response.id)
           self.id = response.id
           $scope.countSavedMetric()
 
@@ -120,7 +121,9 @@
   TierPrototype = (metric, attrs={})->
     this.id = null
     this.metric = metric
+    alert(metric.name)
     this.metric_id = metric.id
+    alert(metric.id)
     this.name = attrs["name"] || ""
     this.points = attrs["points"] || null
     this.description = attrs["description"] || ""
@@ -137,13 +140,13 @@
     resetChanges: ()->
       this.hasChanges = false
     params: ()->
+      metric_id: this.metric_id,
       name: this.name,
       points: this.points,
-      description: this.description,
-      metric_id: this.metric_id
+      description: this.description
     create: ()->
       self = this
-      Restangular.all('tiers').post(this.params())
+      Restangular.all('tiers').post(self.params())
         .then(
           (response)->
             self.id = response.id

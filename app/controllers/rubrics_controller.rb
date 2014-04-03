@@ -6,16 +6,8 @@ class RubricsController < ApplicationController
   def design
     @assignment = Assignment.find params[:assignment_id]
     @rubric = Rubric.find_or_create_by(assignment_id: @assignment.id)
-    @metrics = @rubric.metrics.order(:order).includes(:tiers).as_json(include: :tiers)
+    @metrics = existing_metrics_as_json
     respond_with @rubric
-  end
-
-  def metrics
-    respond_to do |format|
-      format.json do
-        render json: @rubric.metrics.includes(:tiers)
-      end
-    end
   end
 
   def edit
@@ -42,6 +34,15 @@ class RubricsController < ApplicationController
   end
 
   private
+
+  def existing_metrics_as_json
+    ActiveModel::ArraySerializer.new(rubric_metrics_with_tiers, each_serializer: ExistingMetricSerializer).to_json
+  end
+
+  def rubric_metrics_with_tiers
+    @rubric.metrics.order(:order).includes(:tiers)
+  end
+
   def find_rubric
     @rubric = Rubric.find params[:id]
   end
