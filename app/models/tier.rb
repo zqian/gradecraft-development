@@ -4,6 +4,6 @@ class Tier < ActiveRecord::Base
   validates :points, presence: true
   validates :name, presence: true
 
-  attr_accessible :name, :description, :points
+  attr_accessible :name, :description, :points, :metric_id
 
 end

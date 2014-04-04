@@ -106,6 +106,7 @@
     alert(existingMetrics.length)
     angular.forEach(existingMetrics, (em, index)->
       emProto = new MetricPrototype(em)
+      $scope.countSavedMetric() # indicate saved metric present
       $scope.metrics.push emProto
     )
 
@@ -127,7 +128,7 @@
   $scope.existingMetrics = []
 
   TierPrototype = (metric, attrs={})->
-    this.id = attrs.null or null
+    this.id = attrs.id or null
     this.metric = metric
     this.metric_id = metric.id
     this.name = attrs.name or ""
