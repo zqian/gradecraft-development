@@ -103,7 +103,6 @@
           self.remove(index)
 
   $scope.addMetrics = (existingMetrics)->
-    alert(existingMetrics.length)
     angular.forEach(existingMetrics, (em, index)->
       emProto = new MetricPrototype(em)
       $scope.countSavedMetric() # indicate saved metric present

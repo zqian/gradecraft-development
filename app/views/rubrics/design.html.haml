@@ -3,16 +3,16 @@
   .small-12.columns
     %br
     %br
-    %h3 Create Rubric for "#{@assignment.name}"
+    %h3 Design Rubric for "#{@assignment.name}"
     #rubric(ng-app="gradecraft" ng-controller="RubricCtrl" ng-init="init(#{@rubric[:id]}, #{@metrics})")
 
-      {{test}}
+      .splash(ng-cloak) Loading rubric...
       %br
       %br
 
-      #metric-box
+      #metric-box(ng-cloak)
         .row(ng-repeat="metric in metrics")
-          .metric.small-3.columns(name="metricForm" ng-form ng-submit="metric.create()" ng-class="{saved: metric.isSaved()}")
+          .metric.small-3.columns(name="metricForm" ng-form ng-submit="metric.create()" ng-class="{saved: metric.isSaved()}" ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}")
             {{metricForm.name.$error}}
             {{metricForm.maxPoints.$error}}
             metric index:{{metric.index()}}

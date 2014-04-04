@@ -11,6 +11,16 @@ $dark_green: #54BA3F
 $inactive_red: #DC9A9A
 $dark_red: #B40D0D
 
+.splash
+  display: none
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak
+  display: none !important
+
+  &.splash
+    display: block !important
+    font-size: 26px
+
 #rubric
   .metric
     background: #eee
@@ -21,6 +31,14 @@ $dark_red: #B40D0D
     &.saved
       border: 1px solid $dark_green
       background: #EDF5EC
+
+    &.animate-enter
+      opacity: 1.0
+      display: block !important
+      transition: opacity 1s
+
+    &.animate-enter.animate-enter-leave
+      opacity: 0
 
     input.ng-pristine.ng-invalid
       border: 1px solid #6CC7EC
