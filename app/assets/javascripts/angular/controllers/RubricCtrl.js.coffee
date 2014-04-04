@@ -6,7 +6,6 @@
   $scope.savedMetricCount = 0
 
   $scope.init = (rubricId, metrics)->
-    alert(metrics)
     $scope.rubricId = rubricId
     $scope.addMetrics(metrics)
 
@@ -17,19 +16,24 @@
     $scope.savedMetricCount += 1
 
   MetricPrototype = (attrs={})->
-#    this.tiers = []
-#    # this.addTiers(attrs["tiers"]) if attrs["tiers"] #add tiers if passed on init
-#    this.id = if attrs.id then attrs.id else null
-#    this.name = if attrs.name then attrs.name else ""
-#    this.rubricId = if attrs.rubric_id then attrs.rubric_id else $scope.rubricId
-#    this.max_points = if attrs.max_points then attrs.max_points else null
-#    this.description = if attrs.description then attrs.description else ""
-#    this.hasChanges = false
+    this.tiers = []
+    this.id = if attrs.id then attrs.id else null
+    this.addTiers(attrs["tiers"]) if attrs["tiers"] #add tiers if passed on init
+    this.name = if attrs.name then attrs.name else ""
+    this.rubricId = if attrs.rubric_id then attrs.rubric_id else $scope.rubricId
+    this.max_points = if attrs.max_points then attrs.max_points else null
+    this.description = if attrs.description then attrs.description else ""
+    this.hasChanges = false
   MetricPrototype.prototype =
     addTier: (attrs={})->
       self = this
       newTier = new TierPrototype(self, attrs)
       this.tiers.push newTier
+    addTiers: (tiers)->
+      self = this
+      angular.forEach(tiers, (tier,index)->
+        self.addTier(tier)
+      )
     isNew: ()->
       this.id is null
     isSaved: ()->
@@ -42,15 +46,17 @@
       this.hasChanges = false
     resourceUrl: ()->
       "/metrics/#{self.id}"
-    params: ()-> {
-      name: this.name,
-      max_points: this.max_points,
-      order: this.order(),
-      description: this.description,
-      rubric_id: this.rubricId
-    }
     order: ()->
       jQuery.inArray(this, $scope.metrics)
+    params: ()->
+      self = this
+      {
+        name: self.name,
+        max_points: self.max_points,
+        order: self.order(),
+        description: self.description,
+        rubric_id: self.rubricId
+      }
     index: ()->
       this.order()
     destroy: ()->
@@ -99,9 +105,8 @@
   $scope.addMetrics = (existingMetrics)->
     alert(existingMetrics.length)
     angular.forEach(existingMetrics, (em, index)->
-      alert em.id
-      emProto = new(MetricPrototype(em))
-      # $scope.metrics.push emProto
+      emProto = new MetricPrototype(em)
+      $scope.metrics.push emProto
     )
 
   $scope.newMetric = ()->
@@ -122,14 +127,12 @@
   $scope.existingMetrics = []
 
   TierPrototype = (metric, attrs={})->
-    this.id = null
+    this.id = attrs.null or null
     this.metric = metric
-    alert(metric.name)
     this.metric_id = metric.id
-    alert(metric.id)
-    this.name = attrs["name"] || ""
-    this.points = attrs["points"] || null
-    this.description = attrs["description"] || ""
+    this.name = attrs.name or ""
+    this.points = attrs.points || null
+    this.description = attrs.description or ""
     this.resetChanges()
   TierPrototype.prototype =
     isNew: ()->
@@ -151,11 +154,9 @@
       self = this
       Restangular.all('tiers').post(self.params())
         .then(
-          (response)->
+          (response)-> #success
             self.id = response.id
-            alert("shit worked!")
-          (response)->
-            alert("shit blew up!")
+          (response)-> #error
         )
 
     modify: (form)->
@@ -170,8 +171,8 @@
         self = this
         Restangular.one('tiers', self.id).customPUT(self.params())
           .then(
-            ()-> alert("shit worked!"),
-            ()-> alert("shit broke!")
+            ()-> #success
+            ()-> #failure
           )
           self.resetChanges()
 
