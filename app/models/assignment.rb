@@ -254,7 +254,7 @@ class Assignment < ActiveRecord::Base
   end
 
   def grade_radio?
-    (assignment_type.mass_grade_type == "Radio Buttons" && assignment_type.score_levels.present?) ||(self.mass_grade_type == "Radio Buttons" && self.assignment.score_levels.present?)
+    (assignment_type.mass_grade_type == "Radio Buttons" && assignment_type.score_levels.present?) ||(self.mass_grade_type == "Radio Buttons" && self.assignment_score_levels.present?)
   end
 
   def grade_text?
@@ -295,16 +295,6 @@ class Assignment < ActiveRecord::Base
   #Calculates attendance rate as an integer.
    def attendance_rate_int(course)
    ((positive_grade_count / course.graded_student_count.to_f) * 100).to_i
-  end
-
-  #gradebook
-  def gradebook_for_course(course, options = {})
-    CSV.generate(options) do |csv|
-      csv << ["First Name", "Last Name", "Email", "Score", "Grade", "Statement", "Feedback" ]
-      course.students.each do |student|
-        csv << [student.first_name, student.last_name, student.email, student.cached_score_for_course(course)]
-      end
-    end
   end
 
   #single assignment gradebook

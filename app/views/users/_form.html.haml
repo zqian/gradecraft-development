@@ -27,13 +27,12 @@
 
     .clearfix
 
-    - if !@user.persisted?
-      .small-12.medium-4.columns
-        = f.label :password
-        = f.password_field :password, :as => :password
-      .small-12.medium-4.columns
-        = f.label :password_confirmation
-        = f.password_field :password_confirmation, :as => :password
+    .small-12.medium-4.columns.columns-no-padding
+      = f.label :password
+      = f.password_field :password, :as => :password
+    .small-12.medium-4.columns
+      = f.label :password_confirmation
+      = f.password_field :password_confirmation, :as => :password
 
     .clearfix
 

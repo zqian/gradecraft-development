@@ -1,10 +1,10 @@
 class Group < ActiveRecord::Base
-  MAX_MEMBERS = 6
-
+  
   APPROVED_STATUSES = ['Pending', 'Approved', 'Rejected']
 
   attr_accessible :name, :approved, :assignment_id, :assignment_ids, :student_ids,
-    :text_proposal, :assignment_groups_attributes, :group_membership_attributes, :text_feedback
+    :assignment_groups_attributes, :group_membership_attributes, :text_feedback,
+    :proposals_attributes, :proposal
 
   attr_reader :student_tokens
 
@@ -19,6 +19,8 @@ class Group < ActiveRecord::Base
   accepts_nested_attributes_for :group_memberships
 
   has_many :grades
+  has_many :proposals
+  accepts_nested_attributes_for :proposals, allow_destroy: true
 
   has_many :submissions
 
@@ -30,6 +32,10 @@ class Group < ActiveRecord::Base
   validates_presence_of :course, :name
 
   validate :max_group_number_not_exceeded, :min_group_number_met
+
+  scope :approved, -> { where approved: "Approved" }
+  scope :rejected, -> { where approved: "Rejected" }
+  scope :pending, -> { where approved: "Pending" }
 
   #Grades
 

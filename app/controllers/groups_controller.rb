@@ -17,6 +17,9 @@ class GroupsController < ApplicationController
 
   def new
     @group = current_course.groups.new
+    if current_user.is_student?
+      @other_students = current_course.students.where.not(id: current_user.id)
+    end
     @assignments = current_course.assignments.group_assignments
     @title = "Start a #{term_for :group}"
   end
@@ -30,6 +33,11 @@ class GroupsController < ApplicationController
     @group = current_course.groups.new(params[:group])
     @assignments = current_course.assignments.group_assignments
     @group.students << current_user if current_user.is_student?
+    if current_user.is_student?
+      @group.approved = "Pending"
+    else
+      @group.approved = "Approved"
+    end
     respond_to do |format|
       if @group.save
         NotificationMailer.group_created(@group.id).deliver
@@ -50,14 +58,12 @@ class GroupsController < ApplicationController
   end
 
   def update
-    @group = current_course.groups.find(params[:id])
+    @group = current_course.groups.includes(:proposals).find(params[:id])
     @group.update_attributes(params[:group])
-    respond_to do |format|
-      if @group.approved.present?
-        NotificationMailer.group_status_updated(@group.id).deliver
-        format.html { respond_with @group }
-      end
+    if @group.approved.present?
+      NotificationMailer.group_status_updated(@group.id).deliver
     end
+    respond_with @group
   end
 
   def destroy
