@@ -24,6 +24,10 @@ class Badge < ActiveRecord::Base
     joins("LEFT JOIN earned_badges on badges.id = earned_badges.id AND earned_badges.student_id = #{Badge.sanitize(student.id)}").select('badges.*, earned_badges.created_at AS earned_at, earned_badges.feedback')
   end
 
+  def badge_count_for_student(student)
+    earned_badges.where(:student_id => student).count
+  end
+
   def can_earn_multiple_times
     super || false
   end

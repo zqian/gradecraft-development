@@ -33,6 +33,11 @@ class GroupsController < ApplicationController
     @group = current_course.groups.new(params[:group])
     @assignments = current_course.assignments.group_assignments
     @group.students << current_user if current_user.is_student?
+    if current_user.is_student?
+      @group.approved = "Pending"
+    else
+      @group.approved = "Approved"
+    end
     respond_to do |format|
       if @group.save
         NotificationMailer.group_created(@group.id).deliver

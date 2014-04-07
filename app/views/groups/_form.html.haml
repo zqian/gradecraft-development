@@ -7,7 +7,7 @@
 
     %br
 
-    - if current_user.is_staff?
+    - if current_user.is_staff? && @group.persisted?
       .small-12.medium-4
         = f.label :approved, "Status"
         = f.select :approved, [[], ["Approved"], ["Rejected"]]
