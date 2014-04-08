@@ -223,4 +223,14 @@ class Course < ActiveRecord::Base
       end
     end
   end
+  
+  #badges
+  def course_badge_count
+   badges.count
+  end
+  
+  def awarded_course_badge_count
+   earned_badges.count
+  end
+  
 end
