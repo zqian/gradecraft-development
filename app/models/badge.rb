@@ -32,6 +32,11 @@ class Badge < ActiveRecord::Base
     super || false
   end
 
+  #indexed badges
+  def awarded_count
+    earned_badges.count
+  end
+
   #badges per role
   def earned_badges_by_student_id
     @earned_badges_by_student_id ||= earned_badges.group_by { |eb| [eb.student_id] }

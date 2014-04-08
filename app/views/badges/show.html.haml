@@ -8,9 +8,13 @@
   .pagetitle= @title
 
   .small-12.columns
-
+    //badge icon, total awarded, and points
     .panel.small-12.large-2.columns.text-center
       %img{:src => @badge.icon, :alt => @badge.name, :width => "100" }
+      %hr
+        .center
+          %b Awarded:
+          =@badge.awarded_count
       - if @badge.point_total?
         %hr
         .center
@@ -36,12 +40,15 @@
     - if current_user.is_staff?
 
       .small-12   
-
+        //staff individual badge award index
         %table.responsive.simpleTable
           %thead
             %tr
               %th= term_for(:student)
-              %th Feedback
+              %th{ :width => 300} Feedback
+              //uncomment to add counts per student
+              //-if @badge.can_earn_multiple_times  
+              //%th Count
               %th Date Awarded
           %tbody
             - if @team
@@ -50,13 +57,18 @@
               - students = current_course_data.students
             - students.each do |student|
               %tr
-                %td= link_to student.first_name, student_path(student)
-                %td= link_to student.last_name, student_path(student)
+                %td=link_to student.first_name + " " + student.last_name, student_path(student)
                 %td
+                  - @badge.earned_badges.where(:student_id => student.id).each do |badge|
+                    %div{ :width => 80}= raw badge.feedback
+                //uncomment to add counts per student
+                //-if @badge.can_earn_multiple_times
+                //%td= @badge.earned_badge_count_for_student(student)
+                
+                %td  
                   - @badge.earned_badges.where(:student_id => student.id).each do |badge|
                     %img{:src => @badge.icon, :alt => @badge.name, :width => "20" }
                     %span.has-tip{:title => "Edit this #{term_for :badge}", :data => {'tooltip' => true} }= link_to "(#{badge.created_at.strftime("%b %d")})", edit_badge_earned_badge_path(@badge, badge.id)
-                    %span= raw badge.feedback
                     %span
                       = link_to badge_earned_badge_path(@badge, badge), :method => :delete, :data => { confirm: "Are you sure you want to delete this #{term_for :badge}?" } do
                         %i.fi-trash
