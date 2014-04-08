@@ -1,4 +1,5 @@
 class CourseData < Struct.new(:course)
+  #badges
   def earned_badge_score_for_student(student)
     earned_badge_scores[student.id]
   end
