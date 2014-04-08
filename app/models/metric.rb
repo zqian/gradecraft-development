@@ -6,4 +6,8 @@ class Metric < ActiveRecord::Base
   validates :max_points, presence: true
   validates :name, presence: true
   validates :order, presence: true
+
+  def description_missing?
+    description.nil? or description.blank?
+  end
 end

@@ -19,15 +19,85 @@
     .small-12.large-4.columns
       = f.simple_fields_for :grade_files, @grade.grade_files.new do |gff|
         = gff.input :filename, :input_html => { :class => 's3_files' }, :as => :hidden
+.panel.small-12.columns
+  %h6 Supporting Files:
+  .s3_uploader
+    - if nil
+      = s3_uploader_form key: upload_url('grade_files', @grade), acl: "private", max_file_size: 40.megabytes do
+        = file_field_tag :file, :multiple => true
+      - if @grade.grade_files.present?
+        %h6#uploaded_files Attachments Uploaded:
+      .upload.s3_progress
+        Progress:
+        .progress
+          .bar
 
-    .clearfix
+- if @rubric
+  #rubric-grader
+    %h3 Grade Assignment by Rubric:
+    %h4 (select a tier for each metric)
+    - @rubric.metrics.each do |metric|
+      .row
+        .metric.small-3.columns
+          .row
+            .small-7.columns(style="padding:0")
+              %label Metric
+              .name= metric.name.capitalize
+            .small-5.columns(style="padding:0")
+              %label Max Points
+              .points= metric.max_points
+          .row
+            - unless metric.description.nil? or metric.description.blank?
+              %label Description
+              = metric.description
+        - metric.tiers.each do |tier|
+          .tier.small-3.columns
+            .row
+              .small-6.columns(style="padding:0")
+                %label Tier
+                .name= tier.name.capitalize
+              .small-6.columns(style="padding:0")
+                %label Points
+                .points= tier.points
+            .row
+              - unless tier.description.nil? or tier.description.blank?
+                = tier.description
 
-    .small-12.columns
-      = f.hidden_field :graded_by_id, :value => current_user.id
-      = f.label :feedback
-      = f.bootsy_area :feedback
+- else
+  = form_for @grade, url: assignment_grade_path(@assignment), method: :patch do |f|
+    = hidden_field_tag :student_id, current_student.id
+    .panel
+      .small-12.large-4.columns
+        = f.label :raw_score
+        - if @assignment.assignment_type.has_levels?
+          = f.select :raw_score, @score_levels.map { |l| [l.name,l.value] }, :include_blank => true
+        - elsif @assignment.has_levels?
+          = f.select :raw_score, @assignment_score_levels.map { |l| [l.name,l.value] }, :include_blank => true
+        - else
+          = f.text_field :raw_score, :default => @assignment.point_total, :label => "Score", :hint => "Total Assignment Points: #{ points @assignment.point_total }", data: {autonumeric: true, "m-dec" => "0"}
+        = f.simple_fields_for :grade_files, @grade.grade_files.new do |gff|
+          = gff.input :filepath, :input_html => { :class => 's3_files' }, :as => :hidden
 
-    .clearfix
+
+      - if @assignment.release_necessary?
+        .small-12.large-4.columns
+          = f.label :status
+          = f.select :status, Grade::STATUSES
+          %h6.small Can the student see this grade?
+      - elsif @grade.status.blank?
+        = f.hidden_field :status, value: 'Graded'
+
+      .small-12.large-4.columns
+        = f.simple_fields_for :grade_files, @grade.grade_files.new do |gff|
+          = gff.input :filename, :input_html => { :class => 's3_files' }, :as => :hidden
+      .clearfix
+
+      .small-12.columns
+        = f.hidden_field :graded_by_id, :value => current_user.id
+        = f.label :feedback
+        = f.bootsy_area :feedback
+
+      .clearfix
 
     .right
       - if @assignment.release_necessary?
@@ -42,6 +112,7 @@
 
     .clearfix
 
-  .right
-    = submit_tag "#{@grade.persisted? && @grade.is_graded? ? 'Update' : 'Submit'} Grade", :class => "button tiny radius"
-    = link_to 'Cancel', assignment_path(@assignment), :class => 'button tiny radius transparent'
+
+    .right
+      = submit_tag "#{@grade.persisted? && @grade.is_graded? ? 'Update' : 'Submit'} Grade", :class => "button tiny radius"
+      = link_to 'Cancel', assignment_path(@assignment), :class => 'button tiny radius'

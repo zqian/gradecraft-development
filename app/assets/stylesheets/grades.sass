@@ -1,0 +1,49 @@
+@mixin transition($property, $duration)
+  -webkit-transition: $property $duration
+  -moz-transition: $property $duration
+  -ms-transition: $property $duration
+  -o-transition: $property $duration
+  transition: $property $duration
+
+$light_green: #EFFFED 
+$dark_green: #54BA3F
+$inactive_red: #DC9A9A
+$dark_red: #B40D0D
+
+.splash
+  display: none
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak
+  display: none !important
+
+  &.splash
+    display: block !important
+    font-size: 26px
+
+#rubric-grader
+  .metric, .tier
+    background: #eee
+    border: 1px solid #ccc
+    padding: 12px 28px
+    float: left
+
+    .points
+      font-size: 21px
+
+    .name
+      font-size: 16px
+
+    label
+      display: block
+      font-weight: normal
+      font-size: 13px
+      font-style: italic
+
+    &.saved
+      border: 1px solid $dark_green
+      background: #EDF5EC
+
+  .metric
+    input.ng-pristine.ng-invalid
+      border: 1px solid #6CC7EC
+      background: #F0FBFF
