@@ -32,6 +32,6 @@
               %td= points assignment.average
               %td= points assignment.earned_average
               %td.right
-                .grades_per_assign{ "data-scores" => assignment.grades.graded.pluck('score') }
+                .grades_per_assign{:id => "#{assignment.id}", "data-scores" => assignment.grades.graded.pluck('score') }
 
     .clearfix

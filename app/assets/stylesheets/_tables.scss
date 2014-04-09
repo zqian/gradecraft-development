@@ -47,20 +47,21 @@ table.responsive {
 }
 
 
-  .button-column {
-    width: 300px;
-  }
-
-  @media (min-width: 1051px) {
+  @media (min-width: 1151px) {
 
   table .button-group li a.button.tiny {
     padding: .4rem .5rem;
     margin: 0;
   }
 
+
+  .button-column {
+    width: 300px;
   }
 
-@media (max-width: 1050px)  {
+  }
+
+@media (max-width: 1150px)  {
   
   table .button-group li a.button.tiny  {
   padding: .25rem;
@@ -76,6 +77,12 @@ table.responsive {
 
   .round .button.tiny {
     padding: .4rem;
+  }
+
+
+
+  .button-column {
+    width: 6rem;
   }
 }
 
