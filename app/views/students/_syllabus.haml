@@ -91,8 +91,8 @@
                       = link_to "See Feedback", assignment_grade_path(assignment, :student_id => current_student), :class => "button tiny radius primary"
                     - else 
                       - if assignment.description?
-                        %a.radius.tiny.button{:href => "#", "data-reveal-id" => "assignment_description", :data => {:reveal => "true" } } See Description
-                        #assignment_description.reveal-modal{:data => {:reveal => "true" }}
+                        %a.radius.tiny.button{:href => "#", "data-reveal-id" => "assignment_description_#{assignment.id}", :data => {:reveal => "true" } } See Description
+                        %div.reveal-modal{:id => "assignment_description_#{assignment.id}", :data => {:reveal => "true" }}
                           %h3= assignment.name
                           = "Due: #{assignment.due_at}"
                           %p= raw assignment.description
