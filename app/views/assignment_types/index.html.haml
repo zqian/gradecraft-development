@@ -11,7 +11,7 @@
         %th Name
         %th Predictor Display
         %th Max value
-        %th
+        %th.button-column
       %tbody
         - current_course_data.assignment_types.each do |assignment_type|
           %tr
@@ -21,8 +21,8 @@
             %td
               .button-bar
                 %ul.button-group.right.round
-                  %li= link_to 'See', assignment_type_path(assignment_type), :class => 'button tiny alert'
-                  %li= link_to 'Edit', edit_assignment_type_path(assignment_type), :class => 'button tiny alert'
+                  %li= link_to 'See', assignment_type_path(assignment_type), :class => 'button tiny'
+                  %li= link_to 'Edit', edit_assignment_type_path(assignment_type), :class => 'button tiny'
                   %li
-                    %a{:href => assignment_type_path(assignment_type), :data => { confirm: 'Are you sure?', method: :delete }, :class => "button tiny alert" }
+                    %a{:href => assignment_type_path(assignment_type), :data => { confirm: 'Are you sure?', method: :delete }, :class => "button tiny" }
                       Delete

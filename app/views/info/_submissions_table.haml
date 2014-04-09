@@ -3,7 +3,7 @@
     %tr
       %th.sortable{"data-sort" => "string"} Assignment
       %th.sortable{"data-sort" => "string"} Submissions
-      %th
+      %th.button-column
   %tbody
     - @assignments.each do |assignment|
       - if assignment.accepts_submissions?
@@ -11,7 +11,4 @@
           %th= link_to assignment.name, assignment
           %th= assignment.submissions.count
           %th
-            - if assignment.assignment_type.mass_grade?
-              = link_to 'Quick Grade', mass_grade_assignment_path(assignment), :class => "button tiny radius"
-            - elsif assignment.rubrics.present?
-              = link_to "Rubric Grading"
+            = link_to 'Quick Grade', mass_grade_assignment_path(assignment), :class => "button tiny radius"

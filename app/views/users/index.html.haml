@@ -46,9 +46,9 @@
               .button-bar
                 %ul.button-group.right.round
                   %li
-                    = link_to "Dashboard", student_path(user), :class => 'button tiny alert' if user.is_student?
-                    = link_to "Dashboard", staff_path(user), :class => 'button tiny alert' if user.is_staff?
-                  %li= link_to 'Edit', edit_user_path(user), :class => 'button tiny alert'
-                  %li= link_to 'Delete', user, :class => 'button tiny alert', :data => { confirm: 'This will delete the student from GradeCraft - Are you sure?' } , :method => :delete
+                    = link_to "Dashboard", student_path(user), :class => 'button tiny' if user.is_student?
+                    = link_to "Dashboard", staff_path(user), :class => 'button tiny' if user.is_staff?
+                  %li= link_to 'Edit', edit_user_path(user), :class => 'button tiny'
+                  %li= link_to 'Delete', user, :class => 'button tiny', :data => { confirm: 'This will delete the student from GradeCraft - Are you sure?' } , :method => :delete
 
   .clearfix
