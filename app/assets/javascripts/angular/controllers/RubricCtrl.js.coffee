@@ -67,7 +67,6 @@
       self = this
       Restangular.all('metrics').post(this.params())
         .then (response)->
-          alert(response.id)
           self.id = response.id
           $scope.countSavedMetric()
 
@@ -114,7 +113,6 @@
 
   $scope.getNewMetric = ()->
     $scope.newerMetric = Restangular.one('metrics', 'new.json').getList().then ()->
-      alert("waffles!")
 
   $scope.viewMetrics = ()->
     if $scope.metrics.length > 0

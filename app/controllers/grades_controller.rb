@@ -39,7 +39,9 @@ class GradesController < ApplicationController
 
   def submit_rubric
     @grade = current_student_data.grade_for_assignment(@assignment)
-    @grade.update_attributes raw_score: params[:total_points]
+    @submission = Submission.where(assignment_id: @assignment[:id], student_id: params[:student_id]).first
+    @submission.update_attributes(graded: true)
+    @grade.update_attributes(raw_score: params[:points_given], submission_id: @submission[:id], point_total: params[:points_possible])
 
     if @assignment.notify_released? && @grade.is_released?
       NotificationMailer.grade_released(@grade.id).deliver

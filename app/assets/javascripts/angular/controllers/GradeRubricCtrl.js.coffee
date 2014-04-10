@@ -64,9 +64,10 @@
 
   $scope.gradedRubricParams = ()->
     {
-      total_points: $scope.pointsGiven(),
+      points_given: $scope.pointsGiven(),
       rubric_id: $scope.rubricId,
-      student_id: $scope.studentId
+      student_id: $scope.studentId,
+      points_possible: $scope.pointsPossible
     }
 
   $scope.submitGrade = ()->

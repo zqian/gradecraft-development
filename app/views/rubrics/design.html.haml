@@ -10,19 +10,21 @@
       %br
       %br
 
+      .row
+        .metric.small-3.columns.heading Metrics
+        .tier.small-3.columns.heading Tiers
+
       #metric-box(ng-cloak)
-        .row(ng-repeat="metric in metrics")
+
+        .row.divider(ng-repeat="metric in metrics")
           .metric.small-3.columns(name="metricForm" ng-form ng-submit="metric.create()" ng-class="{saved: metric.isSaved()}" ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}")
-            {{metricForm.name.$error}}
-            {{metricForm.maxPoints.$error}}
-            metric index:{{metric.index()}}
             = render "rubrics/new_metric"
           .tier.small-3.columns(name="tierForm" ng-repeat="tier in metric.tiers" ng-form ng-submit="tier.create()" ng-class="{saved: tier.isSaved()}")
             = render "rubrics/new_tier"
-          .tier.small-3.columns(name="newTier" ng-click="metric.addTier()" ng-show="metric.isSaved()")
-            Add Tier
-            +
+          %button.add-tier(name="newTier" ng-click="metric.addTier()" ng-show="metric.isSaved()")
+            + Tier
 
-      %button(type="button" ng-click="newMetric()") + Add Metric
+      .row.text-center
+        %button#new-rubric-metric(type="button" ng-click="newMetric()") Add Metric
 
   .clearfix
