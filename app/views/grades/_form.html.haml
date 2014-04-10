@@ -38,38 +38,37 @@
       Grade Assignment by Rubric
       = link_to "(Edit)", design_assignment_rubric_path(@assignment)
     %h4.text-center (select a tier for each metric)
-    .row.centered
-      .metric.small-3.columns
-        .row
-          .small-7.columns(style="padding:0")
+
+    %table
+      %thead
+        %tr
+          %td.metric.heading
             %label.larger
               %strong Metric:
               Max points
-        .row
-          %label Verbose description about the ramifications of the metric
-      .tier.small-3.columns
-        .row
-          %label.larger
-            %strong Tier Name:
-            Point value
-        .row
-          %label Verbose description about the parameters of the specific tier
+            %label Verbose description about the ramifications of the metric
+          %td.tier.heading
+            %label.larger
+              %strong Tier Name:
+              Point value
+            %label Verbose description about the parameters of the specific tier
+          %td.points-given
+            %label.larger
+              %strong Points Given:
+              {{points}}/{{pointsPossible}}
 
-    .row.centered(ng-repeat="metric in metrics")
-      .metric.small-3.columns
-        .row
-          %label.larger
-            %strong {{metric.name}}:
-            {{metric.max_points}} Points
-        .row
-          %label {{metric.description}}
-      .tier.small-3.columns(ng-repeat="tier in metric.tiers" ng-click="metric.gradeWithTier(tier)" ng-class="{selected: metric.isUsingTier(tier)}")
-        .row
-          %label.larger
-            %strong {{tier.name}}:
-            {{tier.points}} points
-        .row
-          %label {{tier.description}}
+      %tbody
+        %tr(ng-repeat="metric in metrics")
+          %td.metric
+            %label.larger
+              %strong {{metric.name}}:
+              {{metric.max_points}} Points
+            %label {{metric.description}}
+          %td.tier(ng-repeat="tier in metric.tiers" ng-click="metric.gradeWithTier(tier)" ng-class="{selected: metric.isUsingTier(tier)}")
+            %label.larger
+              %strong {{tier.name}}:
+              {{tier.points}} points
+            %label {{tier.description}}
 
 - else
   = form_for @grade, url: assignment_grade_path(@assignment), method: :patch do |f|

@@ -21,13 +21,13 @@ $dark_red: #B40D0D
     font-size: 26px
 
 #rubric-grader
-  margin-top: 24px
+  %table
+    margin-top: 20px
 
-  .metric, .tier
+  .metric, .tier, .points-given
     background: #eee
     border: 1px solid #ccc
     padding: 12px 28px
-    float: left
 
     .points
       font-size: 21px
@@ -50,6 +50,16 @@ $dark_red: #B40D0D
       background: #EDF5EC
 
   .metric
+    background: #D3EBF5
+    border: 1px solid #9FE2FF
+
+    label.larger
+      font-size: 20px
+
+    &.heading
+      background: #D3EBF5 + #111
+      border: 1px solid (#9FE2FF + #111)
+
     input.ng-pristine.ng-invalid
       border: 1px solid #6CC7EC
       background: #F0FBFF
@@ -59,9 +69,29 @@ $dark_red: #B40D0D
       display: inline
       margin-top: 12px
 
+  td.points-given
+    background: white
+    border: none
+
+    label.larger
+      background: none
+      font-size: 20px
+
   .tier
+    background: #FFD292
+    border: 1px solid #FFC36B
+
+    &.heading
+      background: #FFD292 + #111
+      border: 1px solid (#FFC36B + #111)
+
     .heading
       font-size: 17px
     .description
       font-size: 14px
       font-style: italic
+
+    &.selected
+      background: #D9FF8C
+      border: 1px solid #BEF64E
+      

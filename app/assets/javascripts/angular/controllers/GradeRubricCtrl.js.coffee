@@ -2,12 +2,15 @@
 
   $scope.metrics = []
 
+  $scope.pointsPossible = 0
+
   $scope.init = (rubricId, metrics)->
     $scope.rubricId = rubricId
     $scope.addMetrics(metrics)
 
   $scope.showMetric = (attrs)->
     new MetricPrototype(attrs)
+
 
   MetricPrototype = (attrs={})->
     this.tiers = []
@@ -51,7 +54,10 @@
       .error(
       )
     gradeWithTier: (tier)->
-      this.selectedTier = tier
+      if this.isUsingTier(tier)
+        this.selectedTier = null
+      else
+        this.selectedTier = tier
     isUsingTier: (tier)->
       this.selectedTier == tier
     rubricGradeParams: ()->
@@ -71,9 +77,10 @@
       }
 
   $scope.addMetrics = (existingMetrics)->
-    angular.forEach(existingMetrics, (em, index)->
-      emProto = new MetricPrototype(em)
-      $scope.metrics.push emProto
+    angular.forEach(existingMetrics, (metric, index)->
+      metricObject = new MetricPrototype(metric)
+      $scope.metrics.push metricObject
+      $scope.pointsPossible += metricObject.max_points
     )
 
   $scope.existingMetrics = []
