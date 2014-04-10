@@ -22,6 +22,7 @@ class GradesController < ApplicationController
     redirect_to @assignment and return unless current_student.present?
     @grade = current_student_data.grade_for_assignment(@assignment)
     @rubric = @assignment.rubric
+    @metrics = existing_metrics_as_json if @rubric
     @score_levels = @assignment.score_levels.order_by_value
     @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
   end
@@ -216,6 +217,14 @@ class GradesController < ApplicationController
   end
 
   private
+
+  def existing_metrics_as_json
+    ActiveModel::ArraySerializer.new(rubric_metrics_with_tiers, each_serializer: ExistingMetricSerializer).to_json
+  end
+
+  def rubric_metrics_with_tiers
+    @rubric.metrics.order(:order).includes(:tiers)
+  end
 
   def set_assignment
     @assignment = current_course.assignments.find(params[:assignment_id]) if params[:assignment_id]
