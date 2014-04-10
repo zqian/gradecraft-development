@@ -56,14 +56,14 @@
           %label Verbose description about the parameters of the specific tier
 
     .row.centered(ng-repeat="metric in metrics")
-      .metric.small-3.columns(ng-click="
+      .metric.small-3.columns
         .row
           %label.larger
             %strong {{metric.name}}:
             {{metric.max_points}} Points
         .row
           %label {{metric.description}}
-      .tier.small-3.columns(ng-repeat="tier in metric.tiers")
+      .tier.small-3.columns(ng-repeat="tier in metric.tiers" ng-click="metric.gradeWithTier(tier)" ng-class="{selected: metric.isUsingTier(tier)}")
         .row
           %label.larger
             %strong {{tier.name}}:
