@@ -4,13 +4,42 @@
 
   $scope.pointsPossible = 0
 
-  $scope.init = (rubricId, metrics)->
+  $scope.init = (rubricId, metrics, assignmentId)->
     $scope.rubricId = rubricId
+    $scope.assignmentId = assignmentId
     $scope.addMetrics(metrics)
 
   $scope.showMetric = (attrs)->
     new MetricPrototype(attrs)
 
+  # count how many tiers have been selected in the UI
+  $scope.tiersSelected = []
+  $scope.selectedTiers = ()->
+    tiers = []
+    angular.forEach($scope.metrics, (metric, index)->
+      if metric.selectedTier
+        tiers.push metric.selectedTier
+    )
+    $scope.tiersSelected = tiers
+    tiers
+
+  # count how many points have been given from those tiers
+  $scope.pointsGiven = ()->
+    points = 0
+    angular.forEach($scope.metrics, (metric, index)->
+      if metric.selectedTier
+        points += metric.selectedTier.points
+    )
+    points 
+
+  $scope.submitGrade = ()->
+    if confirm "Are you sure you want to submit the grade for this assignment?"
+      self = this
+      $http.post("/rubric_grades.json", self.rubricGradeParams()).success(
+      )
+      .error(
+        alert("The grade was not successfully recorded.")
+      )
 
   MetricPrototype = (attrs={})->
     this.tiers = []
