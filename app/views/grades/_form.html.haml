@@ -33,7 +33,7 @@
           .bar
 
 - if @rubric
-  #rubric-grader
+  #rubric-grader(ng-app="gradecraft" ng-controller="GradeRubricCtrl" ng-init="init(#{@rubric[:id}, #{@metrics})")
     %h3.text-center#rubric-heading
       Grade Assignment by Rubric
       = link_to "(Edit)", design_assignment_rubric_path(@assignment)
@@ -55,7 +55,7 @@
         .row
           %label Verbose description about the parameters of the specific tier
 
-    - @rubric.metrics.each do |metric|
+    - @rubric.metrics.ordered.each do |metric|
       .row.centered
         .metric.small-3.columns
           .row
@@ -73,7 +73,7 @@
                 #{tier.points} points
             - unless tier.description.nil? or tier.description.blank?
               .row
-                %label tier.description
+                %label= tier.description
 
 - else
   = form_for @grade, url: assignment_grade_path(@assignment), method: :patch do |f|

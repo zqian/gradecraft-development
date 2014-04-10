@@ -7,6 +7,8 @@ class Metric < ActiveRecord::Base
   validates :name, presence: true
   validates :order, presence: true
 
+  scope :ordered, lambda { order(:order) }
+
   def description_missing?
     description.nil? or description.blank?
   end
