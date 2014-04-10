@@ -1,8 +1,7 @@
 class GradesController < ApplicationController
   respond_to :html, :json
-
-  before_filter :set_assignment, only: [:show, :edit, :update, :destroy]
-  before_filter :ensure_staff?, :except => [:self_log, :predict_score, :show]
+  before_filter :set_assignment, only: [:show, :edit, :update, :destroy, :submit_rubric]
+  before_filter :ensure_staff?, :except => [:self_log, :show, :predict_score]
   before_filter :ensure_student?, only: [:predict_score]
 
   def show
@@ -30,12 +29,23 @@ class GradesController < ApplicationController
   def update
     redirect_to @assignment and return unless current_student.present?
     @grade = current_student_data.grade_for_assignment(@assignment)
-    @grade.update_attributes(params[:grade])
+    @grade.update_attributes params[:grade]
     
     if @assignment.notify_released? && @grade.is_released?
       NotificationMailer.grade_released(@grade.id).deliver
     end
     redirect_to session[:return_to]
+  end
+
+  def submit_rubric
+    @grade = current_student_data.grade_for_assignment(@assignment)
+    @grade.update_attributes raw_score: params[:total_points]
+
+    if @assignment.notify_released? && @grade.is_released?
+      NotificationMailer.grade_released(@grade.id).deliver
+    end
+
+    respond_with @grade
   end
 
   def destroy

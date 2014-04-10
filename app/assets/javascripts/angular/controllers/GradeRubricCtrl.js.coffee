@@ -1,12 +1,15 @@
 @gradecraft.controller 'GradeRubricCtrl', ($scope, Restangular, $http) -> 
 
   $scope.metrics = []
+  $scope.gradedMetrics = []
 
   $scope.pointsPossible = 0
+  $scope.pointsGiven = 0
 
-  $scope.init = (rubricId, metrics, assignmentId)->
+  $scope.init = (rubricId, metrics, assignmentId, studentId)->
     $scope.rubricId = rubricId
     $scope.assignmentId = assignmentId
+    $scope.studentId = studentId
     $scope.addMetrics(metrics)
 
   $scope.showMetric = (attrs)->
@@ -32,10 +35,45 @@
     )
     points 
 
+  $scope.gradedMetrics = ()->
+    metrics = []
+    angular.forEach($scope.metrics, (metric, index)->
+      if metric.selectedTier
+        metrics.push metric.selectedTier
+    )
+    $scope.gradedMetrics = metrics
+    metrics 
+
+  $scope.gradedMetricsParams = ()->
+    params = []
+    angular.forEach($scope.gradedMetrics(), (metric, index)->
+       params.push {
+        metric_name: metric.name,
+        metric_description: metric.description,
+        max_points: metric.max_points,
+        order: metric.order,
+        tier_name: metric.selectedTier.name,
+        tier_description: metric.selectedTier.description,
+        points: metric.selectedTier.points,
+        submission_id: submission_id,
+        metric_id: metric.id,
+        tier_id: metric.selectedTier.id
+       }
+    )
+    params
+
+  $scope.gradedRubricParams = ()->
+    {
+      total_points: $scope.pointsGiven(),
+      rubric_id: $scope.rubricId,
+      student_id: $scope.studentId
+    }
+
   $scope.submitGrade = ()->
     if confirm "Are you sure you want to submit the grade for this assignment?"
       self = this
-      $http.post("/rubric_grades.json", self.rubricGradeParams()).success(
+      $http.put("/assignments/#{$scope.assignmentId}/grade/submit_rubric", self.gradedRubricParams()).success(
+        window.location = "/assignments/#{$scope.assignmentId}"
       )
       .error(
         alert("The grade was not successfully recorded.")
