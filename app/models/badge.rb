@@ -46,10 +46,14 @@ class Badge < ActiveRecord::Base
     earned_badges_by_student_id[[student.id]].try(:first)
   end
 
+  #Counting how many times a particular student has earned this badge
   def earned_badge_count_for_student(student)
      earned_badges.where(:student_id => student).count
   end
   
+  def earned_badge_total_value(student)
+    earned_badges.where(:student_id => student).pluck('score').sum
+  end
 
 
 end

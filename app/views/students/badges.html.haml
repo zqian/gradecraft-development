@@ -59,7 +59,7 @@
                     .bold= badge.name
                     = raw badge.description
                   - if current_course.valuable_badges?
-                    %td= points badge.point_total
+                    %td= points badge.earned_badge_total_value(current_student)
                   %td
                     - if current_student_data.earned_badge?(badge)
                       = current_student_data.earned_badge(badge).created_at
