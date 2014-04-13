@@ -14,12 +14,14 @@
       %hr
         .center
           %b Awarded:
-          =@badge.awarded_count
+          .label.round.bold.large=@badge.awarded_count
+          
       - if @badge.point_total?
         %hr
         .center
-          %b Value:
-          = "#{@badge.point_total} points"
+          %b Point Value:
+          ="#{@badge.point_total}"
+          
 
     .small-12.large-8.columns
       - if @badge.description?

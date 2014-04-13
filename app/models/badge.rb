@@ -46,9 +46,10 @@ class Badge < ActiveRecord::Base
     earned_badges_by_student_id[[student.id]].try(:first)
   end
 
-   def earned_badge_count_for_student(student)
-      earned_badges.where(:student_id => student).count
-   end
+  def earned_badge_count_for_student(student)
+     earned_badges.where(:student_id => student).count
+  end
+  
 
 
 end
