@@ -37,11 +37,11 @@
             %thead
               %tr
                 %th.center Icon
-                %th Count
+                %th Earned
                 %th{ :width => 300} Description
                 - if current_course.valuable_badges?
                   %th Value
-                %th Earned?
+                %th Date Earned
                 - if current_course.shared_badges? && current_student.badges_shared(current_course)
                   %th Share this with the class?
             %tbody
