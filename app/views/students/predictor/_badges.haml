@@ -3,7 +3,7 @@
     %li#slide-badges.assignmentType(data-assignment-type-id="badges" data-assignment-type-name)
       %h3.bold.collapse
         ="#{term_for :badges}"
-        .right.label.radius #{points current_student_data.earned_badge_score} possible points
+        .right.label.radius #{points current_student.earned_badge_score} possible points
       .slide-panel
         .row
         - current_course_data.badges.each do |badge|

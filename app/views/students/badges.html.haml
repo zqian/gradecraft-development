@@ -3,14 +3,21 @@
     = render "student_profile_tabs"
 
   .pagetitle= "#{term_for :badges}"
-  -if current_course.valuable_badges?  
-    %span
+  %span
+    -if current_course.valuable_badges?  
       - if current_user.is_student?
         %b My #{term_for :badge}  Points:
-        .label.round.bold=current_student_data.earned_badge_score
-      -else
+        .label.round.bold=current_student.earned_badges_score
+      - else
+        %b My #{term_for :badge}s Earned:
+        .label.round.bold=current_student.earned_badge_count_for_course(current_course)
+    -else
+      - if current_user.is_student?
         %b #{current_student.name}'s #{term_for :badge}  Points:
-        .label.round.bold=current_student_data.earned_badge_score
+        .label.round.bold=current_student.earned_badge_score
+      - else
+        %b #{current_student.name}'s #{term_for :badge}s Earned:
+        .label.round.bold=current_student.earned_badge_count_for_course(current_course)  
 
   .small-12.columns
     %dl.tabs{:data => {'tab' => true}}
