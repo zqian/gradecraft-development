@@ -89,8 +89,8 @@
 
     delete: (index)->
       self = this
-      if confirm("Are you sure you want to delete this metric? Deleting this metric will delete its tiers as well.")
-        if this.isSaved()
+      if this.isSaved()
+        if confirm("Are you sure you want to delete this metric? Deleting this metric will delete its tiers as well.")
           $http.delete("/metrics/#{self.id}").success(
             (data,status)->
               self.remove(index)
@@ -98,8 +98,8 @@
           .error((err)->
             alert("delete failed!")
           )
-        else
-          self.remove(index)
+      else
+        self.remove(index)
 
   $scope.addMetrics = (existingMetrics)->
     angular.forEach(existingMetrics, (em, index)->
@@ -179,8 +179,8 @@
 
      delete: (index)->
       self = this
-      if confirm("Are you sure you want to delete this tier?")
-        if this.isSaved()
+      if this.isSaved()
+        if confirm("Are you sure you want to delete this tier?")
           $http.delete("/tiers/#{self.id}").success(
             (data,status)->
               self.removeFromMetric(index)
@@ -190,8 +190,8 @@
             alert("delete failed!")
             return false
           )
-        else
-          self.removeFromMetric(index)
+      else
+        self.removeFromMetric(index)
      removeFromMetric: (index)->
        this.metric.tiers.splice(index,1)
 

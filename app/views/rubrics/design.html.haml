@@ -11,8 +11,10 @@
       %br
 
       .row
-        .metric.small-3.columns.heading Metrics
-        .tier.small-3.columns.heading Tiers
+        .metric.small-3.columns.heading
+          Metrics
+          %button#new-rubric-metric(type="button" ng-click="newMetric()") [ + New ]
+        .tier.small-8.columns.heading Tiers
 
       #metric-box(ng-cloak)
 
@@ -25,6 +27,5 @@
             + Tier
 
       .row.text-center
-        %button#new-rubric-metric(type="button" ng-click="newMetric()") Add Metric
 
   .clearfix

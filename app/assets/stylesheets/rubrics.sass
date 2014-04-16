@@ -5,6 +5,17 @@
   -o-transition: $property $duration
   transition: $property $duration
 
+@mixin linear-gradient($fromColor, $toColor)
+  background-color: $toColor //* Fallback Color */
+  background-image: -webkit-gradient(linear, left top, left bottom, from($fromColor), to($toColor)) /* Saf4+, Chrome */
+  background-image: -webkit-linear-gradient(top, $fromColor, $toColor) // Chrome 10+, Saf5.1+, iOS 5+ */
+  background-image:    -moz-linear-gradient(top, $fromColor, $toColor) /* FF3.6 */
+  background-image:     -ms-linear-gradient(top, $fromColor, $toColor) /* IE10 */
+  background-image:      -o-linear-gradient(top, $fromColor, $toColor) /* Opera 11.10+ */
+  background-image:         linear-gradient(top, $fromColor, $toColor)
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#{$fromColor}', EndColorStr='#{$toColor}')
+
+
 
 $light_green: #EFFFED 
 $dark_green: #54BA3F
@@ -31,7 +42,10 @@ $dark_red: #B40D0D
 
     &.saved
       background: #D3EBF5
-      border: 1px solid #9FE2FF
+      background: #BBE0EE
+      @include linear-gradient(#BBE0EE, #A2D8ED)
+      border: 1px solid #92CCE2
+
 
     &.animate-enter
       opacity: 1.0
@@ -76,10 +90,15 @@ $dark_red: #B40D0D
     border: 1px solid #ccc
     padding: 24px
     float: left
+    margin-right: 12px
+    margin-bottom: 12px
     
     &.saved
       border: 1px solid $dark_green
-      background: #EDF5EC
+      background: #B9E7AF
+      @include linear-gradient(#E2F6DE, #B9E7AF)
+      @include linear-gradient(#B9E7AF, #ACE3A0)
+
 
     button
       padding: 4px 8px
@@ -114,11 +133,14 @@ $dark_red: #B40D0D
 
   .metric, .tier
     &.heading
-      background: white
-      border: none
-      font-size: 16px
+      font-size: 19px
       font-style: italic
       color: #333
+      padding: 10px 16px
+
+    &.ng-invalid.saved
+      border: 1px solid #FF8786
+      background: #FEB1B0
 
   .add-tier
     background: $dark_green
@@ -129,7 +151,16 @@ $dark_red: #B40D0D
     float: left
 
   #new-rubric-metric
-    font-size: 20px
+    font-size: 14px
+    background: none
+    color: #269ECC
+    font-style: italic
+    background: #269ECC
+    background: #5BB4D6
+    background: none
+    margin: 0
+    margin-left: 4px
+    padding: 0
 
   .divider
-    margin-bottom: 32px
+    margin-bottom: 26px
