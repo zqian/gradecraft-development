@@ -70,10 +70,14 @@
               {{metric.max_points}} Points
             %label {{metric.description}}
           %td.tier(ng-repeat="tier in metric.tiers" ng-click="metric.gradeWithTier(tier)" ng-class="{selected: metric.isUsingTier(tier)}")
-            %label.larger
-              %strong {{tier.name}}:
-              {{tier.points}} points
-            %label {{tier.description}}
+            .row
+              .small-11.columns.tier-column
+                %label.larger.tier-heading
+                  %strong {{tier.name}}:
+                  {{tier.points}} points
+                %label {{tier.description}}
+              .small-1.columns.tier-column
+                %input.tier-select(type='radio' name="metric_tier_{{metric.id}}" ng-checked="metric.isUsingTier(tier)")
 
     %br
     .row.text-center.points-given
