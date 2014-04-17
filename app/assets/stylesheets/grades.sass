@@ -19,9 +19,6 @@ $dark_red: #B40D0D
     border: 1px solid #ccc
     padding: 12px 28px
 
-    .points
-      font-size: 21px
-
     .name
       font-size: 16px
 
@@ -42,13 +39,18 @@ $dark_red: #B40D0D
   .metric
     background: #D3EBF5
     border: 1px solid #9FE2FF
+    cursor: auto
 
     label.larger
       font-size: 20px
 
+    label
+      cursor: auto
+
     &.heading
       background: #D3EBF5 + #111
       border: 1px solid (#9FE2FF + #111)
+      cursor: auto
 
     input.ng-pristine.ng-invalid
       border: 1px solid #6CC7EC
@@ -75,12 +77,22 @@ $dark_red: #B40D0D
       font-size: 28px
 
   .tier
-    background: #FFD292
-    border: 1px solid #FFC36B
+    background: #efefef
+    border: 1px solid #ddd
+    cursor: pointer
+    cursor: hand
 
     &.heading
-      background: #FFD292 + #111
-      border: 1px solid (#FFC36B + #111)
+      background: #555
+      border: 1px solid #333
+
+    &.heading
+      background: #FFFD8C
+      border: 1px solid #F6F21A
+      cursor: auto
+
+      label
+        cursor: auto
 
     .heading
       font-size: 17px
@@ -91,6 +103,10 @@ $dark_red: #B40D0D
     &.selected
       background: #D9FF8C
       border: 1px solid #BEF64E
+
+    &:hover:not(.heading), &.selected:hover:not(.heading)
+      background: #E1FFA3
+      border: 1px solid #D6FF7F
       
   .submit-grade-container
     margin-top: 20px
@@ -112,3 +128,25 @@ $dark_red: #B40D0D
       width: 100%
       padding: 80px 0
       margin-bottom: 32px
+
+  #submit-grade
+    font-size: 16px
+    color: white
+    font-style: italic
+    background: #269ECC
+    padding: 12px 21px
+    margin-top: 6px
+
+    &:hover
+      background: #269ECC + #111
+
+
+
+  .points-given
+    background: none
+    border: none
+
+    .points-label
+      font-size: 24px
+    .points
+      font-size: 24px

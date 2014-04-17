@@ -38,7 +38,7 @@
     %h3.text-center#rubric-heading
       Grade Assignment by Rubric
       = link_to "(Edit)", design_assignment_rubric_path(@assignment)
-    %h4.text-center (select a tier for each metric)
+    %h4.text-center (click to select or de-select a tier for each metric)
     %br
 
     #rubric-grader-splash.large-12.columns.text-center(ng-cloak)
@@ -54,15 +54,13 @@
               %strong Metric:
               Max points
             %label Verbose description about the ramifications of the metric
-          %td.tier.heading
+          %td.tier.heading(colspan="#{@rubric.max_tier_count}")
             %label.larger
               %strong Tier Name:
               Point value
             %label Verbose description about the parameters of the specific tier
           %td.points-given
             %label.larger
-              %strong Points Given:
-              %span.points {{pointsGiven()}}/{{pointsPossible}}
 
       %tbody
         %tr(ng-repeat="metric in metrics")
@@ -78,7 +76,10 @@
             %label {{tier.description}}
 
     %br
-    .row.text-center.submit-grade-container
+    .row.text-center.points-given
+      %span.points-label Points Awarded:
+      %span.points {{pointsGiven()}}/{{pointsPossible}}
+    .row.text-center
       %button#submit-grade(ng-click="submitGrade()" ng-disabled="selectedTiers().length == 0") Submit Grade
 
 - else

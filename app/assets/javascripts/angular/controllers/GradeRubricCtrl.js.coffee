@@ -77,7 +77,6 @@
         window.location = "/assignments/#{$scope.assignmentId}"
       )
       .error(
-        alert("The grade was not successfully recorded.")
       )
 
   MetricPrototype = (attrs={})->

@@ -47,7 +47,7 @@ class GradesController < ApplicationController
       NotificationMailer.grade_released(@grade.id).deliver
     end
 
-    respond_with @grade
+    render status: 200, json: {}
   end
 
   def destroy
