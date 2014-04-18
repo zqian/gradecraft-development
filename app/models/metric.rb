@@ -36,10 +36,10 @@ class Metric < ActiveRecord::Base
   end
 
   def create_full_credit_tier
-    tiers.create name: "Full Credit", points: max_points, full_credit: true, durable: true
+    tiers.create name: "Full Credit", points: max_points, full_credit: true, durable: true, order: 0
   end
 
   def create_no_credit_tier
-    tiers.create name: "No Credit", points: 0, no_credit: true, durable: true
+    tiers.create name: "No Credit", points: 0, no_credit: true, durable: true, order: 1000
   end
 end

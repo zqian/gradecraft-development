@@ -3,6 +3,6 @@ class ExistingMetricSerializer < ActiveModel::Serializer
   has_many :tiers, serializer: ExistingTierSerializer
 
   def tiers
-    object.tiers.order("points DESC, created_at ASC")
+    object.tiers.order("sort_order ASC, points DESC, created_at ASC")
   end
 end

@@ -2525,7 +2525,8 @@ CREATE TABLE tiers (
     updated_at timestamp without time zone,
     full_credit boolean,
     no_credit boolean,
-    durable boolean
+    durable boolean,
+    sort_order integer
 );
 
 
@@ -3860,3 +3861,7 @@ INSERT INTO schema_migrations (version) VALUES ('20140418142023');
 INSERT INTO schema_migrations (version) VALUES ('20140418142714');
 
 INSERT INTO schema_migrations (version) VALUES ('20140418162054');
+
+INSERT INTO schema_migrations (version) VALUES ('20140418164458');
+
+INSERT INTO schema_migrations (version) VALUES ('20140418165001');

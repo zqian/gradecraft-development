@@ -28,7 +28,7 @@
     addTier: (attrs={})->
       self = this
       newTier = new TierPrototype(self, attrs)
-      this.tiers.push newTier
+      this.tiers.splice(-1, 0, newTier)
     addTiers: (tiers)->
       self = this
       angular.forEach(tiers, (tier,index)->
