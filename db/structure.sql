@@ -2521,7 +2521,10 @@ CREATE TABLE tiers (
     points integer,
     metric_id integer,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    full_credit boolean,
+    no_credit boolean,
+    durable boolean
 );
 
 
@@ -3850,3 +3853,7 @@ INSERT INTO schema_migrations (version) VALUES ('20140308211252');
 INSERT INTO schema_migrations (version) VALUES ('20140308211414');
 
 INSERT INTO schema_migrations (version) VALUES ('20140308212102');
+
+INSERT INTO schema_migrations (version) VALUES ('20140418142023');
+
+INSERT INTO schema_migrations (version) VALUES ('20140418142714');
