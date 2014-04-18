@@ -17,7 +17,7 @@
           - @grade.grade_files.each do |gf|
             %li
               = link_to gf.filename, gf.url
-              = link_to "(Remove)", remove_uploads_path({ :model => "GradeFile", :grade_id => @grade.id, :upload_id => gf.id } )
+              //= link_to "(Remove)", remove_uploads_path({ :model => "GradeFile", :grade_id => @grade.id, :upload_id => gf.id } )
 
 = simple_form_for @grade, url: assignment_grade_path(@assignment), method: :patch do |f|
 
