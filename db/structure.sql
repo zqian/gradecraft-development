@@ -2062,7 +2062,8 @@ CREATE TABLE metrics (
     rubric_id integer,
     "order" integer,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    full_credit_tier_id integer
 );
 
 -- Name: metrics_id_seq; Type: SEQUENCE; Schema: public; Owner: -
@@ -3857,3 +3858,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140308212102');
 INSERT INTO schema_migrations (version) VALUES ('20140418142023');
 
 INSERT INTO schema_migrations (version) VALUES ('20140418142714');
+
+INSERT INTO schema_migrations (version) VALUES ('20140418162054');

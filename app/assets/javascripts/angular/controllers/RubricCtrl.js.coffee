@@ -40,8 +40,11 @@
       this.id != null
     change: ()->
       self = this
+      this.updateFullCreditTier()
       if this.isSaved()
         self.hasChanges = true
+    updateFullCreditTier: ()->
+      this.tiers[0].points = this.max_points
     resetChanges: ()->
       this.hasChanges = false
     resourceUrl: ()->
