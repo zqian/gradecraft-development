@@ -13,7 +13,7 @@ class MetricsController < ApplicationController
 
   def create
     @metric = Metric.create params[:metric]
-    respond_with @metric, layout: false
+    respond_with @metric, layout: false, serializer: ExistingMetricSerializer
   end
 
   def destroy
@@ -35,6 +35,11 @@ class MetricsController < ApplicationController
   end
 
   private
+
+  def serialized_metric
+    ExistingMetricSerializer.new(@metric.includes(:tiers)).to_json
+  end
+
   def find_metric
     @metric = Metric.find params[:id]
   end

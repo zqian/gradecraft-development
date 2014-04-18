@@ -18,7 +18,7 @@ class Metric < ActiveRecord::Base
   protected
 
   def generate_default_tiers
-    tiers.create points: max_points, full_credit: true, durable: true
-    tiers.create points: 0, no_credit: true, durable: true
+    tiers.create name: "Full Credit", points: max_points, full_credit: true, durable: true
+    tiers.create name: "No Credit", points: 0, no_credit: true, durable: true
   end
 end

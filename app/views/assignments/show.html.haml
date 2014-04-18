@@ -18,10 +18,12 @@
       Display Rubric
     - else
       %h3!= link_to "Design Rubric", design_assignment_rubric_path(@assignment)
-    - if @assignment.has_groups?
-      = render "group_show"
-    - else
-      = render "individual_show"
+
+    .small-12.columns
+      - if @assignment.has_groups?
+        = render "group_show"
+      - else
+        = render "individual_show"
   - else
     .small-12.columns
       - if @assignment.has_groups?

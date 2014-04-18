@@ -129,7 +129,10 @@
     this.metric = metric
     this.metric_id = metric.id
     this.name = attrs.name or ""
-    this.points = attrs.points || null
+    this.points = attrs.points
+    this.full_credit = attrs.full_credit or false
+    this.no_credit = attrs.no_credit or false
+    this.durable = attrs.durable or false
     this.description = attrs.description or ""
     this.resetChanges()
   TierPrototype.prototype =
