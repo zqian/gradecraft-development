@@ -1,7 +1,8 @@
 .small-12.columns
   %h4
     %span.bold= "#{term_for :group}:"
-    - @group = current_student.group_for_assignment(@assignment)
+    - if current_user.is_student?
+      - @group = current_student.group_for_assignment(@assignment)
     - if @group.present?
       = link_to @group.name, group_path(@group)
 
