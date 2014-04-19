@@ -5,6 +5,22 @@
   $scope.metrics = []
   $scope.savedMetricCount = 0
 
+  # distill key/value pairs for metric ids and relative order
+  $scope.pointsAssigned = ()->
+    points = 0
+    angular.forEach($scope.metrics, (metric, index)->
+      points += metric.max_points if metric.max_points
+    )
+    points or 0
+
+  $scope.pointsRemaining = (total)->
+    pointsAssigned = $scope.pointsAssigned()
+    pointsRemaining = total - pointsAssigned
+    if pointsRemaining > 0
+      pointsRemaining
+    else
+      0
+
   $scope.init = (rubricId, metrics)->
     $scope.rubricId = rubricId
     $scope.addMetrics(metrics)

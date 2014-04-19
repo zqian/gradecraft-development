@@ -3,10 +3,10 @@
     %input(type="text" ng-model="tier.name" placeholder="Tier Name" required ng-blur="tier.modify(tierForm)" ng-change="tier.change()")
   .small-4.columns(style="padding:0")
     %input(type="number" ng-model="tier.points" placeholder="Points" min=0 ng-blur="tier.modify(tierForm)" ng-change="tier.change()" required ng-disabled="tier.durable")
-
     
 .row
   %input(type="text" ng-model="tier.description" placeholder="Description" value="{{tier.description}}" ng-blur="tier.modify(tierForm)" ng-change="tier.change()")
 %button.delete(type="button" ng-click="tier.delete($index)" ng-hide="tier.durable") X
-.messages(ng-show="tier.fullCredit") Full Credit
-.messages(ng-show="tier.noCredit") No Credit
+.messages(ng-show="tier.fullCredit") Full Credit Level
+.messages(ng-show="tier.noCredit") No Credit Level
+.messages(ng-hide="tier.durable") Level

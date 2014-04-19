@@ -1,10 +1,16 @@
 = csrf_meta_tag
 .small-12.panel.mainContent
   .small-12.columns
-    %br
-    %br
-    %h3 Design Rubric for "#{@assignment.name}"
     #rubric(ng-app="gradecraft" ng-controller="RubricCtrl" ng-init="init(#{@rubric[:id]}, #{@metrics})")
+      %br
+      %br
+      #rubric-title
+        %h3 Design Rubric for "#{@assignment.name}"
+        %h5.subtitle Rubric is saved dynamically and does not need to be "submitted"
+      #points-overview
+        %h4#points-assigned {{pointsAssigned()}}/#{@assignment.point_total} Points Assigned
+        %h4#points-remaining {{pointsRemaining(#{@assignment.point_total})}} Points Remaining
+      .clear
 
       .splash(ng-cloak) Loading rubric...
       %br
@@ -15,7 +21,7 @@
       .row
         .metric.small-3.columns.heading
           Criteria
-          %button#add-metric(type="button" ng-click="newMetric()") + New Metric
+          %button#add-metric(type="button" ng-click="newMetric()") + New Criterion
         .tier.small-8.columns.heading Levels
 
       #metric-box(ng-cloak)
@@ -27,8 +33,10 @@
             = render "rubrics/new_tier"
           %button.add-tier(name="newTier" ng-click="metric.addTier()" ng-show="metric.isSaved()")
             + Tier
+          .clear
+          .order-label {{$index + 1}}
 
       .row
-        %button#new-rubric-metric(type="button" ng-click="newMetric()") + Metric
+        %button#new-rubric-metric(type="button" ng-click="newMetric()") + Criterion
 
   .clearfix

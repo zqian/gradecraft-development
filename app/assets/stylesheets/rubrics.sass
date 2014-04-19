@@ -22,6 +22,8 @@ $dark_green: #54BA3F
 $inactive_red: #DC9A9A
 $dark_red: #B40D0D
 
+$badass_blue: #269ECC
+
 .splash
   display: none
 
@@ -33,6 +35,33 @@ $dark_red: #B40D0D
     font-size: 26px
 
 #rubric
+  h5.subtitle
+    font-style: italic
+    color: #666#555
+
+  #rubric-title
+    float: left
+
+  .clear
+    clear: both
+
+  #points-overview
+    float: right
+    display: block
+    border: 1px solid #ddd
+    padding: 12px 24px
+    margin-right: 20px
+
+  h4#points-assigned
+    font-weight: bold
+    font-size: 17px
+    color: $badass_blue
+  h4#points-remaining
+    font-size: 14px
+    font-style: italic
+    font-weight: normal
+    color: #666
+
   .metric
     background: #eee
     border: 1px solid #ccc
@@ -95,6 +124,7 @@ $dark_red: #B40D0D
 
         &:hover
           background: $dark_red
+    
 
   .tier
     background: #eee
@@ -183,16 +213,15 @@ $dark_red: #B40D0D
     font-size: 16px
     color: white
     font-style: italic
-    background: #269ECC
+    background: $badass_blue
     padding: 12px 21px
     margin-top: -8px
 
   #add-metric
     font-size: 14px
     background: none
-    color: #269ECC
+    color: $badass_blue
     font-style: italic
-    background: #269ECC
     background: #5BB4D6
     background: none
     margin: 0
@@ -215,3 +244,17 @@ $dark_red: #B40D0D
     padding: 10px
     cursor: move
     border-left: 2px solid #999
+
+    .order-label
+      position: relative
+      display: block
+      float: right
+      right: 0
+      top: 0
+      background: $badass_blue
+      padding: 6px
+      color: white
+      font-style: italic
+      font-size: 14px
+      margin-top: -10px
+      margin-right: -10px
