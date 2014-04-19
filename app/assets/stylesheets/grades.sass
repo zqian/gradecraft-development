@@ -9,10 +9,33 @@ $light_green: #EFFFED
 $dark_green: #54BA3F
 $inactive_red: #DC9A9A
 $dark_red: #B40D0D
+$badass_blue: #269ECC
 
 #rubric-grader
-  %table
-    margin-top: 20px
+
+  .clear
+    clear: both
+
+  .heading
+    margin: 0 auto
+
+  #rubric-heading
+    float: left
+  #points-overview
+    display: block
+    border: 1px solid #ddd
+    padding: 12px 24px 8px 24px
+    margin-left: 14px
+    margin-top: -8px
+    float: left
+
+  h4#points-assigned
+    font-weight: bold
+    font-size: 17px
+    color: $badass_blue
+
+  table
+    margin-top: 8px
 
   .metric, .tier, .points-given
     background: #eee
@@ -104,9 +127,8 @@ $dark_red: #B40D0D
       position: relative
 
     input[type=radio].tier-select
-      top: 20px
-      position: absolute
-      padding-left: 8px
+      float: right
+      margin-right: 4px
 
     .heading
       font-size: 17px

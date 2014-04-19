@@ -35,11 +35,17 @@
 - if @rubric
   #rubric-grader(ng-app="gradecraft" ng-controller="GradeRubricCtrl" ng-init="init(#{@rubric[:id]}, #{@metrics}, #{@assignment[:id]}, #{params[:student_id]})")
 
-    %h3.text-center#rubric-heading
-      Grade Assignment by Rubric
-      = link_to "(Edit)", design_assignment_rubric_path(@assignment)
-    %h4.text-center (click to select or de-select a tier for each metric)
-    %br
+    .row
+      #rubric-heading.small-7.columns
+        %h3.text-right
+          Grade Assignment by Rubric
+          = link_to "(Edit)", design_assignment_rubric_path(@assignment)
+        %h4.text-right (click to select or de-select a tier for each metric)
+        %br
+
+      #points-overview
+        %h4#points-assigned {{pointsGiven()}}/{{pointsPossible}} Points Assigned
+      .clear
 
     #rubric-grader-splash.large-12.columns.text-center(ng-cloak)
       Loading assignment...
@@ -71,13 +77,11 @@
             %label {{metric.description}}
           %td.tier(ng-repeat="tier in metric.tiers" ng-click="metric.gradeWithTier(tier)" ng-class="{selected: metric.isUsingTier(tier)}")
             .row
-              .small-11.columns.tier-column
-                %label.larger.tier-heading
-                  %strong {{tier.name}}:
-                  {{tier.points}} points
-                %label {{tier.description}}
-              .small-1.columns.tier-column
-                %input.tier-select(type='radio' name="metric_tier_{{metric.id}}" ng-checked="metric.isUsingTier(tier)")
+              %label.larger.tier-heading
+                %strong {{tier.name}}:
+                {{tier.points}} points
+              %label {{tier.description}}
+              %input.tier-select(type='radio' name="metric_tier_{{metric.id}}" ng-checked="metric.isUsingTier(tier)")
 
     %br
     .row.text-center.points-given

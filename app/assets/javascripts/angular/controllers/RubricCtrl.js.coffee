@@ -5,6 +5,7 @@
   $scope.metrics = []
   $scope.savedMetricCount = 0
 
+
   # distill key/value pairs for metric ids and relative order
   $scope.pointsAssigned = ()->
     points = 0
@@ -21,8 +22,9 @@
     else
       0
 
-  $scope.init = (rubricId, metrics)->
+  $scope.init = (rubricId, pointTotal, metrics)->
     $scope.rubricId = rubricId
+    $scope.pointTotal = pointTotal
     $scope.addMetrics(metrics)
 
   $scope.showMetric = (attrs)->
