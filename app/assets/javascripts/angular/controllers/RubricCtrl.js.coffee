@@ -32,8 +32,12 @@
     addTiers: (tiers)->
       self = this
       angular.forEach(tiers, (tier,index)->
-        self.addTier(tier)
+        self.loadTier(tier)
       )
+    loadTier: (attrs={})->
+      self = this
+      newTier = new TierPrototype(self, attrs)
+      this.tiers.push newTier
     isNew: ()->
       this.id is null
     isSaved: ()->
@@ -133,8 +137,8 @@
     this.metric_id = metric.id
     this.name = attrs.name or ""
     this.points = attrs.points
-    this.full_credit = attrs.full_credit or false
-    this.no_credit = attrs.no_credit or false
+    this.fullCredit = attrs.full_credit or false
+    this.noCredit = attrs.no_credit or false
     this.durable = attrs.durable or false
     this.description = attrs.description or ""
     this.resetChanges()
