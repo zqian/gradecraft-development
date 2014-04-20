@@ -39,28 +39,35 @@ class Team < ActiveRecord::Base
     earned_badges.count
   end
 
-  def average_grade
+  #Calculating the average 
+  def average_points
     total_score = 0
     students.each do |student|
       total_score += (student.cached_score_for_course(course) || 0 )
     end
     if member_count > 0
-      average_grade = total_score / member_count
+      average_points = total_score / member_count
     end
   end
 
+  #Summing all of the points the team has earned across their challenges
   def challenge_grade_score
     challenge_grades.sum('score') || 0
   end
 
   private
+
+  #Teams rack up points in two ways, which is used is determined by the instructor in the course settings.
+  #The first way is that the team's score is the average of its students' scores
+  #The second way is that the teams compete in team challenges that earn the team points. At the end of the 
+  #semester these usually get added back into students' scores - this has not yet been built into GC.
   def cache_score
     if self.course.team_score_average?
       if self.score_changed?
-        self.score = average_grade
+        self.score = average_points
       end
     else
-      self.score = challenge_grades.sum('score')
+      self.score = challenge_grade_score
     end
   end
 

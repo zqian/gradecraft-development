@@ -16,7 +16,7 @@
             - else
               = team.name
           - if current_course.team_score_average?
-            %td= points team.try(:average_grade)
+            %td= points team.try(:average_points)
           - else
             %td= points team.try(:score)
           %td= i

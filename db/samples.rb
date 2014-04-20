@@ -2,7 +2,7 @@ user_names = ['Ron Weasley','Fred Weasley','Harry Potter','Hermione Granger','Co
 
 team_names = ['Harm & Hammer', 'Abusement Park','Silver Woogidy Woogidy Woogidy Snakes','Carpe Ludus','Eduception','Operation Unthinkable','Team Wang','The Carpal Tunnel Crusaders','Pwn Depot']
 
-badge_names = ['Dream Interpreter', 'Inner Eye', 'Patronus Producer','Cheerful Charmer','Invisiblity Cloak','Marauders Map','Lumos','Rune Reader','Tea Leaf Guru','Wizard Chess Grand Master','Green Thumb','Gamekeeper','Seeker','Alchemist','Healer','Parseltongue','House Cup']
+badge_names = ['Creative', 'Inner Eye', 'Patronus Producer','Cheerful Charmer','Invisiblity Cloak','Marauders Map','Lumos','Rune Reader','Tea Leaf Guru','Wizard Chess Grand Master','Green Thumb','Gamekeeper','Seeker','Alchemist','Healer','Parseltongue','House Cup']
 
 badge_icons = ['/badges/above_and_beyond.png','/badges/always_learning.png','/badges/awesome_aggregator.png','/badges/concentrator.png','/badges/courageous_failure.png','/badges/early_bird_special.png','/badges/examination_expert.png','/badges/gaining_experience.png','/badges/gamer.png','/badges/great_critic.png','/badges/learning_from_mistakes.png','/badges/level_one.png','/badges/participatory_democrat.png','/badges/personal.png','/badges/practice_makes_perfect.png','/badges/presentation_of_self.png','/badges/public_speaker.png']
 
