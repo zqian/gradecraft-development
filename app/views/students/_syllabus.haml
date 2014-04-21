@@ -111,7 +111,7 @@
                           - grade = current_student_data.grade_for_assignment(assignment)
                           = link_to "Edit Grade", group_grade_assignment_path(assignment, :group_id => current_student.group_for_assignment(assignment)), :class => 'button tiny radius secondary'
                         - else
-                          = link_to 'Grade', group_grade_assignment_path("assignment_id"=>assignment.id, :group_id => current_student.group_for_assignment(assignment)), :class => 'button tiny radius'
+                          = link_to 'Grade', group_grade_assignment_path(assignment, :group_id => current_student.group_for_assignment(assignment)), :class => 'button tiny radius'
 
     .clearfix
 
