@@ -1,9 +1,8 @@
 class AssignmentType < ActiveRecord::Base
   attr_accessible :due_date_present, :levels, :max_value, :name,
     :percentage_course, :point_setting, :points_predictor_display,
-    :predictor_description, :resubmission, :universal_point_value, :course,
-    :course_id, :order_placement, :student_weightable, :mass_grade,
-    :score_levels_attributes, :score_level, :mass_grade_type, :course,
+    :predictor_description, :resubmission, :universal_point_value, :order_placement, 
+    :student_weightable, :mass_grade, :score_levels_attributes, :score_level, :mass_grade_type, 
     :student_logged_revert_button_text, :student_logged_button_text,
     :notify_released, :include_in_timeline, :include_in_predictor, :include_in_to_do
 
@@ -87,12 +86,14 @@ class AssignmentType < ActiveRecord::Base
     mass_grade_type == "Set per Assignment"
   end
 
+  #Getting the assignment types max value if it's present, else summing all it's assignments to create the total
   def max_value
     super.presence || assignments.map{ |a| a.point_total }.sum
   end
 
   private
 
+  #Checking to make sure there are score levels and warning if not
   def ensure_score_levels
     if score_levels.count <= 1
       errors.add(:assignment_type, "To use the selected method of quick grading you must create at least 2 score levels")

@@ -1,7 +1,9 @@
 .small-12.panel.mainContent
-  / Criteria Levels Navigation
+  / Analytics Navigation
   = content_nav do
     = render "tabs"
+
+  .pagetitle= "#{term_for :students} Analytics"
 
   .small-12.columns
 
@@ -60,10 +62,12 @@
         %tbody
 
     %hr
-    #per-student-analytics.small-12
+    
+  .clearfix
 
-      %h2 Student Analytics
-      .small-12.medium-4= select_tag :user, options_from_collection_for_select(current_course_data.students, "id", "name"), :id => 'per-student-select', :prompt => "Select Student"
+  .pagetitle Per Student Analytics
+  #per-student-analytics.small-12.columns
+    .small-12.medium-4= select_tag :user, options_from_collection_for_select(current_course_data.students, "id", "name"), :id => 'per-student-select', :prompt => "Select Student"
 
     /
       %h3 Logins
@@ -72,7 +76,7 @@
       %h3 Average Login Frequency
       (per week, over time)
 
-    %h3 User Pageviews
+    %h4 User Pageviews
     .small-12.medium-6.columns
       / Pageviews Total
       = analytics_chart_inputs('all-user-pageviews-chart', 'past_week')

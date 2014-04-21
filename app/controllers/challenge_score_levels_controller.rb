@@ -1,5 +1,7 @@
 class ChallengeScoreLevelsController < ApplicationController
 
+  #Challenge Score Levels are used to build structured grade levels that instructors can pick from when grading
+
   before_filter :ensure_staff?
 
   def create

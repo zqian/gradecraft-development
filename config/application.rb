@@ -23,7 +23,7 @@ module GradeCraft
       g.orm :active_record
       g.stylesheets :false
       g.template_engine :haml
-      g.test_framework :mini_test
+      g.test_framework :mini_test, :spec => true
     end
   end
 end

@@ -25,13 +25,12 @@
               %td
                 .button-bar
                   %ul.button-group.right.round
-                    %li= link_to "Quick Grade", mass_grade_assignment_path(assignment), :class => "button tiny alert"
-                    %li= link_to "Grade", assignment_path(assignment), :class => "button tiny alert"
-                    %li= link_to "Edit", edit_assignment_path(assignment), :class => 'button tiny alert'
+                    %li= link_to "Quick Grade", mass_grade_assignment_path(assignment), :class => "button tiny"
+                    %li= link_to "Edit", edit_assignment_path(assignment), :class => 'button tiny'
                     %li
-                      %a{:href => assignment_path(assignment), :data => { confirm: 'Are you sure?', method: :delete }, :class => "button tiny alert" }
+                      %a{:href => assignment_path(assignment), :data => { confirm: 'Are you sure?', method: :delete }, :class => "button tiny" }
                         Delete
-                    %li= link_to "Copy", copy_assignments_path(:id => assignment), :class => 'button tiny alert', :method => :copy
+                    %li= link_to "Copy", copy_assignments_path(:id => assignment), :class => 'button tiny', :method => :copy
             - else
               - if assignment.accepts_submissions? && assignment.has_groups?
                 - if current_student.group_for_assignment(assignment)

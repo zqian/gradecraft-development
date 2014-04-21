@@ -1,10 +1,9 @@
 class Assignment < ActiveRecord::Base
   attr_accessible :name, :description, :point_total, :open_at, :due_at, :grade_scope, :visible, :required, 
-    :accepts_submissions, :student_logged_button_text, :student_logged, :release_necessary, :media,
-    :thumbnail, :media_credit, :caption, :media_caption, :accepts_submissions_until, :points_predictor_display,
-    :notify_released, :mass_grade_type, :include_in_timeline, :include_in_predictor, 
-    :grades_attributes, :assignment_file_ids, :assignment_files_attributes, :assignment_file, 
-    :assignment_score_levels_attributes, :assignment_score_level, :score_levels_attributes
+    :accepts_submissions, :release_necessary, :media, :thumbnail, :media_credit, :media_caption, 
+    :accepts_submissions_until, :points_predictor_display, :notify_released, :mass_grade_type, 
+    :include_in_timeline, :include_in_predictor, :grades_attributes, :assignment_file_ids, 
+    :assignment_files_attributes, :assignment_file, :assignment_score_levels_attributes, :assignment_score_level, :score_levels_attributes
 
   belongs_to :course
   belongs_to :assignment_type, -> { order('order_placement ASC') }
@@ -13,11 +12,11 @@ class Assignment < ActiveRecord::Base
   #For instances where the assignment inherits the score levels through the assignment type
   has_many :score_levels, :through => :assignment_type
 
-  #for instances where the assignment needs it's own unique score levels
+  #for instances where the assignment needs its own unique score levels
   has_many :assignment_score_levels
   accepts_nested_attributes_for :assignment_score_levels, allow_destroy: true, :reject_if => proc { |a| a['value'].blank? || a['name'].blank? }
   
-  #This is the assignment weighting system
+  #This is the assignment weighting system (students decide how much assignments will be worth for them)
   has_many :weights, :class_name => 'AssignmentWeight'
 
   #Student created groups, can connect to multiple assignments and receive group level or individualized feedback
@@ -82,6 +81,7 @@ class Assignment < ActiveRecord::Base
   scope :graded_for_student, ->(student) { where('EXISTS(SELECT 1 FROM grades WHERE assignment_id = assignments.id AND (status = ?) OR (status = ? AND NOT assignments.release_necessary) AND (assignments.due_at < NOW() OR student_id = ?))', 'Released', 'Graded', student.id) }
   scope :weighted_for_student, ->(student) { joins("LEFT OUTER JOIN assignment_weights ON assignments.id = assignment_weights.assignment_id AND assignment_weights.student_id = '#{sanitize student.id}'") }
 
+
   def to_json(options = {})
     super(options.merge(:only => [ :id, :content, :order, :done ] ))
   end
@@ -136,7 +136,7 @@ class Assignment < ActiveRecord::Base
     return (sorted_grades[(len - 1) / 2] + sorted_grades[len / 2]) / 2.0
   end
 
-  #Default of individual scope
+  #Checking to see if an assignment is individually graded 
   def is_individual?
     !['Group'].include? grade_scope
   end
@@ -144,11 +144,6 @@ class Assignment < ActiveRecord::Base
   #Checking to see if the assignment is a group assignment
   def has_groups?
     grade_scope=="Group"
-  end
-
-  #Currently we only have Assignments available to individuals and groups, but perhaps we should switch them to use assignments rather than challenges
-  def has_teams?
-    grade_scope=="Team"
   end
 
   #If the point value is set at the assignment type level, grab it from there (commonly used for things like Attendance)
@@ -232,18 +227,7 @@ class Assignment < ActiveRecord::Base
   def select?
     points_predictor_display == "Select List"
   end
-
-  def has_levels?
-   self.assignment_score_levels.present?
-  end
-
-  def grade_level(grade)
-    score_levels.each do |score_level|
-      return score_level.name if grade.raw_score == score_level.value
-    end
-    nil
-  end
-
+  
   #The below four are the Quick Grading Types, can be set at either the assignment or assignment type level
   def grade_checkboxes?
     assignment_type.mass_grade_type == "Checkbox" || self.mass_grade_type == "Checkbox"
@@ -261,6 +245,20 @@ class Assignment < ActiveRecord::Base
     assignment_type.mass_grade_type == "Text" || self.mass_grade_type == "Text"
   end
 
+  #Checking to see if an assignment has related score levels
+  def has_levels?
+   self.assignment_score_levels.present?
+  end
+
+  #Finding what grade level was earned for a particular assignment
+  def grade_level(grade)
+    score_levels.each do |score_level|
+      return score_level.name if grade.raw_score == score_level.value
+    end
+    nil
+  end
+
+  #Using the parent assignment type's score levels if they're present - otherwise getting the assignment score levels
   def score_levels_set
     if assignment_type.score_levels.present?
       assignment_type.score_levels
@@ -274,11 +272,12 @@ class Assignment < ActiveRecord::Base
     (open_at != nil && open_at < Time.now) && (due_at != nil && due_at > Time.now)
   end
 
-  #Counting how many non-zero grades there are for an assignment
+  #Counting how many grades there are for an assignment
   def grade_count
     grades.graded.count
   end
 
+  #Counting how many non-zero grades there are for an assignment
   def positive_grade_count
     grades.where("score > 0").count
   end
@@ -317,6 +316,7 @@ class Assignment < ActiveRecord::Base
     Hash[grades.graded.group_by{ |g| g.score }.map{ |k, v| [k, v.size / grades.graded.count.to_f] }]
   end
 
+  # Creating an array with the set of scores earned on the assignment, and 
   def percentage_score_earned
     scores = []
     percentage_score_count.each do |score|
@@ -329,6 +329,7 @@ class Assignment < ActiveRecord::Base
 
   private
 
+  #Stripping the description of extra code
   def clean_html
     self.description = Sanitize.clean(description, Sanitize::Config::BASIC)
   end

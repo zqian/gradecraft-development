@@ -9,16 +9,15 @@ GradeCraft::Application.routes.draw do
   #3. Assignment Types
   #4. Assignment Type Weights
   #5. Badges
-  #6. Categories
-  #7. challenges
-  #8. Courses
-  #9. Groups
-  #10. Informational Pages
-  #11. Rubrics & Grade Schemes
-  #12. Teams
-  #13. Users
-  #14. User Auth
-  #15. Uploads
+  #6. Challenges
+  #7. Courses
+  #8. Groups
+  #9. Informational Pages
+  #10. Rubrics & Grade Schemes
+  #11. Teams
+  #12. Users
+  #13. User Auth
+  #14. Uploads
 
   #1. Analytics & Charts
   namespace :analytics do
@@ -114,10 +113,7 @@ GradeCraft::Application.routes.draw do
     end
   end
 
-  #6. Categories
-  resources :categories
-
-  #7. Challenges
+  #6. Challenges
   resources :challenges do
     resources :challenge_grades do
       collection do
@@ -134,7 +130,7 @@ GradeCraft::Application.routes.draw do
     end
   end
 
-  #8. Courses
+  #7. Courses
   resources :courses do
     collection do
       post 'copy' => 'courses#copy'
@@ -153,7 +149,7 @@ GradeCraft::Application.routes.draw do
   get 'gradebook' => 'info#gradebook'
   get 'all_grades' => 'courses#all_grades'
 
-  #9. Groups
+  #8. Groups
   resources :groups do 
     collection do
       get :review
@@ -162,7 +158,7 @@ GradeCraft::Application.routes.draw do
   end
   resources :group_memberships
 
-  #10. Informational Pages
+  #9. Informational Pages
   namespace :info do
     get :all_grades
     get :choices
@@ -184,10 +180,8 @@ GradeCraft::Application.routes.draw do
   get 'documentation' => 'pages#documentation'
   get 'ping' => 'pages#ping'
 
-  #11. Rubrics & Grade Schemes
-  resources :rubrics do
-    resources :criteria
-  end
+  #10. Rubrics & Grade Schemes
+  resources :rubrics
   resources :grade_scheme_elements do
     collection do
       post :destroy_multiple
@@ -196,7 +190,7 @@ GradeCraft::Application.routes.draw do
     end
   end
 
-  #12. Teams
+  #11. Teams
   resources :teams do
     collection do
       get :activity
@@ -208,7 +202,7 @@ GradeCraft::Application.routes.draw do
   get 'dashboard' => 'info#dashboard'
   root :to => "home#index"
 
-  #13. Users
+  #12. Users
   %w{students gsis professors admins}.each do |role|
     get "users/#{role}/new" => 'users#new', :as => "new_#{role.singularize}", :role => role.singularize
   end
@@ -259,7 +253,7 @@ GradeCraft::Application.routes.draw do
   get 'my_badges' => 'students#badges'
   get 'my_team' => 'students#teams'
 
-  #14. User Auth
+  #13. User Auth
   post 'auth/kerberos/callback', to: 'user_sessions#kerberos_create', as: :auth_kerberos_callback
   match 'auth/lti/callback', to: 'user_sessions#lti_create', via: [:get, :post]
   get 'auth/failure' => 'pages#auth_failure', as: :auth_failure
@@ -273,7 +267,7 @@ GradeCraft::Application.routes.draw do
 
   # get 'cosign_test' => 'info#cosign_test'
 
-  #15. Uploads
+  #14. Uploads
   resource :uploads do
     get :remove
   end

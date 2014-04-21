@@ -1,7 +1,8 @@
 .small-12.columns
   %h4
     %span.bold= "#{term_for :group}:"
-    - @group = current_student.group_for_assignment(@assignment)
+    - if current_user.is_student?
+      - @group = current_student.group_for_assignment(@assignment)
     - if @group.present?
       = link_to @group.name, group_path(@group)
 
@@ -9,8 +10,11 @@
 
       %h4.bold= "#{term_for :students}:"
       %ul
-        - @group.students.each do |student|  
-          %li= link_to student.name, student_path(student)
+        - @group.students.each do |student| 
+          - if current_user.is_student?
+            %li= student.name
+          - else
+            %li= link_to student.name, student_path(student)
     - else
       = link_to "Create a #{term_for :group}", new_group_path, :class => "button tiny radius"
 
@@ -18,7 +22,7 @@
 
 
     - if @group.present? && @group.submission_for_assignment(@assignment)
-      = render "submission"
+      = render "grades/submission"
 
   .clearfix
 

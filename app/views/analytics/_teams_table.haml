@@ -13,7 +13,7 @@
         - if ! current_course.team_score_average
           %td= points team.try(:score)
 
-        %td= points team.try(:average_grade)
+        %td= points team.try(:average_points)
         %td
           - if team.team_leader.present?
             = link_to team.team_leader.try(:name), team.team_leader

@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
+  
   def valid_params 
     { username: "hermione.granger", email: "hermione.granger@hogwarts.edu" }
   end
@@ -10,6 +11,14 @@ class UserTest < ActiveSupport::TestCase
 
     assert user.valid?, "Can't create with valid params: #{user.errors.messages}"
   end
+
+  def test_invalid
+    user = User.new
+
+    assert !user.valid?, "Can't create with valid params: #{user.errors.messages}"
+  end
+
+  
   # test "calculates score for course" do
   #   create_grades(2) # raw scores: 200, 400
   #   assert_equal 600, student.score_for_course(course)

@@ -1,5 +1,6 @@
 videogames:
   name: Videogames and Learning
+  team_score_average: false
 
 intro_to_information:
   name: Intro to Information 

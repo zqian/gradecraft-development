@@ -1,9 +1,16 @@
 .small-12.panel.mainContent
   / Submissions Navigation
   = content_nav do
-    = render "students/student_profile_tabs"
+    - if current_user.is_student?
+      = render "students/student_profile_tabs"
+    - else 
+      = render "assignments/tabs"
 
-  .pagetitle= "#{@title} (#{points @assignment.point_total} points)"
+  .pagetitle
+    - if @assignment.has_groups? && @group.present?
+      = "#{@title} for #{term_for :group} #{@group.name} (#{points @assignment.point_total} points)"
+    - else
+      = "#{@title} (#{points @assignment.point_total} points)"
 
   .small-12.columns
 
@@ -26,12 +33,6 @@
 
     - if @assignment.description?
       %p= raw @assignment.description
-
-
-    - if @assignment.has_groups? && current_user.is_student?
-      %h4= "You are submitting this assignment for Group #{current_student.group_for_assignment(@assignment).name }"
-    - elsif @assignment.has_groups?
-      %h4= "You are submitting this assignment for Group #{@group.name }"
 
     - if @assignment.accepts_submissions?
       = render 'form'

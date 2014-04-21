@@ -96,17 +96,8 @@ $(document).ready(function() {
   }
 
     var chart, categories, assignment_type_name, scores;
-    if ($('#userBarInProgress').length) {
+    if ($('#userBarTotal').length) {
       var data = JSON.parse($('#data-predictor').attr('data-predictor'));
-
-      // Get Assignment Type Info
-      var options = createOptions()
-      options.chart.renderTo = 'userBarInProgress';
-      options.title = { text: 'My Points' };
-      options.xAxis.categories = { text: ' ' };
-      options.yAxis.max = data.in_progress;
-      options.series = data.scores;
-      chart = new Highcharts.Chart(options);
 
       var options = createOptions()
       options.chart.renderTo = 'userBarTotal';

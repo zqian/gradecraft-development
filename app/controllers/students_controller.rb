@@ -5,6 +5,7 @@ class StudentsController < ApplicationController
 
   before_filter :ensure_staff?, :except=> [:timeline, :predictor, :course_progress, :badges, :teams, :syllabus]
 
+  #Lists all studnets in the course, broken out by those being graded and auditors
   def index
     @title = "#{current_course.user_term} Roster"
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
@@ -18,6 +19,7 @@ class StudentsController < ApplicationController
     end
   end
 
+  #Displaying the list of assignments and team challenges for the semester
   def syllabus
     @assignments = current_course.assignments.chronological.alphabetical
   end
@@ -43,6 +45,7 @@ class StudentsController < ApplicationController
     end
   end
 
+  #Displaying student profile to instructors
   def show
     self.current_student = current_course.students.where(id: params[:id]).first
     @assignments = current_course.assignments.chronological.alphabetical
@@ -53,12 +56,6 @@ class StudentsController < ApplicationController
     current_course.assignment_types.each do |assignment_type|
       scores << { data: [current_student.grades.released.where(assignment_type: assignment_type).score], name: assignment_type.name }
     end
-
-  end
-
-  # Student predictions - can be taken out? 
-  def predictions
-    current_student.predictions(current_course)
   end
 
   # Displaying the course grading scheme and professor's grading philosophy

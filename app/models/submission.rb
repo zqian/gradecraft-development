@@ -21,9 +21,7 @@ class Submission < ActiveRecord::Base
   accepts_nested_attributes_for :submission_files
 
   scope :ungraded, -> { where('NOT EXISTS(SELECT 1 FROM grades WHERE submission_id = submissions.id OR (assignment_id = submissions.assignment_id AND student_id = submissions.student_id) AND (status = ? OR status = ?))', "Graded", "Released") }
-
-  #scope :ungraded, -> { where('NOT EXISTS(SELECT 1 FROM grades WHERE (submission_id = submissions.id OR (assignment_id = submissions.assignment_id AND student_id = submissions.student_id)) AND (status = ? OR (status = ? AND NOT submissions.assignments.release_necessary)))', 'Released', 'Graded' ) }
-  scope :graded, -> { where('EXISTS(SELECT 1 FROM grades WHERE submission_id = submissions.id)') }
+  scope :graded, -> { where(:grade) }
 
   before_validation :cache_associations
 
@@ -50,10 +48,13 @@ class Submission < ActiveRecord::Base
     end
   end
 
+  # Grabbing any submission that has NO instructor-defined grade (if the student has predicted the grade, 
+  # it'll exist, but we still don't want to catch those here)
   def ungraded?
-    ! grade.present? || grade.raw_score == nil?
+    ! grade || grade.status == nil
   end
 
+  #Permissions regarding who can see a grade 
   def viewable_by?(user)
     if assignment.is_individual?
       student_id == user.id
@@ -71,10 +72,12 @@ class Submission < ActiveRecord::Base
     end
   end
 
+  # Getting the name of the student who submitted the work
   def name
     student.name
   end
 
+  # Checking to see if a submission was turned in late
   def late?
     created_at > self.assignment.due_at if self.assignment.due_at.present?
   end
