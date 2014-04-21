@@ -1,22 +1,8 @@
 class ScoreLevelsController < ApplicationController
 
+  #Score Levels are used to build structured grade levels that instructors can pick from when grading
+
   before_filter :ensure_staff?
-
-  def index
-    @score_levels = current_course.score_levels
-  end
-
-  def show
-    @score_level = current_course.score_levels.find(params[:id])
-  end
-
-  def new
-    @score_level = current_course.score_levels.new
-  end
-
-  def edit
-    @score_level = current_course.score_levels.find(params[:id])
-  end
 
   def create
     @score_level = current_course.score_levels.new(params[:score_level])

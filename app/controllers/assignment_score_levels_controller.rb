@@ -1,5 +1,7 @@
 class AssignmentScoreLevelsController < ApplicationController
 
+  #Assignment Score Levels are used to build structured grade levels that instructors can pick from when grading
+
   before_filter :ensure_staff?
 
   def create
@@ -18,4 +20,5 @@ class AssignmentScoreLevelsController < ApplicationController
     @assignment_score_level.destroy
     respond_with @assignment_score_level
   end
+  
 end

@@ -16,7 +16,7 @@ $(".select-all").click(function(e){
   var $link = $(this);
 
   e.preventDefault();
-  $link.parents().find('input[type="checkbox"]').prop('checked', 'checked').trigger('change');
+  $link.offsetParent().find('input[type="checkbox"]').prop('checked', 'checked').trigger('change');
 });
 
 // handle 'select none' button, used on release grade forms
@@ -24,7 +24,7 @@ $(".select-none").click(function(e){
  var $link = $(this);
 
   e.preventDefault();
-  $link.parents().find('input[type="checkbox"]').prop('checked', false).trigger('change');
+  $link.offsetParent().find('input[type="checkbox"]').prop('checked', false).trigger('change');
 
 });
 

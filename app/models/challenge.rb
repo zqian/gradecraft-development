@@ -1,7 +1,7 @@
 class Challenge < ActiveRecord::Base
 
   attr_accessible :name, :description, :icon, :visible, :image_file_name, :occurrence,
-    :category_id, :value, :multiplier, :point_total, :due_at, :open_at, :accepts_submissions, 
+    :value, :multiplier, :point_total, :due_at, :open_at, :accepts_submissions, 
     :release_necessary, :course, :team, :challenge, :challenge_file_ids, 
     :challenge_files_attributes, :challenge_file, :challenge_grades_attributes, 
     :challenge_score_levels_attributes, :challenge_score_level

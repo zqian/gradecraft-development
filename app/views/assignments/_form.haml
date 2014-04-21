@@ -73,7 +73,7 @@
     %h4.bold Grading
     .small-12.large-4.columns
       = f.label :grade_scope
-      = f.select :grade_scope, [["Individual"], ["Group"], ["Team"]]
+      = f.select :grade_scope, [["Individual"], ["Group"]]
 
     - if @assignment.assignment_type.present? && @assignment.assignment_type.mass_grade_type == "Set per Assignment"
       .small-12.large-4.columns

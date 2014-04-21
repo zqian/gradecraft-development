@@ -1,5 +1,7 @@
 class EarnedBadgesController < ApplicationController
 
+  #Earned badges are to badges what grades are to assignments - the record of how what and how a student performed
+
   before_filter :ensure_staff?, :except => :toggle_shared
 
   def index

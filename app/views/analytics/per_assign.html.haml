@@ -3,9 +3,12 @@
   = content_nav do
     = render "analytics/tabs"
 
+  .pagetitle= "#{term_for :assignments} Analytics"
+
+  .clearfix
   
   - @assignments.group_by(&:assignment_type).each do |assignment_type, assignments|
-    .pagetitle= assignment_type.name 
+    .pagetitle.subtitle= assignment_type.name 
 
     .columns
       %table.responsive
@@ -35,3 +38,4 @@
                 .grades_per_assign{:id => "#{assignment.id}", "data-scores" => assignment.grades.graded.pluck('score') }
 
     .clearfix
+    %hr

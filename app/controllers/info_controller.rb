@@ -51,6 +51,7 @@ class InfoController < ApplicationController
     @grades = current_course.grades.paginate(:page => params[:page], :per_page => 500)
   end
 
+  #Course wide leaderboard - excludes auditors from view
   def leaderboard
     @title = "#{current_course.name} Leaderboard"
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]

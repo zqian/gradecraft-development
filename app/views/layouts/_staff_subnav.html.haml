@@ -58,7 +58,7 @@
     %label Users  
   %li
     %i.fi-torsos-female-male
-    = link_to "Users", users_path
+    = link_to "#{term_for :students}", students_path
   - if current_course.has_teams?
     %li
       %i.fi-die-three
@@ -66,6 +66,9 @@
   %li
     %i.fi-elevator
     = link_to term_for(:groups), groups_path
+  %li
+    %i.fi-torso-business
+    = link_to "Staff", staff_index_path
   
   %li.divider
 
@@ -80,9 +83,6 @@
   %li
     %i.fi-list
     = link_to "Grading Scheme", grade_scheme_elements_path
-  %li
-    %i.fi-torso-business
-    = link_to "Staff", staff_index_path
   
   %li.divider
 

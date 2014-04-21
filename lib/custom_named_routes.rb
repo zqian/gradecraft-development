@@ -13,28 +13,4 @@ module CustomNamedRoutes
       end
     end
   end
-
-  def criterium_url(record, options = {})
-    if record.is_a?(Criterium)
-      rubric_criterium_url(record.rubric, record, options)
-    else
-      super
-    end
-  end
-
-  def new_criterium_url(record, options = {})
-    if record.is_a?(Rubric)
-      new_rubric_criterium_url(record, options)
-    else
-      super
-    end
-  end
-
-  def edit_criterium_url(record, options = {})
-    if record.is_a?(Criterium)
-      edit_rubric_criterium_url(record.rubric, record, options)
-    else
-      super
-    end
-  end
 end

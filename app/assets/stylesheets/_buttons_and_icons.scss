@@ -1,19 +1,9 @@
 .button {
   text-shadow: 0 1px 1px rgba(0,0,0,.3);
-  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.3);
-  -moz-box-shadow: 0 1px 2px rgba(0,0,0,.3);
-  box-shadow: 0 1px 2px rgba(0,0,0,.3);
   background: -webkit-gradient(linear, left top, left bottom, from(#999), to(#666));
   background: -moz-linear-gradient(top,  #999,  #666);
   color: #FFF !important;
   margin-bottom: 0;
-}
-
-.button:hover {
-
-}
-
-.primary {
 }
 
 .button:hover {
@@ -59,7 +49,6 @@ i.fi-male.partial {
 
 table {
   .button.tiny {
-    margin-left: .35rem;
     padding: .4rem;
   }
 }
@@ -74,10 +63,6 @@ table {
 .button:hover {
   background-color: $primary-color-5 !important;
   color: #FFF;
-}
-
-.button.tiny.aindex {
-  margin: 0rem;
 }
 
 /* Used on cancel buttons to reduce distraction */

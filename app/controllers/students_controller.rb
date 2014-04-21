@@ -18,6 +18,7 @@ class StudentsController < ApplicationController
     end
   end
 
+  #Displaying the list of assignments and team challenges for the semester
   def syllabus
     @assignments = current_course.assignments.chronological.alphabetical
   end
@@ -53,12 +54,6 @@ class StudentsController < ApplicationController
     current_course.assignment_types.each do |assignment_type|
       scores << { data: [current_student.grades.released.where(assignment_type: assignment_type).score], name: assignment_type.name }
     end
-
-  end
-
-  # Student predictions - can be taken out? 
-  def predictions
-    current_student.predictions(current_course)
   end
 
   # Displaying the course grading scheme and professor's grading philosophy

@@ -51,7 +51,7 @@ class Submission < ActiveRecord::Base
   end
 
   def ungraded?
-    ! grade.present? || grade.raw_score == nil?
+    ! grade.graded 
   end
 
   def viewable_by?(user)

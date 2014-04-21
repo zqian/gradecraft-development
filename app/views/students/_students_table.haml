@@ -1,0 +1,45 @@
+%table.responsive.simpleTable
+  %thead
+    %tr
+      %th
+      %th
+      %th.sortable{"data-sort" => "string"} First Name
+      %th.sortable{"data-sort" => "string"} Last Name
+      - if current_course.in_team_leaderboard?
+        %th.sortable{"data-sort" => "string"} Screenname
+      - if current_course.has_teams?
+        %th.sortable{"data-sort" => "string"} #{current_course.team_term}
+      - if current_course.team_roles?
+        %th.sortable{"data-sort" => "string"} Role
+      %th.sortable{"data-sort" => "int"} Score
+      %th.sortable{"data-sort" => "string"} Grade
+      %th.button-column
+  %tbody
+    - students.each do |student|
+      %tr
+        %td
+          = gravatar_for student, :size => 30
+        %td
+          %a{:href => "mailto:#{student.email}" }
+            %i.fi-mail
+        %td= link_to student.first_name, student_path(student)
+        %td= link_to student.last_name, student_path(student)
+        - if current_course.in_team_leaderboard?
+          %td= student.display_name
+        - if current_course.has_teams?
+          %td
+            - if student.team_for_course(current_course)
+              = link_to student.team_for_course(current_course).name, student.team_for_course(current_course)
+        - if current_course.team_roles?
+          %td= student.try(:team_role)
+        - if student.respond_to?(:grades)
+          %td{:data => { :"sort-value" => "#{current_course.score_for_student(student)}"} }= points current_course.score_for_student(student)
+          %td
+            = student.grade_letter_for_course(current_course)
+            = "-" if student.grade_letter_for_course(current_course).present? && student.grade_level_for_course(current_course).present?
+            = student.grade_level_for_course(current_course)
+        %td
+          .button-bar
+            %ul.button-group.right.round
+              %li= link_to "Dashboard", student_path(student), :class => "button tiny secondary"
+              %li= link_to "Edit", edit_user_path(student), :class => "button tiny secondary"
