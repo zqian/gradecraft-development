@@ -138,6 +138,24 @@ class GradesController < ApplicationController
     @submit_message = "Submit Grades"
   end
 
+  def group_update
+    @assignment = current_course.assignments.find(params[:id])
+    if @assignment.update_attributes(params[:assignment])
+      respond_with @assignment
+    else
+      @title = "Quick Grade #{@assignment.name}"
+      @assignment_type = @assignment.assignment_type
+      @score_levels = @assignment_type.score_levels
+      @assignment_score_levels = @assignment.assignment_score_levels
+      @group = @assignment.groups.find(params[:group_id])
+      @students = @group.students
+      @grades = @students.map do |s|
+        @assignment.grades.where(:student_id => s).first || @assignment.grades.new(:student => s, :assignment => @assignment, :graded_by_id => current_user, :status => 'Graded')
+      end
+      respond_with @assignment, :template => "grades/mass_edit"
+    end
+  end
+
   # Changing the status of a grade - allows instructors to review "Graded" grades, before they are "Released" to students
   def edit_status
     @assignment = current_course.assignments.find(params[:id])

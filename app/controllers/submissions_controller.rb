@@ -5,6 +5,7 @@ class SubmissionsController < ApplicationController
   include Canable::Enforcers
   helper UploadsHelper
 
+  # Redirects to the parent assignment that should list all submissions in existence
   def index
     @assignment = current_course.assignments.find(params[:assignment_id])
     redirect_to @assignment

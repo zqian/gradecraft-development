@@ -5,6 +5,7 @@ class StudentsController < ApplicationController
 
   before_filter :ensure_staff?, :except=> [:timeline, :predictor, :course_progress, :badges, :teams, :syllabus]
 
+  #Lists all studnets in the course, broken out by those being graded and auditors
   def index
     @title = "#{current_course.user_term} Roster"
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
@@ -44,6 +45,7 @@ class StudentsController < ApplicationController
     end
   end
 
+  #Displaying student profile to instructors
   def show
     self.current_student = current_course.students.where(id: params[:id]).first
     @assignments = current_course.assignments.chronological.alphabetical

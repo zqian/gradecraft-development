@@ -9,6 +9,7 @@ class GradeSchemeElement < ActiveRecord::Base
   scope :order_by_low_range, -> { order 'low_range ASC' }
   scope :order_by_high_range, -> { order 'high_range DESC' }
 
+  # Getting the name of the Grade Scheme Element - the Level if it's present, the Letter if not
   def element_name
     if level?
       level
@@ -17,19 +18,23 @@ class GradeSchemeElement < ActiveRecord::Base
     end
   end
 
+  # Checking to see if the grade elements overlap 
   def overlap?(element)
     element.low_range <= high_range && element.high_range >= low_range
   end
   
+  #Calculating the range that covers this element
   def range
     high_range.to_f - low_range.to_f
   end
 
+  #Figuring out how many points a student has to earn the next level
   def points_to_next_level(student, course)
     #if high range, +1
     high_range - student.cached_score_for_course(course) + 1
   end
 
+  #Calculating how far a student is through this level
   def progress_percent(student, course)
     ((student.cached_score_for_course(course) - low_range)/(range)) * 100
   end

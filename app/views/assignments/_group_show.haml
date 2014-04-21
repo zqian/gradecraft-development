@@ -14,11 +14,6 @@
       %table.responsive.small-12.columns
         %thead
           %tr
-            - if @assignment.release_necessary?
-              %th
-                .btn-group
-                  %button.select-all.btn.btn-xs.btn-info= "Check"
-                  %button.select-none.btn.btn-xs.btn-info= "Uncheck"
             %th= current_course.group_term
             %th Score
             - if @assignment.assignment_type.student_weightable?
@@ -27,14 +22,17 @@
               %th Level
             - if @assignment.release_necessary?
               %th Status
+              %th
+                .button-bar
+                  %ul.button-group.right.round
+                    %li
+                      %button.select-all.tiny= "Check"
+                    %li
+                      %button.select-none.tiny= "Uncheck"
         %tbody
           - group.students.each do |student|
             - grade = @assignment.grades.find_by student_id: student
             %tr
-              - if @assignment.release_necessary?
-                %td
-                  - if grade && grade.is_graded?
-                    = check_box_tag "grade_ids[]", grade.id
               %td= link_to student.name, student_path(student)
               %td
                 - if grade && (grade.is_graded? || grade.status == "Released" )
@@ -46,7 +44,10 @@
                   - if grade
                     = @assignment.grade_level(grade)
               - if @assignment.release_necessary?
-                %td= grade.try(:status)
+                %td= grade.try(:status)              
+                %td.right
+                  - if grade && grade.is_graded?
+                    = check_box_tag "grade_ids[]", grade.id
     - if @assignment.release_necessary? && @assignment.grades.present?
       = submit_tag "Update Grade Statuses", :class => "button tiny radius"
 - else
