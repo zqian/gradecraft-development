@@ -5,6 +5,10 @@
   $scope.metrics = []
   $scope.savedMetricCount = 0
 
+  $scope.init = (rubricId, pointTotal, metrics)->
+    $scope.rubricId = rubricId
+    $scope.pointTotal = parseInt(pointTotal)
+    $scope.addMetrics(metrics)
 
   # distill key/value pairs for metric ids and relative order
   $scope.pointsAssigned = ()->
@@ -14,18 +18,22 @@
     )
     points or 0
 
-  $scope.pointsRemaining = (total)->
-    pointsAssigned = $scope.pointsAssigned()
-    pointsRemaining = total - pointsAssigned
-    if pointsRemaining > 0
-      pointsRemaining
-    else
-      0
+  $scope.pointsDifference = ()->
+    $scope.pointTotal - $scope.pointsAssigned()
+ 
+  $scope.pointsRemaining = ()->
+    pointsRemaining = $scope.pointsDifference()
+    if pointsRemaining > 0 then pointsRemaining else 0
 
-  $scope.init = (rubricId, pointTotal, metrics)->
-    $scope.rubricId = rubricId
-    $scope.pointTotal = pointTotal
-    $scope.addMetrics(metrics)
+  # Methods for identifying point deficit/overage
+  $scope.pointsMissing = ()->
+    $scope.pointsDifference() > 0 and $scope.pointsAssigned() > 0
+
+  $scope.pointsSatisfied = ()->
+    $scope.pointsDifference() == 0 and $scope.pointsAssigned() > 0
+
+  $scope.pointsOverage = ()->
+    $scope.pointsDifference() < 0
 
   $scope.showMetric = (attrs)->
     new MetricPrototype(attrs)
@@ -39,7 +47,7 @@
     this.addTiers(attrs["tiers"]) if attrs["tiers"] #add tiers if passed on init
     this.name = if attrs.name then attrs.name else ""
     this.rubricId = if attrs.rubric_id then attrs.rubric_id else $scope.rubricId
-    this.max_points = if attrs.max_points then attrs.max_points else null
+    this.max_points = if attrs.max_points then attrs.max_points else 0
     this.description = if attrs.description then attrs.description else ""
     this.hasChanges = false
   MetricPrototype.prototype =
