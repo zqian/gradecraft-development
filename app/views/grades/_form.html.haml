@@ -32,7 +32,7 @@
         .progress
           .bar
 
-- if @rubric
+- if @rubric.designed?
   #rubric-grader(ng-app="gradecraft" ng-controller="GradeRubricCtrl" ng-init="init(#{@rubric[:id]}, #{@metrics}, #{@assignment[:id]}, #{params[:student_id]})")
 
     .row
@@ -40,11 +40,17 @@
         %h3.text-right
           Grade Assignment by Rubric
           = link_to "(Edit)", design_assignment_rubric_path(@assignment)
-        %h4.text-right (click to select or de-select a tier for each metric)
+        %h4.text-right (click to select or de-select a levelevel for each criterion)
         %br
 
-      #points-overview
-        %h4#points-assigned {{pointsGiven()}}/{{pointsPossible}} Points Assigned
+      .points-overview(ng-cloak)
+        %h4.points-legend
+          %span.points-assigned(ng-class="{'points-missing': pointsMissing(), 'points-satisfied': pointsSatisfied(), 'points-overage': pointsOverage()}") {{pointsGiven()}}
+          \/{{pointsPossible}} Points Allocated
+        %h4.notice(ng-hide="pointsSatisfied() || pointsMissing()") You have not yet allocated any points
+        %h4.notice(ng-show="pointsMissing()") {{pointsRemaining()}} point{{pointsRemaining() > 1 ? "s" : ""}} have not been assigned 
+        %h4.notice(ng-show="pointsSatisfied()") You have allocated all possible points
+
       .clear
 
     #rubric-grader-splash.large-12.columns.text-center(ng-cloak)
@@ -57,14 +63,14 @@
         %tr
           %td.metric.heading
             %label.larger
-              %strong Metric:
+              %strong Criterion:
               Max points
-            %label Verbose description about the ramifications of the metric
+            %label Verbose description about the ramifications of the criterion
           %td.tier.heading(colspan="#{@rubric.max_tier_count}")
             %label.larger
-              %strong Tier Name:
+              %strong Level:
               Point value
-            %label Verbose description about the parameters of the specific tier
+            %label Verbose description about the parameters of the specific level
           %td.points-given
             %label.larger
 
@@ -73,20 +79,23 @@
           %td.metric
             %label.larger
               %strong {{metric.name}}:
-              {{metric.max_points}} Points
+              {{metric.max_points}}&nbsp;Points
             %label {{metric.description}}
           %td.tier(ng-repeat="tier in metric.tiers" ng-click="metric.gradeWithTier(tier)" ng-class="{selected: metric.isUsingTier(tier)}")
-            .row
-              %label.larger.tier-heading
-                %strong {{tier.name}}:
-                {{tier.points}} points
-              %label {{tier.description}}
-              %input.tier-select(type='radio' name="metric_tier_{{metric.id}}" ng-checked="metric.isUsingTier(tier)")
+            %label.larger.tier-data
+              <strong>{{tier.name.replace(' ','&nbsp;')}}:</strong>&nbsp;{{tier.points}}&nbsp;points&nbsp;&nbsp;<input class="tier-select" type='radio' name="metric_tier_{{metric.id}}" ng-checked="metric.isUsingTier(tier)" />
+            %label {{tier.description}}
 
     %br
     .row.text-center.points-given
-      %span.points-label Points Awarded:
-      %span.points {{pointsGiven()}}/{{pointsPossible}}
+      .points-overview.bottom(ng-cloak)
+        %h4.points-legend
+          %span.points-assigned(ng-class="{'points-missing': pointsMissing(), 'points-satisfied': pointsSatisfied(), 'points-overage': pointsOverage()}") {{pointsGiven()}}
+          \/{{pointsPossible}} Points Allocated
+        %h4.notice(ng-hide="pointsSatisfied() || pointsMissing()") You have not yet allocated any points
+        %h4.notice(ng-show="pointsMissing()") {{pointsRemaining()}} point{{pointsRemaining() > 1 ? "s" : ""}} have not been assigned 
+        %h4.notice(ng-show="pointsSatisfied()") You have allocated all possible points
+      .clear
     .row.text-center
       %button#submit-grade(ng-click="submitGrade()" ng-disabled="selectedTiers().length == 0") Submit Grade
 
