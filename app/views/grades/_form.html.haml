@@ -63,8 +63,7 @@
         %tr
           %td.metric.heading
             %label.larger
-              %strong Criterion:
-              Max points
+              <strong>Criterion</strong>:&nbsp;Max&nbsp;points
             %label Verbose description about the ramifications of the criterion
           %td.tier.heading(colspan="#{@rubric.max_tier_count}")
             %label.larger
@@ -78,12 +77,11 @@
         %tr(ng-repeat="metric in metrics")
           %td.metric
             %label.larger
-              %strong {{metric.name}}:
-              {{metric.max_points}}&nbsp;Points
+              <strong>{{metric.name}}:</strong>&nbsp;{{metric.max_points}}&nbsp;Points
             %label {{metric.description}}
           %td.tier(ng-repeat="tier in metric.tiers" ng-click="metric.gradeWithTier(tier)" ng-class="{selected: metric.isUsingTier(tier)}")
             %label.larger.tier-data
-              <strong>{{tier.name.replace(' ','&nbsp;')}}:</strong>&nbsp;{{tier.points}}&nbsp;points&nbsp;&nbsp;<input class="tier-select" type='radio' name="metric_tier_{{metric.id}}" ng-checked="metric.isUsingTier(tier)" />
+              <strong>{{tier.name.replace(' ','&nbsp;')}}:</strong>&nbsp;{{tier.points}}&nbsp;points&nbsp;&nbsp;<input class="tier-select" type='radio' name="metric_tier_{{metric.id}}" ng-checked="metric.isUsingTier(tier)" ng-click="metric.gradeWithTier(tier)" />
             %label {{tier.description}}
 
     %br
