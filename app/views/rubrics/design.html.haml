@@ -7,9 +7,15 @@
       #rubric-title
         %h3 Design Rubric for "#{@assignment.name}"
         %h5.subtitle Rubric is saved dynamically and does not need to be "submitted"
-      #points-overview
-        %h4#points-assigned {{pointsAssigned()}}/#{@assignment.point_total} Points Assigned
-        %h4#points-remaining {{pointsRemaining(#{@assignment.point_total})}} Points Remaining
+
+      #points-overview(ng-cloak)
+        %h4#points-legend
+          %span.points-assigned(ng-class="{'points-missing': pointsMissing(), 'points-satisfied': pointsSatisfied(), 'points-overage': pointsOverage()}") {{pointsAssigned()}}
+          \/#{@assignment.point_total} Points Allocated
+        %h4.notice(ng-show="pointsMissing()") You have {{pointsRemaining()}} point{{pointsRemaining() > 1 ? "s" : ""}} left to assign
+        %h4.notice(ng-show="pointsSatisfied()") You have allocated all possible points
+        %h4.notice(ng-show="pointsOverage()") You have allocated more points than the assignment total
+
       .clear
       %br
 
