@@ -32,14 +32,15 @@ class Metric < ActiveRecord::Base
 
   def find_and_set_full_credit_tier
     full_credit_tier = tiers.where(full_credit: true).first
+    full_credit_tier ||= create_full_credit_tier
     update_attributes full_credit_tier_id: full_credit_tier[:id]
   end
 
   def create_full_credit_tier
-    tiers.create name: "Full Credit", points: max_points, full_credit: true, durable: true, order: 0
+    tiers.create name: "Full Credit", points: max_points, full_credit: true, durable: true, sort_order: 0
   end
 
   def create_no_credit_tier
-    tiers.create name: "No Credit", points: 0, no_credit: true, durable: true, order: 1000
+    tiers.create name: "No Credit", points: 0, no_credit: true, durable: true, sort_order: 1000
   end
 end
