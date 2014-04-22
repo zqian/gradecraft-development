@@ -12,4 +12,8 @@ class Rubric < ActiveRecord::Base
       tier_counts << metric.tiers.count
     end.max
   end
+
+  def designed?
+    metrics.count > 0
+  end
 end
