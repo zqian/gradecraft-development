@@ -9,7 +9,7 @@
         %b My #{term_for :badge}  Points:
         .label.round.bold=current_student.earned_badges_score
       - else
-        %b My #{term_for :badge}s Earned:
+        %b My #{term_for :badges} Earned:
         .label.round.bold=current_student.earned_badge_count_for_course(current_course)
     -else
       - if current_user.is_student?
