@@ -12,6 +12,31 @@
     $scope.studentId = studentId
     $scope.addMetrics(metrics)
 
+  # distill key/value pairs for metric ids and relative order
+  $scope.pointsAssigned = ()->
+    points = 0
+    angular.forEach($scope.metrics, (metric, index)->
+      points += metric.max_points if metric.max_points
+    )
+    points or 0
+
+  $scope.pointsDifference = ()->
+    $scope.pointsPossible - $scope.pointsGiven()
+
+  $scope.pointsRemaining = ()->
+    pointsRemaining = $scope.pointsDifference()
+    if pointsRemaining > 0 then pointsRemaining else 0
+
+  # Methods for identifying point deficit/overage
+  $scope.pointsMissing = ()->
+    $scope.pointsDifference() > 0 and $scope.pointsGiven() > 0
+
+  $scope.pointsSatisfied = ()->
+    $scope.pointsDifference() == 0 and $scope.pointsGiven() > 0
+
+  $scope.pointsOverage = ()->
+    $scope.pointsDifference() < 0
+
   $scope.showMetric = (attrs)->
     new MetricPrototype(attrs)
 
