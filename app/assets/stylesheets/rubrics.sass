@@ -47,9 +47,32 @@ $badass_blue: #269ECC
   #points-overview
     float: right
     display: block
-    border: 1px solid #ddd
-    padding: 12px 24px
-    margin-right: 20px
+    margin-right: 28px
+    text-align: right
+ 
+    h4#points-legend
+      font-size: 22px
+      font-style: italic
+      color: #269ECC
+
+      .points-assigned
+        margin-right: -4px
+        color: #555
+        font-weight: bold
+
+      .points-missing
+        color: #F78D00
+      .points-satisfied
+        color: $dark_green
+      .points-overage
+        color: $dark_red
+
+    h4.notice
+      font-size: 14px
+      font-style: italic
+      font-weight: normal
+      color: #666
+
 
   h4#points-assigned
     font-weight: bold
