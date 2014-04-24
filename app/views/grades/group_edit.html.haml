@@ -18,6 +18,7 @@
     = simple_form_for :grade, :url => group_grade_assignment_path(@assignment), :html => { :method => :put} do |f|
       = hidden_field_tag "group_id", @group.id
       = f.hidden_field :graded_by_id, :value => current_user.id
+      = f.hidden_field :status, :value => "Graded"
       = label_tag do
         - if @assignment.assignment_type.has_levels?
           = f.select :raw_score, @score_levels.map { |l| [l.formatted_name,l.value] }, :include_blank => true
