@@ -49,6 +49,18 @@ class NotificationMailer < ActionMailer::Base
     end
   end
 
+  def new_submission(user_info, assignment_id, submission_info, course_info)
+    @user = user_info
+    @submission = submission_info
+    @assignment = Assignment.find assignment_id
+    @course = course_info
+    @professor = @assignment.course.professor
+    mail(:to => @professor.email, :subject => "#{@course} - New Submission to Grade") do |format|
+      format.text
+      format.html
+    end
+  end
+
   def group_notify(group_id)
     @group = Group.find group_id
     @course = @group.course

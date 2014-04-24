@@ -19,14 +19,10 @@
       = hidden_field_tag "group_id", @group.id
       = f.hidden_field :graded_by_id, :value => current_user.id
       = label_tag do
-        - if @assignment.grade_select?
-          = f.select :raw_score, options_from_collection_for_select(@score_levels, :value, :name, @group.students.first.grade_for_assignment(@assignment).try(:raw_score)), include_blank: true
-        - elsif @assignment.grade_radio?
-          - @score_levels.each do |score_level|
-            = f.label :raw_score, score_level.name, value: score_level.value
-            = f.radio_button :raw_score, score_level.value, :class => "radio_inline"
-        - elsif @assignment.grade_checkboxes?
-          = f.check_box :raw_score, {}, @assignment.point_total
+        - if @assignment.assignment_type.has_levels?
+          = f.select :raw_score, @score_levels.map { |l| [l.formatted_name,l.value] }, :include_blank => true
+        - elsif @assignment.has_levels?
+          = f.select :raw_score, @assignment_score_levels.map { |l| [l.formatted_name,l.value] }, :include_blank => true
         - else
           = f.text_field :raw_score, :label => "Score", :hint => "Total Assignment Points: #{ points @assignment.point_total }", data: {autonumeric: true, "m-dec" => "0"}, :value => @group.students.first.grade_for_assignment(@assignment).try(:raw_score)
       = f.bootsy_area :feedback, :value => @group.students.first.grade_for_assignment(@assignment).try(:feedback)
