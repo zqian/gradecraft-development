@@ -44,6 +44,7 @@
 - else
   - if current_user.is_staff?
     %b= "#{@group.name}'s Submission" 
+    %span= link_to "Grade", group_grade_assignment_path(@assignment, :group_id => @group), :class => "button tiny radius secondary no-margin"
   - else
     Your Submission
   // link to edit the submission

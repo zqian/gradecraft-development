@@ -1,32 +1,17 @@
-.small-12.columns
-  %h4
-    %span.bold= "#{term_for :group}:"
-    - if current_user.is_student?
-      - @group = current_student.group_for_assignment(@assignment)
-    - if @group.present?
-      = link_to @group.name, group_path(@group)
+.small-12.medium-6.columns
+  - if current_user.is_student?
+    - @group = current_student.group_for_assignment(@assignment)
+  - if @group.present?
+    .panel= render "grades/group_results"
 
-      .clearfix
+    - if @assignment.accepts_submissions?
+      - if @group.submission_for_assignment(@assignment).present?
+        .panel= render "grades/group_submission"
+      - elsif @assignment.future? || @assignment.still_accepted?
+        .panel
+          = link_to "Submit", new_assignment_submission_path(@assignment, :group_id => current_student), :class => 'button tiny secondary radius'
+          - if @assignment.past?
+            .label.alert.radius= "Past due"
 
-      %h4.bold= "#{term_for :students}:"
-      %ul
-        - @group.students.each do |student| 
-          - if current_user.is_student?
-            %li= student.name
-          - else
-            %li= link_to student.name, student_path(student)
-    - else
-      = link_to "Create a #{term_for :group}", new_group_path, :class => "button tiny radius"
-
-  %hr.clear
-
-
-    - if @group.present? && @group.submission_for_assignment(@assignment)
-      = render "grades/submission"
-
-  .clearfix
-
-  //= render "results"
-
-  //= render "analytics"
-
+.small-12.medium-6.columns
+  .panel= render "grades/group_analytics"

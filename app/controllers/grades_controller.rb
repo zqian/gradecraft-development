@@ -132,7 +132,7 @@ class GradesController < ApplicationController
     @assignment_type = @assignment.assignment_type
     @score_levels = @assignment_type.score_levels
     @assignment_score_levels = @assignment.assignment_score_levels
-    @grades = @group.students.map do |student|
+    @grades = @group.students.alpha.map do |student|
       @assignment.grades.where(:student_id => student).first || @assignment.grades.new(:student => student, :assignment => @assignment, :graded_by_id => current_user, :status => "Graded")
     end
     @submit_message = "Submit Grades"
@@ -140,20 +140,17 @@ class GradesController < ApplicationController
 
   def group_update
     @assignment = current_course.assignments.find(params[:id])
-    if @assignment.update_attributes(params[:assignment])
-      respond_with @assignment
-    else
-      @title = "Quick Grade #{@assignment.name}"
-      @assignment_type = @assignment.assignment_type
-      @score_levels = @assignment_type.score_levels
-      @assignment_score_levels = @assignment.assignment_score_levels
-      @group = @assignment.groups.find(params[:group_id])
-      @students = @group.students
-      @grades = @students.map do |s|
-        @assignment.grades.where(:student_id => s).first || @assignment.grades.new(:student => s, :assignment => @assignment, :graded_by_id => current_user, :status => 'Graded')
-      end
-      respond_with @assignment, :template => "grades/mass_edit"
+    @group = @assignment.groups.find(params[:group_id])
+    @grades = @group.students.alpha.map do |student|
+      @assignment.grades.where(:student_id => student).first || @assignment.grades.new(:student => student, :assignment => @assignment, :graded_by_id => current_user, :status => "Graded", :group_id => @group.id)
     end
+    @grades = @grades.each do |grade|
+      grade.update_attributes(params[:grade])
+      if @assignment.notify_released? && grade.released
+        NotificationMailer.grade_released(grade.id).deliver
+      end
+    end
+    respond_with @assignment
   end
 
   # Changing the status of a grade - allows instructors to review "Graded" grades, before they are "Released" to students
