@@ -1,0 +1,31 @@
+.small-12.columns
+  .bold Class Analytics
+  %h6.small (click chart to see results)
+
+  %dl.tabs{:data => {'tab' => true}, :class => "analytics_tabs"}
+    %dd
+      = link_to image_tag(asset_path('boxplot.png'), :width => 80), "#boxplot"
+    %dd
+      = link_to image_tag(asset_path('halfcircle.png'), :width => 80), "#submitted"
+    %dd
+      = link_to image_tag(asset_path('pie.png'), :width => 80), "#levels"
+
+  .tabs-content{:style => "background-color: #FFFFFF;"}
+    .content.small-12#boxplot
+      .chartcontainer
+        .grades_per_assign{ "data-scores" => @assignment.grades.graded.pluck('score') }
+
+      %h6.small= link_to "How do I read this chart?", "http://www.youtube.com/watch?v=7UK2DK7rblw&feature=youtu.be", :target => "_blank"
+
+
+    .content.small-12#submitted.center
+      - if @assignment.accepts_submissions?
+        #myStat{:"data-type" => "half", "data-info" => "#{term_for :groups} Submitted", "data-percent" => "#{@assignment.group_submission_rate}", "data-fgcolor" => "#61a9dc", "data-text" => "#{@assignment.submissions.count}", "data-dimension" => "250", "data-fontsize" => "38"  }
+
+      - else
+        #myStat{:"data-type" => "half", "data-info" => "#{term_for :students} Participated", "data-percent" => "#{@assignment.completion_rate(current_course)}", "data-fgcolor" => "#61a9dc", "data-text" => "#{@assignment.positive_grade_count}", "data-dimension" => "250", "data-fontsize" => "38"  }
+
+    .content.small-12#levels{:style => "width: 100%"}
+      .small-12#levels_per_assignment{'data-levels' =>  @assignment.percentage_score_earned.to_json }
+
+.clearfix
