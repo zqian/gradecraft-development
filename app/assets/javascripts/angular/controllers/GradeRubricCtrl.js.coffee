@@ -64,7 +64,7 @@
     metrics = []
     angular.forEach($scope.metrics, (metric, index)->
       if metric.selectedTier
-        metrics.push metric.selectedTier
+        metrics.push metric
     )
     $scope.gradedMetrics = metrics
     metrics 
@@ -76,13 +76,13 @@
         metric_name: metric.name,
         metric_description: metric.description,
         max_points: metric.max_points,
-        order: metric.order,
+        order: index,
         tier_name: metric.selectedTier.name,
         tier_description: metric.selectedTier.description,
         points: metric.selectedTier.points,
-        submission_id: submission_id,
         metric_id: metric.id,
-        tier_id: metric.selectedTier.id
+        tier_id: metric.selectedTier.id,
+        comments: metric.comments
        }
     )
     params
@@ -92,7 +92,8 @@
       points_given: $scope.pointsGiven(),
       rubric_id: $scope.rubricId,
       student_id: $scope.studentId,
-      points_possible: $scope.pointsPossible
+      points_possible: $scope.pointsPossible,
+      rubric_grades: $scope.gradedMetricsParams()
     }
 
   $scope.submitGrade = ()->
@@ -114,7 +115,7 @@
     this.description = if attrs.description then attrs.description else ""
     this.hasChanges = false
     this.selectedTier = null
-    this.comment = ""
+    this.comments = ""
   MetricPrototype.prototype =
     addTier: (attrs={})->
       self = this
@@ -167,7 +168,7 @@
         submission_id: submission_id,
         metric_id: metric.id,
         tier_id: tier.id,
-        comment: ""
+        comments: ""
       }
 
   $scope.addMetrics = (existingMetrics)->

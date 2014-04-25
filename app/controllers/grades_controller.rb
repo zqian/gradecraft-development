@@ -43,6 +43,8 @@ class GradesController < ApplicationController
     @submission.update_attributes(graded: true)
     @grade.update_attributes(raw_score: params[:points_given], submission_id: @submission[:id], point_total: params[:points_possible], status: "Graded")
 
+    create_rubric_grades # create an individual record for each rubric grade
+
     if @assignment.notify_released? && @grade.is_released?
       NotificationMailer.grade_released(@grade.id).deliver
     end
@@ -229,6 +231,23 @@ class GradesController < ApplicationController
   end
 
   private
+
+  def create_rubric_grades
+    params[:rubric_grades].each do |rubric_grade|
+      RubricGrade.create({
+        metric_name: rubric_grade["metric_name"],
+        metric_description: rubric_grade["metric_description"],
+        max_points: rubric_grade["max_points"],
+        tier_name: rubric_grade["tier_name"],
+        tier_description: rubric_grade["tier_description"],
+        points: rubric_grade["points"],
+        order: rubric_grade["order"],
+        submission_id: @submission[:id],
+        metric_id: rubric_grade["metric_id"],
+        tier_id: rubric_grade["tier_id"]
+      })
+    end
+  end
 
   def existing_metrics_as_json
     ActiveModel::ArraySerializer.new(rubric_metrics_with_tiers, each_serializer: ExistingMetricSerializer).to_json
