@@ -58,7 +58,7 @@
       %br
       %br
 
-    %table(ng-cloak)
+    %table#grade-rubric-table(ng-cloak)
       %thead
         %tr
           %td.metric.heading
@@ -70,8 +70,9 @@
               %strong Level:
               Point value
             %label Verbose description about the parameters of the specific level
-          %td.points-given
+          %td.comments.heading(ng-show="tiersSelected().length > 0")
             %label.larger
+              Comments
 
       %tbody
         %tr(ng-repeat="metric in metrics")
@@ -83,6 +84,9 @@
             %label.larger.tier-data
               <strong>{{tier.name.replace(' ','&nbsp;')}}:</strong>&nbsp;{{tier.points}}&nbsp;points&nbsp;&nbsp;<input class="tier-select" type='radio' name="metric_tier_{{metric.id}}" ng-checked="metric.isUsingTier(tier)" ng-click="metric.gradeWithTier(tier)" />
             %label {{tier.description}}
+          %td.filler(ng-show="metric.tiers.length < #{@rubric.max_tier_count}" colspan="{{#{@rubric.max_tier_count} - metric.tiers.length}}")
+          %td.comments(ng-show="metric.selectedTier")
+            %textarea(ng-model="metric.comment")
 
     %br
     .row.text-center.points-given

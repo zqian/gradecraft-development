@@ -114,6 +114,7 @@
     this.description = if attrs.description then attrs.description else ""
     this.hasChanges = false
     this.selectedTier = null
+    this.comment = ""
   MetricPrototype.prototype =
     addTier: (attrs={})->
       self = this
@@ -165,7 +166,8 @@
         points: tier.points,
         submission_id: submission_id,
         metric_id: metric.id,
-        tier_id: tier.id
+        tier_id: tier.id,
+        comment: ""
       }
 
   $scope.addMetrics = (existingMetrics)->

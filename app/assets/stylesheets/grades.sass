@@ -19,6 +19,9 @@ $badass_blue: #269ECC
   .heading
     margin: 0 auto
 
+  #grade-rubric-table
+    width: 100%
+
   #rubric-heading
     float: left
 
@@ -61,7 +64,7 @@ $badass_blue: #269ECC
   table
     margin-top: 8px
 
-  .metric, .tier, .points-given
+  .metric, .tier, .points-given, .comments
     background: #eee
     border: 1px solid #ccc
     padding: 12px 28px
@@ -136,10 +139,6 @@ $badass_blue: #269ECC
 
     .tier-data
       white-space: nowrap
-
-    &.heading
-      background: #555
-      border: 1px solid #333
 
     &.heading
       background: #FFFD8C
@@ -222,11 +221,39 @@ $badass_blue: #269ECC
     background: #269ECC
     padding: 12px 21px
     margin-top: -8px
+    cursor: auto
 
     &:hover
       background: #269ECC + #111
 
+  .comments
+    padding: 6px
+    min-width: 100px
 
+    background: #49677F
+    border: 1px solid #34495A
+
+    textarea
+      height: 100%
+      color: #333
+      min-width: 150px
+      padding-bottom: 0
+      margin-bottom: 0
+
+    label
+      margin-top: 2px
+      color: white
+      font-size: 11px
+
+    &.heading
+      width: 150px
+
+      label
+        margin-left: 4px
+        font-weight: bold
+
+  .filler
+    background: #F9F9F9
 
   .points-given
     background: none
