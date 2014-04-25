@@ -20,7 +20,8 @@ $badass_blue: #269ECC
     margin: 0 auto
 
   #grade-rubric-table
-    width: 100%
+    max-width: 100%
+    table-layout: fixed
 
   #rubric-heading
     float: left
@@ -135,7 +136,17 @@ $badass_blue: #269ECC
     padding: 8px 14px
     min-width: 120px
 
-    .tier-headingo
+    .points-box
+      position: relative
+      display: block
+      float: right
+      right: 0
+      top: 0
+      background: $badass_blue
+      padding: 6px
+      color: white
+      font-style: italic
+      font-size: 14px
 
     .tier-data
       white-space: nowrap
@@ -173,8 +184,12 @@ $badass_blue: #269ECC
       margin-left: 4px
 
       input[type=radio].tier-select
-        padding-left: 4px
+        padding-left: 8px
         padding-top: 2px
+        float: left
+
+    .points
+      font-weight: bold
 
     .tier-row .columns
       padding: 0
