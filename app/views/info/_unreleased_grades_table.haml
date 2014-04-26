@@ -18,7 +18,7 @@
           %th.sortable{"data-sort" => "string"} Name
           - if assignment.has_groups?
             %th= "#{term_for :groups}"
-          - if current_course.has_teams?
+          - if current_course.has_teams? && ! assignment.has_groups?
             %th= "#{term_for :team}"
           %th Score
           %th Feedback
@@ -33,12 +33,13 @@
       %tbody
         - grades.each do |g|
           %tr
-            %td= link_to g.student.try(:name), student_path(g.student)
+            %td
+              = link_to g.student.try(:name), student_path(g.student)
+              - if current_course.has_teams? && g.student.present? && g.student.team_for_course(current_course).present?
+                = link_to "(#{g.student.team_for_course(current_course).try(:name)})", g.student.team_for_course(current_course)
             - if g.assignment.has_groups?
               %td= link_to g.student.group_for_assignment(g.assignment).try(:name), group_path(:id => g.student.group_for_assignment(g.assignment))
-            %td
-              - if current_course.has_teams? && g.student.present? && g.student.team_for_course(current_course).present?
-                = link_to g.student.team_for_course(current_course).try(:name), g.student.team_for_course(current_course)
+            
             %td= points g.score
             %td{:style => "width: 430px" }= raw g.feedback
             %td
