@@ -41,7 +41,7 @@
               %td= link_to g.student.group_for_assignment(g.assignment).try(:name), group_path(:id => g.student.group_for_assignment(g.assignment))
             
             %td= points g.score
-            %td{:style => "width: 430px" }= raw g.feedback
+            %td{:style => "width: 500px" }= raw g.feedback
             %td
               .button-bar
                 %ul.button-group.right.round
