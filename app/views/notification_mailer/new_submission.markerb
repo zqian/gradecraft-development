@@ -1,5 +1,5 @@
 Hi Professor <%= @professor.last_name %>,
 
-You have a new submission to grade!
+<%= @user.first_name %> <%= @user.last_name %> has submitted their <%= @assignment.name %>. 
 
 GradeCraft
