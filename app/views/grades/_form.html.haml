@@ -1,36 +1,4 @@
 .small-12.right.medium-4.columns
-  
-
-= simple_form_for @grade, url: assignment_grade_path(@assignment), method: :patch do |f|
-
-  = hidden_field_tag :student_id, current_student.id
-  .panel
-    .small-12.large-4.columns
-      = f.label :raw_score
-      - if @assignment.assignment_type.has_levels?
-        = f.select :raw_score, @score_levels.map { |l| [l.formatted_name,l.value] }, :include_blank => true
-      - elsif @assignment.has_levels?
-        = f.select :raw_score, @assignment_score_levels.map { |l| [l.formatted_name,l.value] }, :include_blank => true
-      - else
-        = f.text_field :raw_score, :default => @assignment.point_total, :label => "Score", :hint => "Total Assignment Points: #{ points @assignment.point_total }", data: {autonumeric: true, "m-dec" => "0"}
-      = f.simple_fields_for :grade_files, @grade.grade_files.new do |gff|
-        = gff.input :filepath, :input_html => { :class => 's3_files' }, :as => :hidden
-
-    .small-12.large-4.columns
-      = f.simple_fields_for :grade_files, @grade.grade_files.new do |gff|
-        = gff.input :filename, :input_html => { :class => 's3_files' }, :as => :hidden
-.panel.small-12.columns
-  %h6 Supporting Files:
-  .s3_uploader
-    - if nil
-      = s3_uploader_form key: upload_url('grade_files', @grade), acl: "private", max_file_size: 40.megabytes do
-        = file_field_tag :file, :multiple => true
-      - if @grade.grade_files.present?
-        %h6#uploaded_files Attachments Uploaded:
-      .upload.s3_progress
-        Progress:
-        .progress
-          .bar
 
 - if @rubric.designed?
   #rubric-grader(ng-app="gradecraft" ng-controller="GradeRubricCtrl" ng-init="init(#{@rubric[:id]}, #{@metrics}, #{@assignment[:id]}, #{params[:student_id]})")
@@ -106,7 +74,8 @@
       %button#submit-grade(ng-click="submitGrade()" ng-disabled="selectedTiers().length == 0") Submit Grade
 
 - else
-  = form_for @grade, url: assignment_grade_path(@assignment), method: :patch do |f|
+
+  = simple_form_for @grade, url: assignment_grade_path(@assignment), method: :patch do |f|
     = hidden_field_tag :student_id, current_student.id
     .panel
       .small-12.large-4.columns
