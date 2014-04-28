@@ -33,9 +33,6 @@ class AssignmentsController < ApplicationController
   def edit
     @assignment = current_course.assignments.find(params[:id])
     @title = "Editing #{@assignment.name}"
-    @assignment_rubrics = current_course.rubric_ids.map do |rubric_id|
-      @assignment.assignment_rubrics.where(rubric_id: rubric_id).first_or_initialize
-    end
   end
 
   # Duplicate an assignment - important for super repetitive items like attendance and reading reactions

@@ -79,8 +79,9 @@ class SubmissionsController < ApplicationController
         if @assignment.is_individual? && current_user.is_student?
           user = { name: "#{@submission.student.first_name}", email: "#{@submission.student.email}" }
           submission = { name: "#{@submission.assignment.name}", time: "#{@submission.created_at}" }
-          course = { courseno: "#{current_course.courseno}" }
-          NotificationMailer.successful_submission(user, submission, course).deliver
+          course = { courseno: "#{current_course.courseno}",  }
+          NotificationMailer.successful_submission(@submission.id).deliver
+          NotificationMailer.new_submission(@submission.id).deliver
         end
       elsif @submission.errors[:link].any?
         format.html { redirect_to new_assignment_submission_path(@assignment, @submission), notice: "Please provide a valid link for #{@assignment.name} submissions." }
@@ -107,6 +108,7 @@ class SubmissionsController < ApplicationController
         if current_user.is_student?
           format.html { redirect_to assignment_grade_path(@assignment, :student_id => current_user), notice: "Your submission for #{@assignment.name} was successfully updated." }
           format.json { render json: @assignment, status: :created, location: @assignment }
+          NotificationMailer.revised_submission(@submission.id).deliver
         else
           format.html { redirect_to session.delete(:return_to), notice: "#{@assignment.name} was successfully updated." }
         end

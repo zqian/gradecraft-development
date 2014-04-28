@@ -18,11 +18,36 @@ class NotificationMailer < ActionMailer::Base
     end
   end
 
-  def successful_submission(user_info, submission_info, course_info)
-    @user = user_info
-    @submission = submission_info
-    @course = course_info
-    mail(:to => "#{@user[:email]}", :subject => "#{@course[:courseno]} - #{@submission[:name]} Submitted") do |format|
+  def successful_submission(submission_id)
+    @submission = Submission.find submission_id
+    @user = @submission.student
+    @course = @submission.course
+    @assignment = @submission.assignment
+    mail(:to => "#{@user[:email]}", :subject => "#{@course[:courseno]} - #{@assignment.name} Submitted") do |format|
+      format.text
+      format.html
+    end
+  end
+
+  def new_submission(submission_id)
+    @submission = Submission.find submission_id
+    @user = @submission.student
+    @course = @submission.course
+    @assignment = @submission.assignment
+    @professor = @course.professor
+    mail(:to => @professor.email, :subject => "#{@course[:courseno]} - New Submission to Grade") do |format|
+      format.text
+      format.html
+    end
+  end
+
+  def revised_submission(submission_id)
+    @submission = Submission.find submission_id
+    @user = @submission.student
+    @course = @submission.course
+    @assignment = @submission.assignment
+    @professor = @course.professor
+    mail(:to => @professor.email, :subject => "#{@course[:courseno]} - Updated Submission to Grade") do |format|
       format.text
       format.html
     end

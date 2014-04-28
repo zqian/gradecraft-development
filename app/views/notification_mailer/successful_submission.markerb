@@ -1,6 +1,6 @@
-Dear <%= @user[:name] %>,
+Dear <%= @user.first_name %>,
 
-You successfully submitted your work for <%= @submission[:name] %> on <%= @submission[:time] %>.
+You successfully submitted your work for <%= @assignment.name %> on <%= @submission.created_at %>.
 
 Play on!
 

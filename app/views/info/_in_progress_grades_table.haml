@@ -36,7 +36,7 @@
               - if current_course.has_teams? && g.student.present? && g.student.team_for_course(current_course).present?
                 = link_to g.student.team_for_course(current_course).try(:name), g.student.team_for_course(current_course)
             %td= points g.score
-            %td{:style => "width: 430px" }= raw g.feedback
+            %td{:style => "width: 500px" }= raw g.feedback
           %td
             .button-bar
               %ul.button-group.right.round

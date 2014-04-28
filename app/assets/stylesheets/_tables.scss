@@ -1,5 +1,9 @@
 
 /** Table Styles **/
+table tbody {
+  vertical-align: top;
+}
+
 
 #gradebook {
   overflow: auto !important; 

@@ -16,18 +16,6 @@
       = f.simple_fields_for :grade_files, @grade.grade_files.new do |gff|
         = gff.input :filepath, :input_html => { :class => 's3_files' }, :as => :hidden
 
-
-    - if @assignment.release_necessary?
-      .small-12.large-4.columns
-        - if current_user.is_gsi?
-          = f.input :status, as: :select, :collection => ["In Progress", "Graded"], :selected => @grade.status
-          .form_label Is this grade ready to be reviewed? 
-        - else
-          = f.input :status,  as: :select, :collection => ["In Progress", "Graded", "Released"], :selected => @grade.status, :include_blank => true
-          .form_label Can the student see this grade?
-    - else
-      = f.hidden_field :status, value: 'Graded'
-
     .small-12.large-4.columns
       = f.simple_fields_for :grade_files, @grade.grade_files.new do |gff|
         = gff.input :filename, :input_html => { :class => 's3_files' }, :as => :hidden
@@ -41,6 +29,18 @@
 
     .clearfix
 
+    .right
+      - if @assignment.release_necessary?
+        - if current_user.is_gsi?
+          = f.input :status, as: :select, :collection => ["In Progress", "Graded"], :selected => @grade.status
+          .form_label Is this grade ready to be reviewed? 
+        - else
+          = f.input :status,  as: :select, :collection => ["In Progress", "Graded", "Released"], :selected => @grade.status, :include_blank => true
+          .form_label Can the student see this grade?
+      - else
+        = f.hidden_field :status, value: 'Graded'
+
+    .clearfix
 
   .right
     = submit_tag "#{@grade.persisted? && @grade.is_graded? ? 'Update' : 'Submit'} Grade", :class => "button tiny radius"

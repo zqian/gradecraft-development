@@ -104,6 +104,15 @@ img.earned {
   height: 2rem;
 }
 
+.success.bar_magic {
+  color: #FFF;
+  .meter { background-color: $secondary-color;
+  }
+  .has-tip {
+    color: #FFF;
+  }
+}
+
 /*striping*/
 .striped {
   height: 100%;
