@@ -286,10 +286,7 @@ CREATE TABLE assignment_types (
     notify_released boolean DEFAULT true,
     include_in_timeline boolean DEFAULT true,
     include_in_predictor boolean DEFAULT true,
-    include_in_to_do boolean DEFAULT true,
-    is_attendance boolean,
-    has_winners boolean,
-    num_winner_levels integer
+    include_in_to_do boolean DEFAULT true
 );
 
 
@@ -3208,6 +3205,8 @@ INSERT INTO schema_migrations (version) VALUES ('20140319000428');
 INSERT INTO schema_migrations (version) VALUES ('20140322144725');
 
 INSERT INTO schema_migrations (version) VALUES ('20140322145345');
+
+INSERT INTO schema_migrations (version) VALUES ('20140319000428');
 
 INSERT INTO schema_migrations (version) VALUES ('20140326223322');
 
