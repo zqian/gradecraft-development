@@ -783,10 +783,7 @@ CREATE TABLE assignment_types (
     notify_released boolean DEFAULT true,
     include_in_timeline boolean DEFAULT true,
     include_in_predictor boolean DEFAULT true,
-    include_in_to_do boolean DEFAULT true,
-    is_attendance boolean,
-    has_winners boolean,
-    num_winner_levels integer
+    include_in_to_do boolean DEFAULT true
 );
 
 
@@ -2020,37 +2017,6 @@ CREATE TABLE membership_scores (
 
 
 --
--- Name: proposals; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE proposals (
-    id integer NOT NULL,
-    title character varying(255),
-    proposal text,
-    group_id integer,
-    feedback text,
-    approved boolean,
-    submitted_by integer,
-
-
---
--- Name: proposals_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE proposals_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-    
---
--- Name: proposals_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE proposals_id_seq OWNED BY proposals.id;
-
---
 -- Name: metrics; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2066,6 +2032,8 @@ CREATE TABLE metrics (
     full_credit_tier_id integer
 );
 
+
+--
 -- Name: metrics_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -2077,10 +2045,47 @@ CREATE SEQUENCE metrics_id_seq
     CACHE 1;
 
 
+--
 -- Name: metrics_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE metrics_id_seq OWNED BY metrics.id;
+
+
+--
+-- Name: proposals; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE proposals (
+    id integer NOT NULL,
+    title character varying(255),
+    proposal text,
+    group_id integer,
+    feedback text,
+    approved boolean,
+    submitted_by integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: proposals_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE proposals_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: proposals_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE proposals_id_seq OWNED BY proposals.id;
 
 
 --
@@ -2946,11 +2951,14 @@ ALTER TABLE ONLY lti_providers ALTER COLUMN id SET DEFAULT nextval('lti_provider
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-<<<<<<< HEAD
-ALTER TABLE ONLY proposals ALTER COLUMN id SET DEFAULT nextval('proposals_id_seq'::regclass);
-=======
 ALTER TABLE ONLY metrics ALTER COLUMN id SET DEFAULT nextval('metrics_id_seq'::regclass);
->>>>>>> AJ-1573 Implement initial data model, strip out existing rubrics implementation.
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY proposals ALTER COLUMN id SET DEFAULT nextval('proposals_id_seq'::regclass);
 
 
 --
@@ -3316,19 +3324,19 @@ ALTER TABLE ONLY lti_providers
 
 
 --
-<<<<<<< HEAD
--- Name: proposals_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY proposals
-    ADD CONSTRAINT proposals_pkey PRIMARY KEY (id);
-=======
 -- Name: metrics_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY metrics
     ADD CONSTRAINT metrics_pkey PRIMARY KEY (id);
->>>>>>> AJ-1573 Implement initial data model, strip out existing rubrics implementation.
+
+
+--
+-- Name: proposals_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY proposals
+    ADD CONSTRAINT proposals_pkey PRIMARY KEY (id);
 
 
 --
@@ -3828,22 +3836,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140305040029');
 
 INSERT INTO schema_migrations (version) VALUES ('20140307194848');
 
-INSERT INTO schema_migrations (version) VALUES ('20140318185301');
-
-INSERT INTO schema_migrations (version) VALUES ('20140318193449');
-
-INSERT INTO schema_migrations (version) VALUES ('20140319000428');
-
-INSERT INTO schema_migrations (version) VALUES ('20140322144725');
-
-INSERT INTO schema_migrations (version) VALUES ('20140322145345');
-
-INSERT INTO schema_migrations (version) VALUES ('20140326223322');
-
-INSERT INTO schema_migrations (version) VALUES ('20140328212428');
-
-INSERT INTO schema_migrations (version) VALUES ('20140329225245');
-
 INSERT INTO schema_migrations (version) VALUES ('20140308205708');
 
 INSERT INTO schema_migrations (version) VALUES ('20140308210417');
@@ -3855,6 +3847,14 @@ INSERT INTO schema_migrations (version) VALUES ('20140308211252');
 INSERT INTO schema_migrations (version) VALUES ('20140308211414');
 
 INSERT INTO schema_migrations (version) VALUES ('20140308212102');
+
+INSERT INTO schema_migrations (version) VALUES ('20140319000428');
+
+INSERT INTO schema_migrations (version) VALUES ('20140326223322');
+
+INSERT INTO schema_migrations (version) VALUES ('20140328212428');
+
+INSERT INTO schema_migrations (version) VALUES ('20140329225245');
 
 INSERT INTO schema_migrations (version) VALUES ('20140418142023');
 
