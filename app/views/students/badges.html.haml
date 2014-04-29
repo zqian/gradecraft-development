@@ -3,6 +3,21 @@
     = render "student_profile_tabs"
 
   .pagetitle= "#{term_for :badges}"
+  %span
+    -if current_course.valuable_badges?  
+      - if current_user.is_student?
+        %b My #{term_for :badge}  Points:
+        .label.round.bold=current_student.earned_badges_score
+      - else
+        %b My #{term_for :badges} Earned:
+        .label.round.bold=current_student.earned_badge_count_for_course(current_course)
+    -else
+      - if current_user.is_student?
+        %b #{current_student.name}'s #{term_for :badge}  Points:
+        .label.round.bold=current_student.earned_badge_score
+      - else
+        %b #{current_student.name}'s #{term_for :badge}s Earned:
+        .label.round.bold=current_student.earned_badge_count_for_course(current_course)  
 
   .small-12.columns
     %dl.tabs{:data => {'tab' => true}}
@@ -22,35 +37,38 @@
           = "Want to share your #{term_for :badges} with the class?"
           .bold= link_to "Turn on shared #{term_for :badges}!", edit_profile_users_path
 
+      //student badges table
       .tabs-content
         .content#tabb1.active.small-12
           %table.responsive
             %thead
               %tr
-                %th Icon
+                %th.center Icon
+                %th Earned
                 %th{ :width => 300} Description
-                %th Tasks
                 - if current_course.valuable_badges?
                   %th Value
-                %th Earned?
+                %th Date Earned
                 - if current_course.shared_badges? && current_student.badges_shared(current_course)
                   %th Share this with the class?
             %tbody
               - current_course_data.badges.each do |badge|
                 %tr
-                  %td= image_tag badge.icon, :alt => badge.name, :width => 80
+                  %td.center= image_tag badge.icon, :alt => badge.name, :width => 80
+                  %td
+                    - if badge.can_earn_multiple_times
+                      = badge.earned_badge_count_for_student(current_student.id)
+                    - elsif current_student_data.earned_badge?(badge)
+                      .fi-check
+                    - else
+                      .transparent.fi-minus
                   %td
                     .bold= badge.name
                     = raw badge.description
-                  %td
-                    %ul
-                      - badge.tasks.each do |task|
-                        %li= task.name
                   - if current_course.valuable_badges?
-                    %td= points badge.point_total
+                    %td= points badge.earned_badge_total_value(current_student)
                   %td
                     - if current_student_data.earned_badge?(badge)
-                      %i.fi-check
                       = current_student_data.earned_badge(badge).created_at
                       %p= raw current_student_data.earned_badge(badge).try(:feedback)
                   - if current_course.shared_badges? && current_student.badges_shared(current_course)
@@ -65,7 +83,7 @@
                       - elsif earned_badge.present?
                         - if earned_badge.shared?
                           = "Shared"
-                        - else 
+                        - else
                           = "Not Shared"
 
         .content#tabb2.small-12

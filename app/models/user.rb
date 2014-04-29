@@ -192,7 +192,11 @@ class User < ActiveRecord::Base
   end
 
   def earned_badge_count_for_course(course)
-    self.earned_badges.where(course: course).count
+    earned_badges.where(course: course).count
+  end
+
+  def earned_badge_score
+    @earned_badge_score ||= sums.earned_badge_score
   end
 
   #grabbing the stored score for the current course

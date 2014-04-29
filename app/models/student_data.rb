@@ -194,7 +194,8 @@ class StudentData < Struct.new(:student, :course)
   def team_score
     (team.challenge_grade_score if team) || 0
   end
-
+  
+  ####MOVED TO user
   #Sum of all earned badges value for a student
   def earned_badge_score
     @earned_badge_score ||= sums.earned_badge_score # student.earned_badges.where(course: course).score
@@ -227,7 +228,7 @@ class StudentData < Struct.new(:student, :course)
       end
     end
   end
-
+  
   #Weights
   def weight_for_assignment_type(assignment_type)
     assignment_type_weights[assignment_type.id]

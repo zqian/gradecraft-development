@@ -32,6 +32,11 @@ class Badge < ActiveRecord::Base
     super || false
   end
 
+  #indexed badges
+  def awarded_count
+    earned_badges.count
+  end
+
   #badges per role
   def earned_badges_by_student_id
     @earned_badges_by_student_id ||= earned_badges.group_by { |eb| [eb.student_id] }
@@ -40,5 +45,15 @@ class Badge < ActiveRecord::Base
   def earned_badge_for_student(student)
     earned_badges_by_student_id[[student.id]].try(:first)
   end
+
+  #Counting how many times a particular student has earned this badge
+  def earned_badge_count_for_student(student)
+     earned_badges.where(:student_id => student).count
+  end
+  
+  def earned_badge_total_value(student)
+    earned_badges.where(:student_id => student).pluck('score').sum
+  end
+
 
 end

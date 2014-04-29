@@ -5,13 +5,21 @@
       = render "tabs"
   
     .pagetitle= @title
+    %span  
+      %b #{term_for :badges} :
+      .label.round.bold=current_course.course_badge_count
+    %span
+      %b Awarded #{term_for :badges} :
+      .label.round.bold=current_course.awarded_course_badge_count
 
     .small-12.columns
       
+      //instructor badge index table
       %table.responsive
         %thead
           %tr
-            %th Icon
+            %th.center Icon
+            %th Awarded
             %th Description
             - if current_course.valuable_badges?
               %th{"data-sort" => "int"} Value
@@ -20,26 +28,27 @@
         %tbody
           - current_course_data.badges.each do |badge|
             %tr
-              %td
+              %td.center
                 %img{:src => badge.icon, :alt => badge.name, :width => "80"}
-                %td
-                  .bold= link_to badge.name, badge_path(badge)
-                  = raw badge.description
-                - if current_course.valuable_badges?
-                  %td= points badge.point_total
-                %td
-                  - if badge.visible?
-                    Yes
-                  - else
-                    No
-                %td
-                  .button-bar
-                    %ul.button-group.right.round
-                      %li= link_to "Quick Award", mass_award_badge_path(badge), :class => "button tiny secondary"
-                      %li
-                        %a{:href => edit_badge_path(badge), :class => 'button tiny secondary'}
-                          Edit
-                      %li
-                        %a{:href => badge_path(badge), :method => :delete, :data => { confirm: 'Are you sure?' }, :class => "button tiny secondary" }
-                          Delete
+              %td= badge.awarded_count
+              %td
+                .bold= link_to badge.name, badge_path(badge)
+                = raw badge.description
+              - if current_course.valuable_badges?
+                %td= points badge.point_total
+              %td
+                - if badge.visible?
+                  Yes
+                - else
+                  No
+              %td
+                .button-bar
+                  %ul.button-group.right.round
+                    %li= link_to "Quick Award", mass_award_badge_path(badge), :class => "button tiny secondary"
+                    %li
+                      %a{:href => edit_badge_path(badge), :class => 'button tiny secondary'}
+                        Edit
+                    %li
+                      %a{:href => badge_path(badge), :method => :delete, :data => { confirm: 'Are you sure?' }, :class => "button tiny secondary" }
+                        Delete
     .clearfix

@@ -67,33 +67,35 @@
       %p.clear
         %b Badges will be used:
         = @course.badge_setting? ? 'Yes' : 'No'
-      %p
-        %b Badges will be awarded through...
-        = @course.badge_use_scope
-      %p
-        %b Social Badges:
-        = @course.shared_badges? ? 'Yes' : 'No'
-      %p
-        %b Badges are valuable:
-        = @course.badges_value? ? 'Yes' : 'No'
+      - if @course.badge_setting?
+        %p
+          %b Badges will be called:
+          = @course.badge_term.pluralize
+        %p
+          %b Social Badges:
+          = @course.shared_badges? ? 'Yes' : 'No'
+        %p
+          %b Badges are valuable:
+          = @course.badges_value? ? 'Yes' : 'No'
 
     .panel
       %h4 SECTIONS
       %p.clear
         %b Students will be grouped into sections:
         = @course.team_setting? ? 'Yes' : 'No'
-      %p
-        %b These sections will be called:
-        = @course.team_term
-      %p
-        %b Students can see the sections, the section's points, and the team's badges:
-        = @course.teams_visible? ? 'Yes' : 'No'
-      %p
-        %b Section Score = Average User Score:
-        = @course.team_score_average? ? 'Yes' : 'No'
-      %p
-        %b Section Leaders will be called:
-        = @course.team_leader_term
+      -if @course.team_setting?  
+        %p
+          %b These sections will be called:
+          = @course.team_term.pluralize
+        %p
+          %b Students can see the sections, the section's points, and the team's badges:
+          = @course.teams_visible? ? 'Yes' : 'No'
+        %p
+          %b Section Score = Average User Score:
+          = @course.team_score_average? ? 'Yes' : 'No'
+        %p
+          %b Section Leaders will be called:
+          = @course.team_leader_term
 
 
     .panel
@@ -101,25 +103,26 @@
       %p
         %b Students will work in groups:
         = @course.group_setting? ? 'Yes' : 'No'
-      %p
-        %b Groups will be called:
-        = @course.group_term
-      %p
-        %b Students self-declare their group roles:
-        = @course.team_roles? ? 'Yes' : 'No'
-      %p
-        %b Max Group Size:
-        = @course.max_group_size
-      %p
-        %b Min Group Size:
-        = @course.min_group_size
+      -if @course.group_setting?  
+        %p
+          %b Groups will be called:
+          = @course.group_term.pluralize
+        %p
+          %b Students self-declare their group roles:
+          = @course.team_roles? ? 'Yes' : 'No'
+        %p
+          %b Max Group Size:
+          = @course.max_group_size
+        %p
+          %b Min Group Size:
+          = @course.min_group_size
 
 
     .panel
       %h4 STUDENTS
       %p.clear
         %b Students will be called:
-        = @course.user_term
+        = @course.user_term.pluralize
 
     .panel
       %h4 MULTIPLIERS
