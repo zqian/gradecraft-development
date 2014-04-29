@@ -68,7 +68,7 @@ class CourseData < Struct.new(:course)
 
   #Students in a particular team within a course
   def students_for_team(team)
-    course.students.being_graded.select { |student| team.student_ids.include? student.id }
+    course.students.being_graded.order_by_high_score.select { |student| team.student_ids.include? student.id }
   end
 
   #Auditing students in a particular team within a course
