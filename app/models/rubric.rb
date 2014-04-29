@@ -1,9 +1,19 @@
 class Rubric < ActiveRecord::Base
-  attr_accessible :description, :name
+  belongs_to :assignment
+  has_many :metrics
+  has_many :rubric_grades
 
-  belongs_to :course
-  has_many :assignment_rubrics, dependent: :destroy
-  has_many :assignments, through: :assignment_rubrics
+  validates :assignment, presence: true
 
-  validates_presence_of :course, :name, :description
+  attr_accessible :assignment_id
+
+  def max_tier_count
+    metrics.inject([]) do |tier_counts, metric|
+      tier_counts << metric.tiers.count
+    end.max
+  end
+
+  def designed?
+    metrics.count > 0
+  end
 end

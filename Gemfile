@@ -9,6 +9,7 @@ gem 'actionpack-page_caching'
 gem 'active_model_serializers'
 gem 'addressable'
 gem 'amoeba'
+gem 'angularjs-rails', '~> 1.2.14'
 gem 'autonumeric-rails'
 gem 'aws-sdk'
 gem 's3_direct_upload'
@@ -34,6 +35,7 @@ gem 'mini_magick'
 gem 'minitest-rails'
 gem 'mongoid', :git => 'https://github.com/mongoid/mongoid.git'
 gem 'newrelic_rpm'
+gem 'ng-rails-csrf'
 gem 'nokogiri', '1.6.0'
 gem 'oink'
 gem 'omniauth'
@@ -60,21 +62,22 @@ gem 'uglifier'
 gem 'whenever'
 gem 'sinatra', '>= 1.3.0', :require => nil
 
-
 group :development do
   gem 'haml-rails'
   gem 'valid_attribute'
   gem 'quiet_assets'
   gem 'foreman'
   gem 'rubystats'
+  gem 'rack-mini-profiler'
+  gem 'spring'
+  # gem 'guard-spring'
 end
 
 group :test do
-  gem 'minitest-rails-capybara'
-  gem 'minitest-colorize'
-  gem 'minitest-focus'
-  gem 'minitest-matchers'
   gem 'faker'
+  gem 'rspec-rails', '~> 3.0.0.beta2'
+  gem 'factory_girl_rails', '~> 4.4.1'
+  gem 'capybara', '~> 2.2.1'
 end
 
 group :test, :development do

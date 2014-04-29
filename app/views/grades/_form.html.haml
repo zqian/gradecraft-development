@@ -1,33 +1,114 @@
 .small-12.right.medium-4.columns
-  
 
-= simple_form_for @grade, url: assignment_grade_path(@assignment), method: :patch do |f|
+- if @rubric.designed?
+  #rubric-grader(ng-app="gradecraft" ng-controller="GradeRubricCtrl" ng-init="init(#{@rubric[:id]}, #{@metrics}, #{@assignment[:id]}, #{params[:student_id]})")
 
-  = hidden_field_tag :student_id, current_student.id
-  .panel
-    .small-12.large-4.columns
-      = f.label :raw_score
-      - if @assignment.assignment_type.has_levels?
-        = f.select :raw_score, @score_levels.map { |l| [l.formatted_name,l.value] }, :include_blank => true
-      - elsif @assignment.has_levels?
-        = f.select :raw_score, @assignment_score_levels.map { |l| [l.formatted_name,l.value] }, :include_blank => true
-      - else
-        = f.text_field :raw_score, :default => @assignment.point_total, :label => "Score", :hint => "Total Assignment Points: #{ points @assignment.point_total }", data: {autonumeric: true, "m-dec" => "0"}
-      = f.simple_fields_for :grade_files, @grade.grade_files.new do |gff|
-        = gff.input :filepath, :input_html => { :class => 's3_files' }, :as => :hidden
+    .row
+      #rubric-heading.small-7.columns
+        %h3.text-right
+          Grade Assignment by Rubric
+          = link_to "(Edit)", design_assignment_rubric_path(@assignment)
+        %h4.text-right (click to select or de-select a levelevel for each criterion)
+        %br
 
-    .small-12.large-4.columns
-      = f.simple_fields_for :grade_files, @grade.grade_files.new do |gff|
-        = gff.input :filename, :input_html => { :class => 's3_files' }, :as => :hidden
+      .points-overview(ng-cloak)
+        %h4.points-legend
+          %span.points-assigned(ng-class="{'points-missing': pointsMissing(), 'points-satisfied': pointsSatisfied(), 'points-overage': pointsOverage()}") {{pointsGiven()}}
+          \/{{pointsPossible}} Points Allocated
+        %h4.notice(ng-hide="pointsSatisfied() || pointsMissing()") You have not yet allocated any points
+        %h4.notice(ng-show="pointsMissing()") {{pointsRemaining()}} point{{pointsRemaining() > 1 ? "s" : ""}} have not been assigned 
+        %h4.notice(ng-show="pointsSatisfied()") You have allocated all possible points
 
-    .clearfix
+      .clear
 
-    .small-12.columns
-      = f.hidden_field :graded_by_id, :value => current_user.id
-      = f.label :feedback
-      = f.bootsy_area :feedback
+    #rubric-grader-splash.large-12.columns.text-center(ng-cloak)
+      Loading assignment...
+      %br
+      %br
 
-    .clearfix
+    %table#grade-rubric-table(ng-cloak)
+      %thead
+        %tr
+          %td.metric.heading
+            %label.larger
+              <strong>Criterion</strong>:&nbsp;Max&nbsp;points
+            %label Verbose description about the ramifications of the criterion
+          %td.tier.heading(colspan="#{@rubric.max_tier_count}")
+            %label.larger
+              %strong Level:
+              Point value
+            %label Verbose description about the parameters of the specific level
+          %td.comments.heading(ng-show="tiersSelected().length > 0")
+            %label.larger
+              Comments
+
+      %tbody
+        %tr(ng-repeat="metric in metrics")
+          %td.metric
+            %label.larger
+              <strong>{{metric.name}}:</strong>&nbsp;{{metric.max_points}}&nbsp;Points
+            %label {{metric.description}}
+          %td.tier(ng-repeat="tier in metric.tiers" ng-click="metric.gradeWithTier(tier)" ng-class="{selected: metric.isUsingTier(tier)}")
+            .points-box {{tier.points}}
+            %label.larger.tier-data
+              <strong>{{tier.name.replace(' ','&nbsp;')}}</strong>&nbsp;&nbsp;<input class="tier-select" type='radio' name="metric_tier_{{metric.id}}" ng-checked="metric.isUsingTier(tier)" ng-click="metric.gradeWithTier(tier)" />
+            %label.tier-points
+              %span.points {{tier.points}}&nbsp;points&nbsp: 
+              {{tier.description}}
+            .clear
+          %td.filler(ng-show="metric.tiers.length < #{@rubric.max_tier_count}" colspan="{{#{@rubric.max_tier_count} - metric.tiers.length}}")
+          %td.comments(ng-show="metric.selectedTier")
+            %textarea(ng-model="metric.comment")
+
+    %br
+    .row.text-center.points-given
+      .points-overview.bottom(ng-cloak)
+        %h4.points-legend
+          %span.points-assigned(ng-class="{'points-missing': pointsMissing(), 'points-satisfied': pointsSatisfied(), 'points-overage': pointsOverage()}") {{pointsGiven()}}
+          \/{{pointsPossible}} Points Allocated
+        %h4.notice(ng-hide="pointsSatisfied() || pointsMissing()") You have not yet allocated any points
+        %h4.notice(ng-show="pointsMissing()") {{pointsRemaining()}} point{{pointsRemaining() > 1 ? "s" : ""}} have not been assigned 
+        %h4.notice(ng-show="pointsSatisfied()") You have allocated all possible points
+      .clear
+    .row.text-center
+      %button#submit-grade(ng-click="submitGrade()" ng-disabled="selectedTiers().length == 0") Submit Grade
+
+- else
+
+  = simple_form_for @grade, url: assignment_grade_path(@assignment), method: :patch do |f|
+    = hidden_field_tag :student_id, current_student.id
+    .panel
+      .small-12.large-4.columns
+        = f.label :raw_score
+        - if @assignment.assignment_type.has_levels?
+          = f.select :raw_score, @score_levels.map { |l| [l.name,l.value] }, :include_blank => true
+        - elsif @assignment.has_levels?
+          = f.select :raw_score, @assignment_score_levels.map { |l| [l.name,l.value] }, :include_blank => true
+        - else
+          = f.text_field :raw_score, :default => @assignment.point_total, :label => "Score", :hint => "Total Assignment Points: #{ points @assignment.point_total }", data: {autonumeric: true, "m-dec" => "0"}
+        = f.simple_fields_for :grade_files, @grade.grade_files.new do |gff|
+          = gff.input :filepath, :input_html => { :class => 's3_files' }, :as => :hidden
+
+
+      - if @assignment.release_necessary?
+        .small-12.large-4.columns
+          = f.label :status
+          = f.select :status, Grade::STATUSES
+          %h6.small Can the student see this grade?
+      - elsif @grade.status.blank?
+        = f.hidden_field :status, value: 'Graded'
+
+      .small-12.large-4.columns
+        = f.simple_fields_for :grade_files, @grade.grade_files.new do |gff|
+          = gff.input :filename, :input_html => { :class => 's3_files' }, :as => :hidden
+      .clearfix
+
+      .small-12.columns
+        = f.hidden_field :graded_by_id, :value => current_user.id
+        = f.label :feedback
+        = f.bootsy_area :feedback
+
+      .clearfix
 
     .right
       - if @assignment.release_necessary?
@@ -42,6 +123,7 @@
 
     .clearfix
 
-  .right
-    = submit_tag "#{@grade.persisted? && @grade.is_graded? ? 'Update' : 'Submit'} Grade", :class => "button tiny radius"
-    = link_to 'Cancel', assignment_path(@assignment), :class => 'button tiny radius transparent'
+
+    .right
+      = submit_tag "#{@grade.persisted? && @grade.is_graded? ? 'Update' : 'Submit'} Grade", :class => "button tiny radius"
+      = link_to 'Cancel', assignment_path(@assignment), :class => 'button tiny radius'

@@ -1,0 +1,282 @@
+@mixin transition($property, $duration)
+  -webkit-transition: $property $duration
+  -moz-transition: $property $duration
+  -ms-transition: $property $duration
+  -o-transition: $property $duration
+  transition: $property $duration
+
+@mixin linear-gradient($fromColor, $toColor)
+  background-color: $toColor //* Fallback Color */
+  background-image: -webkit-gradient(linear, left top, left bottom, from($fromColor), to($toColor)) /* Saf4+, Chrome */
+  background-image: -webkit-linear-gradient(top, $fromColor, $toColor) // Chrome 10+, Saf5.1+, iOS 5+ */
+  background-image:    -moz-linear-gradient(top, $fromColor, $toColor) /* FF3.6 */
+  background-image:     -ms-linear-gradient(top, $fromColor, $toColor) /* IE10 */
+  background-image:      -o-linear-gradient(top, $fromColor, $toColor) /* Opera 11.10+ */
+  background-image:         linear-gradient(top, $fromColor, $toColor)
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#{$fromColor}', EndColorStr='#{$toColor}')
+
+
+
+$light_green: #EFFFED 
+$dark_green: #54BA3F
+$inactive_red: #DC9A9A
+$dark_red: #B40D0D
+$badass_blue: #269ECC
+
+.splash
+  display: none
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak
+  display: none !important
+
+  &.splash
+    display: block !important
+    font-size: 26px
+
+#rubric
+  h5.subtitle
+    font-style: italic
+    color: #666#555
+
+  #rubric-title
+    float: left
+
+  .clear
+    clear: both
+
+  #points-overview
+    float: right
+    display: block
+    margin-right: 28px
+    text-align: right
+    
+    h4#points-legend
+      font-size: 22px
+      font-style: italic
+      color: #269ECC
+
+      .points-assigned
+        margin-right: -4px
+        color: #555
+        font-weight: bold
+
+      .points-missing
+        color: #F78D00
+      .points-satisfied
+        color: $dark_green
+      .points-overage
+        color: $dark_red
+
+    h4.notice
+      font-size: 14px
+      font-style: italic
+      font-weight: normal
+      color: #666
+
+
+  h4#points-assigned
+    font-weight: bold
+    font-size: 17px
+    color: $badass_blue
+  h4#points-remaining
+    font-size: 14px
+    font-style: italic
+    font-weight: normal
+    color: #666
+
+  .metric
+    background: #eee
+    border: 1px solid #ccc
+    padding: 24px
+    float: left
+    margin-right: 12px
+
+    &.saved
+      background: #D3EBF5
+      background: #BBE0EE
+      @include linear-gradient(#BBE0EE, #A2D8ED)
+      border: 1px solid #92CCE2
+
+    &.animate-enter
+      opacity: 1.0
+      display: block !important
+      transition: opacity 1s
+
+    &.animate-enter.animate-enter-leave
+      opacity: 0
+
+    input.ng-pristine.ng-invalid
+      border: 1px solid #6CC7EC
+      background: #F0FBFF
+
+    input.ng-valid-required
+      border: 1px solid #54BA3F
+      background: $light_green
+
+    input.ng-invalid
+      border: 1px solid #E84846
+      background: #FDD
+
+    .messages
+      position: absolute
+      padding: 3px 6px
+      bottom: 0
+      right: 0
+      font-style: italic
+      font-size: 11px
+      color: #555
+
+    &.ng-valid .messages
+      color: #3B819B
+
+    button
+      padding: 6px 12px
+      font-size: 12px
+      font-weight: bold
+
+      &.create
+        background: $dark_green
+      &.delete
+        padding: 3px 6px
+        background: $inactive_red
+        position: absolute
+        top: 0
+        right: 0
+        font-weight: bold
+
+        &:hover
+          background: $dark_red
+    
+
+  .tier
+    background: #eee
+    border: 1px solid #ccc
+    padding: 24px
+    float: left
+    margin-right: 12px
+    margin-bottom: 12px
+    
+    &.saved
+      border: 1px solid $dark_green
+      background: #B9E7AF
+      @include linear-gradient(#E2F6DE, #B9E7AF)
+      @include linear-gradient(#B9E7AF, #ACE3A0)
+
+
+    button
+      padding: 4px 8px
+      font-size: 12px
+      font-weight: bold
+
+      &.create
+        background: green
+      &.delete
+        padding: 3px 6px
+        font-weight: bold
+        position: absolute
+        top: 0
+        right: 0
+        background: $inactive_red
+
+        &:hover
+          background: $dark_red
+
+    .messages
+      position: absolute
+      padding: 3px 6px
+      bottom: 0
+      right: 0
+      font-style: italic
+      font-size: 11px
+      color: #555
+
+    &.ng-valid .messages
+      color: #368127
+
+    input.ng-valid-required
+      border: 1px solid $dark_green
+      background: $light_green
+
+      &:disabled
+        background: #EBF1EA
+        background: #EFEFEF
+        border: 1px solid #bbb
+        color: #777
+
+    input.ng-pristine.ng-invalid
+      border: 1px solid #6CC7EC
+      background: #F0FBFF
+
+    input.ng-invalid
+      border: 1px solid #E84846
+      background: #FDD
+
+  .metric, .tier
+    &.heading
+      font-size: 19px
+      font-style: italic
+      color: #333
+      padding: 10px 16px
+
+    &.ng-invalid.saved
+      border: 1px solid #FF8786
+      background: #FEB1B0
+
+  .add-tier
+    background: $dark_green
+    color: white
+    font-size: 16px
+    padding: 8px 12px
+    display:block
+    float: left
+    font-style: italic
+
+  #new-rubric-metric
+    font-size: 16px
+    color: white
+    font-style: italic
+    background: $badass_blue
+    padding: 12px 21px
+    margin-top: -8px
+
+  #add-metric
+    font-size: 14px
+    background: none
+    color: $badass_blue
+    font-style: italic
+    background: #5BB4D6
+    background: none
+    margin: 0
+    margin-left: 4px
+    padding: 0
+
+  .return-link
+    font-size: 13px
+    background: #888
+    color: #5BB4D6
+    background: none
+    font-style: italic
+
+  .assignment-return
+    padding-bottom: 8px
+
+  .divider
+    margin-bottom: 26px
+    border: 1px dashed #aaa
+    padding: 10px
+    cursor: move
+    border-left: 2px solid #999
+
+    .order-label
+      position: relative
+      display: block
+      float: right
+      right: 0
+      top: 0
+      background: $badass_blue
+      padding: 6px
+      color: white
+      font-style: italic
+      font-size: 14px
+      margin-top: -10px
+      margin-right: -10px

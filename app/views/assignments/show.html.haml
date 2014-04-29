@@ -12,10 +12,17 @@
       .right= render "assignments/description"
   .clearfix
   - if current_user.is_staff?
-    - if @assignment.has_groups?
-      = render "group_show"
-    - else
-      = render "individual_show"
+    .small-12.columns
+      - if @assignment.rubric and @assignment.rubric.designed?
+        %h3!= link_to "Edit Rubric", design_assignment_rubric_path(@assignment)
+      - else
+        %h3!= link_to "Design Rubric", design_assignment_rubric_path(@assignment)
+
+    .small-12.columns
+      - if @assignment.has_groups?
+        = render "group_show"
+      - else
+        = render "individual_show"
   - else
     .small-12.columns
       - if @assignment.has_groups?
@@ -23,4 +30,5 @@
       - else
         = render "grades/individual_show"
 
+  .clearfix
       

@@ -7,6 +7,7 @@ class Assignment < ActiveRecord::Base
 
   belongs_to :course
   belongs_to :assignment_type, -> { order('order_placement ASC') }
+  has_one :rubric
   delegate :mass_grade?, :student_weightable?, :to => :assignment_type
 
   #For instances where the assignment inherits the score levels through the assignment type
@@ -119,6 +120,10 @@ class Assignment < ActiveRecord::Base
   #average of all grades for an assignment
   def average
     grades.graded.average('grades.score').to_i if grades.graded.present?
+  end
+
+  def has_rubric?
+    !! rubric
   end
 
   #average of above-zero grades for an assignment

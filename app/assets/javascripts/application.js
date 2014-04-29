@@ -18,6 +18,16 @@
 //= require underscore.min
 //= require backbone.min
 //= require bootstrap
+
+//= require angular
+//= require angular-resource
+//= require angular-animate
+//= require ng-rails-csrf
+//= require ./angular/main.js
+//= require ./angular/ui/sortable
+//= require ./angular/vendor/restangular.min
+//= require_tree ./angular
+
 //= require bootstrap-datetimepicker
 //= require jquery.dynatable
 //= require gradecraft
@@ -56,5 +66,6 @@
 //= require top_ten
 //= require uploads
 //= require course_switch
+
 
 $(function(){ $(document).foundation(); });

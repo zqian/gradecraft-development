@@ -77,10 +77,22 @@ GradeCraft::Application.routes.draw do
     end
     resources :tasks
     resource :grade, only: [:show, :edit, :update, :destroy] do
+
+      put :submit_rubric, on: :collection
       resources :earned_badges
+    end
+    resource :rubric do
+      resources :metrics
+      get :design, on: :collection
     end
   end
 
+  resources :metrics do
+    put :update_order, on: :collection
+  end
+
+  resources :tiers
+  resources :graded_metrics
 
   resources :score_levels
 
@@ -182,6 +194,8 @@ GradeCraft::Application.routes.draw do
 
   #10. Rubrics & Grade Schemes
   resources :rubrics
+
+  #11. Rubrics & Grade Schemes
   resources :grade_scheme_elements do
     collection do
       post :destroy_multiple

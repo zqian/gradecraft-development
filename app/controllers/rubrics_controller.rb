@@ -1,38 +1,49 @@
 class RubricsController < ApplicationController
+  before_action :find_rubric, except: [:design, :create]
 
-before_filter :ensure_staff?, :except => [:show]
+  respond_to :html, :json
 
-  def index
-    respond_with @rubrics = current_course.rubrics
-  end
-
-  def show
-    respond_with @rubric = current_course.rubrics.find(params[:id])
-  end
-
-  def new
-    respond_with @rubric = current_course.rubrics.new
-  end
-
-  def create
-    @rubric = current_course.rubrics.new(params[:rubric])
-    @rubric.save
+  def design
+    @assignment = Assignment.find params[:assignment_id]
+    @rubric = Rubric.find_or_create_by(assignment_id: @assignment.id)
+    @metrics = existing_metrics_as_json
     respond_with @rubric
   end
 
   def edit
-    @rubric = current_course.rubrics.find(params[:id])
+    respond_with @rubric
   end
 
-  def update
-    @rubric = current_course.rubrics.find(params[:id])
-    @rubric.update_attributes(params[:rubric])
+  def create
+    @rubric = Rubric.create params[:rubric]
     respond_with @rubric
   end
 
   def destroy
-    @rubric = current_course.rubrics.find(params[:id])
     @rubric.destroy
     respond_with @rubric
+  end
+
+  def show
+    respond_with @rubric
+  end
+
+  def update
+    @rubric.update_attributes params[:rubric]
+    respond_with @rubric, status: :not_found
+  end
+
+  private
+
+  def existing_metrics_as_json
+    ActiveModel::ArraySerializer.new(rubric_metrics_with_tiers, each_serializer: ExistingMetricSerializer).to_json
+  end
+
+  def rubric_metrics_with_tiers
+    @rubric.metrics.order(:order).includes(:tiers)
+  end
+
+  def find_rubric
+    @rubric = Rubric.find params[:id]
   end
 end

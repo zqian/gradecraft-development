@@ -1,8 +1,7 @@
 class GradesController < ApplicationController
   respond_to :html, :json
-
-  before_filter :set_assignment, only: [:show, :edit, :update, :destroy]
-  before_filter :ensure_staff?, :except => [:self_log, :predict_score, :show]
+  before_filter :set_assignment, only: [:show, :edit, :update, :destroy, :submit_rubric]
+  before_filter :ensure_staff?, :except => [:self_log, :show, :predict_score]
   before_filter :ensure_student?, only: [:predict_score]
 
   def show
@@ -21,6 +20,8 @@ class GradesController < ApplicationController
     session[:return_to] = request.referer
     redirect_to @assignment and return unless current_student.present?
     @grade = current_student_data.grade_for_assignment(@assignment)
+    @rubric = @assignment.rubric
+    @metrics = existing_metrics_as_json if @rubric
     @score_levels = @assignment.score_levels.order_by_value
     @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
   end
@@ -28,12 +29,27 @@ class GradesController < ApplicationController
   def update
     redirect_to @assignment and return unless current_student.present?
     @grade = current_student_data.grade_for_assignment(@assignment)
-    @grade.update_attributes(params[:grade])
+    @grade.update_attributes params[:grade]
     
     if @assignment.notify_released? && @grade.is_released?
       NotificationMailer.grade_released(@grade.id).deliver
     end
     redirect_to session[:return_to]
+  end
+
+  def submit_rubric
+    @grade = current_student_data.grade_for_assignment(@assignment)
+    @submission = Submission.where(assignment_id: @assignment[:id], student_id: params[:student_id]).first
+    @submission.update_attributes(graded: true)
+    @grade.update_attributes(raw_score: params[:points_given], submission_id: @submission[:id], point_total: params[:points_possible], status: "Graded")
+
+    create_rubric_grades # create an individual record for each rubric grade
+
+    if @assignment.notify_released? && @grade.is_released?
+      NotificationMailer.grade_released(@grade.id).deliver
+    end
+
+    render status: 200, json: {}
   end
 
   def destroy
@@ -215,6 +231,31 @@ class GradesController < ApplicationController
   end
 
   private
+
+  def create_rubric_grades
+    params[:rubric_grades].each do |rubric_grade|
+      RubricGrade.create({
+        metric_name: rubric_grade["metric_name"],
+        metric_description: rubric_grade["metric_description"],
+        max_points: rubric_grade["max_points"],
+        tier_name: rubric_grade["tier_name"],
+        tier_description: rubric_grade["tier_description"],
+        points: rubric_grade["points"],
+        order: rubric_grade["order"],
+        submission_id: @submission[:id],
+        metric_id: rubric_grade["metric_id"],
+        tier_id: rubric_grade["tier_id"]
+      })
+    end
+  end
+
+  def existing_metrics_as_json
+    ActiveModel::ArraySerializer.new(rubric_metrics_with_tiers, each_serializer: ExistingMetricSerializer).to_json
+  end
+
+  def rubric_metrics_with_tiers
+    @rubric.metrics.order(:order).includes(:tiers)
+  end
 
   def set_assignment
     @assignment = current_course.assignments.find(params[:assignment_id]) if params[:assignment_id]

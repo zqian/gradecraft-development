@@ -52,6 +52,7 @@ GEM
     addressable (2.3.5)
     amoeba (2.0.0)
       activerecord (>= 3.0)
+    angularjs-rails (1.2.14)
     arel (4.0.2)
     atomic (1.1.15)
     autonumeric-rails (1.9.18.0)
@@ -67,7 +68,7 @@ GEM
       remotipart (~> 1.2.1)
     builder (3.1.4)
     canable (0.3.0)
-    capybara (2.1.0)
+    capybara (2.2.1)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
       rack (>= 1.0.0)
@@ -104,6 +105,7 @@ GEM
       debugger-ruby_core_source (~> 1.2.3)
     debugger-linecache (1.2.0)
     debugger-ruby_core_source (1.2.3)
+    diff-lcs (1.2.5)
     dotenv (0.8.0)
     dotenv-rails (0.8.0)
       dotenv (= 0.8.0)
@@ -111,6 +113,11 @@ GEM
     excon (0.25.3)
     execjs (1.4.0)
       multi_json (~> 1.0)
+    factory_girl (4.4.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.4.1)
+      factory_girl (~> 4.4.0)
+      railties (>= 3.0.0)
     faker (1.1.2)
       i18n (~> 0.5)
     faraday (0.8.7)
@@ -179,26 +186,9 @@ GEM
       subexec (~> 0.2.1)
     mini_portile (0.5.2)
     minitest (4.7.5)
-    minitest-capybara (0.5.0)
-      capybara (~> 2.1.0)
-      minitest (~> 4.0)
-      rake
-    minitest-colorize (0.0.5)
-      minitest (>= 2.0)
-    minitest-focus (1.1.0)
-      minitest (>= 4, < 6)
-    minitest-matchers (1.3.0)
-      minitest (~> 4.7)
-    minitest-metadata (0.4.0)
-      minitest (~> 4.7)
     minitest-rails (0.9.2)
       minitest (~> 4.7)
       rails (>= 3.0)
-    minitest-rails-capybara (0.10.0)
-      capybara (~> 2.0)
-      minitest-capybara (~> 0.4)
-      minitest-metadata (~> 0.4)
-      minitest-rails (~> 0.9.1)
     moped (1.5.1)
     multi_json (1.9.0)
     multipart-post (1.2.0)
@@ -206,6 +196,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.7.0)
     newrelic_rpm (3.6.5.130)
+    ng-rails-csrf (0.1.0)
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
     oauth (0.4.7)
@@ -241,6 +232,8 @@ GEM
     quiet_assets (1.0.2)
       railties (>= 3.1, < 5.0)
     rack (1.5.2)
+    rack-mini-profiler (0.9.1)
+      rack (>= 1.1.3)
     rack-protection (1.5.0)
       rack
     rack-test (0.6.2)
@@ -270,6 +263,26 @@ GEM
     responders (0.6.5)
     rollbar (0.12.12)
       multi_json (~> 1.3)
+    rspec-collection_matchers (0.0.3)
+      rspec-expectations (>= 2.99.0.beta1)
+    rspec-core (3.0.0.beta2)
+      rspec-support (= 3.0.0.beta2)
+    rspec-expectations (3.0.0.beta2)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (= 3.0.0.beta2)
+    rspec-mocks (3.0.0.beta2)
+      rspec-support (= 3.0.0.beta2)
+    rspec-rails (3.0.0.beta2)
+      actionpack (>= 3.0)
+      activemodel (>= 3.0)
+      activesupport (>= 3.0)
+      railties (>= 3.0)
+      rspec-collection_matchers
+      rspec-core (= 3.0.0.beta2)
+      rspec-expectations (= 3.0.0.beta2)
+      rspec-mocks (= 3.0.0.beta2)
+      rspec-support (= 3.0.0.beta2)
+    rspec-support (3.0.0.beta2)
     ruby-hmac (0.4.0)
     rubystats (0.2.3)
     s3_direct_upload (0.1.6)
@@ -307,7 +320,8 @@ GEM
       bcrypt-ruby (~> 3.0.0)
       oauth (~> 0.4.4)
       oauth2 (~> 0.8.0)
-    sprockets (2.11.0)
+    spring (1.1.2)
+    sprockets (2.10.1)
       hike (~> 1.2)
       multi_json (~> 1.0)
       rack (~> 1.0)
@@ -352,10 +366,12 @@ DEPENDENCIES
   active_model_serializers
   addressable
   amoeba
+  angularjs-rails (~> 1.2.14)
   autonumeric-rails
   aws-sdk
   bootsy
   canable
+  capybara (~> 2.2.1)
   carrierwave
   coffee-rails
   compass-rails (~> 1.1.3)
@@ -363,6 +379,7 @@ DEPENDENCIES
   database_cleaner
   debugger
   dotenv-rails
+  factory_girl_rails (~> 4.4.1)
   faker
   fog
   foreman
@@ -379,13 +396,10 @@ DEPENDENCIES
   launchy
   markerb
   mini_magick
-  minitest-colorize
-  minitest-focus
-  minitest-matchers
   minitest-rails
-  minitest-rails-capybara
   mongoid!
   newrelic_rpm
+  ng-rails-csrf
   nokogiri (= 1.6.0)
   oink
   omniauth
@@ -396,11 +410,13 @@ DEPENDENCIES
   protected_attributes
   puma
   quiet_assets
+  rack-mini-profiler
   rails (= 4.0.3)
   rails_autolink
   rdiscount
   responders
   rollbar
+  rspec-rails (~> 3.0.0.beta2)
   rubystats
   s3_direct_upload
   sampler
@@ -412,6 +428,7 @@ DEPENDENCIES
   simple_form (~> 3.0.0.rc)
   sinatra (>= 1.3.0)
   sorcery
+  spring
   timelineJS-rails (~> 1.1.5)
   uglifier
   valid_attribute
