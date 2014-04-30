@@ -70,7 +70,8 @@
       this.id != null
     change: ()->
       self = this
-      this.updateFullCreditTier()
+      if this.tiers.count > 0
+        this.updateFullCreditTier()
       if this.isSaved()
         self.hasChanges = true
     updateFullCreditTier: ()->
