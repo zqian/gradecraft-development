@@ -44,10 +44,15 @@
   MetricPrototype = (attrs={})->
     this.tiers = []
     this.id = if attrs.id then attrs.id else null
+    this.fullCreditTier = null
     this.addTiers(attrs["tiers"]) if attrs["tiers"] #add tiers if passed on init
     this.name = if attrs.name then attrs.name else ""
     this.rubricId = if attrs.rubric_id then attrs.rubric_id else $scope.rubricId
-    this.max_points = if attrs.max_points then attrs.max_points else 0
+    if this.id
+      this.max_points = if attrs.max_points then attrs.max_points else 0
+    else
+      this.max_points = if attrs.max_points then attrs.max_points else null
+
     this.description = if attrs.description then attrs.description else ""
     this.hasChanges = false
   MetricPrototype.prototype =
@@ -70,7 +75,7 @@
       this.id != null
     change: ()->
       self = this
-      if this.tiers.count > 0
+      if this.fullCreditTier
         this.updateFullCreditTier()
       if this.isSaved()
         self.hasChanges = true

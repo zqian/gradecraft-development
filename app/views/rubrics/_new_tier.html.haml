@@ -2,7 +2,8 @@
   .small-8.columns(style="padding:0")
     %input(type="text" ng-model="tier.name" placeholder="Level Name" required ng-blur="tier.modify(tierForm)" ng-change="tier.change()")
   .small-4.columns(style="padding:0")
-    %input(type="number" ng-model="tier.points" placeholder="Points" min=0 ng-blur="tier.modify(tierForm)" ng-change="tier.change()" required ng-disabled="tier.durable")
+    %input(type="number" ng-model="tier.points" placeholder="Points" min=0 ng-blur="tier.modify(tierForm)" ng-change="tier.change()" required)
+
     
 .row
   %input(type="text" ng-model="tier.description" placeholder="Description" value="{{tier.description}}" ng-blur="tier.modify(tierForm)" ng-change="tier.change()")
