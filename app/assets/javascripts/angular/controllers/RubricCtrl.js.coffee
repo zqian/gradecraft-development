@@ -29,6 +29,11 @@
   $scope.pointsMissing = ()->
     $scope.pointsDifference() > 0 and $scope.pointsAssigned() > 0
 
+  # check whether points overview is hidden
+  # $scope.pointsOverviewHidden = ()->
+  #  element = angular.element(document.querySelector('#points-overview'))
+  #  element.is('visible')
+
   $scope.pointsSatisfied = ()->
     $scope.pointsDifference() == 0 and $scope.pointsAssigned() > 0
 
