@@ -101,8 +101,10 @@
       self = this
       Restangular.all('metrics').post(this.params())
         .then (response)->
-          self.id = response.id
+          metric = response.existing_metric
+          self.id = metric.id
           $scope.countSavedMetric()
+          self.addTiers(metric.tiers)
 
     modify: (form)->
       if form.$valid
