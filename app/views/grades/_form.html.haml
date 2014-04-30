@@ -8,7 +8,7 @@
         %h3.text-right
           Grade Assignment by Rubric
           = link_to "(Edit)", design_assignment_rubric_path(@assignment)
-        %h4.text-right (click to select or de-select a levelevel for each criterion)
+        %h4.text-right (click to select the level earned for each criterion)
         %br
 
       .points-overview(ng-cloak)
@@ -32,12 +32,10 @@
           %td.metric.heading
             %label.larger
               <strong>Criterion</strong>:&nbsp;Max&nbsp;points
-            %label Verbose description about the ramifications of the criterion
           %td.tier.heading(colspan="#{@rubric.max_tier_count}")
             %label.larger
               %strong Level:
               Point value
-            %label Verbose description about the parameters of the specific level
           %td.comments.heading(ng-show="tiersSelected().length > 0")
             %label.larger
               Comments
@@ -49,15 +47,13 @@
               <strong>{{metric.name}}:</strong>&nbsp;{{metric.max_points}}&nbsp;Points
             %label {{metric.description}}
           %td.tier(ng-repeat="tier in metric.tiers" ng-click="metric.gradeWithTier(tier)" ng-class="{selected: metric.isUsingTier(tier)}")
-            .points-box {{tier.points}}
-            %label.larger.tier-data
-              <strong>{{tier.name.replace(' ','&nbsp;')}}</strong>&nbsp;&nbsp;<input class="tier-select" type='radio' name="metric_tier_{{metric.id}}" ng-checked="metric.isUsingTier(tier)" ng-click="metric.gradeWithTier(tier)" />
+            %label.larger.tier-data(ng-click="metric.gradeWithTier(tier)")
+              <strong>{{tier.name.replace(' ','&nbsp;')}}</strong>:&nbsp;{{tier.points}}&nbsp;Points&nbsp;&nbsp;<input class="tier-select" type='radio' name="metric_tier_{{metric.id}}" ng-checked="metric.isUsingTier(tier)" />
             %label.tier-points
-              %span.points {{tier.points}}&nbsp;points&nbsp: 
               {{tier.description}}
             .clear
           %td.filler(ng-show="metric.tiers.length < #{@rubric.max_tier_count}" colspan="{{#{@rubric.max_tier_count} - metric.tiers.length}}")
-          %td.comments(ng-show="metric.selectedTier")
+          %td.comments
             %textarea(ng-model="metric.comment")
 
     %br
