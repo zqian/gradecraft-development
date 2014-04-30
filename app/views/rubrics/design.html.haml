@@ -8,7 +8,7 @@
         %h3 Design Rubric for "#{@assignment.name}"
         %h5.subtitle Rubric is saved automatically.
 
-      #points-overview(ng-cloak)
+      #points-overview(ng-cloak ng-class="{'floating': pointsOverviewHidden()}")
         %h4#points-legend
           %span.points-assigned(ng-class="{'points-missing': pointsMissing(), 'points-satisfied': pointsSatisfied(), 'points-overage': pointsOverage()}") {{pointsAssigned()}}
           \/#{@assignment.point_total} Points Allocated
