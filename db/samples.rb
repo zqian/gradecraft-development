@@ -17,7 +17,7 @@ information_grade_scheme_hash = { [0,600000] => 'E', [600000,629999] => 'D-', [6
 
 information_grade_levels = ['Shannon', 'Weaver', 'Vannevar Bush', 'Turing', 'Leech', 'Snail', 'Sea Slug', 'Fruit Fly', 'Lobster', 'Ant', 'Honey Bee', 'Cockroach', 'Frog', 'Mouse', 'Rat', 'Octopus', 'Cat', 'Chimpanzee', 'Elephant', 'Human', 'Orca (Killer Whale)']
 
-polsci_grade_scheme_hash = { [0,600000] => 'F', [600000,649000] => 'D+', [650000,699999] => 'C-', [700000,749999] => 'C', [750000,799999] => 'C+', [800000,849999] => 'B-', [850000,899999] => 'B', [900000,949999] => 'B+', [950000,999999] => 'A-', [1000000,1244999] => 'A', [1245000,1600000] => 'A+'}
+polsci_grade_scheme_hash = { [0,6000] => 'F', [6001,9000] => 'D-', [9001,12000] => 'D', [12001,16000] => 'D+', [16001,19000] => 'C-', [19001,22000] => 'C', [22001,26000] => 'C+', [26001,29000] => 'B-', [29001,32000] => 'B', [32001,36000] => 'B+', [36001,39000] => 'A-', [39001,48000] => 'A' }
 
 polsci_grade_levels = ['Amoeba', 'Sponge', 'Roundworm', 'Jellyfish', 'Leech', 'Snail', 'Sea Slug', 'Fruit Fly', 'Lobster', 'Ant', 'Honey Bee', 'Cockroach', 'Frog', 'Mouse', 'Rat', 'Octopus', 'Cat', 'Chimpanzee', 'Elephant', 'Human', 'Orca (Killer Whale)']
 
