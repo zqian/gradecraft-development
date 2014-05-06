@@ -92,10 +92,11 @@ $(document).ready(function() {
         color: '#CCCCCC'
       }
     },
+    plotBands: []
   };
   }
 
-    var chart, categories, assignment_type_name, scores;
+    var chart, categories, assignment_type_name, scores, grade_levels;
     if ($('#userBarTotal').length) {
       var data = JSON.parse($('#data-predictor').attr('data-predictor'));
 
@@ -104,6 +105,7 @@ $(document).ready(function() {
       options.title = { text: 'Total Possible Points' };
       options.xAxis.categories = { text: ' ' };
       options.yAxis.max = data.course_total;
+      options.yAxis.plotBands = data.grade_levels;
       options.series = data.scores;
       chart = new Highcharts.Chart(options);
     };
