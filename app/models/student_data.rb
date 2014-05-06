@@ -15,6 +15,10 @@ class StudentData < Struct.new(:student, :course)
     membership.membership_scores.each do |s|
       scores << { :data => [s.score], :name => s.name }
     end
+    grade_levels = []
+    course.grade_scheme_elements.each do |gse|
+      grade_levels << { :from => [gse.low_range], :to => [gse.high_range], :label => { :text => "#{ gse.level} / #{gse.letter}" , textAlign: 'right', :rotation => 270 } }
+    end
     if course.valuable_badges?
       earned_badge_score = membership.membership_calculation.earned_badge_score
       scores << { :data => [earned_badge_score], :name => "#{course.badge_term.pluralize}" }
@@ -31,6 +35,7 @@ class StudentData < Struct.new(:student, :course)
       return {
         :student_name => student.name,
         :scores => scores,
+        :grade_levels => grade_levels,
         :course_total => course.point_total,
         :in_progress => membership.membership_calculation.in_progress_assignment_score + earned_badge_score + challenge_grade_score
         }
@@ -38,6 +43,7 @@ class StudentData < Struct.new(:student, :course)
       return {
         :student_name => student.name,
         :scores => scores,
+        :grade_levels => grade_levels,
         :course_total => membership.membership_calculation.assignment_score + earned_badge_score + challenge_grade_score,
         :in_progress => membership.membership_calculation.in_progress_assignment_score + earned_badge_score + challenge_grade_score
        }
