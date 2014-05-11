@@ -16,20 +16,6 @@ CREATE SCHEMA binary_upgrade;
 
 
 --
--- Name: fiddle; Type: SCHEMA; Schema: -; Owner: -
---
-
-CREATE SCHEMA fiddle;
-
-
---
--- Name: uploads; Type: SCHEMA; Schema: -; Owner: -
---
-
-CREATE SCHEMA uploads;
-
-
---
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -43,577 +29,94 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
-SET search_path = uploads, pg_catalog;
+SET search_path = binary_upgrade, pg_catalog;
 
 --
--- Name: decode_url_part(character varying); Type: FUNCTION; Schema: uploads; Owner: -
+-- Name: create_empty_extension(text, text, boolean, text, oid[], text[], text[]); Type: FUNCTION; Schema: binary_upgrade; Owner: -
 --
 
-CREATE FUNCTION decode_url_part(p character varying) RETURNS character varying
-    LANGUAGE sql IMMUTABLE STRICT
-    AS $_$
-SELECT convert_from(CAST(E'\\x' || string_agg(CASE WHEN length(r.m[1]) = 1 THEN encode(convert_to(r.m[1], 'SQL_ASCII'), 'hex') ELSE substring(r.m[1] from 2 for 2) END, '') AS bytea), 'UTF8')
-FROM regexp_matches($1, '%[0-9a-f][0-9a-f]|.', 'gi') AS r(m);
-$_$;
+CREATE FUNCTION create_empty_extension(text, text, boolean, text, oid[], text[], text[]) RETURNS void
+    LANGUAGE c
+    AS '$libdir/pg_upgrade_support', 'create_empty_extension';
 
 
-SET search_path = fiddle, pg_catalog;
+--
+-- Name: set_next_array_pg_type_oid(oid); Type: FUNCTION; Schema: binary_upgrade; Owner: -
+--
+
+CREATE FUNCTION set_next_array_pg_type_oid(oid) RETURNS void
+    LANGUAGE c STRICT
+    AS '$libdir/pg_upgrade_support', 'set_next_array_pg_type_oid';
+
+
+--
+-- Name: set_next_heap_pg_class_oid(oid); Type: FUNCTION; Schema: binary_upgrade; Owner: -
+--
+
+CREATE FUNCTION set_next_heap_pg_class_oid(oid) RETURNS void
+    LANGUAGE c STRICT
+    AS '$libdir/pg_upgrade_support', 'set_next_heap_pg_class_oid';
+
+
+--
+-- Name: set_next_index_pg_class_oid(oid); Type: FUNCTION; Schema: binary_upgrade; Owner: -
+--
+
+CREATE FUNCTION set_next_index_pg_class_oid(oid) RETURNS void
+    LANGUAGE c STRICT
+    AS '$libdir/pg_upgrade_support', 'set_next_index_pg_class_oid';
+
+
+--
+-- Name: set_next_pg_authid_oid(oid); Type: FUNCTION; Schema: binary_upgrade; Owner: -
+--
+
+CREATE FUNCTION set_next_pg_authid_oid(oid) RETURNS void
+    LANGUAGE c STRICT
+    AS '$libdir/pg_upgrade_support', 'set_next_pg_authid_oid';
+
+
+--
+-- Name: set_next_pg_enum_oid(oid); Type: FUNCTION; Schema: binary_upgrade; Owner: -
+--
+
+CREATE FUNCTION set_next_pg_enum_oid(oid) RETURNS void
+    LANGUAGE c STRICT
+    AS '$libdir/pg_upgrade_support', 'set_next_pg_enum_oid';
+
+
+--
+-- Name: set_next_pg_type_oid(oid); Type: FUNCTION; Schema: binary_upgrade; Owner: -
+--
+
+CREATE FUNCTION set_next_pg_type_oid(oid) RETURNS void
+    LANGUAGE c STRICT
+    AS '$libdir/pg_upgrade_support', 'set_next_pg_type_oid';
+
+
+--
+-- Name: set_next_toast_pg_class_oid(oid); Type: FUNCTION; Schema: binary_upgrade; Owner: -
+--
+
+CREATE FUNCTION set_next_toast_pg_class_oid(oid) RETURNS void
+    LANGUAGE c STRICT
+    AS '$libdir/pg_upgrade_support', 'set_next_toast_pg_class_oid';
+
+
+--
+-- Name: set_next_toast_pg_type_oid(oid); Type: FUNCTION; Schema: binary_upgrade; Owner: -
+--
+
+CREATE FUNCTION set_next_toast_pg_type_oid(oid) RETURNS void
+    LANGUAGE c STRICT
+    AS '$libdir/pg_upgrade_support', 'set_next_toast_pg_type_oid';
+
+
+SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
 
 SET default_with_oids = false;
-
---
--- Name: doubled; Type: TABLE; Schema: fiddle; Owner: -; Tablespace: 
---
-
-CREATE TABLE doubled (
-    id integer,
-    raw_score integer,
-    assignment_id integer,
-    feedback text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    complete boolean,
-    semis boolean,
-    finals boolean,
-    type character varying(255),
-    status character varying(255),
-    attempted boolean,
-    substantial boolean,
-    final_score integer,
-    submission_id integer,
-    course_id integer,
-    shared boolean,
-    student_id integer,
-    task_id integer,
-    group_id integer,
-    group_type character varying(255),
-    score integer,
-    assignment_type_id integer,
-    point_total integer,
-    admin_notes text,
-    graded_by_id integer,
-    team_id integer,
-    predicted_score integer
-);
-
-
-SET search_path = public, pg_catalog;
-
---
--- Name: grades; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE grades (
-    id integer NOT NULL,
-    raw_score integer DEFAULT 0,
-    assignment_id integer,
-    feedback text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    complete boolean,
-    semis boolean,
-    finals boolean,
-    type character varying(255),
-    status character varying(255),
-    attempted boolean,
-    substantial boolean,
-    final_score integer,
-    submission_id integer,
-    course_id integer,
-    shared boolean,
-    student_id integer,
-    task_id integer,
-    group_id integer,
-    group_type character varying(255),
-    score integer,
-    assignment_type_id integer,
-    point_total integer,
-    admin_notes text,
-    graded_by_id integer,
-    team_id integer,
-    released boolean,
-    predicted_score integer DEFAULT 0 NOT NULL
-);
-
-
-SET search_path = fiddle, pg_catalog;
-
---
--- Name: duplicate_grades; Type: VIEW; Schema: fiddle; Owner: -
---
-
-CREATE VIEW duplicate_grades AS
-    SELECT count(*) AS total, grades.assignment_id, grades.student_id FROM public.grades GROUP BY grades.student_id, grades.assignment_id HAVING (count(*) > 1) ORDER BY grades.assignment_id, grades.student_id;
-
-
---
--- Name: duplicated; Type: TABLE; Schema: fiddle; Owner: -; Tablespace: 
---
-
-CREATE TABLE duplicated (
-    total bigint,
-    student_id integer,
-    assignment_id integer
-);
-
-
---
--- Name: duplicates; Type: TABLE; Schema: fiddle; Owner: -; Tablespace: 
---
-
-CREATE TABLE duplicates (
-    id integer,
-    raw_score integer,
-    assignment_id integer,
-    feedback text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    complete boolean,
-    semis boolean,
-    finals boolean,
-    type character varying(255),
-    status character varying(255),
-    attempted boolean,
-    substantial boolean,
-    final_score integer,
-    submission_id integer,
-    course_id integer,
-    shared boolean,
-    student_id integer,
-    task_id integer,
-    group_id integer,
-    group_type character varying(255),
-    score integer,
-    assignment_type_id integer,
-    point_total integer,
-    admin_notes text,
-    graded_by_id integer,
-    team_id integer,
-    predicted_score integer
-);
-
-
---
--- Name: finale; Type: TABLE; Schema: fiddle; Owner: -; Tablespace: 
---
-
-CREATE TABLE finale (
-    id integer,
-    raw_score integer,
-    assignment_id integer,
-    feedback text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    complete boolean,
-    semis boolean,
-    finals boolean,
-    type character varying(255),
-    status character varying(255),
-    attempted boolean,
-    substantial boolean,
-    final_score integer,
-    submission_id integer,
-    course_id integer,
-    shared boolean,
-    student_id integer,
-    task_id integer,
-    group_id integer,
-    group_type character varying(255),
-    score integer,
-    assignment_type_id integer,
-    point_total integer,
-    admin_notes text,
-    graded_by_id integer,
-    team_id integer,
-    predicted_score integer
-);
-
-
---
--- Name: graded; Type: TABLE; Schema: fiddle; Owner: -; Tablespace: 
---
-
-CREATE TABLE graded (
-    id integer,
-    raw_score integer,
-    assignment_id integer,
-    feedback text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    complete boolean,
-    semis boolean,
-    finals boolean,
-    type character varying(255),
-    status character varying(255),
-    attempted boolean,
-    substantial boolean,
-    final_score integer,
-    submission_id integer,
-    course_id integer,
-    shared boolean,
-    student_id integer,
-    task_id integer,
-    group_id integer,
-    group_type character varying(255),
-    score integer,
-    assignment_type_id integer,
-    point_total integer,
-    admin_notes text,
-    graded_by_id integer,
-    team_id integer,
-    predicted_score integer
-);
-
-
---
--- Name: grades; Type: TABLE; Schema: fiddle; Owner: -; Tablespace: 
---
-
-CREATE TABLE grades (
-    id integer,
-    raw_score integer,
-    assignment_id integer,
-    feedback text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    complete boolean,
-    semis boolean,
-    finals boolean,
-    type character varying(255),
-    status character varying(255),
-    attempted boolean,
-    substantial boolean,
-    final_score integer,
-    submission_id integer,
-    course_id integer,
-    shared boolean,
-    student_id integer,
-    task_id integer,
-    group_id integer,
-    group_type character varying(255),
-    score integer,
-    assignment_type_id integer,
-    point_total integer,
-    admin_notes text,
-    graded_by_id integer,
-    team_id integer,
-    predicted_score integer
-);
-
-
---
--- Name: leftovers; Type: TABLE; Schema: fiddle; Owner: -; Tablespace: 
---
-
-CREATE TABLE leftovers (
-    id integer,
-    raw_score integer,
-    assignment_id integer,
-    feedback text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    complete boolean,
-    semis boolean,
-    finals boolean,
-    type character varying(255),
-    status character varying(255),
-    attempted boolean,
-    substantial boolean,
-    final_score integer,
-    submission_id integer,
-    course_id integer,
-    shared boolean,
-    student_id integer,
-    task_id integer,
-    group_id integer,
-    group_type character varying(255),
-    score integer,
-    assignment_type_id integer,
-    point_total integer,
-    admin_notes text,
-    graded_by_id integer,
-    team_id integer,
-    predicted_score integer
-);
-
-
---
--- Name: perfect; Type: TABLE; Schema: fiddle; Owner: -; Tablespace: 
---
-
-CREATE TABLE perfect (
-    id integer,
-    raw_score integer,
-    assignment_id integer,
-    feedback text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    complete boolean,
-    semis boolean,
-    finals boolean,
-    type character varying(255),
-    status character varying(255),
-    attempted boolean,
-    substantial boolean,
-    final_score integer,
-    submission_id integer,
-    course_id integer,
-    shared boolean,
-    student_id integer,
-    task_id integer,
-    group_id integer,
-    group_type character varying(255),
-    score integer,
-    assignment_type_id integer,
-    point_total integer,
-    admin_notes text,
-    graded_by_id integer,
-    team_id integer,
-    predicted_score integer
-);
-
-
---
--- Name: pruned; Type: TABLE; Schema: fiddle; Owner: -; Tablespace: 
---
-
-CREATE TABLE pruned (
-    id integer,
-    raw_score integer,
-    assignment_id integer,
-    feedback text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    complete boolean,
-    semis boolean,
-    finals boolean,
-    type character varying(255),
-    status character varying(255),
-    attempted boolean,
-    substantial boolean,
-    final_score integer,
-    submission_id integer,
-    course_id integer,
-    shared boolean,
-    student_id integer,
-    task_id integer,
-    group_id integer,
-    group_type character varying(255),
-    score integer,
-    assignment_type_id integer,
-    point_total integer,
-    admin_notes text,
-    graded_by_id integer,
-    team_id integer,
-    predicted_score integer
-);
-
-
---
--- Name: pruned2; Type: TABLE; Schema: fiddle; Owner: -; Tablespace: 
---
-
-CREATE TABLE pruned2 (
-    id integer,
-    raw_score integer,
-    assignment_id integer,
-    feedback text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    complete boolean,
-    semis boolean,
-    finals boolean,
-    type character varying(255),
-    status character varying(255),
-    attempted boolean,
-    substantial boolean,
-    final_score integer,
-    submission_id integer,
-    course_id integer,
-    shared boolean,
-    student_id integer,
-    task_id integer,
-    group_id integer,
-    group_type character varying(255),
-    score integer,
-    assignment_type_id integer,
-    point_total integer,
-    admin_notes text,
-    graded_by_id integer,
-    team_id integer,
-    predicted_score integer
-);
-
-
---
--- Name: remaining; Type: TABLE; Schema: fiddle; Owner: -; Tablespace: 
---
-
-CREATE TABLE remaining (
-    total bigint,
-    student_id integer,
-    assignment_id integer
-);
-
-
---
--- Name: review; Type: TABLE; Schema: fiddle; Owner: -; Tablespace: 
---
-
-CREATE TABLE review (
-    id integer,
-    raw_score integer,
-    assignment_id integer,
-    feedback text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    complete boolean,
-    semis boolean,
-    finals boolean,
-    type character varying(255),
-    status character varying(255),
-    attempted boolean,
-    substantial boolean,
-    final_score integer,
-    submission_id integer,
-    course_id integer,
-    shared boolean,
-    student_id integer,
-    task_id integer,
-    group_id integer,
-    group_type character varying(255),
-    score integer,
-    assignment_type_id integer,
-    point_total integer,
-    admin_notes text,
-    graded_by_id integer,
-    team_id integer,
-    predicted_score integer
-);
-
-
---
--- Name: reviewable; Type: TABLE; Schema: fiddle; Owner: -; Tablespace: 
---
-
-CREATE TABLE reviewable (
-    total bigint,
-    assignment_id integer,
-    student_id integer
-);
-
-
---
--- Name: sample; Type: TABLE; Schema: fiddle; Owner: -; Tablespace: 
---
-
-CREATE TABLE sample (
-    id integer,
-    raw_score integer,
-    assignment_id integer,
-    feedback text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    complete boolean,
-    semis boolean,
-    finals boolean,
-    type character varying(255),
-    status character varying(255),
-    attempted boolean,
-    substantial boolean,
-    final_score integer,
-    submission_id integer,
-    course_id integer,
-    shared boolean,
-    student_id integer,
-    task_id integer,
-    group_id integer,
-    group_type character varying(255),
-    score integer,
-    assignment_type_id integer,
-    point_total integer,
-    admin_notes text,
-    graded_by_id integer,
-    team_id integer,
-    predicted_score integer
-);
-
-
---
--- Name: wonky; Type: TABLE; Schema: fiddle; Owner: -; Tablespace: 
---
-
-CREATE TABLE wonky (
-    id integer,
-    raw_score integer,
-    assignment_id integer,
-    feedback text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    complete boolean,
-    semis boolean,
-    finals boolean,
-    type character varying(255),
-    status character varying(255),
-    attempted boolean,
-    substantial boolean,
-    final_score integer,
-    submission_id integer,
-    course_id integer,
-    shared boolean,
-    student_id integer,
-    task_id integer,
-    group_id integer,
-    group_type character varying(255),
-    score integer,
-    assignment_type_id integer,
-    point_total integer,
-    admin_notes text,
-    graded_by_id integer,
-    team_id integer,
-    predicted_score integer
-);
-
-
---
--- Name: zeroed; Type: TABLE; Schema: fiddle; Owner: -; Tablespace: 
---
-
-CREATE TABLE zeroed (
-    id integer,
-    raw_score integer,
-    assignment_id integer,
-    feedback text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    complete boolean,
-    semis boolean,
-    finals boolean,
-    type character varying(255),
-    status character varying(255),
-    attempted boolean,
-    substantial boolean,
-    final_score integer,
-    submission_id integer,
-    course_id integer,
-    shared boolean,
-    student_id integer,
-    task_id integer,
-    group_id integer,
-    group_type character varying(255),
-    score integer,
-    assignment_type_id integer,
-    point_total integer,
-    admin_notes text,
-    graded_by_id integer,
-    team_id integer,
-    predicted_score integer
-);
-
-
-SET search_path = public, pg_catalog;
 
 --
 -- Name: assignment_files; Type: TABLE; Schema: public; Owner: -; Tablespace: 
@@ -1391,6 +894,43 @@ CREATE TABLE earned_badges (
 
 
 --
+-- Name: grades; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE grades (
+    id integer NOT NULL,
+    raw_score integer DEFAULT 0,
+    assignment_id integer,
+    feedback text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    complete boolean,
+    semis boolean,
+    finals boolean,
+    type character varying(255),
+    status character varying(255),
+    attempted boolean,
+    substantial boolean,
+    final_score integer,
+    submission_id integer,
+    course_id integer,
+    shared boolean,
+    student_id integer,
+    task_id integer,
+    group_id integer,
+    group_type character varying(255),
+    score integer,
+    assignment_type_id integer,
+    point_total integer,
+    admin_notes text,
+    graded_by_id integer,
+    team_id integer,
+    released boolean,
+    predicted_score integer DEFAULT 0 NOT NULL
+);
+
+
+--
 -- Name: score_levels; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1594,18 +1134,6 @@ CREATE SEQUENCE dashboards_id_seq
 --
 
 ALTER SEQUENCE dashboards_id_seq OWNED BY dashboards.id;
-
-
---
--- Name: duplicated_users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE duplicated_users (
-    id integer,
-    last_name character varying(255),
-    role character varying(255),
-    submissions bigint
-);
 
 
 --
@@ -1888,14 +1416,6 @@ ALTER SEQUENCE groups_id_seq OWNED BY groups.id;
 
 
 --
--- Name: latest_grades; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW latest_grades AS
-    SELECT g.id, g.raw_score, g.assignment_id, g.feedback, g.created_at, g.updated_at, g.complete, g.semis, g.finals, g.type, g.status, g.attempted, g.substantial, g.final_score, g.submission_id, g.course_id, g.shared, g.student_id, g.task_id, g.group_id, g.group_type, g.score, g.assignment_type_id, g.point_total, g.admin_notes, g.graded_by_id, g.team_id, g.predicted_score FROM grades g WHERE (NOT (EXISTS (SELECT sub.id, sub.raw_score, sub.assignment_id, sub.feedback, sub.created_at, sub.updated_at, sub.complete, sub.semis, sub.finals, sub.type, sub.status, sub.attempted, sub.substantial, sub.final_score, sub.submission_id, sub.course_id, sub.shared, sub.student_id, sub.task_id, sub.group_id, sub.group_type, sub.score, sub.assignment_type_id, sub.point_total, sub.admin_notes, sub.graded_by_id, sub.team_id, sub.predicted_score FROM grades sub WHERE (((sub.student_id = g.student_id) AND (sub.assignment_id = g.assignment_id)) AND (sub.id > g.id)))));
-
-
---
 -- Name: lti_providers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2020,37 +1540,6 @@ CREATE TABLE membership_scores (
 
 
 --
--- Name: proposals; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE proposals (
-    id integer NOT NULL,
-    title character varying(255),
-    proposal text,
-    group_id integer,
-    feedback text,
-    approved boolean,
-    submitted_by integer,
-
-
---
--- Name: proposals_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE proposals_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-    
---
--- Name: proposals_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE proposals_id_seq OWNED BY proposals.id;
-
---
 -- Name: metrics; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2066,6 +1555,8 @@ CREATE TABLE metrics (
     full_credit_tier_id integer
 );
 
+
+--
 -- Name: metrics_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -2077,10 +1568,47 @@ CREATE SEQUENCE metrics_id_seq
     CACHE 1;
 
 
+--
 -- Name: metrics_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE metrics_id_seq OWNED BY metrics.id;
+
+
+--
+-- Name: proposals; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE proposals (
+    id integer NOT NULL,
+    title character varying(255),
+    proposal text,
+    group_id integer,
+    feedback text,
+    approved boolean,
+    submitted_by integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: proposals_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE proposals_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: proposals_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE proposals_id_seq OWNED BY proposals.id;
 
 
 --
@@ -2351,14 +1879,6 @@ CREATE VIEW student_cache_keys AS
 
 
 --
--- Name: student_summaries; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW student_summaries AS
-    SELECT users.id AS student_id, users.first_name, users.last_name, grades_score.grades_score_sum FROM (users LEFT JOIN (SELECT grades.student_id AS id, sum(grades.score) AS grades_score_sum FROM (grades JOIN assignments ON ((grades.assignment_id = assignments.id))) WHERE (((grades.status)::text = 'Released'::text) OR (assignments.release_necessary = false)) GROUP BY grades.student_id) grades_score USING (id));
-
-
---
 -- Name: submission_files; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2367,20 +1887,6 @@ CREATE TABLE submission_files (
     filename character varying(255) NOT NULL,
     submission_id integer NOT NULL,
     filepath character varying(255)
-);
-
-
---
--- Name: submission_files_duplicate; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE submission_files_duplicate (
-    key character varying,
-    format character varying,
-    upload_id integer,
-    full_name character varying,
-    last_name character varying,
-    first_name character varying
 );
 
 
@@ -2567,149 +2073,6 @@ CREATE SEQUENCE users_id_seq
 
 ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
-
-SET search_path = uploads, pg_catalog;
-
---
--- Name: bad_users; Type: VIEW; Schema: uploads; Owner: -
---
-
-CREATE VIEW bad_users AS
-    SELECT duplicated_users.id, duplicated_users.last_name, duplicated_users.role, duplicated_users.submissions FROM public.duplicated_users WHERE (duplicated_users.submissions = 0);
-
-
---
--- Name: broken_files; Type: TABLE; Schema: uploads; Owner: -; Tablespace: 
---
-
-CREATE TABLE broken_files (
-    id integer,
-    filename character varying(255),
-    submission_id integer,
-    filepath character varying(255)
-);
-
-
---
--- Name: duplicated_users; Type: TABLE; Schema: uploads; Owner: -; Tablespace: 
---
-
-CREATE TABLE duplicated_users (
-    id integer,
-    last_name character varying(255),
-    role character varying(255),
-    submissions bigint
-);
-
-
---
--- Name: good_users; Type: VIEW; Schema: uploads; Owner: -
---
-
-CREATE VIEW good_users AS
-    SELECT users.id, users.username, users.email, users.crypted_password, users.salt, users.created_at, users.updated_at, users.reset_password_token, users.reset_password_token_expires_at, users.reset_password_email_sent_at, users.remember_me_token, users.remember_me_token_expires_at, users.avatar_file_name, users.avatar_content_type, users.avatar_file_size, users.avatar_updated_at, users.role, users.first_name, users.last_name, users.rank, users.display_name, users.private_display, users.default_course_id, users.final_grade, users.visit_count, users.predictor_views, users.page_views, users.team_role, users.last_login_at, users.last_logout_at, users.last_activity_at, users.lti_uid, users.last_login_from_ip_address, users.kerberos_uid FROM public.users WHERE (NOT (users.id IN (SELECT bad_users.id FROM bad_users)));
-
-
---
--- Name: s3files; Type: TABLE; Schema: uploads; Owner: -; Tablespace: 
---
-
-CREATE TABLE s3files (
-    key character varying,
-    format character varying,
-    upload_id integer,
-    full_name character varying,
-    last_name character varying,
-    first_name character varying,
-    ambiguous_student boolean,
-    user_id integer,
-    filepart character varying,
-    filename character varying
-);
-
-
---
--- Name: singular_users; Type: VIEW; Schema: uploads; Owner: -
---
-
-CREATE VIEW singular_users AS
-    SELECT users.id, users.username, users.email, users.crypted_password, users.salt, users.created_at, users.updated_at, users.reset_password_token, users.reset_password_token_expires_at, users.reset_password_email_sent_at, users.remember_me_token, users.remember_me_token_expires_at, users.avatar_file_name, users.avatar_content_type, users.avatar_file_size, users.avatar_updated_at, users.role, users.first_name, users.last_name, users.rank, users.display_name, users.private_display, users.default_course_id, users.final_grade, users.visit_count, users.predictor_views, users.page_views, users.team_role, users.last_login_at, users.last_logout_at, users.last_activity_at, users.lti_uid, users.last_login_from_ip_address, users.kerberos_uid FROM public.users WHERE (NOT (users.id IN (SELECT duplicated_users.id FROM duplicated_users)));
-
-
---
--- Name: submission_files; Type: TABLE; Schema: uploads; Owner: -; Tablespace: 
---
-
-CREATE TABLE submission_files (
-    id integer,
-    filename character varying(255),
-    submission_id integer,
-    filepath character varying(255)
-);
-
-
---
--- Name: submission_files_preserve; Type: TABLE; Schema: uploads; Owner: -; Tablespace: 
---
-
-CREATE TABLE submission_files_preserve (
-    id integer,
-    filename character varying(255),
-    submission_id integer,
-    filepath character varying(255)
-);
-
-
---
--- Name: submissions_missing_uploads; Type: TABLE; Schema: uploads; Owner: -; Tablespace: 
---
-
-CREATE TABLE submissions_missing_uploads (
-    course_name character varying(255),
-    course_id integer,
-    assignment_name character varying(255),
-    assignment_id integer,
-    first_name character varying(255),
-    last_name character varying(255),
-    student_id integer,
-    submission_id integer,
-    submission_files_id integer,
-    filename character varying(255),
-    filepath character varying(255)
-);
-
-
---
--- Name: unresolved_files; Type: TABLE; Schema: uploads; Owner: -; Tablespace: 
---
-
-CREATE TABLE unresolved_files (
-    id integer,
-    filename character varying(255),
-    submission_id integer,
-    filepath character varying(255)
-);
-
-
---
--- Name: unresolved_s3files; Type: TABLE; Schema: uploads; Owner: -; Tablespace: 
---
-
-CREATE TABLE unresolved_s3files (
-    key character varying,
-    format character varying,
-    upload_id integer,
-    full_name character varying,
-    last_name character varying,
-    first_name character varying,
-    ambiguous_student boolean,
-    user_id integer,
-    filepart character varying,
-    filename character varying
-);
-
-
-SET search_path = public, pg_catalog;
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
@@ -2946,11 +2309,14 @@ ALTER TABLE ONLY lti_providers ALTER COLUMN id SET DEFAULT nextval('lti_provider
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-<<<<<<< HEAD
-ALTER TABLE ONLY proposals ALTER COLUMN id SET DEFAULT nextval('proposals_id_seq'::regclass);
-=======
 ALTER TABLE ONLY metrics ALTER COLUMN id SET DEFAULT nextval('metrics_id_seq'::regclass);
->>>>>>> AJ-1573 Implement initial data model, strip out existing rubrics implementation.
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY proposals ALTER COLUMN id SET DEFAULT nextval('proposals_id_seq'::regclass);
 
 
 --
@@ -3316,19 +2682,19 @@ ALTER TABLE ONLY lti_providers
 
 
 --
-<<<<<<< HEAD
--- Name: proposals_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY proposals
-    ADD CONSTRAINT proposals_pkey PRIMARY KEY (id);
-=======
 -- Name: metrics_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY metrics
     ADD CONSTRAINT metrics_pkey PRIMARY KEY (id);
->>>>>>> AJ-1573 Implement initial data model, strip out existing rubrics implementation.
+
+
+--
+-- Name: proposals_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY proposals
+    ADD CONSTRAINT proposals_pkey PRIMARY KEY (id);
 
 
 --
@@ -3511,13 +2877,6 @@ CREATE INDEX index_courses_users_on_user_id_and_course_id ON course_memberships 
 --
 
 CREATE INDEX index_grades_on_assignment_id ON grades USING btree (assignment_id);
-
-
---
--- Name: index_grades_on_assignment_id_and_task_id_and_submission_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_grades_on_assignment_id_and_task_id_and_submission_id ON grades USING btree (assignment_id, task_id, submission_id);
 
 
 --
@@ -3828,6 +3187,18 @@ INSERT INTO schema_migrations (version) VALUES ('20140305040029');
 
 INSERT INTO schema_migrations (version) VALUES ('20140307194848');
 
+INSERT INTO schema_migrations (version) VALUES ('20140308205708');
+
+INSERT INTO schema_migrations (version) VALUES ('20140308210417');
+
+INSERT INTO schema_migrations (version) VALUES ('20140308210631');
+
+INSERT INTO schema_migrations (version) VALUES ('20140308211252');
+
+INSERT INTO schema_migrations (version) VALUES ('20140308211414');
+
+INSERT INTO schema_migrations (version) VALUES ('20140308212102');
+
 INSERT INTO schema_migrations (version) VALUES ('20140318185301');
 
 INSERT INTO schema_migrations (version) VALUES ('20140318193449');
@@ -3843,18 +3214,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140326223322');
 INSERT INTO schema_migrations (version) VALUES ('20140328212428');
 
 INSERT INTO schema_migrations (version) VALUES ('20140329225245');
-
-INSERT INTO schema_migrations (version) VALUES ('20140308205708');
-
-INSERT INTO schema_migrations (version) VALUES ('20140308210417');
-
-INSERT INTO schema_migrations (version) VALUES ('20140308210631');
-
-INSERT INTO schema_migrations (version) VALUES ('20140308211252');
-
-INSERT INTO schema_migrations (version) VALUES ('20140308211414');
-
-INSERT INTO schema_migrations (version) VALUES ('20140308212102');
 
 INSERT INTO schema_migrations (version) VALUES ('20140418142023');
 
