@@ -2,13 +2,11 @@
 .small-12.panel.mainContent
   .small-12.columns
     #rubric(ng-app="gradecraft" ng-controller="RubricCtrl" ng-init="init(#{@rubric[:id]}, #{@assignment.point_total}, #{@metrics})")
-      %br
-      %br
       #rubric-title
         %h3 Design Rubric for "#{@assignment.name}"
         %h5.subtitle Rubric is saved automatically.
 
-      #points-overview(ng-cloak ng-class="{'floating': pointsOverviewHidden()}")
+      #points-overview-floating(ng-cloak ng-hide="angular.element('#points-overview').isOnscreen()")
         %h4#points-legend
           %span.points-assigned(ng-class="{'points-missing': pointsMissing(), 'points-satisfied': pointsSatisfied(), 'points-overage': pointsOverage()}") {{pointsAssigned()}}
           \/#{@assignment.point_total} Points Allocated
@@ -20,8 +18,6 @@
       %br
 
       .splash(ng-cloak) Loading rubric...
-      %br
-      %br
 
       .row.assignment-return
         = link_to '&laquo; Return to Assignment'.html_safe, assignment_path(@assignment), class: "return-link"
