@@ -36,7 +36,7 @@ $badass_blue: #269ECC
 #rubric
   h5.subtitle
     font-style: italic
-    color: #666#555
+    color: #666
 
   #rubric-title
     float: left
@@ -44,15 +44,17 @@ $badass_blue: #269ECC
   .clear
     clear: both
 
-  #points-overview
+  #points-overview-floating
     float: right
     display: block
     margin-right: 28px
     text-align: right
+    border: 2px solid ($badass_blue - #111)
+    border-top: none
 
     &.floating
-      position: absolute
-      bottom: 0
+      position: fixed
+      top: 0
       right: 0
     
     h4#points-legend
@@ -77,6 +79,17 @@ $badass_blue: #269ECC
       font-style: italic
       font-weight: normal
       color: #666
+
+  #points-overview-floating
+    position: fixed
+    top: 45px
+    z-index: 4000
+    right: 0
+    padding: 12px 24px
+    height: 80px
+    background: white
+    @include linear-gradient(#fff, #EFFCFF)
+
 
 
   h4#points-assigned
