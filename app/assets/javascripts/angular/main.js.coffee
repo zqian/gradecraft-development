@@ -47,6 +47,22 @@ FLOAT_REGEXP = /^\-?\d+((\.|\,)\d+)?$/
 
     return
 
+@gradecraft.directive "ngOnscreen", ->
+  require: "ngModel"
+  link: (scope, elm, attr, ctrl) ->
+    ctrl.$parsers.unshift (viewValue) ->
+      value = viewValue
+      max = scope.$eval(attr.ngMax)
+      if value and value != "" and value > max
+        ctrl.$setValidity "ngMax", false
+        'undefined'
+      else
+        ctrl.$setValidity "ngMax", true
+        value
+
+    return
+
+
 # @gradecraft.directive "ngMin", ->
 #   restrict: "A"
 #   require: "ngModel"
