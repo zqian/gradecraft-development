@@ -13,10 +13,10 @@
 
       .points-overview(ng-cloak)
         %h4.points-legend
-          %span.points-assigned(ng-class="{'points-missing': pointsMissing(), 'points-satisfied': pointsSatisfied(), 'points-overage': pointsOverage()}") {{pointsGiven()}}
-          \/{{pointsPossible}} Points Allocated
+          %span.points-assigned(ng-class="{'points-missing': pointsMissing(), 'points-satisfied': pointsSatisfied(), 'points-overage': pointsOverage()}") {{pointsGiven() | number:0}}
+          \/{{pointsPossible | number:0}} Points Allocated
         %h4.notice(ng-hide="pointsSatisfied() || pointsMissing()") You have not yet allocated any points
-        %h4.notice(ng-show="pointsMissing()") {{pointsRemaining()}} point{{pointsRemaining() > 1 ? "s" : ""}} have not been assigned 
+        %h4.notice(ng-show="pointsMissing()") {{pointsRemaining() | number:0}} point{{pointsRemaining() > 1 ? "s" : ""}} have not been assigned 
         %h4.notice(ng-show="pointsSatisfied()") You have allocated all possible points
 
       .clear
@@ -44,11 +44,11 @@
         %tr(ng-repeat="metric in metrics")
           %td.metric
             %label.larger
-              <strong>{{metric.name}}:</strong>&nbsp;{{metric.max_points}}&nbsp;Points
+              <strong>{{metric.name}}:</strong>&nbsp;{{metric.max_points | number:0}}&nbsp;Points
             %label {{metric.description}}
           %td.tier(ng-repeat="tier in metric.tiers" ng-click="metric.gradeWithTier(tier)" ng-class="{selected: metric.isUsingTier(tier)}")
             %label.larger.tier-data(ng-click="metric.gradeWithTier(tier)")
-              <strong>{{tier.name.replace(' ','&nbsp;')}}</strong>:&nbsp;{{tier.points}}&nbsp;Points&nbsp;&nbsp;<input class="tier-select" type='radio' name="metric_tier_{{metric.id}}" ng-checked="metric.isUsingTier(tier)" />
+              <strong>{{tier.name.replace(' ','&nbsp;')}}</strong>:&nbsp;{{tier.points | number:0}}&nbsp;Points&nbsp;&nbsp;<input class="tier-select" type='radio' name="metric_tier_{{metric.id}}" ng-checked="metric.isUsingTier(tier)" />
             %label.tier-points
               {{tier.description}}
             .clear
@@ -60,10 +60,10 @@
     .row.text-center.points-given
       .points-overview.bottom(ng-cloak)
         %h4.points-legend
-          %span.points-assigned(ng-class="{'points-missing': pointsMissing(), 'points-satisfied': pointsSatisfied(), 'points-overage': pointsOverage()}") {{pointsGiven()}}
-          \/{{pointsPossible}} Points Allocated
+          %span.points-assigned(ng-class="{'points-missing': pointsMissing(), 'points-satisfied': pointsSatisfied(), 'points-overage': pointsOverage()}") {{pointsGiven() | number:0}}
+          \/{{pointsPossible | number:0}} Points Allocated
         %h4.notice(ng-hide="pointsSatisfied() || pointsMissing()") You have not yet allocated any points
-        %h4.notice(ng-show="pointsMissing()") {{pointsRemaining()}} point{{pointsRemaining() > 1 ? "s" : ""}} have not been assigned 
+        %h4.notice(ng-show="pointsMissing()") {{pointsRemaining() | number:0}} point{{pointsRemaining() > 1 ? "s" : ""}} have not been assigned 
         %h4.notice(ng-show="pointsSatisfied()") You have allocated all possible points
       .clear
     .row.text-center
