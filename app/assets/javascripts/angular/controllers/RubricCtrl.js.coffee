@@ -3,7 +3,6 @@
   INTEGER_REGEXP = /^\-?\d+$/
   Restangular.setRequestSuffix('.json')
   $scope.metrics = []
-  $scope.courseBadgesArray = []
   $scope.courseBadges = {}
   $scope.savedMetricCount = 0
 
@@ -61,11 +60,6 @@
   CourseBadgePrototype.prototype = {}
 
   $scope.addCourseBadges = (courseBadges)->
-    angular.forEach(courseBadges, (em, index)->
-      courseBadge = new CourseBadgePrototype(em)
-      $scope.courseBadgesArray.push courseBadge
-    )
-
     angular.forEach(courseBadges, (em, index)->
       courseBadge = new CourseBadgePrototype(em)
       $scope.courseBadges[em.id] = courseBadge
@@ -158,7 +152,6 @@
     this.tiers = []
     this.badges = {}
     this.availableBadges = angular.copy($scope.courseBadges)
-    this.availableBadgesArray = $scope.courseBadgesArray
     this.selectedBadge = ""
     this.id = if attrs.id then attrs.id else null
     this.fullCreditTier = null
@@ -207,6 +200,11 @@
       self.badges[self.selectedBadge.id] = newBadge
       delete self.availableBadges[self.selectedBadge.id]
       self.selectedBadge = ""
+    deleteBadge: (metricBadge)->
+      self = this
+      self.availableBadges[metricBadge.courseBadge.id] = angular.copy($scope.courseBadges[metricBadge.courseBadge.id])
+      delete self.badges[metricBadge.courseBadge.id]
+      
     badgeIds: ()->
       # distill ids for all badges
       self = this
