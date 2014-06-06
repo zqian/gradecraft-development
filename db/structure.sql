@@ -2017,6 +2017,38 @@ CREATE TABLE membership_scores (
 
 
 --
+-- Name: metric_badges; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE metric_badges (
+    id integer NOT NULL,
+    metric_id integer,
+    badge_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: metric_badges_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE metric_badges_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: metric_badges_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE metric_badges_id_seq OWNED BY metric_badges.id;
+
+
+--
 -- Name: metrics; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2517,6 +2549,38 @@ ALTER SEQUENCE themes_id_seq OWNED BY themes.id;
 
 
 --
+-- Name: tier_badges; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE tier_badges (
+    id integer NOT NULL,
+    tier_id integer,
+    badge_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: tier_badges_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE tier_badges_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: tier_badges_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE tier_badges_id_seq OWNED BY tier_badges.id;
+
+
+--
 -- Name: tiers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2951,6 +3015,13 @@ ALTER TABLE ONLY lti_providers ALTER COLUMN id SET DEFAULT nextval('lti_provider
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY metric_badges ALTER COLUMN id SET DEFAULT nextval('metric_badges_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY metrics ALTER COLUMN id SET DEFAULT nextval('metrics_id_seq'::regclass);
 
 
@@ -3043,6 +3114,13 @@ ALTER TABLE ONLY teams ALTER COLUMN id SET DEFAULT nextval('teams_id_seq'::regcl
 --
 
 ALTER TABLE ONLY themes ALTER COLUMN id SET DEFAULT nextval('themes_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY tier_badges ALTER COLUMN id SET DEFAULT nextval('tier_badges_id_seq'::regclass);
 
 
 --
@@ -3324,6 +3402,14 @@ ALTER TABLE ONLY lti_providers
 
 
 --
+-- Name: metric_badges_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY metric_badges
+    ADD CONSTRAINT metric_badges_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: metrics_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -3433,6 +3519,14 @@ ALTER TABLE ONLY teams
 
 ALTER TABLE ONLY themes
     ADD CONSTRAINT themes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tier_badges_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY tier_badges
+    ADD CONSTRAINT tier_badges_pkey PRIMARY KEY (id);
 
 
 --
@@ -3865,3 +3959,7 @@ INSERT INTO schema_migrations (version) VALUES ('20140418162054');
 INSERT INTO schema_migrations (version) VALUES ('20140418164458');
 
 INSERT INTO schema_migrations (version) VALUES ('20140418165001');
+
+INSERT INTO schema_migrations (version) VALUES ('20140605014037');
+
+INSERT INTO schema_migrations (version) VALUES ('20140605014124');

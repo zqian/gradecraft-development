@@ -3,12 +3,14 @@
   INTEGER_REGEXP = /^\-?\d+$/
   Restangular.setRequestSuffix('.json')
   $scope.metrics = []
+  $scope.courseBadges = []
   $scope.savedMetricCount = 0
 
-  $scope.init = (rubricId, pointTotal, metrics)->
+  $scope.init = (rubricId, pointTotal, metrics, courseBadges)->
     $scope.rubricId = rubricId
     $scope.pointTotal = parseInt(pointTotal)
     $scope.addMetrics(metrics)
+    $scope.addCourseBadges(courseBadges)
 
   # distill key/value pairs for metric ids and relative order
   $scope.pointsAssigned = ()->
@@ -46,11 +48,121 @@
   $scope.countSavedMetric = () ->
     $scope.savedMetricCount += 1
 
+  # Badge Section
+  CourseBadgePrototype = (attrs={})->
+    this.id = attrs.id
+    this.name = attrs.name
+    this.description = attrs.description
+    this.point_total = attrs.point_total
+    this.icon = attrs.icon
+    this.multiple = attrs.multiple
+
+  CourseBadgePrototype.prototype = {}
+
+  $scope.addCourseBadges = (courseBadges)->
+    angular.forEach(courseBadges, (em, index)->
+      prototypeInstance = new CourseBadgePrototype(em)
+      $scope.courseBadges.push prototypeInstance
+    )
+
+  MetricBadgePrototype = (metric, courseBadge, attrs={})->
+    this.metric = metric
+    this.badge = courseBadge
+    this.id = attrs.id
+    this.name = attrs.name
+    this.description = attrs.description
+    this.point_total = attrs.point_total
+    this.icon = attrs.icon
+    this.multiple = attrs.multiple
+  MetricBadgePrototype.prototype =
+    create: ()->
+      self = this
+      Restangular.all('metricBadges').post(this.params())
+        .then (response)->
+          metricBadge = response.metricBadge
+          self.id = metricBadge.id
+    delete: (index)->
+      self = this
+      if this.isSaved()
+        if confirm("Are you sure you want to delete this tier?")
+          $http.delete("/tiers/#{self.id}").success(
+            (data,status)->
+              self.removeFromMetric(index)
+              return true
+          )
+          .error((err)->
+            alert("delete failed!")
+            return false
+          )
+      else
+        self.removeFromMetric(index)
+
+    params: ()->
+      metric_id: this.metric_id,
+      id: attrs.id,
+      name: attrs.name,
+      description: attrs.description,
+      point_total: attrs.point_total,
+      icon: attrs.icon,
+      multiple: attrs.multiple
+
+    removeFromMetric: (index)->
+      this.metric.badges.splice(index,1)
+
+  TierBadgePrototype = (tier, courseBadge, attrs={})->
+    this.tier = tier
+    this.badge = courseBadge
+    this.id = attrs.id
+    this.name = attrs.name
+    this.description = attrs.description
+    this.point_total = attrs.point_total
+    this.icon = attrs.icon
+    this.multiple = attrs.multiple
+  TierBadgePrototype.prototype =
+    create: ()->
+      self = this
+      Restangular.all('tierBadges').post(this.params())
+        .then (response)->
+          tierBadge = response.tierBadge
+          self.id = tierBadge.id
+    delete: (index)->
+      self = this
+      if this.isSaved()
+        if confirm("Are you sure you want to delete this tier?")
+          $http.delete("/tiers/#{self.id}").success(
+            (data,status)->
+              self.removeFromTier(index)
+              return true
+          )
+          .error((err)->
+            alert("delete failed!")
+            return false
+          )
+      else
+        self.removeFromTier(index)
+    params: ()->
+      tier_id: this.tier_id,
+      id: attrs.id,
+      name: attrs.name,
+      description: attrs.description,
+      point_total: attrs.point_total,
+      icon: attrs.icon,
+      multiple: attrs.multiple
+
+    removeFromTier: (index)->
+      this.tier.badges.splice(index,1)
+
+
+
+  # Metrics Section
   MetricPrototype = (attrs={})->
     this.tiers = []
+    this.badges = []
+    this.selectedBadge = ""
     this.id = if attrs.id then attrs.id else null
     this.fullCreditTier = null
     this.addTiers(attrs["tiers"]) if attrs["tiers"] #add tiers if passed on init
+    this.addBadges(attrs["badges"]) if attrs["badges"] #add badges if passed on init
     this.name = if attrs.name then attrs.name else ""
     this.rubricId = if attrs.rubric_id then attrs.rubric_id else $scope.rubricId
     if this.id
@@ -61,6 +173,9 @@
     this.description = if attrs.description then attrs.description else ""
     this.hasChanges = false
   MetricPrototype.prototype =
+    # Tiers
+    alert: ()->
+      alert("snakes!")
     addTier: (attrs={})->
       self = this
       newTier = new TierPrototype(self, attrs)
@@ -74,6 +189,30 @@
       self = this
       newTier = new TierPrototype(self, attrs)
       this.tiers.push newTier
+     
+    # Badges
+    addBadge: (attrs={})->
+      self = this
+      newBadge = new MetricBadgePrototype(self, attrs)
+      this.badges.splice(-1, 0, newBadge)
+    addBadges: (tiers)->
+      self = this
+      angular.forEach(tiers, (tier,index)->
+        self.loadBadge(tier)
+      )
+    selectBadge: (attrs={})->
+      self = this
+      newBadge = new MetricBadgePrototype(self, attrs)
+      this.badges.push newBadge
+    badgeIds: ()->
+      # distill ids for all badges
+      self = this
+      badgeIds = []
+      angular.forEach(self.badges, (badge, index)->
+        badgeIds.push(badge.id)
+      )
+      badgeIds
+
     isNew: ()->
       this.id is null
     isSaved: ()->
@@ -173,6 +312,9 @@
   TierPrototype = (metric, attrs={})->
     this.id = attrs.id or null
     this.metric = metric
+    this.badges = []
+    this.selectedBadge = ""
+    this.addBadges(attrs["badges"]) if attrs["badges"] #add badges if passed on init
     this.metric_id = metric.id
     this.name = attrs.name or ""
     this.points = attrs.points
@@ -190,6 +332,24 @@
       self = this
       if this.isSaved()
         self.hasChanges = true
+    alert: ()->
+      alert("snakes!")
+
+    # Badges
+    addBadge: (attrs={})->
+      self = this
+      newBadge = new TierBadgePrototype(self, attrs)
+      this.badges.splice(-1, 0, newBadge)
+    addBadges: (tiers)->
+      self = this
+      angular.forEach(badges, (badge,index)->
+        self.loadBadge(badge)
+      )
+    selectBadge: (attrs={})->
+      self = this
+      newBadge = new TierBadgePrototype(self, attrs)
+      this.badges.push newBadge
+
     resetChanges: ()->
       this.hasChanges = false
     params: ()->

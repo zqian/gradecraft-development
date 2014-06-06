@@ -6,6 +6,10 @@
 
 .row
   %input(type="text" ng-model="metric.description" placeholder="Description" value="{{metric.description}}" ng-change="metric.change()" ng-blur="metric.update()")
+.row
+  %select(ng-disabled="! metric.isSaved()" ng-change="metric.selectBadge()" ng-model="tier.selectedBadge" ng-options="courseBadge.name for courseBadge in courseBadges")
+    %option.default(value="" selected disabled) select a badge to add...
+
 %input(type="hidden" value="{{$index}}")
 %button.delete(type="button" ng-click="metric.delete($index)") X
 .messages Criterion

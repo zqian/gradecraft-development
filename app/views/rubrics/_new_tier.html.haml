@@ -4,9 +4,13 @@
   .small-4.columns(style="padding:0")
     %input(type="number" ng-model="tier.points" placeholder="Points" min=0 ng-blur="tier.modify(tierForm)" ng-change="tier.change()" required)
 
-    
 .row
   %input(type="text" ng-model="tier.description" placeholder="Description" value="{{tier.description}}" ng-blur="tier.modify(tierForm)" ng-change="tier.change()")
+
+  %select(ng-disabled="! tier.isSaved()" ng-change="tier.selectBadge(courseBadge)" ng-model="tier.selectedBadge" ng-options="courseBadge.name for courseBadge in courseBadges")
+    %option.default(value="" selected disabled) select a badge to add...
+
+.row
 %button.delete(type="button" ng-click="tier.delete($index)" ng-hide="tier.durable") X
 .messages(ng-show="tier.fullCredit") Full Credit Level
 .messages(ng-show="tier.noCredit") No Credit Level
