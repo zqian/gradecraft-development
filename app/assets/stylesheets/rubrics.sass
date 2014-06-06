@@ -22,6 +22,7 @@ $dark_green: #54BA3F
 $inactive_red: #DC9A9A
 $dark_red: #B40D0D
 $badass_blue: #269ECC
+$badge_blue: #009BD6
 
 .splash
   display: none
@@ -176,7 +177,22 @@ $badass_blue: #269ECC
 
         &:hover
           background: $dark_red
-    
+
+  .metric-badge
+    background: $badge_blue
+    border: 1px solid $badge_blue - #222
+    font-size: 12px
+    color: white
+    padding: 2px 0 2px 4px
+    margin-bottom: 2px
+
+    button.delete
+      position: static
+      padding: 4px 7px
+      background: none
+      margin-top: -2px
+      float: right
+      z-index: 400
 
   .tier
     background: #eee
