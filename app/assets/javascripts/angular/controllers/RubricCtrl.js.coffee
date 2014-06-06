@@ -153,8 +153,6 @@
       this.tier.badges.splice(index,1)
 
 
-
-
   # Metrics Section
   MetricPrototype = (attrs={})->
     this.tiers = []
@@ -205,7 +203,6 @@
       )
     selectBadge: ()->
       self = this
-      alert(self.selectedBadge.id)
       newBadge = new MetricBadgePrototype(self, self.selectedBadge)
       self.badges[self.selectedBadge.id] = newBadge
       delete self.availableBadges[self.selectedBadge.id]
