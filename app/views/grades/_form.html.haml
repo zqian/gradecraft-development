@@ -47,7 +47,7 @@
               <strong>{{metric.name}}:</strong>&nbsp;{{metric.max_points | number:0}}&nbsp;Points
             %label {{metric.description}}
           %td.tier(ng-repeat="tier in metric.tiers" ng-click="metric.gradeWithTier(tier)" ng-class="{selected: metric.isUsingTier(tier)}")
-            %label.larger.tier-data(ng-click="metric.gradeWithTier(tier)")
+            .tier-box.larger.tier-data
               <strong>{{tier.name.replace(' ','&nbsp;')}}</strong>:&nbsp;{{tier.points | number:0}}&nbsp;Points&nbsp;&nbsp;<input class="tier-select" type='radio' name="metric_tier_{{metric.id}}" ng-checked="metric.isUsingTier(tier)" />
             %label.tier-points
               {{tier.description}}

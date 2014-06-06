@@ -135,11 +135,22 @@ $badass_blue: #269ECC
       border: 1px solid #E84846
       background: #FDD
 
+    select
+      color: #333
+      font-size: 13px
+      padding: -4px 2px
+
+      &[disabled]
+        color: #999
+
+      option.default, option.selected.default
+        color: #777
+
     .messages
       position: absolute
       padding: 3px 6px
       bottom: 0
-      right: 0
+      right: 30px
       font-style: italic
       font-size: 11px
       color: #555
@@ -158,9 +169,10 @@ $badass_blue: #269ECC
         padding: 3px 6px
         background: $inactive_red
         position: absolute
-        top: 0
-        right: 0
+        right: 8px
+        bottom: 0
         font-weight: bold
+        margin-bottom: 0px
 
         &:hover
           background: $dark_red
@@ -180,7 +192,6 @@ $badass_blue: #269ECC
       @include linear-gradient(#E2F6DE, #B9E7AF)
       @include linear-gradient(#B9E7AF, #ACE3A0)
 
-
     button
       padding: 4px 8px
       font-size: 12px
@@ -192,18 +203,30 @@ $badass_blue: #269ECC
         padding: 3px 6px
         font-weight: bold
         position: absolute
-        top: 0
-        right: 0
+        bottom: 0
+        right: 8px
+        margin-bottom: 0
         background: $inactive_red
 
         &:hover
           background: $dark_red
 
+    select
+      color: #333
+      font-size: 13px
+      padding: -4px 2px
+
+      &[disabled]
+        color: #999
+
+      option.default, option.selected.default
+        color: #777
+
     .messages
       position: absolute
       padding: 3px 6px
       bottom: 0
-      right: 0
+      right: 30px
       font-style: italic
       font-size: 11px
       color: #555
@@ -239,6 +262,10 @@ $badass_blue: #269ECC
     &.ng-invalid.saved
       border: 1px solid #FF8786
       background: #FEB1B0
+
+    input[type=text], input[type=number]
+      font-size: 14px
+      margin-top: -8px
 
   .add-tier
     background: $dark_green

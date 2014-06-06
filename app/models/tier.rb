@@ -1,5 +1,8 @@
 class Tier < ActiveRecord::Base
   belongs_to :metric
+  has_many :tier_badges
+  has_many :badges, through: :tier_badges
+  
 
   validates :points, presence: true, numericality: {greater_than_or_equal_to: 0}
   validates :name, presence: true
