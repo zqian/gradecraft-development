@@ -15,6 +15,7 @@
 
 .row
   .metric-badge(ng-repeat="(metricBadgeId, metricBadge) in metric.badges")
+    = image_tag "badge.png", width: "20px", height: "20px"
     {{metricBadge.name}}
     %button.delete(type="button" ng-click="metric.deleteMetricBadge(metricBadge)") X
 

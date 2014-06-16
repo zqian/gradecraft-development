@@ -47,6 +47,7 @@
               <strong>{{metric.name}}:</strong>&nbsp;{{metric.max_points | number:0}}&nbsp;Points
             %label {{metric.description}}
             .metric-badge(ng-repeat="(metricBadgeId, metricBadge) in metric.badges")
+              = image_tag "badge.png", width: "20px", height: "20px"
               {{metricBadge.name}}
 
           %td.tier(ng-repeat="tier in metric.tiers" ng-click="metric.gradeWithTier(tier)" ng-class="{selected: metric.isUsingTier(tier)}")
@@ -55,6 +56,7 @@
             %label.tier-points
               {{tier.description}}
             .tier-badge(ng-repeat="(tierBadgeId, tierBadge) in tier.badges")
+              = image_tag "badge.png", width: "20px", height: "20px"
               {{tierBadge.name}}
             .clear
           %td.filler(ng-show="metric.tiers.length < #{@rubric.max_tier_count}" colspan="{{#{@rubric.max_tier_count} - metric.tiers.length}}")
