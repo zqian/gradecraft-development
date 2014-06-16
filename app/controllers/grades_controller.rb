@@ -45,6 +45,8 @@ class GradesController < ApplicationController
     @grade.update_attributes(raw_score: params[:points_given], submission_id: @submission[:id], point_total: params[:points_possible], status: "Graded")
 
     create_rubric_grades # create an individual record for each rubric grade
+    create_earned_metric_badges # create an individual record for each rubric grade
+    create_earned_tier_badges # create an individual record for each rubric grade
 
     if @assignment.notify_released? && @grade.is_released?
       NotificationMailer.grade_released(@grade.id).deliver
@@ -246,6 +248,28 @@ class GradesController < ApplicationController
         submission_id: @submission[:id],
         metric_id: rubric_grade["metric_id"],
         tier_id: rubric_grade["tier_id"]
+      })
+    end
+  end
+
+  def create_earned_metric_badges
+    params[:metric_badges].each do |metric_badge|
+      EarnedBadge.create({
+        badge_id: metric_badge["badge_id"],
+        submission_id: @submission[:id],
+        course_id: current_course[:id],
+        student_id: current_student[:id]
+      })
+    end
+  end
+
+  def create_earned_tier_badges
+    params[:tier_badges].each do |tier_badge|
+      EarnedBadge.create({
+        badge_id: tier_badge["badge_id"],
+        submission_id: @submission[:id],
+        course_id: current_course[:id],
+        student_id: current_student[:id]
       })
     end
   end

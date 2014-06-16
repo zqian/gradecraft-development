@@ -89,13 +89,52 @@
     )
     params
 
+  $scope.metricBadgesParams = ()->
+    params = []
+    angular.forEach($scope.gradedMetrics, (metric, index)->
+      angular.forEach(metric.badges, (badge, index)->
+        params.push {
+          name: badge.name,
+          metric_id: metric.id,
+          badge_id: badge.badge.id,
+          description: badge.description,
+          point_total: badge.point_total,
+          icon: badge.icon,
+          multiple: badge.multiple
+
+        }
+      )
+    )
+    params
+
+  $scope.tierBadgesParams = ()->
+    params = []
+    angular.forEach($scope.gradedMetrics, (metric, index)->
+      angular.forEach(metric.tiers, (tier, index)->
+        angular.forEach(tier.badges, (badge, index)->
+          params.push {
+            name: badge.name,
+            tier_id: tier.id,
+            badge_id: badge.badge.id,
+            description: badge.description,
+            point_total: badge.point_total,
+            icon: badge.icon,
+            multiple: badge.multiple
+          }
+        )
+      )
+    )
+    params
+
   $scope.gradedRubricParams = ()->
     {
       points_given: $scope.pointsGiven(),
       rubric_id: $scope.rubricId,
       student_id: $scope.studentId,
       points_possible: $scope.pointsPossible,
-      rubric_grades: $scope.gradedMetricsParams()
+      rubric_grades: $scope.gradedMetricsParams(),
+      metric_badges: $scope.metricBadgesParams(),
+      tier_badges: $scope.tierBadgesParams()
     }
 
   $scope.submitGrade = ()->
@@ -129,6 +168,8 @@
     this.badge = badge
     this.create()
     this.name = badge.name
+    this.metric_id = metric.id
+    this.badge_id = badge.id
     this.description = badge.description
     this.point_total = badge.point_total
     this.icon = badge.icon
@@ -156,6 +197,8 @@
     this.badge = badge
     this.create()
     this.name = badge.name
+    this.tier_id = tier.id
+    this.badge_id = badge.id
     this.description = badge.description
     this.point_total = badge.point_total
     this.icon = badge.icon
