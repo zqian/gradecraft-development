@@ -60,92 +60,54 @@
   CourseBadgePrototype.prototype = {}
 
   $scope.addCourseBadges = (courseBadges)->
-    angular.forEach(courseBadges, (em, index)->
-      courseBadge = new CourseBadgePrototype(em)
-      $scope.courseBadges[em.id] = courseBadge
+    angular.forEach(courseBadges, (badge, index)->
+      courseBadge = new CourseBadgePrototype(badge)
+      $scope.courseBadges[badge.id] = courseBadge
     )
 
-  MetricBadgePrototype = (metric, courseBadge)->
+  MetricBadgePrototype = (metric, badge, attrs={})->
     this.metric = metric
-    this.courseBadge = courseBadge
+    this.badge = badge
+    this.create()
+    this.name = badge.name
   MetricBadgePrototype.prototype =
     create: ()->
       self = this
-      Restangular.all('metricBadges').post(this.params())
-        .then (response)->
-          metricBadge = response.metricBadge
-          self.id = metricBadge.id
-    delete: (index)->
-      self = this
-      if this.isSaved()
-        if confirm("Are you sure you want to delete this tier?")
-          $http.delete("/tiers/#{self.id}").success(
-            (data,status)->
-              self.removeFromMetric(index)
-              return true
-          )
-          .error((err)->
-            alert("delete failed!")
-            return false
-          )
-      else
-        self.removeFromMetric(index)
 
-    params: ()->
-      metric_id: this.metric_id,
-      id: this.id,
-      name: this.name,
-      description: this.description,
-      point_total: this.point_total,
-      icon: this.icon,
-      multiple: this.multiple
+      $http.post("/metric_badges", self.createParams()).success(
+        (data,status)->
+          self.id = data.existing_metric_badge.id
+      )
+      .error((err)->
+        alert("create failed!")
+        return false
+      )
 
-    removeFromMetric: (index)->
-      this.metric.badges.splice(index,1)
+    createParams: ()->
+      metric_id: this.metric.id,
+      badge_id: this.badge.id
 
-  TierBadgePrototype = (tier, courseBadge, attrs={})->
+  TierBadgePrototype = (tier, badge, attrs={})->
     this.tier = tier
-    this.badge = courseBadge
-    this.id = attrs.id
-    this.name = attrs.name
-    this.description = attrs.description
-    this.point_total = attrs.point_total
-    this.icon = attrs.icon
-    this.multiple = attrs.multiple
+    this.badge = badge
+    this.create()
+    this.name = badge.name
   TierBadgePrototype.prototype =
     create: ()->
       self = this
-      Restangular.all('tierBadges').post(this.params())
-        .then (response)->
-          tierBadge = response.tierBadge
-          self.id = tierBadge.id
-    delete: (index)->
-      self = this
-      if this.isSaved()
-        if confirm("Are you sure you want to delete this tier?")
-          $http.delete("/tiers/#{self.id}").success(
-            (data,status)->
-              self.removeFromTier(index)
-              return true
-          )
-          .error((err)->
-            alert("delete failed!")
-            return false
-          )
-      else
-        self.removeFromTier(index)
-    params: ()->
-      tier_id: this.tier_id,
-      id: attrs.id,
-      name: attrs.name,
-      description: attrs.description,
-      point_total: attrs.point_total,
-      icon: attrs.icon,
-      multiple: attrs.multiple
 
-    removeFromTier: (index)->
-      this.tier.badges.splice(index,1)
+      $http.post("/tier_badges", self.createParams()).success(
+        (data,status)->
+          self.id = data.existing_tier_badge.id
+      )
+      .error((err)->
+        alert("create failed!")
+        return false
+      )
 
+    createParams: ()->
+      tier_id: this.tier.id,
+      badge_id: this.badge.id
 
   # Metrics Section
   MetricPrototype = (attrs={})->
@@ -156,7 +118,7 @@
     this.id = if attrs.id then attrs.id else null
     this.fullCreditTier = null
     this.addTiers(attrs["tiers"]) if attrs["tiers"] #add tiers if passed on init
-    this.addBadges(attrs["badges"]) if attrs["badges"] #add badges if passed on init
+    this.loadMetricBadges(attrs["metric_badges"]) if attrs["metric_badges"] #add badges if passed on init
     this.name = if attrs.name then attrs.name else ""
     this.rubricId = if attrs.rubric_id then attrs.rubric_id else $scope.rubricId
     if this.id
@@ -183,28 +145,43 @@
       self = this
       newTier = new TierPrototype(self, attrs)
       this.tiers.push newTier
+
+    loadMetricBadge: (metricBadge)->
+      self = this
+      courseBadge = self.availableBadges[metricBadge.badge_id]
+      loadedBadge = new MetricBadgePrototype(self, angular.copy(courseBadge))
+      self.badges[courseBadge.id] = loadedBadge # add metric badge to metric
+      delete self.availableBadges[courseBadge.id] # remove badge from available badges on metric
      
     # Badges
-    addBadge: (attrs={})->
+    loadMetricBadges: (metricBadges)->
       self = this
-      newBadge = new MetricBadgePrototype(self, attrs)
-      this.badges.splice(-1, 0, newBadge)
-    addBadges: (tiers)->
-      self = this
-      angular.forEach(tiers, (tier,index)->
-        self.loadBadge(tier)
+      angular.forEach(metricBadges, (metricBadge, index)->
+        if (self.availableBadges[metricBadge.badge_id])
+          self.loadMetricBadge(metricBadge)
       )
+
     selectBadge: ()->
       self = this
-      newBadge = new MetricBadgePrototype(self, self.selectedBadge)
-      self.badges[self.selectedBadge.id] = newBadge
-      delete self.availableBadges[self.selectedBadge.id]
-      self.selectedBadge = ""
-    deleteBadge: (metricBadge)->
+      newBadge = new MetricBadgePrototype(self, angular.copy(self.selectedBadge))
+      self.badges[newBadge.badge.id] = newBadge # add metric badge to metric
+      delete self.availableBadges[self.selectedBadge.id] # remove badge from available badges on metric
+      self.selectedBadge = "" # reset selected badge
+
+    deleteMetricBadge: (badge)->
       self = this
-      self.availableBadges[metricBadge.courseBadge.id] = angular.copy($scope.courseBadges[metricBadge.courseBadge.id])
-      delete self.badges[metricBadge.courseBadge.id]
-      
+      metricBadge = badge 
+
+      if confirm("Are you sure you want to delete this badge from the metric?")
+        $http.delete("/metric_badges/#{metricBadge.id}").success(
+          (data,status)->
+            self.availableBadges[metricBadge.badge.id] = angular.copy($scope.courseBadges[metricBadge.badge.id])
+            delete self.badges[metricBadge.badge.id]
+        )
+        .error((err)->
+          alert("delete failed!")
+        )
+
     badgeIds: ()->
       # distill ids for all badges
       self = this
@@ -313,10 +290,12 @@
   TierPrototype = (metric, attrs={})->
     this.id = attrs.id or null
     this.metric = metric
-    this.badges = []
-    this.availableBadges = $scope.courseBadgesById
+    this.badges = {}
+    this.availableBadges = angular.copy($scope.courseBadges)
     this.selectedBadge = ""
-    this.addBadges(attrs["badges"]) if attrs["badges"] #add badges if passed on init
+    this.id = if attrs.id then attrs.id else null
+
+    this.loadTierBadges(attrs["tier_badges"]) if attrs["tier_badges"] #add badges if passed on init
     this.metric_id = metric.id
     this.name = attrs.name or ""
     this.points = attrs.points
@@ -347,10 +326,43 @@
       angular.forEach(badges, (badge,index)->
         self.loadBadge(badge)
       )
-    selectBadge: (attrs={})->
+
+    loadTierBadge: (tierBadge)->
       self = this
-      newBadge = new TierBadgePrototype(self, attrs)
-      this.badges.push newBadge
+      courseBadge = self.availableBadges[tierBadge.badge_id]
+      loadedBadge = new TierBadgePrototype(self, angular.copy(courseBadge))
+      self.badges[courseBadge.id] = loadedBadge # add tier badge to tier
+      delete self.availableBadges[courseBadge.id] # remove badge from available badges on tier
+     
+    # Badges
+    loadTierBadges: (tierBadges)->
+      self = this
+      angular.forEach(tierBadges, (tierBadge, index)->
+        if (self.availableBadges[tierBadge.badge_id])
+          self.loadTierBadge(tierBadge)
+      )
+
+    selectBadge: ()->
+      self = this
+      newBadge = new TierBadgePrototype(self, angular.copy(self.selectedBadge))
+      self.badges[newBadge.badge.id] = newBadge # add tier badge to tier
+      delete self.availableBadges[self.selectedBadge.id] # remove badge from available badges on tier
+      self.selectedBadge = "" # reset selected badge
+
+    deleteTierBadge: (badge)->
+      self = this
+      tierBadge = badge 
+
+      if confirm("Are you sure you want to delete this badge from the tier?")
+        $http.delete("/tier_badges/#{tierBadge.id}").success(
+          (data,status)->
+            self.availableBadges[tierBadge.badge.id] = angular.copy($scope.courseBadges[tierBadge.badge.id])
+            delete self.badges[tierBadge.badge.id]
+        )
+        .error((err)->
+          alert("delete failed!")
+        )
+
 
     resetChanges: ()->
       this.hasChanges = false

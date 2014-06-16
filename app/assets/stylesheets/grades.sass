@@ -10,6 +10,9 @@ $dark_green: #54BA3F
 $inactive_red: #DC9A9A
 $dark_red: #B40D0D
 $badass_blue: #269ECC
+$badge_blue: #009BD6
+$badge_green: #54B141
+$badge_green_border: #439A31
 
 #rubric-grader
 
@@ -125,6 +128,22 @@ $badass_blue: #269ECC
     span.points
       font-size: 28px
 
+  .metric-badge
+    background: $badge_blue
+    border: 1px solid $badge_blue - #222
+    font-size: 12px
+    color: white
+    padding: 2px 0 2px 4px
+    margin-bottom: 2px
+
+    button.delete
+      position: static
+      padding: 4px 7px
+      background: none
+      margin-top: -2px
+      float: right
+      z-index: 400
+
   .tier
     background: #efefef
     border: 1px solid #ddd
@@ -203,6 +222,23 @@ $badass_blue: #269ECC
     &:hover:not(.heading), &.selected:hover:not(.heading)
       background: #E1FFA3
       border: 1px solid #D6FF7F
+
+  .tier-badge
+    background: $badge_green
+    border: 1px solid $badge_green_border
+    font-size: 12px
+    color: white
+    padding: 2px 0 2px 4px
+    margin-bottom: 2px
+
+    button.delete
+      position: static
+      padding: 4px 7px
+      background: none
+      margin-top: -2px
+      float: right
+      z-index: 400
+
       
   .submit-grade-container
     margin-top: 20px

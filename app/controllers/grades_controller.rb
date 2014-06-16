@@ -23,6 +23,7 @@ class GradesController < ApplicationController
     @rubric = @assignment.rubric
     @metrics = existing_metrics_as_json if @rubric
     @score_levels = @assignment.score_levels.order_by_value
+    @course_badges = serialized_course_badges
     @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
   end
 
@@ -247,6 +248,14 @@ class GradesController < ApplicationController
         tier_id: rubric_grade["tier_id"]
       })
     end
+  end
+
+  def serialized_course_badges
+    ActiveModel::ArraySerializer.new(course_badges, each_serializer: CourseBadgeSerializer).to_json
+  end
+
+  def course_badges
+    @course_badges ||= @assignment.course.badges.visible
   end
 
   def existing_metrics_as_json

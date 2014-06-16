@@ -1,11 +1,5 @@
 GradeCraft::Application.routes.draw do
 
-  get "tier_badges_controller/create"
-  get "tier_badges_controller/update"
-  get "tier_badges_controller/destroy"
-  get "metric_badges_controller/create"
-  get "metric_badges_controller/update"
-  get "metric_badges_controller/destroy"
   require 'sidekiq/web'
   require 'admin_constraint'
   mount Sidekiq::Web => '/sidekiq', :constraints => AdminConstraint.new
