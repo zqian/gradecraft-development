@@ -11,6 +11,54 @@
     .small-12.medium-4.columns.right
       .right= render "assignments/description"
   .clearfix
+
+
+  #rubric-grader(style="font-size: 12px")
+    %table#grade-rubric-table
+      %thead
+        %tr
+          %td.metric.heading
+            %label.larger
+              <strong>Criterion</strong>:&nbsp;Max&nbsp;points
+          %td.tier.heading(colspan="#{@assignment.rubric.max_tier_count}")
+            %label.larger
+              %strong Level:
+              Point value
+
+      %tbody
+        - @metrics.each do |metric|
+          %tr
+            %td.metric(style="font-size: 12px !important")
+              %label.larger
+                = "<strong>#{metric.name}:</strong>&nbsp;#{metric.max_points}&nbsp;Points".html_safe
+              %label= metric.description
+              - metric.metric_badges.each do |metric_badge|
+                .metric-badge
+                  = image_tag "badge.png", width: "20px", height: "20px"
+                  = metric_badge.badge.name
+
+            %td.tier(ng-repeat="tier in metric.tiers" ng-click="metric.gradeWithTier(tier)" ng-class="{selected: metric.isUsingTier(tier)}")
+              .tier-box.larger.tier-data
+                <strong>{{tier.name.replace(' ','&nbsp;')}}</strong>:&nbsp;{{tier.points | number:0}}&nbsp;Points&nbsp;&nbsp;<input class="tier-select" type='radio' name="metric_tier_{{metric.id}}" ng-checked="metric.isUsingTier(tier)" />
+              %label.tier-points
+                {{tier.description}}
+              .tier-badge(ng-repeat="(tierBadgeId, tierBadge) in tier.badges")
+                = image_tag "badge.png", width: "20px", height: "20px"
+                {{tierBadge.name}}
+              .clear
+
+    %br
+    .row.text-center.points-given
+      .points-overview.bottom(ng-cloak)
+        %h4.points-legend
+          %span.points-assigned(ng-class="{'points-missing': pointsMissing(), 'points-satisfied': pointsSatisfied(), 'points-overage': pointsOverage()}") {{pointsGiven() | number:0}}
+          \/{{pointsPossible | number:0}} Points Allocated
+        %h4.notice(ng-hide="pointsSatisfied() || pointsMissing()") You have not yet allocated any points
+        %h4.notice(ng-show="pointsMissing()") {{pointsRemaining() | number:0}} point{{pointsRemaining() > 1 ? "s" : ""}} have not been assigned 
+        %h4.notice(ng-show="pointsSatisfied()") You have allocated all possible points
+      .clear
+
+
   - if current_user.is_staff?
     .small-12.columns
       - if @assignment.rubric and @assignment.rubric.designed?
