@@ -21,6 +21,13 @@ class AssignmentsController < ApplicationController
     user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
     @auditing = current_course.students.auditing.includes(:teams).where(user_search_options).alpha
+
+    @rubric = @assignment.rubric
+    @metrics = @rubric.metrics
+    @score_levels = @assignment.score_levels.order_by_value
+    @course_badges = serialized_course_badges
+    @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
+
     #used to display an alternate view of the same content
     render :detailed_grades if params[:detailed]
   end
@@ -126,6 +133,22 @@ class AssignmentsController < ApplicationController
       assignment_weight
     end
     @assignment.save
+  end
+
+  def serialized_course_badges
+    ActiveModel::ArraySerializer.new(course_badges, each_serializer: CourseBadgeSerializer).to_json
+  end
+
+  def course_badges
+    @course_badges ||= @assignment.course.badges.visible
+  end
+
+  def existing_metrics_as_json
+    ActiveModel::ArraySerializer.new(rubric_metrics_with_tiers, each_serializer: ExistingMetricSerializer).to_json
+  end
+
+  def rubric_metrics_with_tiers
+    @rubric.metrics.order(:order).includes(:tiers)
   end
   
 end
