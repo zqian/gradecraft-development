@@ -129,6 +129,11 @@
     this.badge = badge
     this.create()
     this.name = badge.name
+    this.description = badge.description
+    this.point_total = badge.point_total
+    this.icon = badge.icon
+    this.multiple = badge.multiple
+
   MetricBadgePrototype.prototype =
     create: ()->
       self = this
@@ -151,6 +156,11 @@
     this.badge = badge
     this.create()
     this.name = badge.name
+    this.description = badge.description
+    this.point_total = badge.point_total
+    this.icon = badge.icon
+    this.multiple = badge.multiple
+
   TierBadgePrototype.prototype =
     create: ()->
       self = this
