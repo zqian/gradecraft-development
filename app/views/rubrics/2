@@ -15,8 +15,8 @@
 
 .row
   .metric-badge(ng-repeat="(metricBadgeId, metricBadge) in metric.badges")
-    {{metricBadge.name}}
-    %button.delete(type="button" ng-click="metric.deleteMetricBadge(metricBadge)") X
+    {{metricBadge.id}}
+    %button.delete(type="button" ng-click="metricBadge.delete()") X
 
 %input(type="hidden" value="{{$index}}")
 %button.delete(type="button" ng-click="metric.delete($index)") X

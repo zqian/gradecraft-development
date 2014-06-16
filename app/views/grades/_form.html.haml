@@ -1,7 +1,7 @@
 .small-12.right.medium-4.columns
 
 - if @rubric.designed?
-  #rubric-grader(ng-app="gradecraft" ng-controller="GradeRubricCtrl" ng-init="init(#{@rubric[:id]}, #{@metrics}, #{@assignment[:id]}, #{params[:student_id]})")
+  #rubric-grader(ng-app="gradecraft" ng-controller="GradeRubricCtrl" ng-init="init(#{@rubric[:id]}, #{@metrics}, #{@assignment[:id]}, #{params[:student_id]}, #{@course_badges.html_safe})")
 
     .row
       #rubric-heading.small-7.columns
@@ -46,11 +46,16 @@
             %label.larger
               <strong>{{metric.name}}:</strong>&nbsp;{{metric.max_points | number:0}}&nbsp;Points
             %label {{metric.description}}
+            .metric-badge(ng-repeat="(metricBadgeId, metricBadge) in metric.badges")
+              {{metricBadge.name}}
+
           %td.tier(ng-repeat="tier in metric.tiers" ng-click="metric.gradeWithTier(tier)" ng-class="{selected: metric.isUsingTier(tier)}")
             .tier-box.larger.tier-data
               <strong>{{tier.name.replace(' ','&nbsp;')}}</strong>:&nbsp;{{tier.points | number:0}}&nbsp;Points&nbsp;&nbsp;<input class="tier-select" type='radio' name="metric_tier_{{metric.id}}" ng-checked="metric.isUsingTier(tier)" />
             %label.tier-points
               {{tier.description}}
+            .tier-badge(ng-repeat="(tierBadgeId, tierBadge) in tier.badges")
+              {{tierBadge.name}}
             .clear
           %td.filler(ng-show="metric.tiers.length < #{@rubric.max_tier_count}" colspan="{{#{@rubric.max_tier_count} - metric.tiers.length}}")
           %td.comments

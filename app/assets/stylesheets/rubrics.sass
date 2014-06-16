@@ -23,6 +23,8 @@ $inactive_red: #DC9A9A
 $dark_red: #B40D0D
 $badass_blue: #269ECC
 $badge_blue: #009BD6
+$badge_green: #54B141
+$badge_green_border: #439A31
 
 .splash
   display: none
@@ -267,6 +269,22 @@ $badge_blue: #009BD6
     input.ng-invalid
       border: 1px solid #E84846
       background: #FDD
+
+  .tier-badge
+    background: $badge_green
+    border: 1px solid $badge_green_border
+    font-size: 12px
+    color: white
+    padding: 2px 0 2px 4px
+    margin-bottom: 2px
+
+    button.delete
+      position: static
+      padding: 4px 7px
+      background: none
+      margin-top: -2px
+      float: right
+      z-index: 400
 
   .metric, .tier
     &.heading
