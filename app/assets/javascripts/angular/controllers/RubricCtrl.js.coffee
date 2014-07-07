@@ -1,5 +1,11 @@
 @gradecraft.controller 'RubricCtrl', ($scope, Restangular, $http) -> 
 
+ # hide modal window by default
+ $scope.modalShown = false
+ $scope.toggleModal = ->
+   $scope.modalShown = not $scope.modalShown
+   return
+
   INTEGER_REGEXP = /^\-?\d+$/
   Restangular.setRequestSuffix('.json')
   $scope.metrics = []
@@ -123,12 +129,12 @@
   MetricPrototype = (attrs={})->
     this.tiers = []
     this.badges = {}
-    this.availableBadges = angular.copy($scope.courseBadges)
-    this.selectedBadge = ""
+    # this.availableBadges = angular.copy($scope.courseBadges)
+    # this.selectedBadge = ""
     this.id = if attrs.id then attrs.id else null
     this.fullCreditTier = null
     this.addTiers(attrs["tiers"]) if attrs["tiers"] #add tiers if passed on init
-    this.loadMetricBadges(attrs["metric_badges"]) if attrs["metric_badges"] #add badges if passed on init
+    # this.loadMetricBadges(attrs["metric_badges"]) if attrs["metric_badges"] #add badges if passed on init
     this.name = if attrs.name then attrs.name else ""
     this.rubricId = if attrs.rubric_id then attrs.rubric_id else $scope.rubricId
     if this.id
@@ -308,6 +314,7 @@
     this.loadTierBadges(attrs["tier_badges"]) if attrs["tier_badges"] #add badges if passed on init
     this.metric_id = metric.id
     this.name = attrs.name or ""
+    this.editingBadges = false
     this.points = attrs.points
     this.fullCredit = attrs.full_credit or false
     this.noCredit = attrs.no_credit or false
@@ -376,6 +383,10 @@
 
     resetChanges: ()->
       this.hasChanges = false
+    editBadges: ()->
+      this.editingBadges = true
+    closeBadges: ()->
+      this.editingBadges = false
     params: ()->
       metric_id: this.metric_id,
       name: this.name,

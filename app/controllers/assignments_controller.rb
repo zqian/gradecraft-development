@@ -27,6 +27,11 @@ class AssignmentsController < ApplicationController
     @score_levels = @assignment.score_levels.order_by_value
     @course_badges = serialized_course_badges
     @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
+    @course_student_ids = current_course.students.map(&:id)
+    @submissions_count = @assignment.submissions.count
+    @ungraded_submissions_count = @assignment.submissions.where("id not in (select submission_id from rubric_grades)").count
+    @ungraded_percentage = @ungraded_submissions_count / @submissions_count
+    @graded_count = @submissions_count - @ungraded_submissions_count
 
     #used to display an alternate view of the same content
     render :detailed_grades if params[:detailed]

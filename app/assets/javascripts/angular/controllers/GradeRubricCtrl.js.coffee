@@ -227,9 +227,9 @@
     this.tiers = []
     this.id = if attrs.id then attrs.id else null
     this.addTiers(attrs["tiers"]) if attrs["tiers"] #add tiers if passed on init
-    this.badges = {}
-    this.availableBadges = angular.copy($scope.courseBadges)
-    this.loadMetricBadges(attrs["metric_badges"]) if attrs["metric_badges"] #add badges if passed on init
+    # this.badges = {}
+    # this.availableBadges = angular.copy($scope.courseBadges)
+    # this.loadMetricBadges(attrs["metric_badges"]) if attrs["metric_badges"] #add badges if passed on init
     this.name = if attrs.name then attrs.name else ""
     this.rubricId = if attrs.rubric_id then attrs.rubric_id else $scope.rubricId
     this.max_points = if attrs.max_points then attrs.max_points else null

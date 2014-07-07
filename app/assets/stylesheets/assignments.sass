@@ -24,7 +24,20 @@ $badge_blue: #009BD6
 $badge_green: #54B141
 $badge_green_border: #439A31
 
-#rubric-grader
+#rubric-preview-headline
+  font-size: 21px
+  font-style: italic
+  margin: 0 80px 8px 0
+  text-align: center
+
+#ungraded-subtitle
+  font-size: 14px
+  font-style: italic
+  margin: 0 80px 16px 0
+  text-align: center
+
+#preview-rubric
+  margin: 0 13% 36px 13%
   .clear
     clear: both
 
@@ -122,11 +135,9 @@ $badge_green_border: #439A31
     background: #D3EBF5
     border: 1px solid #9FE2FF
     cursor: auto
-    position: relative
-    padding: 8px
 
     label.larger
-      font-size: 20px
+      font-size: 14px
 
     label
       cursor: auto
@@ -145,27 +156,22 @@ $badge_green_border: #439A31
       display: inline
       margin-top: 12px
 
-    .metric-name
-      white-space: nowrap
-      font-weight: bold
-      font-size: 19px
-      padding: 8px 0 0 8px
-      margin-top: -8px
+  .metric-name
+    white-space: nowrap
+    font-weight: bold
+    font-size: 15px
+    padding: 8px 0 0 8px
+    margin-top: -8px
 
-    .metric-points
-      font-size: 28px
-      margin: -8px 0 0 8px
+  .metric-points
+    font-size: 19px
+    margin: -4px 0 0 8px
 
-    .metric-description
-      margin: -4px 0 0 8px
-      font-style: italic
-      color: #222
-
-    .tier-description
-      font-style: italic
-      max-width: 85%
-      margin-top: 24px
-
+  .metric-description
+    margin: -4px 0 0 8px
+    font-size: 13px
+    font-style: italic
+    color: #222
 
   td.points-given
     background: white
@@ -173,14 +179,15 @@ $badge_green_border: #439A31
 
     label.larger
       background: none
-      font-size: 20px
+      font-size: 14px
 
     span.given
       font-size: 32px
     span.total
       font-size: 14px
     span.points
-      font-size: 28px
+      font-size: 18px
+
 
   .metric-badge
     background: $badge_blue
@@ -311,6 +318,20 @@ $badge_green_border: #439A31
     font-weight: bold
     color: white
     background: $dark_green
+
+  .graded-students
+    padding: 6px
+    font-weight: bold
+    color: white
+    background: $badass_blue
+    width: 100%
+    margin-top: 8px
+    position: absolute
+    right: 0
+    bottom: 0
+
+  .students-padding
+    height: 28px
 
     input
       position: absolute
