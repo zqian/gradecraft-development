@@ -71,8 +71,12 @@
                         = image_tag "badge.png", width: "30px", height: "30px"
                   .clear
 
+                - if current_user.is_student?
+                  - if @rubric_grades.select {|rubric_grade| rubric_grade.tier_id == tier[:id] }.count > 0
+                    .level-scored You scored at this level
+
                 - if tier.rubric_grades.size > 0
                   .students-padding
-                  .graded-students= "#{tier.rubric_grades.size} students (#{tier.rubric_grades.size/@graded_count}%) at this level"
+                  .graded-students= "#{tier.rubric_grades.size} students (#{'%.0f' % ((tier.rubric_grades.size/@graded_count).to_f * 100)}%) at this level"
             - if metric.tiers.size < @rubric.max_tier_count
               %td.filler(colspan="#{@rubric.max_tier_count - metric.tiers.size}")
