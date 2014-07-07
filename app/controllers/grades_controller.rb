@@ -45,7 +45,7 @@ class GradesController < ApplicationController
     @grade.update_attributes(raw_score: params[:points_given], submission_id: @submission[:id], point_total: params[:points_possible], status: "Graded")
 
     create_rubric_grades # create an individual record for each rubric grade
-    create_earned_metric_badges # create an individual record for each rubric grade
+    # create_earned_metric_badges # create an individual record for each rubric grade
     create_earned_tier_badges # create an individual record for each rubric grade
 
     if @assignment.notify_released? && @grade.is_released?

@@ -13,11 +13,7 @@
     -#
       %option(ng-repeat="(availableBadgeId, availableBadge) in metric.availableBadges" value="{{availableBadge.id}}") {{availableBadge.name}}
 
-.row
-  .metric-badge(ng-repeat="(metricBadgeId, metricBadge) in metric.badges")
-    = image_tag "badge.png", width: "20px", height: "20px"
-    {{metricBadge.name}}
-    %button.delete(type="button" ng-click="metric.deleteMetricBadge(metricBadge)") X
+
 
 %input(type="hidden" value="{{$index}}")
 %button.delete(type="button" ng-click="metric.delete($index)") X

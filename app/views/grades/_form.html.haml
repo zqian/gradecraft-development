@@ -11,8 +11,8 @@
         %h4.text-right (click to select the level earned for each criterion)
         %br
 
-      .points-overview(ng-cloak)
-        %h4.points-legend
+      #points-overview-floating(ng-cloak ng-hide="angular.element('#points-overview').isOnscreen()")
+        %h4#points-legend
           %span.points-assigned(ng-class="{'points-missing': pointsMissing(), 'points-satisfied': pointsSatisfied(), 'points-overage': pointsOverage()}") {{pointsGiven() | number:0}}
           \/{{pointsPossible | number:0}} Points Allocated
         %h4.notice(ng-hide="pointsSatisfied() || pointsMissing()") You have not yet allocated any points
@@ -32,6 +32,7 @@
           %td.metric.heading
             %label.larger
               <strong>Criterion</strong>:&nbsp;Max&nbsp;points
+
           %td.tier.heading(colspan="#{@rubric.max_tier_count}")
             %label.larger
               %strong Level:
@@ -43,22 +44,25 @@
       %tbody
         %tr(ng-repeat="metric in metrics")
           %td.metric
-            %label.larger
-              <strong>{{metric.name}}:</strong>&nbsp;{{metric.max_points | number:0}}&nbsp;Points
-            %label {{metric.description}}
-            .metric-badge(ng-repeat="(metricBadgeId, metricBadge) in metric.badges")
-              = image_tag "badge.png", width: "20px", height: "20px"
-              {{metricBadge.name}}
+            .metric-heading
+              .metric-name {{metric.name.replace(' ','&nbsp;')}}
+              .metric-points
+                {{(metric.max_points || 0) | number:0}}&nbsp;Points
+            .metric-description {{metric.description}}
 
           %td.tier(ng-repeat="tier in metric.tiers" ng-click="metric.gradeWithTier(tier)" ng-class="{selected: metric.isUsingTier(tier)}")
-            .tier-box.larger.tier-data
-              <strong>{{tier.name.replace(' ','&nbsp;')}}</strong>:&nbsp;{{tier.points | number:0}}&nbsp;Points&nbsp;&nbsp;<input class="tier-select" type='radio' name="metric_tier_{{metric.id}}" ng-checked="metric.isUsingTier(tier)" />
-            %label.tier-points
-              {{tier.description}}
-            .tier-badge(ng-repeat="(tierBadgeId, tierBadge) in tier.badges")
-              = image_tag "badge.png", width: "20px", height: "20px"
-              {{tierBadge.name}}
+            .tier-heading
+              .tier-name {{tier.name.replace(' ','&nbsp;')}}
+              .tier-points
+                {{tier.points | number:0}}&nbsp;Points
+                %input(class="tier-select" type='radio' name="metric_tier_{{metric.id}}" ng-checked="metric.isUsingTier(tier)")
             .clear
+            %label.tier-description
+              {{tier.description}}
+            .row.badge-row
+              .tier-badge-image(ng-repeat="(tierBadgeId, tierBadge) in tier.badges")
+                = image_tag "badge.png", width: "50px", height: "50px"
+              .clear
           %td.filler(ng-show="metric.tiers.length < #{@rubric.max_tier_count}" colspan="{{#{@rubric.max_tier_count} - metric.tiers.length}}")
           %td.comments
             %textarea(ng-model="metric.comment")

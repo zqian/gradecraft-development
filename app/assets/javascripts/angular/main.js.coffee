@@ -1,5 +1,24 @@
 @gradecraft = angular.module('gradecraft', ['restangular', 'ui.sortable', 'ng-rails-csrf', 'ngResource'])
 
+@gradecraft.directive "modalDialog", ->
+  restrict: "E"
+  scope:
+    show: "="
+
+  replace: true # Replace with the template below
+  transclude: true # we want to insert custom content inside the directive
+  link: (scope, element, attrs) ->
+    scope.dialogStyle = {}
+    scope.dialogStyle.width = attrs.width  if attrs.width
+    scope.dialogStyle.height = attrs.height  if attrs.height
+    scope.hideModal = ->
+      scope.show = false
+      return
+
+    return
+
+  template: "..." # See below
+
 INTEGER_REGEXP = /^\-?\d+$/
 @gradecraft.directive "integer", ->
   require: "ngModel"
