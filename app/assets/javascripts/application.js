@@ -18,6 +18,8 @@
 //= require underscore.min
 //= require backbone.min
 //= require bootstrap
+//= require jquery.dynatable
+//= require dynatable
 
 //= require angular
 //= require angular-resource

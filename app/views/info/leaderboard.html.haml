@@ -1,16 +1,17 @@
-.small-12.panel.mainContent
+.small-12.panel.mainContent#leaderboard
   / Leaderboard Navigation
   = content_nav do
     = render "info/tabs"
 
   %span.pagetitle= @title  
+  .clear
 
   - if current_course.has_teams?
     .small-12.large-4.medium-6.columns.right
       = form_tag leaderboard_path, :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
         = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
 
-  %table.responsive.small-12.columns
+  %table.responsive.small-12.columns.dynatable
     %thead
       %tr
         %th Rank

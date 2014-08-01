@@ -5,4 +5,5 @@ class MembershipCalculation < ActiveRecord::Base
   def is_team_member?
     return !(team_id.nil?)
   end
+
 end

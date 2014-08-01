@@ -8,7 +8,7 @@
       = link_to assignment.name, assignment
       = link_to 'Quick Grade', mass_grade_assignment_path(assignment), :class => "button tiny round success"
 
-  %table.responsive.simpleTable.columns
+  %table.responsive.simpleTable.columns.dynatable
     %thead
       %tr
         - if assignment.is_individual?
