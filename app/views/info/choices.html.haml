@@ -10,7 +10,7 @@
       = form_tag choices_students_path, :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
         = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
         
-    %table.responsive.small-12.columns
+    %table.responsive.small-12.columns.dynatable
       %thead
         %tr
           %th.sortable{"data-sort" => "string"} First Name
@@ -43,7 +43,7 @@
     - if current_course_data.auditing_students.present?
       %h2 Auditing
 
-      %table.responsive.simpleTable
+      %table.responsive.simpleTable.dynatable
         %thead
           %tr
             %th.sortable{"data-sort" => "string"} First Name

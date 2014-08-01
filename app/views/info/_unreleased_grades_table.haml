@@ -12,7 +12,7 @@
         = link_to 'Grade', assignment, :class => "button tiny round success"
 
   = form_tag edit_status_grades_assignment_path assignment do
-    %table.responsive.columns
+    %table.responsive.columns.dynatable
       %thead
         %tr
           %th.sortable{"data-sort" => "string"} Name

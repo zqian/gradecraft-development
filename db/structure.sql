@@ -1778,53 +1778,39 @@ ALTER SEQUENCE score_levels_id_seq OWNED BY score_levels.id;
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: shared_earned_badges; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE users (
+CREATE TABLE shared_earned_badges (
     id integer NOT NULL,
-    username character varying(255) NOT NULL,
-    email character varying(255),
-    crypted_password character varying(255),
-    salt character varying(255),
+    course_id integer,
+    student_name text,
+    user_id integer,
+    icon character varying(255),
+    name character varying(255),
+    badge_id integer,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    reset_password_token character varying(255),
-    reset_password_token_expires_at timestamp without time zone,
-    reset_password_email_sent_at timestamp without time zone,
-    remember_me_token character varying(255),
-    remember_me_token_expires_at timestamp without time zone,
-    avatar_file_name character varying(255),
-    avatar_content_type character varying(255),
-    avatar_file_size integer,
-    avatar_updated_at timestamp without time zone,
-    role character varying(255) DEFAULT 'student'::character varying NOT NULL,
-    first_name character varying(255),
-    last_name character varying(255),
-    rank integer,
-    display_name character varying(255),
-    private_display boolean DEFAULT false,
-    default_course_id integer,
-    final_grade character varying(255),
-    visit_count integer,
-    predictor_views integer,
-    page_views integer,
-    team_role character varying(255),
-    last_login_at timestamp without time zone,
-    last_logout_at timestamp without time zone,
-    last_activity_at timestamp without time zone,
-    lti_uid character varying(255),
-    last_login_from_ip_address character varying(255),
-    kerberos_uid character varying(255)
+    updated_at timestamp without time zone
 );
 
 
 --
--- Name: shared_earned_badges; Type: VIEW; Schema: public; Owner: -
+-- Name: shared_earned_badges_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE VIEW shared_earned_badges AS
-    SELECT course_memberships.course_id, (((users.first_name)::text || ' '::text) || (users.last_name)::text) AS student_name, users.id AS user_id, earned_badges.id, badges.icon, badges.name, badges.id AS badge_id FROM (((course_memberships JOIN users ON ((users.id = course_memberships.user_id))) JOIN earned_badges ON ((earned_badges.student_id = users.id))) JOIN badges ON ((badges.id = earned_badges.badge_id))) WHERE (((course_memberships.shared_badges = true) AND (badges.icon IS NOT NULL)) AND (earned_badges.shared = true));
+CREATE SEQUENCE shared_earned_badges_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: shared_earned_badges_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE shared_earned_badges_id_seq OWNED BY shared_earned_badges.id;
 
 
 --
@@ -1905,6 +1891,56 @@ ALTER SEQUENCE student_assignment_type_weights_id_seq OWNED BY student_assignmen
 
 CREATE VIEW student_cache_keys AS
     SELECT cm.id, cm.id AS course_membership_id, cm.course_id, cm.user_id, md5(pg_catalog.concat(cm.course_id, cm.user_id, (SELECT sum(date_part('epoch'::text, earned_badges.updated_at)) AS sum FROM earned_badges WHERE ((earned_badges.course_id = cm.course_id) AND (earned_badges.student_id = cm.user_id))))) AS earned_badges_key, md5(pg_catalog.concat(cm.course_id, cm.user_id, (SELECT sum(date_part('epoch'::text, submissions.updated_at)) AS sum FROM submissions WHERE ((submissions.course_id = cm.course_id) AND (submissions.student_id = cm.user_id))))) AS submissions_key FROM course_memberships cm;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE users (
+    id integer NOT NULL,
+    username character varying(255) NOT NULL,
+    email character varying(255),
+    crypted_password character varying(255),
+    salt character varying(255),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    reset_password_token character varying(255),
+    reset_password_token_expires_at timestamp without time zone,
+    reset_password_email_sent_at timestamp without time zone,
+    remember_me_token character varying(255),
+    remember_me_token_expires_at timestamp without time zone,
+    avatar_file_name character varying(255),
+    avatar_content_type character varying(255),
+    avatar_file_size integer,
+    avatar_updated_at timestamp without time zone,
+    role character varying(255) DEFAULT 'student'::character varying NOT NULL,
+    first_name character varying(255),
+    last_name character varying(255),
+    rank integer,
+    display_name character varying(255),
+    private_display boolean DEFAULT false,
+    default_course_id integer,
+    final_grade character varying(255),
+    visit_count integer,
+    predictor_views integer,
+    page_views integer,
+    team_role character varying(255),
+    last_login_at timestamp without time zone,
+    last_logout_at timestamp without time zone,
+    last_activity_at timestamp without time zone,
+    lti_uid character varying(255),
+    last_login_from_ip_address character varying(255),
+    kerberos_uid character varying(255)
+);
+
+
+--
+-- Name: student_summaries; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW student_summaries AS
+    SELECT users.id AS student_id, users.first_name, users.last_name, grades_score.grades_score_sum FROM (users LEFT JOIN (SELECT grades.student_id AS id, sum(grades.score) AS grades_score_sum FROM (grades JOIN assignments ON ((grades.assignment_id = assignments.id))) WHERE (((grades.status)::text = 'Released'::text) OR (assignments.release_necessary = false)) GROUP BY grades.student_id) grades_score USING (id));
 
 
 --
@@ -2419,6 +2455,13 @@ ALTER TABLE ONLY score_levels ALTER COLUMN id SET DEFAULT nextval('score_levels_
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY shared_earned_badges ALTER COLUMN id SET DEFAULT nextval('shared_earned_badges_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY student_academic_histories ALTER COLUMN id SET DEFAULT nextval('student_academic_histories_id_seq'::regclass);
 
 
@@ -2810,6 +2853,14 @@ ALTER TABLE ONLY rubrics
 
 ALTER TABLE ONLY score_levels
     ADD CONSTRAINT score_levels_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: shared_earned_badges_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY shared_earned_badges
+    ADD CONSTRAINT shared_earned_badges_pkey PRIMARY KEY (id);
 
 
 --
@@ -3321,3 +3372,7 @@ INSERT INTO schema_migrations (version) VALUES ('20140418165001');
 INSERT INTO schema_migrations (version) VALUES ('20140605014037');
 
 INSERT INTO schema_migrations (version) VALUES ('20140605014124');
+
+INSERT INTO schema_migrations (version) VALUES ('20140730213938');
+
+INSERT INTO schema_migrations (version) VALUES ('20140730214249');

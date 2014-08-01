@@ -11,7 +11,7 @@
         = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
 
   .small-12.columns
-    %table.responsive.simpleTable
+    %table.responsive.simpleTable.dynatable
       %thead
         %tr
           %th
