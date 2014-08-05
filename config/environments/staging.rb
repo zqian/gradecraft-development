@@ -8,16 +8,19 @@ GradeCraft::Application.configure do
     :authentication => :plain,
     :address => 'smtp.mandrillapp.com',
     :port => 587,
-    :domain => 'gradecraft.com',
+    :domain => 'staging.gradecraft.com',
     :user_name => ENV['MANDRILL_USERNAME'],
     :password => ENV['MANDRILL_PASSWORD']
   }
   config.active_support.deprecation = :notify
   config.assets.compile = false
+  config.assets.precompile += %w( vendor/modernizr.js )
   config.assets.compress = true
   config.assets.css_compressor = :sass
   config.assets.digest = true
   config.assets.js_compressor = :uglifier
+  config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
+  config.assets.precompile += %w( .svg .eot .woff .ttf )
   config.cache_classes = true
   config.cache_store = :dalli_store, ENV['MEMCACHED_URL'], { :namespace => 'gradecraft_staging', :expires_in => 1.day, :compress => true }
   config.consider_all_requests_local = false
@@ -35,4 +38,8 @@ end
 
 Sidekiq.configure_client do |config|
   config.redis = { :url => ENV['REDIS_URL'], :namespace => 'gradecraft_staging' }
+end
+
+CarrierWave.configure do |config|
+  config.storage = :fog
 end
