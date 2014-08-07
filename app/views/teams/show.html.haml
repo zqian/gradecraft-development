@@ -6,16 +6,16 @@
   .pagetitle= @team.name
 
   .small-12.columns
-    %table.responsive.simpleTable
+    %table.responsive.dynatable
       %thead
         %tr
-          %th.sortable{"data-sort" => "string"} First Name
-          %th.sortable{"data-sort" => "string"} Last Name
-          %th.sortable{"data-sort" => "string"} Email
+          %th First Name
+          %th Last Name
+          %th Email
           - if current_course.team_roles? 
-            %th.sortable{"data-sort" => "string"} Role
-          %th.sortable{"data-sort" => "int"} Score
-          %th.sortable{"data-sort" => "string"} Level
+            %th Role
+          %th Score
+          %th Level
           - if current_course.has_badges?
             %th{:width => 200} #{term_for :badges} Earned
           %th.button-column
@@ -49,10 +49,10 @@
     .small-12
       %h4.bold Challenge Grades
 
-    %table.responsive.simpleTable
+    %table.responsive.dynatable
       %thead
         %tr
-          %th{"data-sort" => "string"} Name
+          %th Name
           %th Score
           %th
 

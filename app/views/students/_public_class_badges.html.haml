@@ -1,9 +1,9 @@
-%table.responsive.simpleTable
+%table.responsive.dynatable
   %thead
     %tr
-      %th.sortable{"data-sort" => "string"} First Name
-      %th.sortable{"data-sort" => "string"} Last Name
-      %th.sortable{"data-sort" => "string"} #{term_for :badges}
+      %th First Name
+      %th Last Name
+      %th #{term_for :badges}
   %tbody#shared_badges_table
     - SharedEarnedBadge.earned_badges.group_by(&:user_id).each do |user_id, sebs|
       %tr

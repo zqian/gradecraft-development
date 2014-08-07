@@ -1,8 +1,8 @@
-%table.responsive.simpleTable
+%table.responsive.dynatable
   %thead
     %tr
-      %th.sortable{"data-sort" => "string"} Assignment
-      %th.sortable{"data-sort" => "string"} Submissions
+      %th Assignment
+      %th Submissions
       %th.button-column
   %tbody
     - @assignments.each do |assignment|

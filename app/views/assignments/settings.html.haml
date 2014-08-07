@@ -21,7 +21,7 @@
               %table.responsive
                 %thead
                   %tr
-                    %th.sortable{"data-sort" => "string"} Name
+                    %th Name
                     %th
                       %span.has-tip.tip-top{:title => "Visible to Students", :data => {'tooltip' => true}}
                         %i.fi-eye
@@ -50,9 +50,9 @@
                       %span.has-tip.tip-top{:title => "Notify Students on Release", :data => {'tooltip' => true}}
                         %i.fi-mail
                     %th Grading
-                    %th.sortable{"data-sort" => "int"} Points
+                    %th Points
 
-                    %th.sortable{"data-sort" => "date"} Dates
+                    %th Dates
                     %th.button-column
                 %tbody
                   - assignments.each do |assignment|

@@ -6,13 +6,13 @@
   .pagetitle= @title
 
   / Grade Scheme Elements Table Display
-  %table.responsive.simpleTable.small-12.columns.dynatable
+  %table.responsive.dynatable
     %thead
       %tr
-        %th.sortable{"data-sort" => "string"} Grade
-        %th.sortable{"data-sort" => "string"} Level
-        %th.sortable{"data-sort" => "int"} Low Range
-        %th.sortable{"data-sort" => "int"} High Range
+        %th Grade
+        %th Level
+        %th Low Range
+        %th High Range
     %tbody
       - @grade_scheme_elements.order_by_high_range.each do |element|
         %tr

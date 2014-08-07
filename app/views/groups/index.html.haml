@@ -9,13 +9,13 @@
 
     .small-12.columns  
 
-      %table.responsive.simpleTable.dynatable
+      %table.responsive.dynatable
         %thead
           %tr
-            %th.sortable{"data-sort" => "string"} Group Name
-            %th.sortable{"data-sort" => "string"}= "#{current_course.user_term}s"
-            %th.sortable{"data-sort" => "string"} Status
-            %th.sortable{"data-sort" => "string"} Assignments
+            %th Group Name
+            %th= "#{current_course.user_term}s"
+            %th Status
+            %th Assignments
             %th.button-column
         %tbody
           - @groups.pending.each do |group|
@@ -43,13 +43,13 @@
 
     .small-12.columns  
 
-      %table.responsive.simpleTable.dynatable
+      %table.responsive.dynatable
         %thead
           %tr
-            %th.sortable{"data-sort" => "string"} Group Name
-            %th.sortable{"data-sort" => "string"}= "#{current_course.user_term}s"
-            %th.sortable{"data-sort" => "string"} Status
-            %th.sortable{"data-sort" => "string"} Assignments
+            %th Group Name
+            %th= "#{current_course.user_term}s"
+            %th Status
+            %th Assignments
             %th.button-column
         %tbody
           - @groups.rejected.each do |group|
@@ -77,13 +77,13 @@
 
     .small-12.columns  
 
-      %table.responsive.simpleTable.dynatable
+      %table.responsive.dynatable
         %thead
           %tr
-            %th.sortable{"data-sort" => "string"} Group Name
-            %th.sortable{"data-sort" => "string"}= "#{current_course.user_term}s"
-            %th.sortable{"data-sort" => "string"} Status
-            %th.sortable{"data-sort" => "string"} Assignments
+            %th Group Name
+            %th= "#{current_course.user_term}s"
+            %th Status
+            %th Assignments
             %th.button-column
         %tbody
           - @groups.approved.each do |group|

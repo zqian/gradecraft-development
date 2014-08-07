@@ -31,7 +31,12 @@ table.responsive {
   th {
     text-transform: capitalize;
     font-weight: normal;
+    background-color: #EEE;
     padding: .5rem;
+
+    a {
+      color: $primary-color;
+    }
   }
 
   th .button-group {

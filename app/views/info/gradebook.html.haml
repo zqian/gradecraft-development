@@ -7,18 +7,18 @@
   / Gradebook Table
   .small-12.columns
     #gradebook
-      %table.responsive
+      %table.responsive.dynatable
         %thead
           %tr
-            %th.sortable{"data-sort" => "string"} First Name
-            %th.sortable{"data-sort" => "string"} Last Name
+            %th First Name
+            %th Last Name
             - for assignment in current_course_data.assignments
-              %th.sortable{"data-sort" => "int"}= assignment.name
+              %th= assignment.name
             - if current_course.valuable_badges?
-              %th.sortable{"data-sort" => "int"} Badge Score
-            %th.sortable{"data-sort" => "int"} Total Score
-            %th.sortable{"data-sort" => "string"} Final Grade
-            %th.sortable{"data-sort" => "string"} #{current_course.user_term}
+              %th Badge Score
+            %th Total Score
+            %th Final Grade
+            %th #{current_course.user_term}
         %tbody
           - current_course_data.students.each do |student|
             %tr
