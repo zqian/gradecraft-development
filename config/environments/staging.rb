@@ -30,7 +30,6 @@ GradeCraft::Application.configure do
   config.log_level = :info
   config.serve_static_assets = false
   config.session_store ActionDispatch::Session::CacheStore, :expire_after => 60.minutes
-  config.force_ssl = true
 end
 
 Sidekiq.configure_server do |config|
