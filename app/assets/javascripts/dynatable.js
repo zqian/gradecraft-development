@@ -2,12 +2,14 @@
 $('table.dynatable').dynatable({
 
   readers: {
-      Score: function(el, record) {
+      rank: function(el, record) {
         return Number(el.innerHTML) || 0;
-      },
-      'Due Date': function(el, record) {
-        return Date.parse(el.innerHTML);
       }
+      // If you uncomment this section the values in the table for sort disappear
+      // ,
+      // score: function(el, record) {
+      //   return Number(el.innerHTML) || 0;
+      // }
     }
 });
 

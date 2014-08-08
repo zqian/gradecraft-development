@@ -11,15 +11,17 @@
         = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
 
   .columns
-    %table.responsive.nopage_dynatable
+    %table.responsive.dynatable
       %thead
         %tr
-          %th Rank
+          //Is there a more efficient way to add a 'numeric' sort and apply that to all columns that need to be sorted 
+          //that way? Or do I go through and name each column in the js file? 
+          %th{"data-dynatable-sorts" => "rank"} Rank
           %th First Name
           %th Last Name
           - if current_course.has_teams?
             %th #{current_course.team_term}
-          %th Score
+          %th{"data-dynatable-sorts" => "score"} Score
           %th Grade
           - if current_course.has_badges?
             %th{:width => "150", "data-dynatable-no-sort" => "true" } Badges Earned
