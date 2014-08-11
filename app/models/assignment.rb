@@ -126,6 +126,10 @@ class Assignment < ActiveRecord::Base
     !! rubric
   end
 
+  def ungraded_submissions
+    submissions.where("id not in (select submission_id from rubric_grades)")
+  end
+
   #average of above-zero grades for an assignment
   def earned_average
     if grades.graded.present?

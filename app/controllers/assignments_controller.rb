@@ -22,7 +22,7 @@ class AssignmentsController < ApplicationController
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
     @auditing = current_course.students.auditing.includes(:teams).where(user_search_options).alpha
 
-    @rubric = @assignment.rubric
+    @rubric = find_or_create_assignment_rubric
     @metrics = @rubric.metrics
     @score_levels = @assignment.score_levels.order_by_value
     @course_badges = serialized_course_badges
@@ -31,8 +31,8 @@ class AssignmentsController < ApplicationController
 
     # Data for displaying student grading distribution
     @submissions_count = @assignment.submissions.count
-    @ungraded_submissions_count = @assignment.submissions.where("id not in (select submission_id from rubric_grades)").count
-    @ungraded_percentage = @ungraded_submissions_count / @submissions_count
+    @ungraded_submissions_count = @assignment.ungraded_submissions.count
+    @ungraded_percentage = @ungraded_submissions_count / @submissions_count rescue 0
     @graded_count = @submissions_count - @ungraded_submissions_count
 
     if current_user.is_student?
@@ -130,6 +130,10 @@ class AssignmentsController < ApplicationController
   end
 
   private
+
+  def find_or_create_assignment_rubric
+    @assignment.rubric || Rubric.create(assignment_id: @assignment[:id])
+  end
 
   def assignment_params
     params.require(:assignment).permit(:assignment_rubrics_attributes => [:id, :rubric_id, :_destroy])
