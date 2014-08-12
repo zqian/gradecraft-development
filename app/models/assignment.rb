@@ -2,7 +2,7 @@ class Assignment < ActiveRecord::Base
   attr_accessible :name, :description, :point_total, :open_at, :due_at, :grade_scope, :visible, :required, 
     :accepts_submissions, :release_necessary, :media, :thumbnail, :media_credit, :media_caption, 
     :accepts_submissions_until, :points_predictor_display, :notify_released, :mass_grade_type, 
-    :include_in_timeline, :include_in_predictor, :grades_attributes, :assignment_file_ids, 
+    :include_in_timeline, :include_in_predictor, :grades_attributes, :assignment_file_ids, :student_logged,
     :assignment_files_attributes, :assignment_file, :assignment_score_levels_attributes, :assignment_score_level, :score_levels_attributes
 
   belongs_to :course
