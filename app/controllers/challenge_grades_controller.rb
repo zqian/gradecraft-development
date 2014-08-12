@@ -57,7 +57,7 @@ class ChallengeGradesController < ApplicationController
 
     respond_to do |format|
       if @challenge_grades.save
-        format.html { redirect_to @challenge }
+        format.html { redirect_to @challenge, notice: "#{@challenge.name} challenge successfully graded" }
         format.json { render json: @challenge, status: :created, location: @challenge_grades }
       else
         format.html { render action: "new" }
@@ -71,7 +71,7 @@ class ChallengeGradesController < ApplicationController
     @challenge_grade = current_course.challenge_grades.find(params[:id])
     respond_to do |format|
       if @challenge_grade.update_attributes(params[:challenge_grade])
-        format.html { redirect_to @challenge }
+        format.html { redirect_to @challenge, notice: "Grade for #{@challenge.name} challenge successfully updated" }
         format.json { head :ok }
       else
         format.html { render action: "edit" }

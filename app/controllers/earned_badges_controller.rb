@@ -129,10 +129,12 @@ class EarnedBadgesController < ApplicationController
 
   def destroy
     @badge = current_course.badges.find(params[:badge_id])
+    @name = "#{@badge.name}"
     @earned_badge = @badge.earned_badges.find(params[:id])
+    @student_name = "#{@earned_badge.student.name}"
     @earned_badge.destroy
     expire_fragment "earned_badges"
-    redirect_to @badge
+    redirect_to @badge, notice: "The #{@badge.name} badge was successfully taken away from #{@student_name}"
   end
 
 end

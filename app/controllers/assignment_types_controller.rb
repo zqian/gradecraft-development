@@ -34,7 +34,7 @@ class AssignmentTypesController < ApplicationController
 
     respond_to do |format|
       if @assignment_type.save
-        format.html { redirect_to @assignment_type }
+        format.html { redirect_to @assignment_type, notice: "Assignment Type #{@assignment_type.name} successfully created" }
         format.json { render json: @assignment_type, status: :created, location: @assignment_type }
       else
         format.html { render action: "new" }
@@ -50,7 +50,7 @@ class AssignmentTypesController < ApplicationController
 
     respond_to do |format|
       if @assignment_type.save
-        format.html { redirect_to @assignment_type }
+        format.html { redirect_to @assignment_type, notice: "Assignment Type #{@assignment_type.name} successfully updated" }
         format.json { render json: @assignment_type, status: :created, location: @assignment_type }
       else
         format.html { render action: "new" }
@@ -70,7 +70,8 @@ class AssignmentTypesController < ApplicationController
   #delete the specified assignment type
   def destroy
     @assignment_type = current_course.assignment_types.find(params[:id])
+    @name = "#{@assignment_type.name}"
     @assignment_type.destroy
-    redirect_to assignment_types_path
+    redirect_to assignment_types_path, :notice => "Assignment Type #{@name} successfully deleted"
   end
 end

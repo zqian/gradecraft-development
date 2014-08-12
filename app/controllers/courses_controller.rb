@@ -41,7 +41,7 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       if @course.save
-        format.html { redirect_to @course }
+        format.html { redirect_to @course, notice: "Course #{@course.name} successfully created" }
         format.json { render json: @course, status: :created, location: @course }
       else
         format.html { render action: "new" }
@@ -55,7 +55,7 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       if @course.update_attributes(params[:course])
-        format.html { redirect_to @course }
+        format.html { redirect_to @course, notice: "Course #{@course.name} successfully updated" }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
