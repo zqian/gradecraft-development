@@ -11,3 +11,4 @@ log/*.log
 public/uploads/*
 tmp/*
 .ruby-gemset
+.ruby-version
