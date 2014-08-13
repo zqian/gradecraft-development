@@ -19,5 +19,6 @@ class TeamMembership < ActiveRecord::Base
       
   end
 
-  end
+
+
 end
