@@ -7,6 +7,7 @@ class AssignmentWeight < ActiveRecord::Base
   belongs_to :assignment_type
   belongs_to :assignment, touch: true
   belongs_to :course
+  belongs_to :submission
 
   before_validation :cache_associations, :cache_point_total
   after_save :save_grades
