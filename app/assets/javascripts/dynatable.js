@@ -6,10 +6,10 @@ $('table.dynatable').dynatable({
         return Number(el.innerHTML) || 0;
       }
       // If you uncomment this section the values in the table for sort disappear
-      // ,
-      // score: function(el, record) {
-      //   return Number(el.innerHTML) || 0;
-      // }
+      ,
+      score: function(el, record) {
+        return Number(el.innerHTML.replace(",","")) || 0;
+      }
     }
 });
 
