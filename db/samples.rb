@@ -298,7 +298,6 @@ grinding_assignments = []
     a.accepts_submissions = false
     a.release_necessary = false
     a.grade_scope = "Individual"
-    a.rubrics << rubric
   end
 end
 
@@ -343,7 +342,6 @@ blog_assignments = []
     a.accepts_submissions = true
     a.release_necessary = false
     a.grade_scope = "Individual"
-    a.rubrics << rubric
   end
 
   blog_assignments << Assignment.create! do |a|
