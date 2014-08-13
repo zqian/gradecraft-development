@@ -86,8 +86,15 @@ class User < ActiveRecord::Base
         u.last_name = info['last_name']
       end
       auth_hash['extra']['raw_info'].tap do |extra|
-        u.username = extra['ext_sakai_eid']
-        u.kerberos_uid = extra['ext_sakai_eid']
+        if extra['tool_consumer_info_product_family_code'] == "sakai"
+          u.username = extra['ext_sakai_eid']
+          u.kerberos_uid = extra['ext_sakai_eid']
+
+        elsif extra['tool_consumer_info_product_family_code'] == "canvas"
+          u.username = extra['custom_canvas_user_login_id']
+          u.kerberos_uid = extra['custom_canvas_user_login_id']
+        end
+
         case extra['roles']
         when 'instructor'
           u.role = 'professor'
@@ -290,7 +297,7 @@ class User < ActiveRecord::Base
       n += 1
       if n == stop
         level = element.level
-      end 
+      end
       if element.high_range >= cached_score_for_course(course) && cached_score_for_course(course) >= element.low_range
         stop = n + 1
       end
@@ -397,7 +404,7 @@ class User < ActiveRecord::Base
         membership.update_attribute :score, grades.released.where(course_id: membership.course_id).score + earned_badge_score_for_course(membership.course_id) + (team_for_course(membership.course_id).try(:challenge_grade_score) || 0)
       else
         membership.update_attribute :score, grades.released.where(course_id: membership.course_id).score + earned_badge_score_for_course(membership.course_id)
-      end  
+      end
     end
   end
 

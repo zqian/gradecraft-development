@@ -184,10 +184,8 @@ GradeCraft::Application.routes.draw do
 
   get 'submit_a_bug' => 'pages#submit_a_bug'
   get 'features' => 'pages#features'
-  get 'research' => 'pages#research'
   get 'news' => 'pages#news'
   get 'using_gradecraft' => 'pages#using_gradecraft'
-  get 'people' => 'pages#people'
   get 'contact' => 'pages#contact'
   get 'documentation' => 'pages#documentation'
   get 'ping' => 'pages#ping'
