@@ -5,7 +5,6 @@ $('table.dynatable').dynatable({
       rank: function(el, record) {
         return Number(el.innerHTML) || 0;
       }
-      // If you uncomment this section the values in the table for sort disappear
       ,
       score: function(el, record) {
         return Number(el.innerHTML.replace(",","")) || 0;
@@ -43,9 +42,17 @@ $('table.nofeatures_dynatable').dynatable({
         recordCount: false
       },
   readers: {
-      'date': function(el, record) {
+      due: function(el, record) {
         record.parsedDate = Date.parse(el.innerHTML);
         return el.innerHTML;
+      }
+      ,
+      points: function(el, record) {
+        return Number(el.innerHTML.replace(",","")) || 0;
+      }
+      ,
+      'Max value': function(el, record) {
+        return Number(el.innerHTML.replace(",","")) || 0;
       }
     }
 });

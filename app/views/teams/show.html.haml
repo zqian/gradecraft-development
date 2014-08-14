@@ -28,7 +28,7 @@
               %td= mail_to student.email, student.email
               - if current_course.team_roles? 
                 %td= student.team_role
-              %td= points student.cached_score_for_course(current_course) if student.respond_to?(:grades)
+              %td= student.cached_score_for_course(current_course) if student.respond_to?(:grades)
               %td
                 = student.grade_letter_for_course(current_course)
                 = student.grade_level_for_course(current_course)
@@ -60,7 +60,7 @@
         - @challenges.each do |challenge|
           %tr
             %td= link_to challenge.name, challenge
-            %td= points challenge.challenge_grade_for_team(@team).try(:score)
+            %td= challenge.challenge_grade_for_team(@team).try(:score)
             %td
               - if challenge.challenge_grade_for_team(@team).present?
                 = link_to 'Edit Grade', edit_challenge_challenge_grade_path(:challenge_id => challenge, :id => challenge.challenge_grade_for_team(@team).id), :class => 'button tiny round secondary'

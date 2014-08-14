@@ -15,7 +15,7 @@
     - students.each do |student|
       %tr
         %td= link_to student.name, student_path(student)
-        %td= points student.cached_score_for_course(current_course)
+        %td= student.cached_score_for_course(current_course)
         %td{:data => { :id => student.id.to_s, :max => current_course.total_points }, :class => "bar-chart" }
         - if course.has_teams?
           %td

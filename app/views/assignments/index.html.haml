@@ -24,7 +24,7 @@
                     %th Name
                     - if assignment_type.name == "Class Attendance"
                       %th Attendance Rate
-                    %th{ "data-dynatable-sorts" => "parsedDate" } Due
+                    %th Due
                     %th Points
                     %th.button-column
                 %tbody
@@ -45,7 +45,7 @@
                                 - else
                                   %i.fi-male.absent
                       %td= assignment.try(:due_at) || "Ongoing"
-                      %td= points assignment.point_total
+                      %td= assignment.point_total
                       %td
                         .button-bar
                           %ul.button-group.right.round

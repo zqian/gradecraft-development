@@ -24,7 +24,7 @@
           %tr
             %td= link_to challenge.name, challenge
             %td= raw challenge.description
-            %td= points challenge.point_total
+            %td= challenge.point_total
             %td= challenge.due_at
             %td= challenge.visible? ? 'Visible' : 'Hidden'
             %td= challenge.accepts_submissions? ? 'Yes' : 'No'
