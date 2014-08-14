@@ -11,7 +11,7 @@
         = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
 
   .columns
-    %table.responsive.dynatable
+    %table.responsive.nopage_dynatable
       %thead
         %tr
           //Is there a more efficient way to add a 'numeric' sort and apply that to all columns that need to be sorted 
@@ -24,7 +24,8 @@
           %th{"data-dynatable-sorts" => "score"} Score
           %th Grade
           - if current_course.has_badges?
-            %th{:width => "150", "data-dynatable-no-sort" => "true" } Badges Earned
+            %th{:width => "150", "data-dynatable-sorts" => "badgeCount" } Badges Earned
+            %th{:style => "display: none"} Badge Count
           %th{"data-dynatable-no-sort" => "true" }
       %tbody
         - if @team
@@ -44,11 +45,14 @@
             %td= points student.cached_score_for_course(current_course)
             %td
               = student.grade_letter_for_course(current_course)
-              = "(#{student.grade_level_for_course(current_course)})"
+              - if student.grade_level_for_course(current_course).present?
+                = "(#{student.grade_level_for_course(current_course)})"
             - if current_course.has_badges?
               %td#earned_badges
                 - student.earned_badges.each do |badge|
                   %img.has-tip{:src => badge.try(:icon), :alt => badge.try(:name), :width => "20", :title => badge.name, :data => {'tooltip' => true}}
+              %td{:style => "display: none"}
+                = student.earned_badges.count
             %td
               .button-bar
                 %ul.button-group.round.right

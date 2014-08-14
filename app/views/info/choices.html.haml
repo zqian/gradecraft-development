@@ -3,14 +3,16 @@
   = content_nav do
     = render "info/tabs"
 
-  %span.pagetitle= @title
+  .small-12
+    .pagetitle= @title
 
-  - if current_course.has_teams?
-    .small-12.large-4.medium-6.columns.right
-      = form_tag choices_students_path, :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
-        = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
+  .columns
+    - if current_course.has_teams?
+      .small-12.large-4.medium-6.columns.right
+        = form_tag choices_students_path, :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
+          = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
         
-    %table.responsive.dynatable
+    %table.responsive.nopage_dynatable
       %thead
         %tr
           %th First Name
@@ -40,10 +42,14 @@
                   %li= link_to "Dashboard", student_path(student), :class => "button tiny alert"
                   %li= link_to "Edit #{term_for :weights}", assignment_type_weights_path(:student_id => student.id), :class => "button tiny alert"
 
-    - if current_course_data.auditing_students.present?
-      %h2 Auditing
+  - if current_course_data.auditing_students.present?
+    .clearfix
 
-      %table.responsive.dynatable
+    .small-12
+      .pagetitle Auditing
+
+    .columns
+      %table.responsive.nopage_dynatable
         %thead
           %tr
             %th First Name

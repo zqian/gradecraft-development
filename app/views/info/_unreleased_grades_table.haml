@@ -16,7 +16,9 @@
       %table.responsive.nopage_dynatable
         %thead
           %tr
-            %th Name
+            - if assignment.is_individual?
+              %th First Name
+              %th Last Name
             - if assignment.has_groups?
               %th= "#{term_for :groups}"
             - if current_course.has_teams? && ! assignment.has_groups?
@@ -34,8 +36,9 @@
         %tbody
           - grades.each do |g|
             %tr
-              %td
-                = link_to g.student.try(:name), student_path(g.student)
+              - if g.assignment.is_individual?
+                %td= link_to g.student.try(:first_name), student_path(g.student)
+                %td= link_to g.student.try(:last_name), student_path(g.student)
               - if g.assignment.has_groups?
                 %td= link_to g.student.group_for_assignment(g.assignment).try(:name), group_path(:id => g.student.group_for_assignment(g.assignment))
               - if current_course.has_teams? && ! assignment.has_groups? 

@@ -7,7 +7,7 @@
   / Gradebook Table
   .small-12.columns
     #gradebook
-      %table.responsive.dynatable
+      %table.responsive.nopage_dynatable
         %thead
           %tr
             %th First Name
@@ -35,3 +35,4 @@
               %td= points student.cached_score_for_course(current_course)
               %td= student.grade_level_for_course(current_course)
               %td= link_to student.name, user_path(student)
+    .clearfix

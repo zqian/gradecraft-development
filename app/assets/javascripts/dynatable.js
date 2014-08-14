@@ -16,14 +16,32 @@ $('table.nopage_dynatable').dynatable({
 
   features: {
         paginate: false,
+      },
+  readers: {
+      rank: function(el, record) {
+        return Number(el.innerHTML) || 0;
       }
+      ,
+      score: function(el, record) {
+        return Number(el.innerHTML.replace(",","")) || 0;
+      }
+    }
 });
 
 $('table.nosearch_dynatable').dynatable({
 
   features: {
         search: false
+      },
+  readers: {
+      rank: function(el, record) {
+        return Number(el.innerHTML) || 0;
       }
+      ,
+      score: function(el, record) {
+        return Number(el.innerHTML.replace(",","")) || 0;
+      }
+    }
 });
 
 $('table.nopage_orsearch_dynatable').dynatable({
