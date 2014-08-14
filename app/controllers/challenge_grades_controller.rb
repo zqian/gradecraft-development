@@ -85,7 +85,7 @@ class ChallengeGradesController < ApplicationController
     @challenge_grades.destroy
 
     respond_to do |format|
-      format.html { redirect_to challenges_path }
+      format.html { redirect_to challenge_path(@challenge_grades.challenge) }
       format.json { head :ok }
     end
   end

@@ -35,9 +35,10 @@ class Assignment < ActiveRecord::Base
 
   has_many :users, :through => :grades
 
-  has_many :assignment_rubrics, dependent: :destroy
-  accepts_nested_attributes_for :assignment_rubrics, allow_destroy: true
-  has_many :rubrics, through: :assignment_rubrics, dependent: :destroy
+  # Mike, pretty sure these are old, okay if we delete?
+  #has_many :assignment_rubrics, dependent: :destroy
+  #accepts_nested_attributes_for :assignment_rubrics, allow_destroy: true
+  #has_many :rubrics, through: :assignment_rubrics, dependent: :destroy
   
   #Instructor uploaded resource files
   has_many :assignment_files, :dependent => :destroy
