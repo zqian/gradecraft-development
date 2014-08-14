@@ -18,14 +18,19 @@ $('table.nopage_dynatable').dynatable({
         paginate: false,
       },
   readers: {
-      rank: function(el, record) {
-        return Number(el.innerHTML) || 0;
-      }
-      ,
-      score: function(el, record) {
-        return Number(el.innerHTML.replace(",","")) || 0;
-      }
+    rank: function(el, record) {
+      return Number(el.innerHTML) || 0;
+    },
+    score: function(el, record) {
+      return Number(el.innerHTML.replace(",","")) || 0;
+    },
+    totalScore: function(el, record) {
+      return Number(el.innerHTML.replace(",","")) || 0;
+    },
+    badgeScore: function(el, record) {
+      return Number(el.innerHTML.replace(",","")) || 0;
     }
+  }
 });
 
 $('table.nosearch_dynatable').dynatable({
@@ -69,7 +74,7 @@ $('table.nofeatures_dynatable').dynatable({
         return Number(el.innerHTML.replace(",","")) || 0;
       }
       ,
-      'Max value': function(el, record) {
+      maxValue: function(el, record) {
         return Number(el.innerHTML.replace(",","")) || 0;
       }
     }
