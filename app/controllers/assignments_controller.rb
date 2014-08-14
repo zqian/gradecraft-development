@@ -55,7 +55,7 @@ class AssignmentsController < ApplicationController
       @assignment.assignment_type = current_course.assignment_types.find_by_id(params[:assignment_type_id])
       if @assignment.save
         set_assignment_weights
-        format.html { respond_with @assignment }
+        format.html { respond_with @assignment, notice: "#{term_for :assignment} #{@assignment.name} successfully created" }
       else
         respond_with @assignment
       end
@@ -76,7 +76,7 @@ class AssignmentsController < ApplicationController
       @assignment.assign_attributes(params[:assignment])
       @assignment.assignment_type = current_course.assignment_types.find_by_id(params[:assignment_type_id])
       if @assignment.save
-        format.html { respond_with @assignment }
+        format.html { respond_with @assignment, notice: "#{term_for :assignment} #{@assignment.name} successfully updated" }
       else
         format.html { redirect_to edit_assignment_path(@assignment) }
         format.json { render json: @assignment.errors, status: :unprocessable_entity }
@@ -86,8 +86,9 @@ class AssignmentsController < ApplicationController
 
   def destroy
     @assignment = current_course.assignments.find(params[:id])
+    @name = @assignment.name
     @assignment.destroy
-    redirect_to assignments_url
+    redirect_to assignments_url, notice: "#{term_for :assignment} #{@name} successfully deleted"
   end
 
   # Calendar feed of assignments

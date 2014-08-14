@@ -66,10 +66,11 @@ class CoursesController < ApplicationController
 
   def destroy
     @course = Course.find(params[:id])
+    @name = @course.name
     @course.destroy
 
     respond_to do |format|
-      format.html { redirect_to courses_url }
+      format.html { redirect_to courses_url, notice: "Course #{@name} successfully deleted" }
       format.json { head :no_content }
     end
   end

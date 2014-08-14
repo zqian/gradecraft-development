@@ -66,10 +66,11 @@ class BadgesController < ApplicationController
 
   def destroy
     @badge = current_course.badges.find(params[:id])
+    @name = @badge.name
     @badge.destroy
 
     respond_to do |format|
-      format.html { redirect_to badges_path, notice: "#{term_for :badge} successfully deleted" }
+      format.html { redirect_to badges_path, notice: "#{@name} #{term_for :badge} successfully deleted" }
       format.json { head :ok }
     end
   end

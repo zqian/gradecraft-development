@@ -80,10 +80,11 @@ class UsersController < ApplicationController
 
   def destroy
     @user = current_course.users.find(params[:id])
+    @name = @user.name
     @user.destroy
 
     respond_to do |format|
-      format.html { redirect_to users_url, :notice => "User was successfully deleted" }
+      format.html { redirect_to users_url, :notice => "User #{@name} was successfully deleted" }
       format.json { head :ok }
     end
 

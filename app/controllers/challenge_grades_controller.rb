@@ -44,7 +44,7 @@ class ChallengeGradesController < ApplicationController
   def mass_update
     @challenge = current_course.challenges.find(params[:id])
     if @challenge.update_attributes(params[:challenge])
-      redirect_to challenge_path(@challenge)
+      redirect_to challenge_path(@challenge), notice: "#{@challenge.name} challenge successfully graded"
     else
       redirect_to mass_edit_challenge_challenge_grades_path(@challenge)
     end
