@@ -12,7 +12,7 @@ class AssignmentTypeWeightsController < ApplicationController
     @form.update_attributes(student_params)
 
     if @form.save
-      redirect_to current_user.is_student? ? dashboard_path : multiplier_choices_path
+      redirect_to current_user.is_student? ? dashboard_path : multiplier_choices_path, :notice => "Successfully updated #{term_for :weights}"
     else
       render :mass_edit
     end

@@ -56,7 +56,7 @@ class EarnedBadgesController < ApplicationController
     respond_to do |format|
       if @earned_badge.save
         NotificationMailer.earned_badge_awarded(@earned_badge.id).deliver
-        format.html { redirect_to badge_path(@badge), notice: "#{term_for :badge} was successfully awarded." }
+        format.html { redirect_to badge_path(@badge), notice: "The #{@badge.name} #{term_for :badge} was successfully awarded to #{@earned_badge.student.name}" }
       else
         format.html { render action: "new" }
         format.json { render json: @earned_badge.errors, status: :unprocessable_entity }
@@ -72,7 +72,7 @@ class EarnedBadgesController < ApplicationController
     respond_to do |format|
       if @earned_badge.update_attributes(params[:earned_badge])
         expire_fragment "earned_badges"
-        format.html { redirect_to student_path(@earned_badge.student), notice: 'Awarded badge was successfully updated.' }
+        format.html { redirect_to student_path(@earned_badge.student), notice: "#{@earned_badge.student.name}'s #{@badge.name} #{term_for :badge} was successfully updated." }
         format.json { head :ok }
       else
         format.html { render action: "edit" }
@@ -129,10 +129,12 @@ class EarnedBadgesController < ApplicationController
 
   def destroy
     @badge = current_course.badges.find(params[:badge_id])
+    @name = "#{@badge.name}"
     @earned_badge = @badge.earned_badges.find(params[:id])
+    @student_name = "#{@earned_badge.student.name}"
     @earned_badge.destroy
     expire_fragment "earned_badges"
-    redirect_to @badge
+    redirect_to @badge, notice: "The #{@badge.name} badge was successfully taken away from #{@student_name}"
   end
 
 end

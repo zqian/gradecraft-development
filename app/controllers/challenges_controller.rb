@@ -29,7 +29,7 @@ class ChallengesController < ApplicationController
     respond_to do |format|
       if @challenge.save
         self.check_uploads
-        format.html { redirect_to @challenge }
+        format.html { redirect_to @challenge, notice: "Challenge #{@challenge.name} successfully created" }
         format.json { render json: @challenge, status: :created, location: @challenge }
       else
         format.html { render action: "new" }
@@ -44,7 +44,7 @@ class ChallengesController < ApplicationController
     respond_to do |format|
       if @challenge.save
         self.check_uploads
-        format.html { redirect_to @challenge }
+        format.html { redirect_to @challenge, notice: "Challenge #{@challenge.name} successfully updated" }
         format.json { head :ok }
       else
         format.html { render action: "edit" }
@@ -55,10 +55,11 @@ class ChallengesController < ApplicationController
 
   def destroy
     @challenge = current_course.challenges.find(params[:id])
+    @name = "#{@challenge.name}"
     @challenge.destroy
 
     respond_to do |format|
-      format.html { redirect_to challenges_path }
+      format.html { redirect_to challenges_path, notice: "Challenge #{@name} successfully deleted" }
       format.json { head :ok }
     end
   end

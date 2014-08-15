@@ -24,7 +24,6 @@ class Course < ActiveRecord::Base
     c.has_many :assignment_types
     c.has_many :assignments
     c.has_many :badges
-    c.has_many :categories
     c.has_many :challenges
     c.has_many :challenge_grades, :through => :challenges
     c.has_many :earned_badges
@@ -32,7 +31,7 @@ class Course < ActiveRecord::Base
     c.has_many :grades
     c.has_many :groups
     c.has_many :group_memberships
-    c.has_many :rubrics
+    #c.has_many :rubrics
     c.has_many :submissions
     c.has_many :teams
   end
