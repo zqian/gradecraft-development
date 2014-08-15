@@ -43,15 +43,17 @@
 
       .small-12   
         //staff individual badge award index
-        %table.responsive.dynatable
+        %table.responsive.nopage_dynatable
           %thead
             %tr
-              %th= term_for(:student)
+              %th First Name
+              %th Last Name
               %th{ :width => 300} Feedback
               //uncomment to add counts per student
               //-if @badge.can_earn_multiple_times  
               //%th Count
-              %th Date Awarded
+              %th{"data-dynatable-sorts" => "dateStamp"} Date Awarded
+              %th{:style => "display: none"} Date Stamp
           %tbody
             - if @team
               - students = current_course_data.students_for_team(@team)
@@ -59,7 +61,8 @@
               - students = current_course_data.students
             - students.each do |student|
               %tr
-                %td=link_to student.first_name + " " + student.last_name, student_path(student)
+                %td=link_to student.first_name, student_path(student)
+                %td= link_to student.last_name, student_path(student)
                 %td
                   - @badge.earned_badges.where(:student_id => student.id).each do |badge|
                     %div{ :width => 80}= raw badge.feedback

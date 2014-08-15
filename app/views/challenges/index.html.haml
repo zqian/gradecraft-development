@@ -12,8 +12,9 @@
         %tr
           %th Name
           %th Description
-          %th Point total
-          %th Due date
+          %th Max Value
+          %th{"data-dynatable-sorts" => "dueDate"} Due
+          %th{:style => "display: none"} Due Date
           %th Visible
           %th Submissions?
           %th Release necessary
@@ -26,6 +27,9 @@
             %td= raw challenge.description
             %td= challenge.point_total
             %td= challenge.due_at
+            %td{:style => "display: none"}
+              - if challenge.due_at.present?
+                = challenge.try(:due_at).to_formatted_s(:db)
             %td= challenge.visible? ? 'Visible' : 'Hidden'
             %td= challenge.accepts_submissions? ? 'Yes' : 'No'
             %td= challenge.release_necessary? ? 'Yes' : 'No'

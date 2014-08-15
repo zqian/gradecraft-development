@@ -29,6 +29,24 @@ $('table.nopage_dynatable').dynatable({
     },
     badgeScore: function(el, record) {
       return Number(el.innerHTML.replace(",","")) || 0;
+    },
+    rawScore: function(el, record) {
+      return Number(el.innerHTML.replace(",","")) || 0;
+    },
+    multipliedScore: function(el, record) {
+      return Number(el.innerHTML.replace(",","")) || 0;
+    },
+    meanScore: function(el, record) {
+      return Number(el.innerHTML.replace(",","")) || 0;
+    },
+    challengeScore: function(el, record) {
+      return Number(el.innerHTML.replace(",","")) || 0;
+    },
+    students: function(el, record) {
+      return Number(el.innerHTML.replace(",","")) || 0;
+    },
+    badges: function(el, record) {
+      return Number(el.innerHTML.replace(",","")) || 0;
     }
   }
 });
@@ -65,15 +83,13 @@ $('table.nofeatures_dynatable').dynatable({
         recordCount: false
       },
   readers: {
-      due: function(el, record) {
+      dueDate: function(el, record) {
         record.parsedDate = Date.parse(el.innerHTML);
         return el.innerHTML;
-      }
-      ,
+      },
       points: function(el, record) {
         return Number(el.innerHTML.replace(",","")) || 0;
-      }
-      ,
+      },
       maxValue: function(el, record) {
         return Number(el.innerHTML.replace(",","")) || 0;
       }

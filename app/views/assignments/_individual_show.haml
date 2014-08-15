@@ -5,7 +5,7 @@
       = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
 
 = form_tag edit_status_grades_assignment_path @assignment do
-  %table.responsive.dynatable
+  %table.responsive.nopage_dynatable
     %thead
       %tr
         %th First Name

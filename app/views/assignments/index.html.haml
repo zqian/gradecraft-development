@@ -24,7 +24,8 @@
                     %th Name
                     - if assignment_type.name == "Class Attendance"
                       %th Attendance Rate
-                    %th Due
+                    %th{"data-dynatable-sorts" => "dueDate"} Due
+                    %th{:style => "display: none"} Due Date
                     %th Max Value
                     %th.button-column
                 %tbody
@@ -45,6 +46,9 @@
                                 - else
                                   %i.fi-male.absent
                       %td= assignment.try(:due_at) || "Ongoing"
+                      %td{:style => "display: none"}
+                        - if assignment.due_at.present?
+                          = assignment.try(:due_at).to_formatted_s(:db)
                       %td= assignment.point_total
                       %td
                         .button-bar
