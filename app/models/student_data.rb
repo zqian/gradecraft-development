@@ -20,13 +20,13 @@ class StudentData < Struct.new(:student, :course)
       grade_levels << { :from => [gse.low_range], :to => [gse.high_range], :label => { :text => "#{ gse.level} / #{gse.letter}" , textAlign: 'right', :rotation => 270 } }
     end
     if course.valuable_badges?
-      earned_badge_score = membership.membership_calculation.earned_badge_score
+      earned_badge_score = membership.earned_badge_score
       scores << { :data => [earned_badge_score], :name => "#{course.badge_term.pluralize}" }
     else
       earned_badge_score = 0
     end
-    if membership.membership_calculation.is_team_member? and course.team_challenges && course.team_score_average?
-      challenge_grade_score = membership.membership_calculation.challenge_grade_score
+    if membership.is_team_member? and course.team_challenges && course.team_score_average?
+      challenge_grade_score = membership.challenge_grade_score
       scores << { :data => [challenge_grade_score], :name => "#{course.challenge_term.pluralize}" }
     else
       challenge_grade_score = 0
@@ -37,15 +37,15 @@ class StudentData < Struct.new(:student, :course)
         :scores => scores,
         :grade_levels => grade_levels,
         :course_total => course.point_total,
-        :in_progress => membership.membership_calculation.in_progress_assignment_score + earned_badge_score + challenge_grade_score
+        :in_progress => membership.in_progress_assignment_score + earned_badge_score + challenge_grade_score
         }
     else
       return {
         :student_name => student.name,
         :scores => scores,
         :grade_levels => grade_levels,
-        :course_total => membership.membership_calculation.assignment_score + earned_badge_score + challenge_grade_score,
-        :in_progress => membership.membership_calculation.in_progress_assignment_score + earned_badge_score + challenge_grade_score
+        :course_total => membership.earned_point_total + earned_badge_score + challenge_grade_score,
+        :in_progress => membership.in_progress_assignment_score + earned_badge_score + challenge_grade_score
        }
     end
   end
@@ -59,7 +59,7 @@ class StudentData < Struct.new(:student, :course)
 
   #Released grades + Badges if they have value + Team score if it's present
   def score
-    @score ||= sums.released_grade_score + sums.earned_badge_score + team_score
+    @score ||= membership.released_grade_score + membership.earned_badge_score + team_score
   end
 
   #Predicted score is the score already known to the user + all the predicted points for grades not released or not graded.
@@ -69,7 +69,7 @@ class StudentData < Struct.new(:student, :course)
 
   #Possible total points for student
   def point_total
-    @point_total ||= sums.weighted_assignment_score + earned_badge_score
+    @point_total ||= membership.total_assignment_points_available + earned_badge_score
   end
 
   #Grabbing the associated course grade scheme info for a student

@@ -166,6 +166,11 @@ class User < ActiveRecord::Base
     is_prof? || is_gsi? || is_admin?
   end
 
+  # Find the team associated with the team membership for a given course id
+  def course_team(course)
+    team_memberships.where("teams.course_id = ?", course.id) rescue nil
+  end
+
   def character_profile(course)
     course_memberships.where(course: course).try('character_profile')
   end
