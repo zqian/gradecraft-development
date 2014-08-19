@@ -22,6 +22,7 @@
                 %thead
                   %tr
                     %th Name
+                    %th Description
                     %th
                       %span.has-tip.tip-top{:title => "Visible to Students", :data => {'tooltip' => true}}
                         %i.fi-eye
@@ -53,11 +54,12 @@
                     %th Points
 
                     %th Dates
-                    %th.button-column
+                    %th 
                 %tbody
                   - assignments.each do |assignment|
                     %tr
                       %td= link_to assignment.name, assignment
+                      %td= raw assignment.description
                       %td
                         - if assignment.visible?
                           %i.fi-check
@@ -109,13 +111,9 @@
                           %li
                             Accepted Until:
                             = assignment.try(:accept_until) || "Always Accepted"
-                      %td
-                        .button-bar
-                          %ul.button-group.round.right
-                            %li
-                              %a{:href => edit_assignment_path(assignment), :class => 'button tiny alert' }
-                                Edit
-                            %li
-                              %a{:href => assignment_path(assignment), :data => { confirm: 'Are you sure?', method: :delete }, :class => "button tiny alert" }
-                                Delete
+                      %td.text-buttons{ :style => "white-space: nowrap" }
+                        %a{:href => edit_assignment_path(assignment) }
+                          Edit
+                        %a{:href => assignment_path(assignment), :data => { confirm: 'Are you sure?', method: :delete } }
+                          Delete
     .clearfix

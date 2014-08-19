@@ -39,11 +39,9 @@ table.responsive {
     }
   }
 
-  th .button-group {
-    button {
-      margin: 0;
-      padding: .2rem;
-    }
+  td.text-buttons a {
+    text-decoration: underline;
+    padding: .1rem;
   }
 }
 
@@ -58,9 +56,15 @@ table.responsive {
 
   @media (min-width: 1151px) {
 
-  table .button-group li a.button.tiny {
-    padding: .4rem .5rem;
+  table ul.table-bar  {
+    list-style-type: none;
     margin: 0;
+    text-transform: uppercase;
+    padding: 0;
+    
+    li {
+    display: inline-block;
+    }
   }
 
 
