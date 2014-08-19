@@ -131,6 +131,11 @@ class Assignment < ActiveRecord::Base
     !! rubric
   end
 
+  def fetch_or_create_rubric
+    return rubric if rubric
+    Rubric.create assignment_id: self[:id]
+  end
+
   #average of above-zero grades for an assignment
   def earned_average
     if grades.graded.present?

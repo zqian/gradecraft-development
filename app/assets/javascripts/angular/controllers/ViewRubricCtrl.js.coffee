@@ -1,4 +1,4 @@
-@gradecraft.controller 'ViewRubricCtrl', ($scope, Restangular, $http) -> 
+@gradecraft.controller 'ViewRubricCtrl', ['$scope', 'Restangular', '$http', ($scope, Restangular, $http) -> 
 
   $scope.metrics = []
   $scope.gradedMetrics = []
@@ -363,4 +363,4 @@
            self.loadTierBadge(tierBadge)
        )
 
-
+  ]
