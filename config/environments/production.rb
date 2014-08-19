@@ -18,7 +18,7 @@ GradeCraft::Application.configure do
   config.assets.compress = true
   config.assets.css_compressor = :sass
   config.assets.digest = true
-  config.assets.js_compressor = :uglifier
+  config.assets.js_compressor = Uglifier.new(mangle: false) if defined? Uglifier
   config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
   config.assets.precompile += %w( .svg .eot .woff .ttf )
   config.cache_classes = true
