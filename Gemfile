@@ -61,6 +61,7 @@ gem 'timelineJS-rails', '~> 1.1.5'
 gem 'uglifier'
 gem 'whenever'
 gem 'sinatra', '>= 1.3.0', :require => nil
+gem 'html5_validators'
 
 group :development do
   gem 'haml-rails'
