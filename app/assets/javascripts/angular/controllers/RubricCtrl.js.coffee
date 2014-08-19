@@ -1,4 +1,5 @@
-@gradecraft.controller 'RubricCtrl', ($scope, Restangular, $http) -> 
+@gradecraft.controller 'RubricCtrl', ['$scope', 'Restangular', '$http', ($scope, Restangular, $http) -> 
+
 
  # hide modal window by default
  $scope.modalShown = false
@@ -477,3 +478,5 @@
     update: $scope.dragEnd
   )
   return
+
+  ]

@@ -22,7 +22,7 @@ class AssignmentsController < ApplicationController
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
     @auditing = current_course.students.auditing.includes(:teams).where(user_search_options).alpha
 
-    @rubric = @assignment.rubric
+    @rubric = @assignment.fetch_or_create_rubric
     @metrics = @rubric.metrics
     @score_levels = @assignment.score_levels.order_by_value
     @course_badges = serialized_course_badges
