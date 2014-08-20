@@ -40,8 +40,12 @@ table.responsive {
   }
 
   td.text-buttons a {
-    text-decoration: underline;
-    padding: .1rem;
+    margin: 1rem;
+    text-transform: uppercase;
+    border-bottom: 1px solid $primary-color-3;
+  }
+  .button {
+    margin: 0;
   }
 }
 

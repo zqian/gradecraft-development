@@ -10,7 +10,8 @@
       %thead
         %tr
           %th Name
-          %th Open - Due
+          %th{"data-dynatable-sorts" => "dueDate"}  Open - Due
+          %th{:style => "display: none"} Due Date
           %th Points
           %th
       %tbody
@@ -21,6 +22,7 @@
               %td
                 = "#{assignment.open_at } -" if assignment.open_at.present?
                 = assignment.try(:due_at) || "Ongoing"
+              %td= assignment.try(:due_at).to_formatted_s(:db) if assignment.due_at.present?
               %td= points assignment.point_total
               - if current_user.is_staff?
                 %td
