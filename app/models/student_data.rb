@@ -204,7 +204,7 @@ class StudentData < Struct.new(:student, :course)
   ####MOVED TO user
   #Sum of all earned badges value for a student
   def earned_badge_score
-    @earned_badge_score ||= sums.earned_badge_score # student.earned_badges.where(course: course).score
+    @earned_badge_score ||= membership.earned_badge_score # student.earned_badges.where(course: course).score
   end
 
   #All of a student's grades for a course

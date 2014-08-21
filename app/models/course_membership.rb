@@ -22,6 +22,12 @@ class CourseMembership < ActiveRecord::Base
       .take
   end
 
+  def course_assignments_point_total
+    Assignment
+      .where(course_id: course.id)
+      .sum(:point_total)
+  end
+
   # working, needs speed improvements
   def released_grade_score 
     Grade
@@ -37,6 +43,12 @@ class CourseMembership < ActiveRecord::Base
       .where(student_id: user.id)
       .where(course_id: course.id)
       .sum(:score)
+  end
+
+  def assignment_weight_count
+    AssignmentWeight
+      .where(student_id: user.id)
+      .count
   end
 
   #    (SELECT COALESCE(sum(challenge_grades.score), (0)::bigint) AS "coalesce" FROM (((challenge_grades JOIN challenges ON ((challenge_grades.challenge_id = challenges.id))) JOIN teams ON ((challenge_grades.team_id = teams.id))) JOIN team_memberships ON ((team_memberships.team_id = teams.id))) WHERE ((teams.course_id = m.course_id) AND (team_memberships.student_id = m.user_id))) AS challenge_grade_score,
@@ -96,6 +108,13 @@ class CourseMembership < ActiveRecord::Base
           submission.assignment.point_total
         end
       end
+  end
+
+  def assignment_score
+    EarnedBadge
+      .where(student_id: user.id)
+      .where(course_id: course.id)
+      .sum(:score)
   end
 
   def student_assignment_weights
