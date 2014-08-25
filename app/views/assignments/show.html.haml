@@ -42,7 +42,7 @@
           %td.metric.heading
             %label.larger
               <strong>Criterion</strong>:&nbsp;Max&nbsp;points
-          %td.tier.heading(colspan="#{@assignment.rubric.max_tier_count}")
+          %td.tier.heading(colspan="#{@assignment.rubric.try(:max_tier_count)}")
             %label.larger
               %strong Level:
               Point value
