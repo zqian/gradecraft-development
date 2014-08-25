@@ -8,16 +8,16 @@
   %table.responsive.simpleTable
     %thead
       %tr
-        %th.sortable{"data-sort" => "int"} ID
-        %th.sortable{"data-sort" => "string"} Student
-        %th.sortable{"data-sort" => "string"} Assignment | ID
-        %th.sortable{"data-sort" => "string"} Task
-        %th.sortable{"data-sort" => "string"} Submission
-        %th.sortable{"data-sort" => "int"} Raw Score
-        %th.sortable{"data-sort" => "int"} Score
-        %th.sortable{"data-sort" => "int"} Predicted Score
-        %th.sortable{"data-sort" => "string"} Feedback
-        %th.sortable{"data-sort" => "string"} Status
+        %th ID
+        %th Student
+        %th Assignment | ID
+        %th Task
+        %th Submission
+        %th Raw Score
+        %th Score
+        %th Predicted Score
+        %th Feedback
+        %th Status
         %th
     %tbody
       - @grades.each do |g|

@@ -1,27 +1,23 @@
-%table.responsive.simpleTable.dynatable
+%table.responsive.nopage_dynatable
   %thead
     %tr
       %th
-      %th
-      %th.sortable{"data-sort" => "string"} First Name
-      %th.sortable{"data-sort" => "string"} Last Name
+      %th First Name
+      %th Last Name
       - if current_course.in_team_leaderboard?
-        %th.sortable{"data-sort" => "string"} Screenname
+        %th Screenname
       - if current_course.has_teams?
-        %th.sortable{"data-sort" => "string"} #{current_course.team_term}
+        %th #{current_course.team_term}
       - if current_course.team_roles?
-        %th.sortable{"data-sort" => "string"} Role
-      %th.sortable{"data-sort" => "int"} Score
-      %th.sortable{"data-sort" => "string"} Grade
+        %th Role
+      %th Score
+      %th Grade
       %th.button-column
   %tbody
     - students.each do |student|
       %tr
         %td
           = gravatar_for student, :size => 30
-        %td
-          %a{:href => "mailto:#{student.email}" }
-            %i.fi-mail
         %td= link_to student.first_name, student_path(student)
         %td= link_to student.last_name, student_path(student)
         - if current_course.in_team_leaderboard?

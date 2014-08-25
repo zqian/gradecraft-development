@@ -1,19 +1,19 @@
 = form_tag edit_status_grades_assignment_path @assignment do
-  %table.responsive.simpleTable
+  %table.responsive.dynatable
     %thead
       %tr
-        %th.sortable{"data-sort" => "string"} First Name
-        %th.sortable{"data-sort" => "string"} Last Name
-        %th.sortable{"data-sort" => "int"} Raw Score
+        %th First Name
+        %th Last Name
+        %th Raw Score
         - if @assignment.assignment_type.student_weightable?
-          %th.sortable{"data-sort" => "int"} Multiplied Score
+          %th Multiplied Score
         - if @assignment.has_levels?
-          %th{"data-sort" => "string"} Level
-        %th.sortable{"data-sort" => "string"} Feedback
+          %th Level
+        %th Feedback
         - if @assignment.release_necessary?
-          %th.sortable{"data-sort" => "string"} Status
+          %th Status
         - if @assignment.accepts_submissions?
-          %th.sortable{"data-sort" => "int"} Submission
+          %th Submission
         %th
         - if @assignment.release_necessary?
           %th
@@ -77,20 +77,20 @@
 
     %h3 Auditing #{term_for :students}
 
-    %table.responsive.simpleTable
+    %table.responsive.dynatable
       %thead
         %tr
-          %th.sortable{"data-sort" => "string"} First Name
-          %th.sortable{"data-sort" => "string"} Last Name
-          %th.sortable{"data-sort" => "int"} Raw Score
+          %th First Name
+          %th Last Name
+          %th Raw Score
           - if @assignment.assignment_type.student_weightable?
-            %th.sortable{"data-sort" => "int"} Multiplied Score
+            %th Multiplied Score
           - if @assignment.has_levels?
-            %th{"data-sort" => "string"} Level
+            %th Level
           - if @assignment.release_necessary?
-            %th.sortable{"data-sort" => "string"} Status
+            %th Status
           - if @assignment.accepts_submissions?
-            %th.sortable{"data-sort" => "int"} Submission
+            %th Submission
           %th
           - if @assignment.release_necessary?
             %th

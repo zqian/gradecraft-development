@@ -17,6 +17,7 @@
           = f.check_box :required
           .form_label Are ALL #{term_for :students} expected to complete this #{term_for :assignment} to pass the course?
 
+
       - if current_course.accepts_submissions?
         .small-12
           %label.checkbox{ :for => "accepts_submissions" }

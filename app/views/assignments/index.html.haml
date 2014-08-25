@@ -18,14 +18,15 @@
                   %ul.button-group.round.right
                     %li= link_to "See Overview", all_grades_assignment_type_path(assignment_type), :class => "button tiny aindex"
                     %li= link_to "Edit", edit_assignment_type_path(assignment_type), :class => "button tiny aindex"
-              %table.responsive.dynatable
+              %table.responsive.nofeatures_dynatable
                 %thead
                   %tr
-                    %th.sortable{"data-sort" => "string"} Name
+                    %th Name
                     - if assignment_type.name == "Class Attendance"
                       %th Attendance Rate
-                    %th.sortable{"data-sort" => "date"} Due
-                    %th.sortable{"data-sort" => "int"} Points
+                    %th{"data-dynatable-sorts" => "dueDate"} Due
+                    %th{:style => "display: none"} Due Date
+                    %th Max Value
                     %th.button-column
                 %tbody
                   - assignments.each do |assignment|
@@ -45,7 +46,10 @@
                                 - else
                                   %i.fi-male.absent
                       %td= assignment.try(:due_at) || "Ongoing"
-                      %td= points assignment.point_total
+                      %td{:style => "display: none"}
+                        - if assignment.due_at.present?
+                          = assignment.try(:due_at).to_formatted_s(:db)
+                      %td= assignment.point_total
                       %td
                         .button-bar
                           %ul.button-group.right.round

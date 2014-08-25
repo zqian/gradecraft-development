@@ -6,15 +6,15 @@
   .pagetitle= @title
 
   .small-12.columns
-    %table.responsive.simpleTable.dynatable
+    %table.columns.nosearch_dynatable
       %thead
         %tr
-          %th.sortable{"data-sort" => "string"} Name
-          %th.sortable{"data-sort" => "string"} Course No
-          %th.sortable{"data-sort" => "string"} Year
-          %th.sortable{"data-sort" => "string"} Semester
-          %th.sortable{"data-sort" => "string"} Badges
-          %th.sortable{"data-sort" => "string"} Total Points
+          %th Name
+          %th Course No
+          %th Year
+          %th Semester
+          %th Badges
+          %th Total Points
           %th
       %tbody
         - @courses.each do |course|

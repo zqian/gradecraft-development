@@ -1,20 +1,20 @@
 = simple_form_for @assignment do
-  %table.responsive.simpleTable
+  %table.responsive.dynatable
     %thead
       %tr
         - if @assignment.release_necessary?
           %th
-        %th.sortable{"data-sort" => "string"}= current_course.group_term
-        %th.sortable{"data-sort" => "string"} Score
+        %th= current_course.group_term
+        %th Score
         - if @assignment.assignment_type.student_weightable?
-          %th.sortable{"data-sort" => "int"} Multiplied Scores
+          %th Multiplied Scores
         - if @assignment.has_levels?
-          %th.sortable{"data-sort" => "string"} Level
+          %th Level
         %th Badges Earned
         - if @assignment.release_necessary?
-          %th.sortable{"data-sort" => "string"} Status
+          %th Status
         - if @assignment.accepts_submissions?
-          %th.sortable{"data-sort" => "string"} Submission
+          %th Submission
         %th
     %tbody
       - @groups.each do |group|

@@ -1,10 +1,9 @@
-%table.responsive.small-12.columns.dynatable
+%table.responsive
   %thead
     %tr
-      %th
       %th= course.user_term
       %th Score
-      %th Chart
+      %th{"data-dynatable-no-sort" => "true"} Chart
       - if course.has_teams?
         %th= course.team_term
       - if course.has_badges?
@@ -15,12 +14,9 @@
   %tbody
     - students.each do |student|
       %tr
-        %td
-          %a{:href => "mailto:#{student.email}" }
-            %i.fi-mail
         %td= link_to student.name, student_path(student)
-        %td= points student.cached_score_for_course(current_course)
-        %td{:data => { :id => student.id.to_s, :max => current_course.total_points }, :class => "bar-chart" }
+        %td= student.cached_score_for_course(current_course)
+        %td{ :data => { :id => student.id.to_s, :max => current_course.total_points }, :class => "bar-chart" }
         - if course.has_teams?
           %td
             - if student.team_for_course(current_course).present?

@@ -7,13 +7,13 @@
 
   .small-12.columns
 
-    %table.responsive.simpleTable.dynatable
+    %table.responsive.nopage_dynatable
       %thead
         %tr
-          %th.sortable{"data-sort" => "string"} First Name
-          %th.sortable{"data-sort" => "string"} Last Name
-          %th.sortable{"data-sort" => "string"} Role
-          %th.sortable{"data-sort" => "string"} #{term_for :team}
+          %th First Name
+          %th Last Name
+          %th Role
+          %th #{term_for :team}
           %th.button-column
       %tbody
         - current_course.users.alpha.each do |user|
