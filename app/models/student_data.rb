@@ -2,17 +2,16 @@ class StudentData < Struct.new(:student, :course)
 
   def membership
     @membership ||= CourseMembership.where(course_id: course.id, user_id: student.id)
-                                    .includes(:membership_calculation, :membership_scores).first
   end
 
   def sums
-    @sums ||= membership.membership_calculation
+    @sums ||= membership
   end
 
   #calculating student's predicted grade based on predictor choices
   def predictions
     scores = []
-    membership.membership_scores.each do |s|
+    membership.each do |s|
       scores << { :data => [s.score], :name => s.name }
     end
     grade_levels = []
@@ -50,21 +49,9 @@ class StudentData < Struct.new(:student, :course)
     end
   end
 
-  def cache_key(*args)
-    @cache_keys ||= membership.membership_calculation
-    args.map do |arg|
-      arg.is_a?(Symbol) && @cache_keys[arg.to_s] || arg.to_s
-    end
-  end
-
   #Released grades + Badges if they have value + Team score if it's present
   def score
     @score ||= membership.released_grade_score + membership.earned_badge_score + team_score
-  end
-
-  #Predicted score is the score already known to the user + all the predicted points for grades not released or not graded.
-  def predicted_score
-    
   end
 
   #Possible total points for student
@@ -235,19 +222,7 @@ class StudentData < Struct.new(:student, :course)
     end
   end
   
-  #Weights
-  def weight_for_assignment_type(assignment_type)
-    assignment_type_weights[assignment_type.id]
-  end
-
-  def weighted_assignments?
-    @weighted_assignments_present ||= sums.assignment_weight_count > 0
-  end
-
-  #Used for self-logged attendance to check if the student already has a grade
-  def present_for_class?(assignment)
-    grade_for_assignment(assignment).raw_score == assignment.point_total
-  end
+  
 
   #Groups for Assignments
 

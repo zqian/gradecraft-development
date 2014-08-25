@@ -208,7 +208,7 @@ class User < ActiveRecord::Base
   end
 
   def earned_badge_score
-    @earned_badge_score ||= sums.earned_badge_score
+    @earned_badge_score ||= earned_badges.sum(:score)
   end
 
   #grabbing the stored score for the current course
@@ -342,6 +342,20 @@ class User < ActiveRecord::Base
     assignment_weights.where(assignment_type: assignment_type).weight
   end
 
+  #Weights
+  def weight_for_assignment_type(assignment_type)
+    assignment_type_weights[assignment_type.id]
+  end
+
+  def weighted_assignments?
+    @weighted_assignments_present ||= assignment_weights.count > 0
+  end
+
+  #Used for self-logged attendance to check if the student already has a grade
+  def present_for_class?(assignment)
+    grade_for_assignment(assignment).raw_score == assignment.point_total
+  end
+
   #Counts how many assignments are weighted for this student - note that this is an ASSIGNMENT count, and not the assignment type count. Because students make the choice at the AT level rather than the A level, this can be confusing.
   def weight_count(course)
     assignment_weights.where(course: course).pluck('weight').count
@@ -395,6 +409,35 @@ class User < ActiveRecord::Base
 
   def default_course
     super || courses.first
+  end
+
+  def predictions(course)
+    scores = []
+    course.assignment_types.each do |assignment_type|
+      scores << { data: [grades.released.where(assignment_type: assignment_type).score], name: assignment_type.name }
+    end
+
+
+    _assignments = assignments.where(course: course)
+    in_progress = _assignments.graded_for_student(self)
+
+    if course.valuable_badges?
+      earned_badge_score = earned_badges.where(course: course).score
+      scores << { :data => [earned_badge_score], :name => "#{course.badge_term.pluralize}" }
+      return {
+        :student_name => name,
+        :scores => scores,
+        :course_total => course.total_points + earned_badge_score,
+        :in_progress => in_progress.point_total + earned_badge_score
+        }
+    else
+      return {
+        :student_name => name,
+        :scores => scores,
+        :in_progress => in_progress.point_total,
+        :course_total => course.total_points
+        }
+    end
   end
 
   private
