@@ -5,15 +5,15 @@
   
   .pagetitle= @title
   
-  %table.responsive.simpleTable
+  %table.columns.dynatable
     %thead
       %tr
-        %th.sortable{"data-sort" => "string"} First Name
-        %th.sortable{"data-sort" => "string"} Last Name
-        %th.sortable{"data-sort" => "string"} Email
-        %th.sortable{"data-sort" => "string"} Role
-        %th.sortable{"data-sort" => "string"} Courses
-        %th.sortable{"data-sort" => "int"} Score
+        %th First Name
+        %th Last Name
+        %th Email
+        %th Role
+        %th Courses
+        %th Score
         %th
     %tbody
       - @users.alpha.each do |user|

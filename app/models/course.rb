@@ -136,8 +136,9 @@ class Course < ActiveRecord::Base
     end
   end
 
+  #total number of points 'available' in the course - sometimes set by an instructor as a cap, sometimes just the sum of all assignments
   def total_points
-    assignments.point_total
+    point_total || assignments.point_total
   end
 
   def student_weighted?
@@ -161,7 +162,6 @@ class Course < ActiveRecord::Base
   end
 
   def grade_letter_for_score(score)
-    
     grade_scheme_elements.where('low_range <= ? AND high_range >= ?', score, score).pluck('letter').first
   end
 

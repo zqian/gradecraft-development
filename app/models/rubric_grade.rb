@@ -13,4 +13,5 @@ class RubricGrade < ActiveRecord::Base
   validates :tier_name, presence: true
   validates :points, presence: true
   validates :submission_id, presence: true
+  validates :submission_id, uniqueness: { scope: :metric_id }
 end
