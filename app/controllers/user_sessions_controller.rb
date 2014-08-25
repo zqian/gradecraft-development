@@ -11,7 +11,15 @@ class UserSessionsController < ApplicationController
     respond_to do |format|
       if @user = login(params[:user][:email], params[:user][:password], params[:user][:remember_me])
         log_course_login_event
-        format.html { redirect_back_or_to dashboard_path }
+        if current_course.use_timeline?
+          format.html { redirect_back_or_to dashboard_path }
+        else 
+          if current_user.is_student?
+            format.html { redirect_back_or_to syllabus_path }
+          else
+            format.html { redirect_back_or_to analytics_top_10_path }
+          end 
+        end
         format.xml { render :xml => @user, :status => :created, :location => @user }
       else
         @user = User.new
