@@ -48,16 +48,23 @@ class AssignmentsController < ApplicationController
     if @assignment.due_at.present? && @assignment.open_at.present? && @assignment.due_at < @assignment.open_at
       flash[:error] = 'Due date must be after open date.'
       render :action => "new", :assignment => @assignment
-    end
-    respond_to do |format|
-      self.check_uploads
-      @assignment.assign_attributes(params[:assignment])
-      @assignment.assignment_type = current_course.assignment_types.find_by_id(params[:assignment_type_id])
-      if @assignment.save
-        set_assignment_weights
-        format.html { respond_with @assignment, notice: "#{term_for :assignment} #{@assignment.name} successfully created" }
-      else
-        respond_with @assignment
+    elsif @assignment.accepts_submissions_until.present? && @assignment.due_at.present? && @assignment.accepts_submissions_until < @assignment.due_at
+      flash[:error] = 'Submission accept date must be after due date.'
+      render :action => "new", :assignment => @assignment
+    elsif @assignment.accepts_submissions_until.present? && @assignment.open_at.present? && @assignment.accepts_submissions_until < @assignment.open_at
+      flash[:error] = 'Submission accept date must be after open date.'
+      render :action => "new", :assignment => @assignment
+    else
+      respond_to do |format|
+        self.check_uploads
+        @assignment.assign_attributes(params[:assignment])
+        @assignment.assignment_type = current_course.assignment_types.find_by_id(params[:assignment_type_id])
+        if @assignment.save
+          set_assignment_weights
+         format.html { respond_with @assignment, notice: "#{term_for :assignment} #{@assignment.name} successfully created" }
+        else
+          respond_with @assignment
+        end
       end
     end
   end

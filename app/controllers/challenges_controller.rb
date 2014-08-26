@@ -26,14 +26,19 @@ class ChallengesController < ApplicationController
   def create
     @challenge = current_course.challenges.create(params[:challenge])
 
-    respond_to do |format|
-      if @challenge.save
-        self.check_uploads
-        format.html { redirect_to @challenge, notice: "Challenge #{@challenge.name} successfully created" }
-        format.json { render json: @challenge, status: :created, location: @challenge }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @challenge.errors, status: :unprocessable_entity }
+    if @challenge.due_at.present? && @challenge.open_at.present? && @challenge.due_at < @challenge.open_at
+      flash[:error] = 'Due date must be after open date.'
+      render :action => "new", :challenge => @challenge
+    else
+      respond_to do |format|
+        if @challenge.save
+          self.check_uploads
+          format.html { redirect_to @challenge, notice: "Challenge #{@challenge.name} successfully created" }
+          format.json { render json: @challenge, status: :created, location: @challenge }
+        else
+          format.html { render action: "new" }
+          format.json { render json: @challenge.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
