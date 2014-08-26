@@ -6,7 +6,9 @@
           .large-8.small-9.columns
             :javascript
               window.autocompleteUsers = #{autocomplete_items.to_json};
-            %input.search-query{ :type => "text", :placeholder => "Search #{term_for :students}", :label => false }
+            %label.sr-only{:for => "search-input"}
+              Search #{term_for :students}
+            %input.search-query#search-input{ :type => "text", :placeholder => "Search #{term_for :students}", :label => false }
           .large-4.small-3.columns
             %a.alert.button.expand{ :href => "#" } Search
     %li.has-dropdown.course_switch.show-for-medium-up
