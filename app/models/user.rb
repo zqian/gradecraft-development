@@ -78,10 +78,10 @@ class User < ActiveRecord::Base
                     :uniqueness => { :case_sensitive => false }
 
   def self.find_or_create_by_lti_auth_hash(auth_hash)
-    criteria = { lti_uid: auth_hash['uid'] }
+    criteria = { email: auth_hash['info']['email'] }
     where(criteria).first || create!(criteria) do |u|
+      u.lti_uid = auth_hash['uid']
       auth_hash['info'].tap do |info|
-        u.email = info['email']
         u.first_name = info['first_name']
         u.last_name = info['last_name']
       end
