@@ -54,6 +54,9 @@ class AssignmentsController < ApplicationController
     elsif @assignment.accepts_submissions_until.present? && @assignment.open_at.present? && @assignment.accepts_submissions_until < @assignment.open_at
       flash[:error] = 'Submission accept date must be after open date.'
       render :action => "new", :assignment => @assignment
+    elsif (@assignment.point_total.present?) && (@assignment.point_total < 1)
+      flash[:error] = 'Point total must be a positive number'
+      render :action => "new", :assignment => @assignment
     else
       respond_to do |format|
         self.check_uploads
@@ -61,7 +64,7 @@ class AssignmentsController < ApplicationController
         @assignment.assignment_type = current_course.assignment_types.find_by_id(params[:assignment_type_id])
         if @assignment.save
           set_assignment_weights
-         format.html { respond_with @assignment, notice: "#{term_for :assignment} #{@assignment.name} successfully created" }
+          format.html { respond_with @assignment, notice: "#{term_for :assignment} #{@assignment.name} successfully created" }
         else
           respond_with @assignment
         end
@@ -82,11 +85,29 @@ class AssignmentsController < ApplicationController
       self.check_uploads
       @assignment.assign_attributes(params[:assignment])
       @assignment.assignment_type = current_course.assignment_types.find_by_id(params[:assignment_type_id])
-      if @assignment.save
-        format.html { respond_with @assignment, notice: "#{term_for :assignment} #{@assignment.name} successfully updated" }
-      else
+      if @assignment.due_at.present? && @assignment.open_at.present? && @assignment.due_at < @assignment.open_at
+        flash[:error] = 'Due date must be after open date.'
         format.html { redirect_to edit_assignment_path(@assignment) }
         format.json { render json: @assignment.errors, status: :unprocessable_entity }
+      elsif @assignment.accepts_submissions_until.present? && @assignment.due_at.present? && @assignment.accepts_submissions_until < @assignment.due_at
+        flash[:error] = 'Submission accept date must be after due date.'
+        format.html { redirect_to edit_assignment_path(@assignment) }
+        format.json { render json: @assignment.errors, status: :unprocessable_entity }
+      elsif @assignment.accepts_submissions_until.present? && @assignment.open_at.present? && @assignment.accepts_submissions_until < @assignment.open_at
+        flash[:error] = 'Submission accept date must be after open date.'
+        format.html { redirect_to edit_assignment_path(@assignment) }
+        format.json { render json: @assignment.errors, status: :unprocessable_entity }
+      elsif (@assignment.point_total.present?) && (@assignment.point_total < 1)
+        flash[:error] = 'Point total must be a positive number'
+        format.html { redirect_to edit_assignment_path(@assignment) }
+        format.json { render json: @assignment.errors, status: :unprocessable_entity }
+      else
+        if @assignment.save
+          format.html { respond_with @assignment, notice: "#{term_for :assignment} #{@assignment.name} successfully updated" }
+        else
+          format.html { redirect_to edit_assignment_path(@assignment) }
+          format.json { render json: @assignment.errors, status: :unprocessable_entity }
+        end
       end
     end
   end

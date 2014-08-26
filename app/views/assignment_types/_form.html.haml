@@ -55,7 +55,7 @@
       .small-12
         / If the points are universal, this is setting that value
         = f.label :universal_point_value, "Point Value"
-        = f.text_field :universal_point_value, data: {autonumeric: true, "m-dec" => "0"}
+        = f.text_field :universal_point_value#, data: {autonumeric: true, "m-dec" => "0"}
         .form_label Do all #{term_for :assignments} of this type have the same point value? For instance, if all class attendance #{term_for :assignments} are worth 100 points and you can set that here.
 
       %br
@@ -63,7 +63,7 @@
       .small-12
         / What's the maximum number of points a student may earn in this category? This cap needs to be finished
         = f.label :max_value, :label => "Maximum Points"
-        = f.text_field :max_value, data: {autonumeric: true, "m-dec" => "0"}
+        = f.text_field :max_value#, data: {autonumeric: true, "m-dec" => "0"}
         .form_label Is there a cap on how many points students can earn here? (Leave blank if not)
 
     .clearfix

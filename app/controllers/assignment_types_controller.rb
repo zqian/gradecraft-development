@@ -32,13 +32,21 @@ class AssignmentTypesController < ApplicationController
     @assignment_type = current_course.assignment_types.new(params[:assignment_type])
     @assignment_type.save
 
-    respond_to do |format|
-      if @assignment_type.save
-        format.html { redirect_to @assignment_type, notice: "Assignment Type #{@assignment_type.name} successfully created" }
-        format.json { render json: @assignment_type, status: :created, location: @assignment_type }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @assignment_type.errors }
+    if (@assignment_type.universal_point_value.present?) && (@assignment_type.universal_point_value < 1)
+      flash[:error] = 'Point value must be a positive number'
+      render :action => "new", :assignment_type => @assignment_type
+    #elsif (@assignment_type.max_value.present?) && (@assignment_type.max_value < 1)
+    #  flash[:error] = 'Maximum points must be a positive number'
+    #  render :action => "new", :assignment_type => @assignment_type
+    else
+      respond_to do |format|
+        if @assignment_type.save
+          format.html { redirect_to @assignment_type, notice: "Assignment Type #{@assignment_type.name} successfully created" }
+          format.json { render json: @assignment_type, status: :created, location: @assignment_type }
+        else
+          format.html { render action: "new" }
+          format.json { render json: @assignment_type.errors }
+        end
       end
     end
   end
@@ -49,12 +57,22 @@ class AssignmentTypesController < ApplicationController
     @assignment_type.update_attributes(params[:assignment_type])
 
     respond_to do |format|
-      if @assignment_type.save
-        format.html { redirect_to @assignment_type, notice: "Assignment Type #{@assignment_type.name} successfully updated" }
-        format.json { render json: @assignment_type, status: :created, location: @assignment_type }
-      else
+      if (@assignment_type.universal_point_value.present?) && (@assignment_type.universal_point_value < 1)
+        flash[:error] = 'Point value must be a positive number'
         format.html { render action: "new" }
         format.json { render json: @assignment_type.errors }
+      elsif (@assignment_type.max_value.present?) && (@assignment_type.max_value < 1)
+        flash[:error] = 'Maximum points must be a positive number'
+        format.html { render action: "new" }
+        format.json { render json: @assignment_type.errors }
+      else
+        if @assignment_type.save
+          format.html { redirect_to @assignment_type, notice: "Assignment Type #{@assignment_type.name} successfully updated" }
+          format.json { render json: @assignment_type, status: :created, location: @assignment_type }
+        else
+          format.html { render action: "new" }
+          format.json { render json: @assignment_type.errors }
+        end
       end
     end
   end
