@@ -6,37 +6,27 @@
 
   .small-12.columns
 
-    - cache current_student_data.cache_key('v1', :assignment_weights_key, :assignments_key, :grades_key, :badges_key, current_student.id) do
-      .gradePredictor
-        #predictorWrapper#studentID{ 'data-student-id' => current_student.id }
-          %h4
-            Predicted points:
-            - if current_user.is_staff?
-              %span#predictor-score-display.bold
-                = points current_course.score_for_student(current_student)
-            - else
-              %span#predictor-score-display.bold
-                = points current_student_data.predicted_score
-            = "/"
-            - if current_course.point_total.present?
-              %span= "#{ points current_course.point_total } possible points"
-            - else
-              %span= "#{points current_student_data.point_total} possible points"
-            –
-            Predicted final grade:
-            %span.bold#predictor-course-grade{:'data-grade-levels' => "#{@grade_levels_json}"}
-              = current_student_data.predicted_grade_letter
+    .gradePredictor
+      #predictorWrapper#studentID{ 'data-student-id' => current_student.id }
+        %h4
+          Predicted points:
+          %span#predictor-score-display.bold
+          = "/"
+          %span= "#{ points current_course.total_points } possible points"
+          –
+          Predicted final grade:
+          %span.bold#predictor-course-grade{:'data-grade-levels' => "#{@grade_levels_json}"}
 
-        .charts.dashboard-charts
-          .chart-wrapper
-            .chart-inner
-              #prediction
+      .charts.dashboard-charts
+        .chart-wrapper
+          .chart-inner
+            #prediction
 
-        .clearfix
+      .clearfix
 
     %hr
 
-    #predictorPage{ 'data-student-name' => current_student.name, 'data-course-total' => current_student_data.point_total }
+    #predictorPage{ 'data-student-name' => current_student.name, 'data-course-total' => current_course.total_points }
       %ul.slides.small-12.columns
         - if current_user.is_staff?
           = render partial: 'students/predictor/instructor_assignments', collection: current_course_data.by_assignment_type.to_a, as: :assignment_type_and_assignments

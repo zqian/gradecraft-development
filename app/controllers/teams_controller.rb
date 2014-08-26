@@ -30,7 +30,7 @@ class TeamsController < ApplicationController
     @team =  current_course.teams.new(params[:team])
     @team.save
     @team.team_memberships.build
-    respond_with @team
+    respond_with @team, :notice => "Team #{@team.name} successfully created" 
   end
 
   def edit
@@ -44,13 +44,14 @@ class TeamsController < ApplicationController
   def update
     @team = current_course.teams.find(params[:id])
     @team.update_attributes(params[:team])
-    respond_with @team
+    respond_with @team, :notice => "Team #{@team.name} successfully updated"
   end
 
   def destroy
     @team = current_course.teams.find(params[:id])
+    @name = "#{@team.name}"
     @team.destroy
-    respond_with @team
+    respond_with @team, :notice => "Team #{@name} successfully deleted"
   end
 
   private

@@ -1,11 +1,11 @@
-%table.responsive.simpleTable
+%table.responsive.dynatable
   %thead
     %tr
-      %th.sortable{"data-sort" => "string"} First Name
-      %th.sortable{"data-sort" => "string"} Last Name
-      %th.sortable{"data-sort" => "string"} #{current_course.badge_term.pluralize}
+      %th First Name
+      %th Last Name
+      %th #{current_course.badge_term.pluralize}
       - if current_course.valuable_badges?
-        %th.sortable{"data-sort" => "int"} Total Badge Score
+        %th Total Badge Score
   %tbody
     - if @team
       - students = current_course_data.students_for_team(@team)
@@ -27,14 +27,14 @@
 
   %span.pagetitle Auditing
 
-  %table.responsive.simpleTable
+  %table.responsive.dynatable
     %thead
       %tr
-        %th.sortable{"data-sort" => "string"} First Name
-        %th.sortable{"data-sort" => "string"} Last Name
-        %th.sortable{"data-sort" => "string"} #{current_course.badge_term.pluralize}
+        %th First Name
+        %th Last Name
+        %th #{current_course.badge_term.pluralize}
         - if current_course.valuable_badges?
-          %th.sortable{"data-sort" => "int"} Total Badge Score
+          %th Total Badge Score
     %tbody
       - if @team
         - students = current_course_data.auditing_students_for_team(@team)

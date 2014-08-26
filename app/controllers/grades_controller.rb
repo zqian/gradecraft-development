@@ -23,6 +23,7 @@ class GradesController < ApplicationController
     @rubric = @assignment.rubric
     @metrics = existing_metrics_as_json if @rubric
     @score_levels = @assignment.score_levels.order_by_value
+    @course_badges = serialized_course_badges
     @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
   end
 
@@ -44,6 +45,8 @@ class GradesController < ApplicationController
     @grade.update_attributes(raw_score: params[:points_given], submission_id: @submission[:id], point_total: params[:points_possible], status: "Graded")
 
     create_rubric_grades # create an individual record for each rubric grade
+    # create_earned_metric_badges # create an individual record for each rubric grade
+    create_earned_tier_badges # create an individual record for each rubric grade
 
     if @assignment.notify_released? && @grade.is_released?
       NotificationMailer.grade_released(@grade.id).deliver
@@ -247,6 +250,36 @@ class GradesController < ApplicationController
         tier_id: rubric_grade["tier_id"]
       })
     end
+  end
+
+  def create_earned_metric_badges
+    params[:metric_badges].each do |metric_badge|
+      EarnedBadge.create({
+        badge_id: metric_badge["badge_id"],
+        submission_id: @submission[:id],
+        course_id: current_course[:id],
+        student_id: current_student[:id]
+      })
+    end
+  end
+
+  def create_earned_tier_badges
+    params[:tier_badges].each do |tier_badge|
+      EarnedBadge.create({
+        badge_id: tier_badge["badge_id"],
+        submission_id: @submission[:id],
+        course_id: current_course[:id],
+        student_id: current_student[:id]
+      })
+    end
+  end
+
+  def serialized_course_badges
+    ActiveModel::ArraySerializer.new(course_badges, each_serializer: CourseBadgeSerializer).to_json
+  end
+
+  def course_badges
+    @course_badges ||= @assignment.course.badges.visible
   end
 
   def existing_metrics_as_json

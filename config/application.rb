@@ -16,7 +16,6 @@ module GradeCraft
     config.assets.precompile += %w(.svg .eot .otf .woff .ttf)
     config.assets.paths << Rails.root.join("app", "assets", "fonts")
     config.filter_parameters += [:password]
-    config.active_record.schema_format = :sql
     config.i18n.enforce_available_locales = true
     config.generators do |g|
       g.integration_tool :mini_test

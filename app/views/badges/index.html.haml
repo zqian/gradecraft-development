@@ -5,6 +5,7 @@
       = render "tabs"
   
     .pagetitle= @title
+    
     %span  
       %b #{term_for :badges} :
       .label.round.bold=current_course.course_badge_count
@@ -15,10 +16,10 @@
     .small-12.columns
       
       //instructor badge index table
-      %table.responsive
+      %table.responsive.dynatable
         %thead
           %tr
-            %th.center Icon
+            %th.center{"data-dynatable-no-sort" => "true" } Icon
             %th Awarded
             %th Description
             - if current_course.valuable_badges?
@@ -49,6 +50,6 @@
                       %a{:href => edit_badge_path(badge), :class => 'button tiny secondary'}
                         Edit
                     %li
-                      %a{:href => badge_path(badge), :method => :delete, :data => { confirm: 'Are you sure?' }, :class => "button tiny secondary" }
+                      %a{:href => badge_path(badge),:class => "button tiny secondary" , :data => { confirm: 'Are you sure?',  method: :delete } }
                         Delete
     .clearfix

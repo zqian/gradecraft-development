@@ -24,7 +24,6 @@ class Course < ActiveRecord::Base
     c.has_many :assignment_types
     c.has_many :assignments
     c.has_many :badges
-    c.has_many :categories
     c.has_many :challenges
     c.has_many :challenge_grades, :through => :challenges
     c.has_many :earned_badges
@@ -32,7 +31,7 @@ class Course < ActiveRecord::Base
     c.has_many :grades
     c.has_many :groups
     c.has_many :group_memberships
-    c.has_many :rubrics
+    #c.has_many :rubrics
     c.has_many :submissions
     c.has_many :teams
   end
@@ -137,8 +136,9 @@ class Course < ActiveRecord::Base
     end
   end
 
+  #total number of points 'available' in the course - sometimes set by an instructor as a cap, sometimes just the sum of all assignments
   def total_points
-    assignments.point_total
+    point_total || assignments.point_total
   end
 
   def student_weighted?
@@ -162,7 +162,6 @@ class Course < ActiveRecord::Base
   end
 
   def grade_letter_for_score(score)
-    
     grade_scheme_elements.where('low_range <= ? AND high_range >= ?', score, score).pluck('letter').first
   end
 

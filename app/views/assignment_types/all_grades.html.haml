@@ -31,11 +31,11 @@
               No Grade
 
     / Gradebook Pattern Table
-    %table.responsive.simpleTable
+    %table.responsive.dynatable
       %thead
         %tr
-          %th.sortable{"data-sort" => "string"} First Name
-          %th.sortable{"data-sort" => "string"} Last Name
+          %th First Name
+          %th Last Name
           - for assignment in @assignment_type.assignments.chronological
             - if assignment.point_total > 0
               %th.sortable{"data-sort" => "int"}= assignment.due_at.strftime("%b %d") if assignment.due_at.present?

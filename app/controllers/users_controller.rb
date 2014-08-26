@@ -54,9 +54,9 @@ class UsersController < ApplicationController
     @teams = current_course.teams
     @user = current_course.users.new(params[:user])
     if @user.save && @user.is_student?
-      redirect_to students_path, :notice => "#{term_for :student} was successfully created!"
+      redirect_to students_path, :notice => "#{term_for :student} #{@user.name} was successfully created!"
     elsif @user.save && @user.is_staff?
-      redirect_to staff_index_path, :notice => "Staff Member was successfully created!"
+      redirect_to staff_index_path, :notice => "Staff Member #{@user.name} was successfully created!"
     else
       render :new
     end
@@ -70,9 +70,9 @@ class UsersController < ApplicationController
     @user.teams.set_for_course(current_course.id, params[:user][:course_team_ids])
     @user.update_attributes(params[:user])
     if @user.save && @user.is_student?
-      redirect_to students_path, :notice => "#{@user.name} was successfully updated!"
+      redirect_to students_path, :notice => "#{term_for :student} #{@user.name} was successfully updated!"
     elsif @user.save && @user.is_staff?
-      redirect_to staff_index_path, :notice => "#{@user.name} was successfully updated!"
+      redirect_to staff_index_path, :notice => "Staff Member #{@user.name} was successfully updated!"
     else
       render :edit
     end
@@ -80,10 +80,11 @@ class UsersController < ApplicationController
 
   def destroy
     @user = current_course.users.find(params[:id])
+    @name = @user.name
     @user.destroy
 
     respond_to do |format|
-      format.html { redirect_to users_url }
+      format.html { redirect_to users_url, :notice => "User #{@name} was successfully deleted" }
       format.json { head :ok }
     end
 

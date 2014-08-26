@@ -6,16 +6,16 @@
   .pagetitle= @team.name
 
   .small-12.columns
-    %table.responsive.simpleTable
+    %table.responsive.dynatable
       %thead
         %tr
-          %th.sortable{"data-sort" => "string"} First Name
-          %th.sortable{"data-sort" => "string"} Last Name
-          %th.sortable{"data-sort" => "string"} Email
+          %th First Name
+          %th Last Name
+          %th Email
           - if current_course.team_roles? 
-            %th.sortable{"data-sort" => "string"} Role
-          %th.sortable{"data-sort" => "int"} Score
-          %th.sortable{"data-sort" => "string"} Level
+            %th Role
+          %th Score
+          %th Level
           - if current_course.has_badges?
             %th{:width => 200} #{term_for :badges} Earned
           %th.button-column
@@ -28,7 +28,7 @@
               %td= mail_to student.email, student.email
               - if current_course.team_roles? 
                 %td= student.team_role
-              %td= points student.cached_score_for_course(current_course) if student.respond_to?(:grades)
+              %td= student.cached_score_for_course(current_course) if student.respond_to?(:grades)
               %td
                 = student.grade_letter_for_course(current_course)
                 = student.grade_level_for_course(current_course)
@@ -49,10 +49,10 @@
     .small-12
       %h4.bold Challenge Grades
 
-    %table.responsive.simpleTable
+    %table.responsive.dynatable
       %thead
         %tr
-          %th{"data-sort" => "string"} Name
+          %th Name
           %th Score
           %th
 
@@ -60,7 +60,7 @@
         - @challenges.each do |challenge|
           %tr
             %td= link_to challenge.name, challenge
-            %td= points challenge.challenge_grade_for_team(@team).try(:score)
+            %td= challenge.challenge_grade_for_team(@team).try(:score)
             %td
               - if challenge.challenge_grade_for_team(@team).present?
                 = link_to 'Edit Grade', edit_challenge_challenge_grade_path(:challenge_id => challenge, :id => challenge.challenge_grade_for_team(@team).id), :class => 'button tiny round secondary'

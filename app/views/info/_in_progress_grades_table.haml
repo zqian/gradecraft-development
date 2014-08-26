@@ -8,15 +8,16 @@
       = link_to assignment.name, assignment
       = link_to 'Quick Grade', mass_grade_assignment_path(assignment), :class => "button tiny round success"
 
-  %table.responsive.columns
+  %table.responsive.dynatable
     %thead
       %tr
         - if assignment.is_individual?
-          %th.sortable{"data-sort" => "string"} Name
+          %th First Name
+          %th Last Name
           - if current_course.has_teams?
             %th= "#{term_for :team}"
         - elsif assignment.has_groups?
-          %th.sortable{"data-sort" => "string"} Group
+          %th Group
         %th Score
         %th Feedback
         %th.button-column 
@@ -31,7 +32,8 @@
       - grades.each do |g|
         %tr
           - if assignment.is_individual?
-            %td= link_to g.student.try(:name), student_path(g.student)
+            %td= link_to g.student.try(:first_name), student_path(g.student)
+            %td= link_to g.student.try(:last_name), student_path(g.student)
             %td
               - if current_course.has_teams? && g.student.present? && g.student.team_for_course(current_course).present?
                 = link_to g.student.team_for_course(current_course).try(:name), g.student.team_for_course(current_course)

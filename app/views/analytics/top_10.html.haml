@@ -4,9 +4,15 @@
     = render "tabs"
 
   .pagetitle Top 10
-  = render 'students_table', :course => current_course, :students => @top_ten_students
 
-  %br
+  .columns
+    = render 'students_table', :course => current_course, :students => @top_ten_students
+
+  .clearfix
 
   .pagetitle Bottom 10
-  = render 'students_table', :course => current_course, :students => @bottom_ten_students.reverse
+  
+  .columns
+    = render 'students_table', :course => current_course, :students => @bottom_ten_students.reverse
+
+  .clearfix

@@ -3,7 +3,9 @@ development:
   database: gradecraft_development
   min_messages: warning
   pool: 16
-  username: cait
+  host: localhost
+  username: postgres
+  password:
 
 test:
   adapter: postgresql
@@ -11,4 +13,6 @@ test:
   encoding: unicode
   min_messages: warning
   pool: 16
-  username: cait
+  host: localhost
+  username: postgres
+  password:
