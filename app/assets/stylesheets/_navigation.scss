@@ -87,3 +87,19 @@ img.img-rounded {
   padding: 0.5rem;
   background-color: $secondary-color;
 }
+
+.past_courses {
+  opacity: .8;
+
+  hr {
+    margin: 1.5rem 0 .5rem;
+  }
+
+  h5 {
+    color: #FFF;
+    margin-left: 1rem;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    text-transform: uppercase;
+  }
+}

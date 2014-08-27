@@ -435,6 +435,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def archived_courses
+    courses.where(:status => false)
+  end
+
   private
 
   def set_default_course

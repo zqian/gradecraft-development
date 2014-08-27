@@ -14,7 +14,7 @@ class Course < ActiveRecord::Base
     :challenge_term, :badge_term, :grading_philosophy, :team_score_average,
     :team_challenges, :team_leader_term, :max_assignment_types_weighted,
     :point_total, :in_team_leaderboard, :grade_scheme_elements_attributes, 
-    :add_team_score_to_student
+    :add_team_score_to_student, :status
 
   has_many :course_memberships
   has_many :users, :through => :course_memberships
@@ -146,6 +146,10 @@ class Course < ActiveRecord::Base
   #total number of points 'available' in the course - sometimes set by an instructor as a cap, sometimes just the sum of all assignments
   def total_points
     point_total || assignments.point_total
+  end
+
+  def active?
+    status == true
   end
 
   def student_weighted?
