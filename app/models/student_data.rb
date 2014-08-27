@@ -221,8 +221,11 @@ class StudentData < Struct.new(:student, :course)
       end
     end
   end
-  
-  
+
+  #Weights
+  def weight_for_assignment_type(assignment_type)
+    assignment_type_weights[assignment_type.id]
+  end  
 
   #Groups for Assignments
 

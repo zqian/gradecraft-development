@@ -57,7 +57,7 @@ class AssignmentsController < ApplicationController
     @assignment = current_course.assignments.find(params[:id])
     new_assignment = @assignment.dup
     new_assignment.save
-    redirect_to assignments_path
+    redirect_to @assignment.assignment_type
   end
 
   def create

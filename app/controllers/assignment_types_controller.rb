@@ -67,8 +67,7 @@ class AssignmentTypesController < ApplicationController
         format.json { render json: @assignment_type.errors }
       else
         if @assignment_type.save
-          format.html { redirect_to @assignment_type, notice: "Assignment Type #{@assignment_type.name} successfully updated" }
-          format.json { render json: @assignment_type, status: :created, location: @assignment_type }
+          format.html { redirect_to assignments_path, notice: "Assignment Type #{@assignment_type.name} successfully updated" }
         else
           format.html { render action: "new" }
           format.json { render json: @assignment_type.errors }
