@@ -58,17 +58,19 @@ hr {
   border-width: 1px 0 0;
   margin: 1.5rem auto;
 }
-
-.pagetitle {
+/*  TODO: Remove .pagetitle  and remove !important from padding: */
+.pagetitle, h3.pagetitle {
     color: #FFF !important;
     background-color: $primary-color-2;
-    padding: .5rem;
+    padding: .5rem !important;
+    clear: both;
     margin: 0 0 1rem;
     display: inline-block;
     border-top-right-radius: $global-radius;
     border-bottom-right-radius: $global-radius;
     top: .5rem !important;
     box-shadow: 2px 2px 8px #ccc;
+    font-size: 0.9rem;
 
     .label.alert {
       top: -.1rem;
@@ -80,3 +82,15 @@ hr {
   .pagetitle.subtitle {
     background-color: $primary-color;
   }
+
+  /* Used for screen reader only items */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+}

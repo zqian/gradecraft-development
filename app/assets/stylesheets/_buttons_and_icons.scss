@@ -6,7 +6,7 @@
   margin-bottom: 0;
 }
 
-.button:hover {
+.button:hover, .button:focus {
   background: -webkit-gradient(linear, left top, left bottom, from(#666), to(#333));
   background: -moz-linear-gradient(top,  #666,  #333);
 }
@@ -60,7 +60,7 @@ table {
   color: #000;
 }
 
-.button:hover {
+.button:hover, .button:focus {
   background-color: $primary-color-5 !important;
   color: #FFF;
 }
