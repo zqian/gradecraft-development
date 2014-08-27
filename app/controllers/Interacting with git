@@ -1,0 +1,14 @@
+Pulling from Git
+
+$git stash                         //if uncommitted changes
+$git checkout [name of branch]
+$git pull origin [name of branch]  //if update needed
+$git stash pop					   //merge changes from stash command
+
+
+
+Pushing to Git
+
+$git add .
+$git commit -m "Your message here"
+$git push origin notifications

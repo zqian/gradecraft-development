@@ -7,11 +7,12 @@
   padding-bottom: 2rem;
 }
 .upload {
-  width: 400px;
-  margin-top: 10px;
+  width: 240px;
+  position: absolute;
+  margin-top: 0px !important;
 
   .progress {
-    margin-top: 8px;
+    margin-top: 18px;
     border: solid 1px #555;
     border-radius: 3px;
     -moz-border-radius: 3px;

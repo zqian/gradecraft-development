@@ -17,6 +17,7 @@ class Badge < ActiveRecord::Base
   accepts_nested_attributes_for :badge_files
 
   validates_presence_of :course, :name
+  validates_numericality_of :point_total, :allow_blank => true
 
   scope :ordered, -> { 'assignments.id ASC' }
   scope :visible, -> { where(visible: true) }
