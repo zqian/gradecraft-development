@@ -342,11 +342,6 @@ class User < ActiveRecord::Base
     assignment_weights.where(assignment_type: assignment_type).weight
   end
 
-  #Weights
-  def weight_for_assignment_type(assignment_type)
-    assignment_type_weights[assignment_type.id]
-  end
-
   def weighted_assignments?
     @weighted_assignments_present ||= assignment_weights.count > 0
   end

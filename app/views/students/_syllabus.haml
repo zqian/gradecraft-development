@@ -45,14 +45,11 @@
                     - if assignment.past? && current_student_data.grade_for_assignment(assignment).is_graded?
                       - if current_student_data.score_for_assignment(assignment) == 0
                         %i.fi-male.absent
-                        // To indicate partial attendance, use the following code.
-                        // - elsif current_student_data.score_for_assignment(assignment) == assignment.point_total
-                        // %i.fi-male.present
-                        // - else
-                        //   .partial-container
-                        //      %i.fi-male.partial
-                      - else
+                      - elsif current_student_data.score_for_assignment(assignment) == assignment.point_total
                         %i.fi-male.present
+                      - else
+                        .partial-container
+                          %i.fi-male.partial
                 %td
                   - if assignment.required?
                     %span.has-tip{:title => "This #{term_for :assignment} is required!", :data => {'tooltip' => true} }

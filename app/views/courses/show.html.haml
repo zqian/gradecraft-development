@@ -16,7 +16,7 @@
         = @course.courseno
       %p
         %b Semester:
-        = @course.semester
+        = @course.semester.capitalize
       %p
         %b Year:
         = @course.year
@@ -34,7 +34,7 @@
         = @course.predictor_setting? ? 'On' : 'Off'
       %p
         %b Maximum Number of Points:
-        = points @course.point_total
+        = points @course.total_points
 
       %p
         %b Professor's Office Location:
@@ -130,9 +130,6 @@
         %b User's set:
         = @course.max_assignment_weight
         = @course.assignment_weight_type
-      %p
-        %b Minimum size:
-        //= @course.min_size
       %p
         %b Maximium size:
         = @course.max_assignment_weight
