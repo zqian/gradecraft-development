@@ -5,7 +5,7 @@ class CourseMembership < ActiveRecord::Base
   has_one :membership_calculation
   has_many :membership_scores
 
-  attr_accessible :shared_badges, :auditing, :character_profile
+  attr_accessible :shared_badges, :auditing, :character_profile, :course_id, :user_id
 
   # sum of all grade scores
   # where the membership course is the same as the grade course
