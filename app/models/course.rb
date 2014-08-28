@@ -16,10 +16,6 @@ class Course < ActiveRecord::Base
     :point_total, :in_team_leaderboard, :grade_scheme_elements_attributes, 
     :add_team_score_to_student, :status
 
-  has_many :course_memberships
-  has_many :users, :through => :course_memberships
-  accepts_nested_attributes_for :users
-
   with_options :dependent => :destroy do |c|
     c.has_many :assignment_types
     c.has_many :assignments
@@ -34,7 +30,12 @@ class Course < ActiveRecord::Base
     #c.has_many :rubrics
     c.has_many :submissions
     c.has_many :teams
+    c.has_many :course_memberships
   end
+  
+  has_many :users, :through => :course_memberships
+  accepts_nested_attributes_for :users
+
 
   accepts_nested_attributes_for :grade_scheme_elements, allow_destroy: true
 
