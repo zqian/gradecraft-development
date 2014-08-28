@@ -146,6 +146,27 @@ class AssignmentsController < ApplicationController
     end
   end
 
+  # Export an example for grade imports
+  def sample_import
+    @assignment = current_course.assignments.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json { render json: @assignment }
+      format.csv { send_data @assignment.sample_grade_import(@assignment) }
+      format.xls { send_data @assignment.to_csv(col_sep: "\t") }
+    end
+  end
+
+  def sample_import_2
+    @assignment = current_course.assignments.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json { render json: @assignment }
+      format.csv { send_data @assignment.sample_grade_import_2(@assignment) }
+      format.xls { send_data @assignment.to_csv(col_sep: "\t") }
+    end
+  end
+
   # Exporting the grades for a single assignment
   def export_grades
     @assignment = current_course.assignments.find(params[:id])
@@ -192,5 +213,5 @@ class AssignmentsController < ApplicationController
   def rubric_metrics_with_tiers
     @rubric.metrics.order(:order).includes(:tiers)
   end
-  
+
 end
