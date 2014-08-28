@@ -188,7 +188,7 @@ class GradesController < ApplicationController
         NotificationMailer.grade_released(grade.id).deliver
       end
     end
-    flash[:notice] = "Updated grades!"
+    flash[:notice] = "Updated Grades!"
     redirect_to assignment_path(@assignment)
   end
 
