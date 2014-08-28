@@ -41,7 +41,7 @@
 
           
           - if @user.is_student?
-            = f.simple_fields_for :course_memberships do |p|
+            = f.simple_fields_for :course_memberships, @course_membership do |p|
               - if current_course.shared_badges?
                 .small-12.large-4.columns
                   = p.input :shared_badges, :label => "Shared #{term_for :badges}", as: :boolean
