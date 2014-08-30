@@ -296,6 +296,16 @@
 
     .clearfix
 
+  - if current_user.is_admin?
+    .panel
+      %h4 STATUS
+      %hr
+      .small-12.columns
+        %label.checkbox{ :for => "status" }
+          = f.label :status, "Active?"
+          = f.check_box :status
+          .form_label Is this an active course?
+
   .right
     = f.button :submit, "#{@course.persisted? ? 'Update' : 'Create'} Course", :class => "button tiny radius"
     = link_to 'Cancel', courses_path, :class => 'button tiny radius transparent'

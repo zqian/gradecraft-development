@@ -94,6 +94,7 @@ class UsersController < ApplicationController
   def edit_profile
     @title = "Edit My Account"
     @user = current_user
+    @course_membership = @user.course_memberships.where(course_id: current_course).first
     @default_course_options = @user.courses
   end
 

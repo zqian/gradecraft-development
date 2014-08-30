@@ -62,6 +62,7 @@ class AssignmentsController < ApplicationController
 
   def create
     @assignment = current_course.assignments.new(params[:assignment])
+    @assignment.assignment_type = current_course.assignment_types.find_by_id(params[:assignment_type_id])
     if @assignment.due_at.present? && @assignment.open_at.present? && @assignment.due_at < @assignment.open_at
       flash[:error] = 'Due date must be after open date.'
       render :action => "new", :assignment => @assignment
@@ -78,7 +79,6 @@ class AssignmentsController < ApplicationController
       respond_to do |format|
         self.check_uploads
         @assignment.assign_attributes(params[:assignment])
-        @assignment.assignment_type = current_course.assignment_types.find_by_id(params[:assignment_type_id])
         if @assignment.save
           set_assignment_weights
           format.html { respond_with @assignment, notice: "#{term_for :assignment} #{@assignment.name} successfully created" }

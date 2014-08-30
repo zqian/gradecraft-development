@@ -134,7 +134,7 @@ class EarnedBadgesController < ApplicationController
     @student_name = "#{@earned_badge.student.name}"
     @earned_badge.destroy
     expire_fragment "earned_badges"
-    redirect_to @badge, notice: "The #{@badge.name} badge was successfully taken away from #{@student_name}"
+    redirect_to @badge, notice: "The #{@badge.name} #{term_for :badge} has been taken away from #{@student_name}."
   end
 
 end

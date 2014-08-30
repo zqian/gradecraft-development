@@ -15,7 +15,17 @@
       %a My Courses
       %ul.dropdown
         - current_user.courses.each do |c|
-          %li= link_to "#{c.name}", change_current_course_path(:course_id => c.id), :method => 'post'
+          - if c.active?
+            %li= link_to "#{c.name}", change_current_course_path(:course_id => c.id), :method => 'post'
+        
+        - if current_user.archived_courses.present?
+          .past_courses
+            %hr
+            %h5 Past Courses
+            - current_user.courses.each do |c|
+              - if ! c.active?
+                %li.archived= link_to "#{c.name} (#{c.semester.capitalize} #{c.year})", change_current_course_path(:course_id => c.id), :method => 'post'
+
 
     %li.has-dropdown.show-for-large-up
       %a Class Info

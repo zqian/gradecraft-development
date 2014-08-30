@@ -64,7 +64,9 @@ class User < ActiveRecord::Base
       if  proxy_association.owner.role == "student"
         proxy_association.owner.team_ids = other_team_ids | [ids]
       else
-        proxy_association.owner.team_ids = other_team_ids | ids
+        if ids.present?
+          proxy_association.owner.team_ids = other_team_ids | ids
+        end
       end
     end
   end
@@ -433,6 +435,10 @@ class User < ActiveRecord::Base
         :course_total => course.total_points
         }
     end
+  end
+
+  def archived_courses
+    courses.where(:status => false)
   end
 
   private
