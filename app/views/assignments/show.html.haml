@@ -33,7 +33,7 @@
 
   .clearfix
    
-  - if @assignment.rubric.designed?    
+  - if @assignment.rubric.present? && @assignment.rubric.designed?    
     %h3#rubric-preview-headline Rubric Preview
     %h4#ungraded-subtitle= "#{@ungraded_percentage}% ungraded"
     #preview-rubric(style="font-size: 12px")
