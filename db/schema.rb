@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140730214249) do
+ActiveRecord::Schema.define(version: 20140902182913) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,16 @@ ActiveRecord::Schema.define(version: 20140730214249) do
     t.integer "group_id"
     t.integer "assignment_id"
   end
+
+  create_table "assignment_rubrics", force: true do |t|
+    t.integer  "assignment_id"
+    t.integer  "rubric_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "assignment_rubrics", ["assignment_id"], name: "index_assignment_rubrics_on_assignment_id", using: :btree
+  add_index "assignment_rubrics", ["rubric_id"], name: "index_assignment_rubrics_on_rubric_id", using: :btree
 
   create_table "assignment_score_levels", force: true do |t|
     t.integer  "assignment_id", null: false
@@ -356,6 +366,33 @@ ActiveRecord::Schema.define(version: 20140730214249) do
 
   add_index "courses", ["lti_uid"], name: "index_courses_on_lti_uid", using: :btree
 
+  create_table "criteria", force: true do |t|
+    t.string   "name"
+    t.integer  "rubric_id"
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.string   "category"
+  end
+
+  create_table "criteria_levels", force: true do |t|
+    t.string   "name"
+    t.integer  "criteria_id"
+    t.text     "description"
+    t.integer  "value"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "criterium_levels", force: true do |t|
+    t.string   "name"
+    t.integer  "criterium_id"
+    t.text     "description"
+    t.integer  "value"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
   create_table "dashboards", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -495,60 +532,22 @@ ActiveRecord::Schema.define(version: 20140730214249) do
     t.datetime "updated_at"
   end
 
-  create_table "metric_badges", force: true do |t|
-    t.integer  "metric_id"
-    t.integer  "badge_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "metrics", force: true do |t|
-    t.string   "name"
-    t.string   "description"
-    t.integer  "max_points"
-    t.integer  "rubric_id"
-    t.integer  "order"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "full_credit_tier_id"
-  end
-
-  create_table "proposals", force: true do |t|
-    t.string   "title"
-    t.text     "proposal"
-    t.integer  "group_id"
-    t.text     "feedback"
-    t.boolean  "approved"
-    t.integer  "submitted_by"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "rubric_categories", force: true do |t|
     t.integer "rubric_id"
     t.string  "name"
   end
 
-  create_table "rubric_grades", force: true do |t|
-    t.string   "metric_name"
-    t.string   "metric_description"
-    t.integer  "max_points"
-    t.integer  "order"
-    t.string   "tier_name"
-    t.string   "tier_description"
-    t.integer  "points"
-    t.integer  "submission_id"
-    t.integer  "metric_id"
-    t.integer  "tier_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "rubrics", force: true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "course_id"
+    t.integer  "category_id"
   end
 
-  create_table "rubrics", force: true do |t|
-    t.integer  "assignment_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+  add_index "rubrics", ["category_id"], name: "index_rubrics_on_category_id", using: :btree
+  add_index "rubrics", ["course_id"], name: "index_rubrics_on_course_id", using: :btree
 
   create_table "score_levels", force: true do |t|
     t.string   "name"
@@ -559,16 +558,15 @@ ActiveRecord::Schema.define(version: 20140730214249) do
     t.datetime "updated_at",         null: false
   end
 
-  create_table "shared_earned_badges", force: true do |t|
-    t.integer  "course_id"
-    t.text     "student_name"
-    t.integer  "user_id"
-    t.string   "icon"
-    t.string   "name"
-    t.integer  "badge_id"
+  create_table "sessions", force: true do |t|
+    t.string   "session_id", null: false
+    t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", unique: true, using: :btree
+  add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
 
   create_table "student_academic_histories", force: true do |t|
     t.integer "student_id"
@@ -668,26 +666,6 @@ ActiveRecord::Schema.define(version: 20140730214249) do
     t.string   "filename"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "tier_badges", force: true do |t|
-    t.integer  "tier_id"
-    t.integer  "badge_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "tiers", force: true do |t|
-    t.string   "name"
-    t.string   "description"
-    t.integer  "points"
-    t.integer  "metric_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "full_credit"
-    t.boolean  "no_credit"
-    t.boolean  "durable"
-    t.integer  "sort_order"
   end
 
   create_table "users", force: true do |t|
