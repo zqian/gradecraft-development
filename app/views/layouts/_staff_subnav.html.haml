@@ -1,9 +1,10 @@
 %ul.side-nav
   %li
     %label Overview
-  %li
-    %i.fi-home
-    = link_to "Timeline", dashboard_path
+  - if current_course.use_timeline?
+    %li
+      %i.fi-home
+      = link_to "Timeline", dashboard_path
   %li
     %i.fi-list-thumbnails
     = link_to "Leaderboard", leaderboard_path
