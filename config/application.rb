@@ -24,5 +24,6 @@ module GradeCraft
       g.template_engine :haml
       g.test_framework :mini_test, :spec => true
     end
+    ActiveRecord::SessionStore::Session.attr_accessible :data, :session_id
   end
 end

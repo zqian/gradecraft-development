@@ -86,3 +86,5 @@ group :test, :development do
   gem 'launchy'
   gem 'database_cleaner'
 end
+
+gem 'activerecord-session_store'
