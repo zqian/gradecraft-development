@@ -350,7 +350,7 @@ class User < ActiveRecord::Base
 
   #Used for self-logged attendance to check if the student already has a grade
   def present_for_class?(assignment)
-    grade_for_assignment(assignment).raw_score == assignment.point_total
+    grade_for_assignment(assignment).try(:score) == assignment.point_total
   end
 
   #Counts how many assignments are weighted for this student - note that this is an ASSIGNMENT count, and not the assignment type count. Because students make the choice at the AT level rather than the A level, this can be confusing.
