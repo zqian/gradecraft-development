@@ -1,11 +1,31 @@
 .row
   .small-8.columns(style="padding:0")
-    %input(type="text" ng-model="tier.name" placeholder="Tier Name" required ng-blur="tier.modify(tierForm)" ng-change="tier.change()")
+    %input(type="text" ng-model="tier.name" placeholder="Level Name" required ng-blur="tier.modify(tierForm)" ng-change="tier.change()")
   .small-4.columns(style="padding:0")
-    %input(type="number" ng-model="tier.points" placeholder="Points" min=0 ng-blur="tier.modify(tierForm)" ng-change="tier.change()" required ng-disabled="tier.durable")
-    
+    %input(type="number" ng-model="tier.points" placeholder="Points" min=0 ng-blur="tier.modify(tierForm)" ng-change="tier.change()" required)
+
 .row
   %input(type="text" ng-model="tier.description" placeholder="Description" value="{{tier.description}}" ng-blur="tier.modify(tierForm)" ng-change="tier.change()")
+
+.row.badge-row(ng-click="tier.editBadges()")
+  .badge-messages Badges
+  .tier-badge-image(ng-repeat="(tierBadgeId, tierBadge) in tier.badges")
+    = image_tag "badge.png", width: "50px", height: "50px"
+
+.modal-window(ng-show="tier.editingBadges")
+  %button.close-modal(ng-click="tier.closeBadges()") X
+  .row
+    %select(ng-disabled="! tier.isSaved()" ng-change="tier.selectBadge()" ng-model="tier.selectedBadge" ng-options="availableBadge as availableBadge.name for (availableBadgeId, availableBadge) in tier.availableBadges")
+      %option.default(value="" selected disabled ng-show="tier.availableBadges.length > 0") select a badge to add...
+      %option.default(value="" selected disabled ng-show="tier.availableBadges.length == 0") all available badges selected
+
+  .row
+    .tier-badge(ng-repeat="(tierBadgeId, tierBadge) in tier.badges")
+      = image_tag "badge.png", width: "20px", height: "20px"
+      {{tierBadge.name}}
+      %button.delete(type="button" ng-click="tier.deleteTierBadge(tierBadge)") X
+
+.row
 %button.delete(type="button" ng-click="tier.delete($index)" ng-hide="tier.durable") X
 .messages(ng-show="tier.fullCredit") Full Credit Level
 .messages(ng-show="tier.noCredit") No Credit Level

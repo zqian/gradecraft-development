@@ -3,8 +3,9 @@
     = link_to_unless_current "Edit #{current_student.name}'s Profile", edit_user_path(current_student)
   %li{class: ("active" if current_page?(student_path(current_student))) }
     = link_to_unless_current "#{term_for :assignments}", student_path(current_student)
-  %li{class: ("active" if current_page?(student_timeline_path(current_student))) }
-    = link_to_unless_current "Timeline", student_timeline_path(current_student)
+  - if current_course.use_timeline?
+    %li{class: ("active" if current_page?(student_timeline_path(current_student))) }
+      = link_to_unless_current "Timeline", student_timeline_path(current_student)
   - if current_course.grading_philosophy.present?
     %li{class: ("active" if current_page?(student_course_progress_path(current_student))) }
       = link_to_unless_current "Course Progress", student_course_progress_path(current_student)
@@ -18,8 +19,9 @@
     %li{class: ("active" if current_page?(student_teams_path(current_student))) }
       = link_to_unless_current "#{term_for :teams}", student_teams_path(current_student)
 - else
-  %li{class: ("active" if current_page?(dashboard_path)) }
-    = link_to_unless_current "Timeline", dashboard_path
+  - if current_course.use_timeline?
+    %li{class: ("active" if current_page?(dashboard_path)) }
+      = link_to_unless_current "Timeline", dashboard_path
   %li{class: ("active" if current_page?(syllabus_path)) }
     = link_to_unless_current "#{term_for :assignments}", syllabus_path
   - if current_course.grading_philosophy.present?

@@ -1,11 +1,11 @@
 .small-12.right.medium-4.columns
   %br
-  .label.radius Supporting Files
+  .label.radius Attachments
   .s3_uploader
     = s3_uploader_form key: upload_url('badge_files', @badge), acl: "private", max_file_size: 40.megabytes do
-      .small-12.medium-6.columns
+      .small-12.columns
         = file_field_tag :file, :multiple => true
-      .small-12.medium-6.columns
+      .small-12.medium-3.columns
         .upload.s3_progress
           Progress:
           .progress
@@ -20,38 +20,37 @@
               = link_to "(Remove)", remove_uploads_path({ :model => "BadgeFile", :badge_id => @badge.id, :upload_id => bf.id } )
 
 = simple_form_for @badge do |f|
-  .small-12.medium-4.columns
+  .small-12.medium-3.columns
     = f.label :name, "Name"
     = f.text_field :name
-  
-  .small-12.medium-4.columns
-    = f.file_field :icon, :label => "Select an icon for this badge."
-    .form_label Choose an icon for this badge.
-
 
   - if current_course.valuable_badges?
     .small-12.medium-2.columns
       = f.label :point_total
       = f.text_field :point_total, data: {autonumeric: true, "m-dec" => "0"}
-  .small-12.medium-6.columns
-    .small-12.medium-6.columns
-      %label.checkbox{ :for => "visible" }
-        = f.label :visible
-        = f.check_box :visible
-        .form_label Can #{term_for :students} see this #{term_for :badge}?
-    .small-12.medium-6.columns
-      %label.checkbox{ :for => "can_earn_multiple_times" }
-        = f.label :can_earn_multiple_times,"Multi-award"
-        = f.check_box :can_earn_multiple_times
-        .form_label Can this #{term_for :badge} be given to one #{term_for :student} multiple times through the semester?
+  
+  .small-12.medium-3.columns
+    = "Icon"
+    = f.file_field :icon
+
+  .clearfix
+
+  .small-12.medium-3.columns
+    %label.checkbox{ :for => "visible" }
+      = f.label :visible
+      = f.check_box :visible
+      .form_label Can #{term_for :students} see this #{term_for :badge}?
+  .small-12.medium-3.columns
+    %label.checkbox{ :for => "can_earn_multiple_times" }
+      = f.label :can_earn_multiple_times,"Multi-award"
+      = f.check_box :can_earn_multiple_times
+      .form_label Can this #{term_for :badge} be given to one #{term_for :student} multiple times through the semester?
 
   .clearfix
 
   .small-12.textarea
     = f.bootsy_area :description
     .form_label Describe what this #{term_for :badge} means, and how it can be earned. Note that if this #{term_for :badge} is marked as visible then this description will also be viewable in the list of #{term_for :badges}.
-
-  .clearfix
 
   .right
     = submit_tag "#{@badge.persisted? ? 'Update' : 'Create'} #{term_for :badge}", :class => "button tiny radius"

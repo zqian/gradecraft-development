@@ -65,7 +65,7 @@
 
     .small-12.large-4.columns
       = f.label :point_total, "Maximum Number of Points"
-      = f.text_field :point_total, data: {autonumeric: true, "m-dec" => "0"}
+      = f.number_field :point_total
       .form_label If you leave this blank, GradeCraft will calculate the total number of points based on the assignments you create.
 
     .clearfix
@@ -207,12 +207,12 @@
 
     .small-12.large-4.columns
       = f.label :max_group_size, "Maximum Group Size"
-      = f.text_field :max_group_size
+      = f.number_field :max_group_size
 
 
     .small-12.large-4.columns
       = f.label :min_group_size, "Minimum Group Size"
-      = f.text_field :min_group_size
+      = f.number_field :min_group_size
 
     .clearfix
 
@@ -238,27 +238,29 @@
     %hr
     .small-12.large-4.columns
       = f.label :total_assignment_weight, "Multiplier Count"
-      = f.text_field :total_assignment_weight, data: {autonumeric: true, "m-dec" => "0"}
+      = f.number_field :total_assignment_weight
+      .form_label= "How many multipliers do #{term_for :students} have to allocate?"
 
     .small-12.large-4.columns
-      = f.label :assignment_weight_close_at, "Multiplier Close Date"
+      = f.label :assignment_weight_close_at, "Decision By..."
       = f.input :assignment_weight_close_at, as: :string, :include_blank => true, :input_html => { :class => 'datetimepicker', :value => @assignment.try(:open_at) }, :label => false
       .form_label What date must they make this decision by?
 
     .small-12.large-4.columns
-      = f.label :max_assignment_weight, "Maximum amount that students may allocate"
-      = f.text_field :max_assignment_weight, data: {autonumeric: true, "m-dec" => "0"}
+      = f.label :max_assignment_weight, "Maximum Per #{term_for :assignment_type}"
+      = f.number_field :max_assignment_weight
+      .form_label Is there a maximum weight they may place on a single assignment type?
 
     .clearfix
 
     .small-12.large-4.columns
       = f.label :max_assignment_types_weighted, "Maximum Multiplied Assignment Types"
-      = f.text_field :max_assignment_types_weighted, data: {autonumeric: true, "m-dec" => "0"}
-      .form_label Is there a maximum number of assignment types that students can select to weight?"
+      = f.number_field :max_assignment_types_weighted
+      .form_label Is there a maximum number of assignment types they can weight?
 
     .small-12.large-4.columns
       = f.label :default_assignment_weight
-      = f.text_field :default_assignment_weight, data: {autonumeric: true, "m-dec" => "0"}
+      = f.text_field :default_assignment_weight
       .form_label What amount should the assignment types that the student doesn't select to boost be multiplied by?
 
     .small-12.large-4.columns
@@ -293,6 +295,16 @@
       = f.text_field :media_caption
 
     .clearfix
+
+  - if current_user.is_admin?
+    .panel
+      %h4 STATUS
+      %hr
+      .small-12.columns
+        %label.checkbox{ :for => "status" }
+          = f.label :status, "Active?"
+          = f.check_box :status
+          .form_label Is this an active course?
 
   .right
     = f.button :submit, "#{@course.persisted? ? 'Update' : 'Create'} Course", :class => "button tiny radius"

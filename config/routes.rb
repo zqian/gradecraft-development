@@ -94,6 +94,9 @@ GradeCraft::Application.routes.draw do
   resources :tiers
   resources :graded_metrics
 
+  resources :metric_badges
+  resources :tier_badges
+
   resources :score_levels
 
   #3. Assignment Types
@@ -184,10 +187,8 @@ GradeCraft::Application.routes.draw do
 
   get 'submit_a_bug' => 'pages#submit_a_bug'
   get 'features' => 'pages#features'
-  get 'research' => 'pages#research'
   get 'news' => 'pages#news'
   get 'using_gradecraft' => 'pages#using_gradecraft'
-  get 'people' => 'pages#people'
   get 'contact' => 'pages#contact'
   get 'documentation' => 'pages#documentation'
   get 'ping' => 'pages#ping'

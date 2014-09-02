@@ -22,6 +22,9 @@ $dark_green: #54BA3F
 $inactive_red: #DC9A9A
 $dark_red: #B40D0D
 $badass_blue: #269ECC
+$badge_blue: #009BD6
+$badge_green: #54B141
+$badge_green_border: #439A31
 
 .splash
   display: none
@@ -36,7 +39,7 @@ $badass_blue: #269ECC
 #rubric
   h5.subtitle
     font-style: italic
-    color: #666#555
+    color: #666
 
   #rubric-title
     float: left
@@ -44,11 +47,18 @@ $badass_blue: #269ECC
   .clear
     clear: both
 
-  #points-overview
+  #points-overview-floating
     float: right
     display: block
     margin-right: 28px
     text-align: right
+    border: 2px solid ($badass_blue - #111)
+    border-top: none
+
+    &.floating
+      position: fixed
+      top: 0
+      right: 0
     
     h4#points-legend
       font-size: 22px
@@ -72,6 +82,17 @@ $badass_blue: #269ECC
       font-style: italic
       font-weight: normal
       color: #666
+
+  #points-overview-floating
+    position: fixed
+    top: 45px
+    z-index: 4000
+    right: 0
+    padding: 12px 24px
+    height: 80px
+    background: white
+    @include linear-gradient(#fff, #EFFCFF)
+
 
 
   h4#points-assigned
@@ -117,11 +138,22 @@ $badass_blue: #269ECC
       border: 1px solid #E84846
       background: #FDD
 
+    select
+      color: #333
+      font-size: 13px
+      padding: -4px 2px
+
+      &[disabled]
+        color: #999
+
+      option.default, option.selected.default
+        color: #777
+
     .messages
       position: absolute
       padding: 3px 6px
       bottom: 0
-      right: 0
+      right: 30px
       font-style: italic
       font-size: 11px
       color: #555
@@ -140,13 +172,29 @@ $badass_blue: #269ECC
         padding: 3px 6px
         background: $inactive_red
         position: absolute
-        top: 0
-        right: 0
+        right: 8px
+        bottom: 0
         font-weight: bold
+        margin-bottom: 0px
 
         &:hover
           background: $dark_red
-    
+
+  .metric-badge
+    background: $badge_blue
+    border: 1px solid $badge_blue - #222
+    font-size: 12px
+    color: white
+    padding: 2px 0 2px 4px
+    margin-bottom: 2px
+
+    button.delete
+      position: static
+      padding: 4px 7px
+      background: none
+      margin-top: -2px
+      float: right
+      z-index: 400
 
   .tier
     background: #eee
@@ -162,6 +210,37 @@ $badass_blue: #269ECC
       @include linear-gradient(#E2F6DE, #B9E7AF)
       @include linear-gradient(#B9E7AF, #ACE3A0)
 
+    .badge-messages
+      background: none
+      float: left
+      padding-top: 2px
+      border: none
+      font-style: italic
+      font-size: 11px
+      color: #7FBB71
+      margin-left: 4px
+
+    .badge-row .edit-badges
+      display: none
+      float: right
+      font-style: italic
+      margin-right: 4px
+      font-size: 11px
+      color: #7FBB71
+
+    .badge-row
+      &:hover
+        background: #9CD78F
+        cursor: pointer
+        cursor: hand
+
+        .badge-messages
+          color: #4E903E
+
+        .edit-badges
+          display: block
+          background: #4E903E
+          color: #fff
 
     button
       padding: 4px 8px
@@ -174,18 +253,30 @@ $badass_blue: #269ECC
         padding: 3px 6px
         font-weight: bold
         position: absolute
-        top: 0
-        right: 0
+        bottom: 0
+        right: 8px
+        margin-bottom: 0
         background: $inactive_red
 
         &:hover
           background: $dark_red
 
+    select
+      color: #333
+      font-size: 13px
+      padding: -4px 2px
+
+      &[disabled]
+        color: #999
+
+      option.default, option.selected.default
+        color: #777
+
     .messages
       position: absolute
       padding: 3px 6px
       bottom: 0
-      right: 0
+      right: 30px
       font-style: italic
       font-size: 11px
       color: #555
@@ -211,6 +302,28 @@ $badass_blue: #269ECC
       border: 1px solid #E84846
       background: #FDD
 
+  .tier-badge, .tier-badge-image
+    background: $badge_green
+    border: 1px solid $badge_green_border
+    font-size: 12px
+    color: white
+    padding: 2px 0 2px 4px
+    margin-bottom: 2px
+
+    button.delete
+      position: static
+      padding: 4px 7px
+      background: none
+      margin-top: -2px
+      float: right
+      z-index: 400
+
+  .tier-badge-image
+    float: left
+    background: none
+    border: none
+    padding: 0 4px
+
   .metric, .tier
     &.heading
       font-size: 19px
@@ -221,6 +334,10 @@ $badass_blue: #269ECC
     &.ng-invalid.saved
       border: 1px solid #FF8786
       background: #FEB1B0
+
+    input[type=text], input[type=number]
+      font-size: 14px
+      margin-top: -8px
 
   .add-tier
     background: $dark_green
@@ -280,3 +397,51 @@ $badass_blue: #269ECC
       font-size: 14px
       margin-top: -10px
       margin-right: -10px
+
+.ng-modal-overlay 
+  /* A dark translucent div that covers the whole screen */
+  position:absolute
+  z-index:  9999
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  background-color: #000000
+  opacity: 0.8
+
+.modal-window
+  /* A centered div above the overlay with a box shadow. */
+  z-index: 10000
+  position: absolute
+  width: 100%
+  padding: 26px
+
+  /* Center the dialog */
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+  -webkit-transform: translate(-50%, -50%)
+  -moz-transform: translate(-50%, -50%)
+
+  background-color: $badass_blue
+  box-shadow: 4px 4px 80px #000
+
+.ng-modal-dialog-content 
+  padding: 10px
+  text-align: left
+
+.close-modal
+  position: absolute
+  top: 0
+  color: white
+  right: 5px
+  font-size: 11px
+  padding: 2px 4px
+  cursor: pointer
+  display: inline-block
+  font-family: 'arial', 'sans-serif'
+  background: $inactive_red
+
+  &:hover
+    background: $dark_red
+

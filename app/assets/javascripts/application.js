@@ -18,6 +18,8 @@
 //= require underscore.min
 //= require backbone.min
 //= require bootstrap
+//= require jquery.dynatable
+//= require dynatable
 
 //= require angular
 //= require angular-resource
@@ -43,7 +45,6 @@
 //= require student_dashboard
 //= require predictor
 //= require levels_per_assign
-//= require stupidtable
 //= require submissions
 //= require submission_file
 //= require timelineJS/embed

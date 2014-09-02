@@ -11,23 +11,19 @@
         = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
 
   .small-12.columns
-    %table.responsive.simpleTable
+    %table.columns.nopage_dynatable
       %thead
         %tr
-          %th
-          %th.sortable{"data-sort" => "string"} First Name
-          %th.sortable{"data-sort" => "string"} Last Name
-          %th.sortable{"data-sort" => "string"} Email
-          %th.sortable{"data-sort" => "string"} Role
-          %th.sortable{"data-sort" => "string"} #{term_for :team}
-          %th.sortable{"data-sort" => "int"} Score
+          %th First Name
+          %th Last Name
+          %th Email
+          %th Role
+          %th #{term_for :team}
+          %th Score
           %th.button-column
       %tbody
         - @users.each do |user|
           %tr
-            %td
-              %a{:href => "mailto:#{user.email}" }
-                %i.fi-mail
             %td
               = link_to user.first_name, student_path(user) if user.is_student?
               = link_to user.first_name, staff_path(user) if user.is_staff?

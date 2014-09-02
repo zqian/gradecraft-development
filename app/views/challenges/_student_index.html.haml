@@ -1,13 +1,13 @@
-%table.responsive.simpleTable
+%table.responsive.dynatable
   %thead
     %tr
-      %th.sortable{"data-sort" => "string"} Name
-      %th.sortable{"data-sort" => "string"} Description
-      %th.sortable{"data-sort" => "string"} Due date
+      %th Name
+      %th Description
+      %th Due date
       - if current_student.team_for_course(current_course).present?
-        %th.sortable{"data-sort" => "int"} Score
+        %th Score
       - else
-        %th.sortable{"data-sort" => "int"} Point total
+        %th Point total
 
   %tbody
     - current_course_data.challenges.each do |challenge|

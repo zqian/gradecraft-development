@@ -39,13 +39,20 @@ class CoursesController < ApplicationController
   def create
     @course = Course.new(params[:course])
 
-    respond_to do |format|
-      if @course.save
-        format.html { redirect_to @course }
-        format.json { render json: @course, status: :created, location: @course }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @course.errors, status: :unprocessable_entity }
+    if @course.max_group_size.present? && @course.min_group_size.present? && @course.max_group_size < @course.min_group_size
+      flash[:error] = 'Maximum group size must be greater than minimum group size.'
+      render :action => "new", :course => @course
+    else
+      respond_to do |format|
+        if @course.save
+          @course.course_memberships.create(:user_id => current_user.id)
+          session[:course_id] = @course.id
+          format.html { redirect_to course_path(@course), notice: "Course #{@course.name} successfully created" }
+          format.json { render json: @course, status: :created, location: @course }
+        else
+          format.html { render action: "new" }
+          format.json { render json: @course.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -55,8 +62,14 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       if @course.update_attributes(params[:course])
-        format.html { redirect_to @course }
-        format.json { head :no_content }
+        if @course.max_group_size.present? && @course.min_group_size.present? && @course.max_group_size < @course.min_group_size
+          flash[:error] = 'Maximum group size must be greater than minimum group size.'
+          format.html { render action: "edit" }
+          format.json { render json: @course.errors, status: :unprocessable_entity }
+        else
+          format.html { redirect_to @course, notice: "Course #{@course.name} successfully updated" }
+          format.json { head :no_content }
+        end
       else
         format.html { render action: "edit" }
         format.json { render json: @course.errors, status: :unprocessable_entity }
@@ -66,10 +79,11 @@ class CoursesController < ApplicationController
 
   def destroy
     @course = Course.find(params[:id])
+    @name = @course.name
     @course.destroy
 
     respond_to do |format|
-      format.html { redirect_to courses_url }
+      format.html { redirect_to courses_url, notice: "Course #{@name} successfully deleted" }
       format.json { head :no_content }
     end
   end

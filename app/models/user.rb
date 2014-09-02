@@ -64,7 +64,9 @@ class User < ActiveRecord::Base
       if  proxy_association.owner.role == "student"
         proxy_association.owner.team_ids = other_team_ids | [ids]
       else
-        proxy_association.owner.team_ids = other_team_ids | ids
+        if ids.present?
+          proxy_association.owner.team_ids = other_team_ids | ids
+        end
       end
     end
   end
@@ -78,16 +80,23 @@ class User < ActiveRecord::Base
                     :uniqueness => { :case_sensitive => false }
 
   def self.find_or_create_by_lti_auth_hash(auth_hash)
-    criteria = { lti_uid: auth_hash['uid'] }
+    criteria = { email: auth_hash['info']['email'] }
     where(criteria).first || create!(criteria) do |u|
+      u.lti_uid = auth_hash['uid']
       auth_hash['info'].tap do |info|
-        u.email = info['email']
         u.first_name = info['first_name']
         u.last_name = info['last_name']
       end
       auth_hash['extra']['raw_info'].tap do |extra|
-        u.username = extra['ext_sakai_eid']
-        u.kerberos_uid = extra['ext_sakai_eid']
+        if extra['tool_consumer_info_product_family_code'] == "sakai"
+          u.username = extra['ext_sakai_eid']
+          u.kerberos_uid = extra['ext_sakai_eid']
+
+        elsif extra['tool_consumer_info_product_family_code'] == "canvas"
+          u.username = extra['custom_canvas_user_login_id']
+          u.kerberos_uid = extra['custom_canvas_user_login_id']
+        end
+
         case extra['roles']
         when 'instructor'
           u.role = 'professor'
@@ -159,6 +168,11 @@ class User < ActiveRecord::Base
     is_prof? || is_gsi? || is_admin?
   end
 
+  # Find the team associated with the team membership for a given course id
+  def course_team(course)
+    team_memberships.where("teams.course_id = ?", course.id) rescue nil
+  end
+
   def character_profile(course)
     course_memberships.where(course: course).try('character_profile')
   end
@@ -196,7 +210,7 @@ class User < ActiveRecord::Base
   end
 
   def earned_badge_score
-    @earned_badge_score ||= sums.earned_badge_score
+    @earned_badge_score ||= earned_badges.sum(:score)
   end
 
   #grabbing the stored score for the current course
@@ -290,7 +304,7 @@ class User < ActiveRecord::Base
       n += 1
       if n == stop
         level = element.level
-      end 
+      end
       if element.high_range >= cached_score_for_course(course) && cached_score_for_course(course) >= element.low_range
         stop = n + 1
       end
@@ -328,6 +342,15 @@ class User < ActiveRecord::Base
 
   def weights_for_assignment_type_id(assignment_type)
     assignment_weights.where(assignment_type: assignment_type).weight
+  end
+
+  def weighted_assignments?
+    @weighted_assignments_present ||= assignment_weights.count > 0
+  end
+
+  #Used for self-logged attendance to check if the student already has a grade
+  def present_for_class?(assignment)
+    grade_for_assignment(assignment).try(:score) == assignment.point_total
   end
 
   #Counts how many assignments are weighted for this student - note that this is an ASSIGNMENT count, and not the assignment type count. Because students make the choice at the AT level rather than the A level, this can be confusing.
@@ -385,6 +408,39 @@ class User < ActiveRecord::Base
     super || courses.first
   end
 
+  def predictions(course)
+    scores = []
+    course.assignment_types.each do |assignment_type|
+      scores << { data: [grades.released.where(assignment_type: assignment_type).score], name: assignment_type.name }
+    end
+
+
+    _assignments = assignments.where(course: course)
+    in_progress = _assignments.graded_for_student(self)
+
+    if course.valuable_badges?
+      earned_badge_score = earned_badges.where(course: course).score
+      scores << { :data => [earned_badge_score], :name => "#{course.badge_term.pluralize}" }
+      return {
+        :student_name => name,
+        :scores => scores,
+        :course_total => course.total_points + earned_badge_score,
+        :in_progress => in_progress.point_total + earned_badge_score
+        }
+    else
+      return {
+        :student_name => name,
+        :scores => scores,
+        :in_progress => in_progress.point_total,
+        :course_total => course.total_points
+        }
+    end
+  end
+
+  def archived_courses
+    courses.where(:status => false)
+  end
+
   private
 
   def set_default_course
@@ -397,7 +453,7 @@ class User < ActiveRecord::Base
         membership.update_attribute :score, grades.released.where(course_id: membership.course_id).score + earned_badge_score_for_course(membership.course_id) + (team_for_course(membership.course_id).try(:challenge_grade_score) || 0)
       else
         membership.update_attribute :score, grades.released.where(course_id: membership.course_id).score + earned_badge_score_for_course(membership.course_id)
-      end  
+      end
     end
   end
 

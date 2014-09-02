@@ -6,12 +6,12 @@
   .pagetitle Updating Selected Grades
 
   .small-12.columns            
-    %table.responsive.simpleTable
+    %table.responsive.dynatable
       %thead
         %tr
-          %th.sortable{"data-sort" => "string"}= term_for :student
-          %th.sortable{"data-sort" => "int"} Score
-          %th.sortable{"data-sort" => "string"} Current Status
+          %th= term_for :student
+          %th Score
+          %th Current Status
       %tbody
         - for grade in @grades
           %tr

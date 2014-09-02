@@ -2,7 +2,7 @@ class Assignment < ActiveRecord::Base
   attr_accessible :name, :description, :point_total, :open_at, :due_at, :grade_scope, :visible, :required, 
     :accepts_submissions, :release_necessary, :media, :thumbnail, :media_credit, :media_caption, 
     :accepts_submissions_until, :points_predictor_display, :notify_released, :mass_grade_type, 
-    :include_in_timeline, :include_in_predictor, :grades_attributes, :assignment_file_ids, 
+    :include_in_timeline, :include_in_predictor, :grades_attributes, :assignment_file_ids, :student_logged,
     :assignment_files_attributes, :assignment_file, :assignment_score_levels_attributes, :assignment_score_level, :score_levels_attributes
 
   belongs_to :course
@@ -35,13 +35,16 @@ class Assignment < ActiveRecord::Base
 
   has_many :users, :through => :grades
 
-  has_many :assignment_rubrics, dependent: :destroy
-  accepts_nested_attributes_for :assignment_rubrics, allow_destroy: true
-  has_many :rubrics, through: :assignment_rubrics, dependent: :destroy
+  # Mike, pretty sure these are old, okay if we delete?
+  #has_many :assignment_rubrics, dependent: :destroy
+  #accepts_nested_attributes_for :assignment_rubrics, allow_destroy: true
+  #has_many :rubrics, through: :assignment_rubrics, dependent: :destroy
   
   #Instructor uploaded resource files
   has_many :assignment_files, :dependent => :destroy
   accepts_nested_attributes_for :assignment_files
+
+  has_many :assignment_weights
 
   #Preventing malicious content from being submitted
   before_save :clean_html
@@ -81,6 +84,8 @@ class Assignment < ActiveRecord::Base
   # Assignments and Grading
   scope :graded_for_student, ->(student) { where('EXISTS(SELECT 1 FROM grades WHERE assignment_id = assignments.id AND (status = ?) OR (status = ? AND NOT assignments.release_necessary) AND (assignments.due_at < NOW() OR student_id = ?))', 'Released', 'Graded', student.id) }
   scope :weighted_for_student, ->(student) { joins("LEFT OUTER JOIN assignment_weights ON assignments.id = assignment_weights.assignment_id AND assignment_weights.student_id = '#{sanitize student.id}'") }
+
+  scope :released, ->(student) { where('EXISTS (SELECT 1 FROM released_grades WHERE ((released_grades.assignment_id = assignments.id) AND (released_grades.student_id = ?)))', student.id) }
 
 
   def to_json(options = {})
@@ -124,6 +129,15 @@ class Assignment < ActiveRecord::Base
 
   def has_rubric?
     !! rubric
+  end
+
+  def fetch_or_create_rubric
+    return rubric if rubric
+    Rubric.create assignment_id: self[:id]
+  end
+
+  def ungraded_submissions
+    submissions.where("id not in (select submission_id from rubric_grades)")
   end
 
   #average of above-zero grades for an assignment

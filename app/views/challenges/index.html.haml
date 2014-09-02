@@ -7,16 +7,17 @@
 
   .small-12.columns
   
-    %table.responsive.simpleTable
+    %table.responsive.nofeatures_dynatable
       %thead
         %tr
-          %th.sortable{"data-sort" => "string"} Name
-          %th.sortable{"data-sort" => "string"} Description
-          %th.sortable{"data-sort" => "int"} Point total
-          %th.sortable{"data-sort" => "string"} Due date
-          %th.sortable{"data-sort" => "string"} Visible
-          %th.sortable{"data-sort" => "int"} Submissions?
-          %th.sortable{"data-sort" => "string"} Release necessary
+          %th Name
+          %th Description
+          %th Max Value
+          %th{"data-dynatable-sorts" => "dueDate"} Due
+          %th{:style => "display: none"} Due Date
+          %th Visible
+          %th Submissions?
+          %th Release necessary
           %th.button-column
 
       %tbody
@@ -24,8 +25,10 @@
           %tr
             %td= link_to challenge.name, challenge
             %td= raw challenge.description
-            %td= points challenge.point_total
+            %td= challenge.point_total
             %td= challenge.due_at
+            %td{:style => "display: none"} 
+              = challenge.try(:due_at).to_formatted_s(:db) if challenge.due_at.present?
             %td= challenge.visible? ? 'Visible' : 'Hidden'
             %td= challenge.accepts_submissions? ? 'Yes' : 'No'
             %td= challenge.release_necessary? ? 'Yes' : 'No'

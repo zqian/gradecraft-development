@@ -11,6 +11,7 @@
     .small-12.medium-4.columns.right
       .right= render "assignments/description"
   .clearfix
+
   - if current_user.is_staff?
     .small-12.columns
       - if @assignment.rubric and @assignment.rubric.designed?
@@ -31,4 +32,52 @@
         = render "grades/individual_show"
 
   .clearfix
-      
+   
+  - if @assignment.rubric.present? && @assignment.rubric.designed?    
+    %h3#rubric-preview-headline Rubric Preview
+    %h4#ungraded-subtitle= "#{@ungraded_percentage}% ungraded"
+    #preview-rubric(style="font-size: 12px")
+      %table#grade-rubric-table
+        %thead
+          %tr
+            %td.metric.heading
+              %label.larger
+                <strong>Criterion</strong>:&nbsp;Max&nbsp;points
+            %td.tier.heading(colspan="#{@assignment.rubric.try(:max_tier_count)}")
+              %label.larger
+                %strong Level:
+                Point value
+
+        %tbody
+          - @metrics.each do |metric|
+            %tr
+              %td.metric(style="font-size: 12px !important")
+                .metric-heading
+                  .metric-name= metric.name
+                  .metric-points= "#{metric.max_points} Points"
+                .metric-description= metric.description
+
+              - metric.tiers.each do |tier|
+                %td.tier
+                  .tier-heading
+                    .tier-name= tier.name
+                    .tier-points= "#{tier.points} Points"
+                  .clear
+                  %label.tier-description= tier.description
+
+                  .row.badge-row
+                    - tier.tier_badges.each_with_index do |badge, index|
+                      - if index < 2
+                        .tier-badge-image
+                          = image_tag "badge.png", width: "30px", height: "30px"
+                    .clear
+
+                  - if current_user.is_student?
+                    - if @rubric_grades.select {|rubric_grade| rubric_grade.tier_id == tier[:id] }.count > 0
+                      .level-scored You scored at this level
+
+                  - if tier.rubric_grades.size > 0
+                    .students-padding
+                    .graded-students= "#{tier.rubric_grades.size} students (#{'%.0f' % ((tier.rubric_grades.size/@graded_count).to_f * 100)}%) at this level"
+              - if metric.tiers.size < @rubric.max_tier_count
+                %td.filler(colspan="#{@rubric.max_tier_count - metric.tiers.size}")

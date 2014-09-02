@@ -17,7 +17,8 @@ body.logged-in, body.logged-out {
   margin-bottom: 1rem;
   padding: 1rem 0;
   border-radius: $global-radius;
-  border: none;
+  border: none;/*
+  overflow: hidden;*/
 }
 
 .outerContainer {
@@ -81,7 +82,8 @@ body.logged-in, body.logged-out {
 }
 
 .panel {
-  border-radius: $global-radius;
+  border-radius: $global-radius;/*
+  overflow: hidden;*/
 }
 
 form .tabs-content .content {
