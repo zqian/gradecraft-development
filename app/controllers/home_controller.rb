@@ -4,15 +4,7 @@ class HomeController < ApplicationController
 
   def index
     if current_user
-      if current_course.use_timeline?
-        redirect_to dashboard_path
-      else
-        if current_user.is_student?
-          redirect_to syllabus_path
-        else
-          redirect_to analytics_top_10_path
-        end
-      end
+      redirect_to dashboard_path
     end
   end
 
