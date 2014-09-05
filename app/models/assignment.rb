@@ -329,6 +329,25 @@ class Assignment < ActiveRecord::Base
     end
   end
 
+  def sample_grade_import(assignment, options = {})
+    CSV.generate(options) do |csv|
+      csv << ["First Name", "Last Name", "Email", "Score"]
+      course.students.each do |student|
+        csv << [student.first_name, student.last_name, student.email, student.grade_for_assignment(assignment).try(:score)]
+      end
+    end
+  end
+
+  def sample_grade_import_2(assignment, options = {})
+    CSV.generate(options) do |csv|
+      csv << ["Student", "ID", "Section", assignment.name]
+      csv << ["    Points Possible", "", "", assignment.point_total]
+      course.students.each do |student|
+        csv << [student.last_name + ", " + student.first_name, student.id, student.team_for_course(course).try(:name), student.grade_for_assignment(assignment).try(:score)]
+      end
+    end
+  end
+
   # Calculating how many of each score exists
   def score_count
     Hash[grades.graded.group_by{ |g| g.score }.map{ |k, v| [k, v.size] }]

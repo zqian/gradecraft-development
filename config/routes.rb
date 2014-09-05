@@ -62,6 +62,8 @@ GradeCraft::Application.routes.draw do
       get 'group_grade' => 'grades#group_edit', as: :group_grade
       put 'group_grade' => 'grades#group_update'
       get 'export_grades'
+      get 'sample_import' => 'assignments#sample_import'
+      get 'sample_import_2' => 'assignments#sample_import_2'
       get 'detailed_grades' => 'assignments#show', detailed: true
       scope 'grades', as: :grades, controller: :grades do
         post :edit_status
@@ -70,6 +72,7 @@ GradeCraft::Application.routes.draw do
         post :predict_score
         get :import
         post :upload
+        post :upload2
       end
     end
     resources :submissions do
