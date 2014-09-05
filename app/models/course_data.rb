@@ -18,7 +18,7 @@ class CourseData < Struct.new(:course)
 
   #Displays only visible assignments
   def assignments
-    @assignments ||= course.assignments.includes(:course, assignment_type: [:score_levels]).chronological.alphabetical
+    @assignments ||= course.assignments.includes(:course, assignment_type: [:score_levels]).visible.chronological.alphabetical
   end
 
   #Display all assignments - even invisible ones.
