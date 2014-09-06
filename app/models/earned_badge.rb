@@ -12,6 +12,9 @@ class EarnedBadge < ActiveRecord::Base
   before_validation :cache_associations
 
   validates_presence_of :badge, :course, :student
+  
+  #Some badges can only be earned once - we check on award if that's the case
+  validate :multiple_allowed
 
   delegate :name, :description, :icon, :to => :badge
 
@@ -28,5 +31,11 @@ class EarnedBadge < ActiveRecord::Base
   def cache_associations
     self.course_id ||= badge.try(:course_id)
     self.score ||= badge.try(:point_total)
+  end
+
+  def multiple_allowed
+    if ! self.badge.can_earn_multiple_times? && self.badge.earned_badge_for_student(self.student)
+      errors.add :weight, " Oops, they've already earned this #{course.badge_term.downcase}."
+    end
   end
 end
