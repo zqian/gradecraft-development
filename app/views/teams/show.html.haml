@@ -6,7 +6,7 @@
   .pagetitle= @team.name
 
   .small-12.columns
-    %table.responsive.dynatable
+    %table.responsive.nopage_dynatable
       %thead
         %tr
           %th First Name
@@ -44,12 +44,13 @@
                     %li= link_to 'Edit', edit_user_path(student), :class => 'button tiny secondary'
 
 
-    %hr
+  %hr
 
-    .small-12
-      %h4.bold Challenge Grades
+  .pagetitle Challenge Grades
 
-    %table.responsive.dynatable
+  .small-12.columns
+
+    %table.responsive.nopage_dynatable
       %thead
         %tr
           %th Name

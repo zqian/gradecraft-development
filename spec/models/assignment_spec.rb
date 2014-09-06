@@ -1,20 +1,19 @@
+# spec/models/assignment_spec.rb
 require 'spec_helper'
 
 describe Assignment do
-  before(:each) do
-    @assignment = create(:assignment)
+  
+  #validations
+  it "is valid with a name and assignment type" do 
+    assignment = Assignment.new(
+      name: "Essay 1", assignment_type_id: "1")
+    expect(assignment).to be_valid
+  end
+  it "is invalid without a name" do 
+    expect(Assignment.new(name: nil)).to have(1).errors_on(:name)
+  end
+  it "is invalid without an assignment type" do 
+    expect(Assignment.new(assignment_type_id: nil)).to have(1).errors_on(:assignment_type_id)
   end
 
-  context "doesn't have a rubric" do
-    it "should know it doesn't have a rubric" do
-      expect(@assignment.has_rubric?).to eq false
-    end
-  end
-
-  context "has a rubric" do
-    it "should know it has a rubric" do
-      allow(@assignment).to receive(:rubric).and_return true
-      expect(@assignment.has_rubric?).to eq true
-    end
-  end
 end

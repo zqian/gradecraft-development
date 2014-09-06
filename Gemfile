@@ -7,6 +7,7 @@ gem 'rails', '4.0.3'
 gem 'actionpack-action_caching'
 gem 'actionpack-page_caching'
 gem 'active_model_serializers'
+gem 'activerecord-session_store'
 gem 'addressable'
 gem 'amoeba'
 gem 'angularjs-rails', '~> 1.2.14'
@@ -25,6 +26,7 @@ gem 'foundation-rails'
 gem 'foundation-icons-sass-rails'
 gem 'gravatar_image_tag'
 gem 'haml'
+#gem 'html5_validators'
 gem 'ims-lti'
 gem 'jbuilder'
 gem 'jquery-rails', '~> 2.0'
@@ -34,7 +36,6 @@ gem 'markerb'
 gem 'mini_magick'
 gem 'minitest-rails'
 gem 'mongoid', :git => 'https://github.com/mongoid/mongoid.git'
-gem 'newrelic_rpm'
 gem 'ng-rails-csrf'
 gem 'nokogiri', '1.6.0'
 gem 'oink'
@@ -60,8 +61,8 @@ gem 'sorcery'
 gem 'timelineJS-rails', '~> 1.1.5'
 gem 'uglifier'
 gem 'whenever'
+gem 'newrelic_rpm'
 gem 'sinatra', '>= 1.3.0', :require => nil
-gem 'html5_validators'
 
 group :development do
   gem 'haml-rails'
@@ -76,15 +77,14 @@ end
 
 group :test do
   gem 'faker'
-  gem 'rspec-rails', '~> 3.0.0.beta2'
-  gem 'factory_girl_rails', '~> 4.4.1'
-  gem 'capybara', '~> 2.2.1'
+  gem 'capybara', '~> 2.1.0'
+  gem 'database_cleaner', "~> 1.0.1"
+  gem 'launchy'
+  gem 'selenium-webdriver'
 end
 
 group :test, :development do
-  gem 'debugger'
-  gem 'launchy'
-  gem 'database_cleaner'
+  gem 'rspec-rails', '~> 2.14.0'
+  gem 'factory_girl_rails', '~> 4.2.1'
 end
 
-gem 'activerecord-session_store'

@@ -7,4 +7,6 @@ class AssignmentFile < ActiveRecord::Base
 
   before_save :strip_path
 
+  validates_presence_of :assignment_id
+
 end
