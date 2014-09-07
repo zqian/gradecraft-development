@@ -58,6 +58,7 @@ class EarnedBadgesController < ApplicationController
         NotificationMailer.earned_badge_awarded(@earned_badge.id).deliver
         format.html { redirect_to badge_path(@badge), notice: "The #{@badge.name} #{term_for :badge} was successfully awarded to #{@earned_badge.student.name}" }
       else
+        @title = "Award #{@badge.name}"
         format.html { render action: "new" }
         format.json { render json: @earned_badge.errors, status: :unprocessable_entity }
       end

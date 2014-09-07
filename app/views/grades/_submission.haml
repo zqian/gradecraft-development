@@ -25,10 +25,7 @@
   - if current_student.submission_for_assignment(@assignment).link?
     %p
       Link:
-      - if current_student.submission_for_assignment(@assignment).link.valid?
-        = link_to current_student.submission_for_assignment(@assignment).link, current_student.submission_for_assignment(@assignment).link
-      - else 
-        = current_student.submission_for_assignment(@assignment).link
+      = link_to current_student.submission_for_assignment(@assignment).link, current_student.submission_for_assignment(@assignment).link
 
   - if current_student.submission_for_assignment(@assignment).submission_files.present?
     %p

@@ -79,6 +79,8 @@ class User < ActiveRecord::Base
                     :format   => { :with => email_regex },
                     :uniqueness => { :case_sensitive => false }
 
+  validates :first_name, :last_name, :presence => true
+
   def self.find_or_create_by_lti_auth_hash(auth_hash)
     criteria = { email: auth_hash['info']['email'] }
     where(criteria).first || create!(criteria) do |u|

@@ -72,9 +72,6 @@ class AssignmentsController < ApplicationController
     elsif @assignment.accepts_submissions_until.present? && @assignment.open_at.present? && @assignment.accepts_submissions_until < @assignment.open_at
       flash[:error] = 'Submission accept date must be after open date.'
       render :action => "new", :assignment => @assignment
-    elsif (@assignment.point_total.present?) && (@assignment.point_total < 1)
-      flash[:error] = 'Point total must be a positive number'
-      render :action => "new", :assignment => @assignment
     else
       respond_to do |format|
         self.check_uploads

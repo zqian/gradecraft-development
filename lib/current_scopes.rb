@@ -1,12 +1,7 @@
 module CurrentScopes
+  
   def self.included(base)
     base.helper_method :current_user, :current_course, :current_student, :current_student_data, :current_course_data
-  end
-
-  def current_join
-    return unless current_user
-    @current_join = CourseMembership.where(course_id: session[:course_id] || current_user.default_course.id, user_id: current_user.id)
-                                    .includes(:membership_calculation, :membership_scores).first
   end
 
   def current_course
@@ -35,4 +30,5 @@ module CurrentScopes
     puts "Setting current student"
     @__current_student = student
   end
+
 end

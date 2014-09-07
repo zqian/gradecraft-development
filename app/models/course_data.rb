@@ -21,6 +21,10 @@ class CourseData < Struct.new(:course)
     @assignments ||= course.assignments.includes(:course, assignment_type: [:score_levels]).visible.chronological.alphabetical
   end
 
+  def predictable_assignments
+    @assignments ||= course.assignments.includes(:course, assignment_type: [:score_levels]).visible.predictable.chronological.alphabetical
+  end
+
   #Display all assignments - even invisible ones.
   def all_assignments
     @assignments ||= course.assignments.includes(:course, assignment_type: [:score_levels]).chronological.alphabetical
@@ -31,8 +35,20 @@ class CourseData < Struct.new(:course)
     @group_assignments ||= assignments.select { |a| a.grade_scope == 'Group' }
   end
 
+  #Display all assignments, grouped by their assignment type - should be shown only to staff
   def by_assignment_type
+    @by_assignment_type ||= all_assignments.group_by(&:assignment_type)
+  end
+
+  #Display visible assignments, grouped by assignment type - should always be shown to students
+  def visible_by_assignment_type
     @by_assignment_type ||= assignments.group_by(&:assignment_type)
+  end
+
+  #Sometimes we don't want students to be able to predict an assignment (like those that have 0 points), 
+  #so we don't include them in the predictor
+  def predictable_by_assignment_type
+    @by_assignment_type ||= predictable_assignments.group_by(&:assignment_type)
   end
 
   def grade_for_student_and_assignment(student, assignment)

@@ -1,10 +1,10 @@
 %h3.text-center Due This Week
 %hr
-- current_course_data.by_assignment_type.each do |assignment_type, assignments|
+- current_course_data.visible_by_assignment_type.each do |assignment_type, assignments|
   -# Do not use `assignment_type.has_soon_assignments?' It will trigger a query.
   - if assignments.any?(&:soon?) && assignment_type.include_in_to_do?
     - assignments.each do |assignment|
-      - if assignment.soon? && assignment.visible?
+      - if assignment.soon?
         - if assignment.accepts_submissions?
           - if assignment.is_individual?
             .right= render "students/submissions", assignment: assignment
