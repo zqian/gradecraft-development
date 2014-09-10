@@ -16,7 +16,6 @@
         %h4.notice(ng-show="pointsOverage()") You have allocated more points than the assignment total
 
       .clear
-      %br
 
       .splash(ng-cloak) Loading rubric...
 
@@ -26,8 +25,7 @@
         .metric.metric-heading
           Criteria
           %button#add-metric(type="button" ng-click="newMetric()") + New Criterion
-        .tier.tier-heading Levels
-
+        .tier-heading Levels
       .clear
 
       #metric-box(ng-cloak)
@@ -42,9 +40,6 @@
             + Level
           .clear
 
-        .row-100
-
-      .row
-        %button#new-rubric-metric(type="button" ng-click="newMetric()") + Criterion
+      %button#new-rubric-metric(type="button" ng-click="newMetric()" ng-hide) + Criterion
 
   .clearfix
