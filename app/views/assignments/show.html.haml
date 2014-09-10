@@ -13,11 +13,11 @@
   .clearfix
 
   - if current_user.is_staff?
-    / .small-12.columns
-    /   - if @assignment.rubric and @assignment.rubric.designed?
-    /     %h3!= link_to "Edit Rubric", design_assignment_rubric_path(@assignment)
-    /   - else
-    /     %h3!= link_to "Design Rubric", design_assignment_rubric_path(@assignment)
+    .small-12.columns
+      - if @assignment.rubric and @assignment.rubric.designed?
+        %h3!= link_to "Edit Rubric", design_assignment_rubric_path(@assignment)
+      - else
+        %h3!= link_to "Design Rubric", design_assignment_rubric_path(@assignment)
 
     .small-12.columns
       - if @assignment.has_groups?
@@ -40,7 +40,7 @@
     - else
       %h3#rubric-preview-headline Grading Rubric
     #preview-rubric(style="font-size: 12px")
-      %table#grade-rubric-table
+      %table#grade-rubric-table(width="100%")
         %thead
           %tr
             %td.metric.heading
