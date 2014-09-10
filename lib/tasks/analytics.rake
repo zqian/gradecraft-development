@@ -159,7 +159,7 @@ namespace :analytics do
 
       desc "Export filtered course analytics data as CSV"
       task :csv => [:environment] do
-        export_dir = ENV['EXPORT_DIR']
+        export_dir = ENV['EXPORT_DIR'] || raise("No export directory provided. Prepend \"EXPORT_DIR=/path/to/exports\" to rake command.")
         course_ids.each do |id|
           puts "Exporting for course: #{id}"
 
