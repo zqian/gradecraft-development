@@ -20,7 +20,7 @@
       sparkOpts.outlierFillColor = '#F4A425';
       sparkOpts.spotRadius = '10';
       sparkOpts.medianColor = '#0D9AFF';
-      $('.grades_per_assign').sparkline(data, sparkOpts);
+      $('#grades_per_assign-{#{assignment.id}}').sparkline(data, sparkOpts);
     }
   }
 
