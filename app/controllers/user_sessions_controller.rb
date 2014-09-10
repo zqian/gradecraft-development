@@ -32,6 +32,7 @@ class UserSessionsController < ApplicationController
     end
     @user.courses << @course unless @user.courses.include?(@course)
     save_lti_context
+    session[:course_id] = @course.id
     auto_login @user
     respond_with @user, notice: t('sessions.create.success'), location: dashboard_path
   end
