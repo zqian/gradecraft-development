@@ -6,6 +6,7 @@
 
   if ($('.grades_per_assign').length) {
     var data = JSON.parse($('.grades_per_assign').attr('data-scores'));
+    var id = JSON.parse($('.grades_per_assign').attr('data-id'));
     if (data !== null) {
       sparkOpts.tooltipOffsetY = -130;
       sparkOpts.height = '35';
@@ -20,7 +21,7 @@
       sparkOpts.outlierFillColor = '#F4A425';
       sparkOpts.spotRadius = '10';
       sparkOpts.medianColor = '#0D9AFF';
-      $('#grades_per_assign-{#{assignment.id}}').sparkline(data, sparkOpts);
+      $('#assignment_box_plot_' + id).sparkline(data, sparkOpts);
     }
   }
 
