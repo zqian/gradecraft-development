@@ -45,6 +45,14 @@ class InfoController < ApplicationController
       format.xls { send_data current_course.gradebook_for_course(current_course).to_csv(col_sep: "\t") }
     end
   end
+
+  #downloadable grades for course with  export
+  def research_gradebook
+    respond_to do |format|
+      format.csv { send_data current_course.research_grades_for_course(current_course) }
+      format.xls { send_data current_course.research_grades_for_course(current_course).to_csv(col_sep: "\t") }
+    end
+  end
   
   # Chart displaying all of the student weighting choices thus far
   def choices
