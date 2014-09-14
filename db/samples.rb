@@ -128,7 +128,7 @@ puts "Introduction to Information Science is in session"
 educ_grade_scheme_hash.each do |range,letter|
   educ_course.grade_scheme_elements.create do |e|
     e.letter = letter
-    e.level = educ_grade_levels.shuffle.sample
+    e.level = educ_grade_levels.sample
     e.low_range = range.first
     e.high_range = range.last
   end
@@ -139,7 +139,7 @@ puts "Installed the EDUC 222 grading scheme. Roar!"
 information_grade_scheme_hash.each do |range,letter|
   information_course.grade_scheme_elements.create do |e|
     e.letter = letter
-    e.level = information_grade_levels.shuffle.sample
+    e.level = information_grade_levels.sample
     e.low_range = range.first
     e.high_range = range.last
   end
@@ -264,7 +264,6 @@ educ_badges = educ_badge_names.map do |badge_name|
     b.name = badge_name
     b.point_total = 100 * rand(10)
     b.visible = 1
-    b.icon = educ_badge_icons.shuffle.sample
   end
 end
 puts "Did someone need motivation? We found these badges in the Room of Requirements..."
