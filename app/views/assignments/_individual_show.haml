@@ -21,7 +21,7 @@
           %th Status
         %th
         - if @assignment.release_necessary?
-          %th
+          %th{"data-dynatable-no-sort" => "true"} 
             .button-bar
               %ul.button-group.right.round
                 %li
@@ -103,7 +103,7 @@
 
     %h3 Auditing #{term_for :students}
 
-    %table.responsive.dynatable
+    %table.responsive.nopage_dynatable
       %thead
         %tr
           %th First Name
@@ -119,7 +119,7 @@
             %th Submission
           %th
           - if @assignment.release_necessary?
-            %th
+            %th{"data-dynatable-no-sort" => "true"} 
               .button-bar
                 %ul.button-group.right.round
                   %li
