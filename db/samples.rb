@@ -1045,8 +1045,6 @@ challenges << Challenge.create! do |c|
 end
 puts "The House Cup Competition begins... "
 
-
-
 challenges << Challenge.create! do |c|
   c.course = educ_course
   c.name = "Tri-Wizard Tournament"
