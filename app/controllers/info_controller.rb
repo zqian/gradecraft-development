@@ -48,12 +48,11 @@ class InfoController < ApplicationController
 
   #downloadable grades for course with  export
   def research_gradebook
-    respond_to do |format|
-      format.csv { send_data current_course.research_grades_for_course(current_course) }
-      format.xls { send_data current_course.research_grades_for_course(current_course).to_csv(col_sep: "\t") }
-    end
+    GradeExporter.perform_async(current_user.id, current_course.id)
+    flash[:notice]="Your request to export grade data from course \"#{current_course.name}\" is currently being processed. We will email you the data shortly."
+    redirect_to courses_path
   end
-  
+
   # Chart displaying all of the student weighting choices thus far
   def choices
     @title = "View all #{current_course.weight_term} Choices"

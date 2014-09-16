@@ -28,7 +28,8 @@
             - if current_user.is_admin?
               %td
                 - if course == current_course
-                  = link_to_unless_current "Export Grades for Research", research_gradebook_path(:csv)
+                  = link_to_unless_current "Export Grades for Research", research_gradebook_path, :class=>"data-clearing"
+
             %td
               .button-bar
                 %ul.button-group.round.right
