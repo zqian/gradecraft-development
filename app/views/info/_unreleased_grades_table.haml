@@ -40,12 +40,14 @@
                 %td= link_to g.student.try(:first_name), student_path(g.student)
                 %td= link_to g.student.try(:last_name), student_path(g.student)
               - if g.assignment.has_groups?
-                %td= link_to g.student.group_for_assignment(g.assignment).try(:name), group_path(:id => g.student.group_for_assignment(g.assignment))
+                %td= link_to g.student.group_for_assignment(g.assignment).try(:name)
+                // Testing out a fix for some broken data - bring back in post fix - CH
+                //, group_path(:id => g.student.group_for_assignment(g.assignment))
               - if current_course.has_teams? && ! assignment.has_groups? 
                 %td
                   = link_to "#{g.student.team_for_course(current_course).try(:name)}", g.student.team_for_course(current_course)
               
-              %td= g.score
+              %td= g.try(:score)
               %td{:style => "width: 500px" }= raw g.feedback
               %td
                 .button-bar
