@@ -10,17 +10,6 @@ class RepairSchemaErrors < ActiveRecord::Migration
         t.datetime "updated_at"
       end
    
-      create_table "shared_earned_badges" do |t|
-        t.integer  "course_id"
-        t.text     "student_name"
-        t.integer  "user_id"
-        t.string   "icon"
-        t.string   "name"
-        t.integer  "badge_id"
-        t.datetime "created_at"
-        t.datetime "updated_at"
-      end
-    
       create_table "tier_badges" do |t|
         t.integer  "tier_id"
         t.integer  "badge_id"
@@ -53,7 +42,6 @@ class RepairSchemaErrors < ActiveRecord::Migration
   def down
     if Rails.env.production? or Rails.env.staging?
       drop_table "metric_badges"
-      drop_table "shared_earned_badges"
       drop_table "tier_badges"
 
       change_table "assignment_types" do |t|
