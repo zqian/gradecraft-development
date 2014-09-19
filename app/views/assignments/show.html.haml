@@ -60,9 +60,6 @@
                   .metric-points= "#{metric.max_points} Points"
                   .clear
                 .metric-description= metric.wrapped_description(40).html_safe
-                  .metric-name= metric.name
-                  .metric-points= "#{metric.max_points} Points"
-                .metric-description= metric.description
 
               - metric.tiers.each do |tier|
                 %td.tier
@@ -72,9 +69,6 @@
                     .tier-points= "#{tier.points} Points"
                   .clear
                   %label.tier-description= tier.wrapped_description(38).html_safe
-                    .tier-name= tier.name
-                    .tier-points= "#{tier.points} Points"
-                  .clear
 
                   .row.badge-row
                     - tier.tier_badges.each_with_index do |badge, index|
