@@ -2,13 +2,10 @@
   - if current_user_is_student?
     = content_nav do
       = render "students/student_profile_tabs"
-  - elsif current_user_is_staff?
-    / Instructor Navigation for Assignment Weighting
-    = content_nav do
-      = render "info/tabs"
 
-  .pagetitle Editing #{current_student.name}'s #{term_for :weights}
-
+  = content_nav_for current_student, "Edit #{term_for :weights}"
+  
+  %h3.pagetitle Editing #{current_student.name}'s #{term_for :weights}
 
   .small-12.columns
 
