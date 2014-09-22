@@ -1,4 +1,5 @@
 - if @assignment.is_individual?
+  %h4.sr-only #{current_student.first_name}'s Submission
   %p.bold
     - if current_user.is_staff?
       = "#{current_student.first_name}'s Submission" 
