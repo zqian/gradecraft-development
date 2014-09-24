@@ -30,6 +30,7 @@ class Team < ActiveRecord::Base
   scope :alpha, -> { order 'name ASC' }
   scope :order_by_high_score, -> { order 'teams.score DESC' }
   scope :order_by_low_score, -> { order 'teams.score ASC' }
+  scope :order_by_average_high_score, -> { order 'average_points DESC'}
 
   # DEPRECATED -- Assume Teams can have more than one leader. This should be removed
   # once we verify all uses are removed and new methods for cycling through team leaders
