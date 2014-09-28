@@ -9,8 +9,6 @@
       = f.label :last_name
       = f.text_field :last_name
 
-    .clearfix
-
     .small-12.medium-4.columns.columns-no-padding
       = f.label :username
       = f.text_field :username
@@ -20,8 +18,6 @@
     .small-12.medium-4.columns.columns-no-padding
       = f.label :display_name
       = f.text_field :display_name
-
-    .clearfix
 
     - if current_user.is_admin?
       .small-12.medium-4.columns.columns-no-padding
@@ -34,6 +30,7 @@
     .clearfix
 
   - if current_user_is_staff?
+
     .panel
       %h4.bold= "Course Settings"
 
@@ -73,12 +70,6 @@
               = p.input :shared_badges, :label => "Sharing #{term_for :badges}"
               .form_label This #{term_for :student}'s #{term_for :badges} will be displayed on a class leaderboard
             .clearfix
-
-      .clearfix
-
-
-
-
 
   .right
     = submit_tag "#{@user.persisted? ? 'Update' : 'Create'} User", :class => "button tiny radius"
