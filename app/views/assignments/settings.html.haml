@@ -3,6 +3,14 @@
 
   %h3.pagetitle= @title
 
+  
+  .small-12.medium-6.right.columns
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li
+          %i.fi-plus
+          = link_to "New #{term_for :assignment}", new_assignment_path
+
   .small-12.columns
     
     .assignments
@@ -117,9 +125,8 @@
                         %li
                           Accepted Until:
                           = assignment.try(:accept_until) || "Always Accepted"
-                    %td.text-buttons{ :style => "white-space: nowrap" }
-                      %a{:href => edit_assignment_path(assignment) }
+                    %td 
+                      %a.button{:href => edit_assignment_path(assignment) }
                         Edit
-                      %a{:href => assignment_path(assignment), :data => { confirm: 'Are you sure?', method: :delete } }
+                      %a.button{:href => assignment_path(assignment), :data => { confirm: 'Are you sure?', method: :delete } }
                         Delete
->>>>>>> Removed tabs for staff, revised colors, improved grade analytics
