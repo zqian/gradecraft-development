@@ -10,7 +10,7 @@ class Team < ActiveRecord::Base
   belongs_to :course
 
   has_many :team_memberships
-  has_many :students, :through => :team_memberships
+  has_many :students, :through => :team_memberships, :autosave => true
   has_many :team_leaderships
   has_many :leaders, :through => :team_leaderships
 
@@ -78,11 +78,8 @@ class Team < ActiveRecord::Base
   #The second way is that the teams compete in team challenges that earn the team points. At the end of the
   #semester these usually get added back into students' scores - this has not yet been built into GC.
   def cache_score
-    if self.course.team_score_average?
-      if self.score_changed?
-        self.score = average_points
-        students.save
-      end
+    if course.team_score_average?
+      self.score = average_points
     else
       self.score = challenge_grade_score
     end
