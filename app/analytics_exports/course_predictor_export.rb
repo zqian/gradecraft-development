@@ -9,7 +9,7 @@ class CoursePredictorExport
              :assignment => :assignment_name,
              :prediction => :score,
              :possible => :possible,
-             :date_time => :created_at
+             :date_time => lambda { |event| event.created_at.to_formatted_s(:db) }
 
   def initialize(loaded_data)
     @usernames = loaded_data[:users].inject({}) do |hash, user|

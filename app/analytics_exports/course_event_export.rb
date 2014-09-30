@@ -7,7 +7,7 @@ class CourseEventExport
               :role => :user_role,
               :page => :page,
               :action => :page_name,
-              :date_time => :created_at
+              :date_time => lambda { |event| event.created_at.to_formatted_s(:db) }
 
   def initialize(loaded_data)
     @usernames = loaded_data[:users].inject({}) do |hash, user|
