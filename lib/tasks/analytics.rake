@@ -186,8 +186,10 @@ namespace :analytics do
       desc "Export analyzed course analytics data as CSV"
       task :csv_analyzed => [:environment] do
         export_dir = ENV['EXPORT_DIR'] || raise("No export directory provided. Prepend \"EXPORT_DIR=/path/to/exports\" to rake command.")
+        selected_course_ids = ENV['COURSES'].try(:split, ',').try(:map, &:to_i)
+        export_course_ids = selected_course_ids.present? ? (selected_course_ids & course_ids) : course_ids
         elapsed = Benchmark.realtime do
-          course_ids.each do |id|
+          export_course_ids.each do |id|
             course_export_dir = File.join(export_dir, id.to_s, "csv_analyzed")
 
             puts "Exporting for course: #{id}"
