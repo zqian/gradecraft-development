@@ -42,7 +42,7 @@
                 = points user.score_for_course(current_course) if user.respond_to?(:grades)
             %td
               .button-bar
-                %ul.button-group.right.round
+                %ul.button-group.right.radius
                   %li
                     = link_to "Dashboard", student_path(user), :class => 'button tiny' if user.is_student?(current_course)
                     = link_to "Dashboard", staff_path(user), :class => 'button tiny' if user.is_staff?(current_course)

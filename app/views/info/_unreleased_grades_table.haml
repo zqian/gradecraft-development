@@ -1,6 +1,6 @@
 %h4.subtitle#unreleasedTableCaption
   = "Unreleased Grades"
-  .label.alert.round= @count_unreleased
+  .label.alert.radius= @count_unreleased
 
 - @unreleased_grades.group_by(&:assignment).each do |assignment, grades|
   .small-12.columns
@@ -52,7 +52,7 @@
               %td{:style => "width: 500px" }= raw g.feedback
               %td
                 .button-bar
-                  %ul.button-group.right.round
+                  %ul.button-group.right.radius
                     %li
                       = link_to "See Grade", assignment_grade_path(g.assignment, :student_id => g.student_id), :class => "button"
                     %li= link_to 'Edit', edit_assignment_grade_path("assignment_id"=>assignment.id, :student_id => g.student.try(:id)), :class => "button"

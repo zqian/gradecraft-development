@@ -17,6 +17,17 @@
       - else
         %b #{current_student.name}'s #{term_for :badge}s Earned:
         .label.round.bold=current_student.earned_badge_count_for_course(current_course)
+        .label.radius.bold= points current_student.earned_badge_score
+    - else
+      - if current_user.is_student?
+        %b My #{term_for :badges}
+      - else
+        %b #{current_student.name}'s #{term_for :badges} Earned:
+      .label.radius.bold=current_student.earned_badge_count_for_course(current_course)  
+    - if current_user.is_student? && ! current_student.badges_shared(current_course)
+      .small
+        = "Want to share your #{term_for :badges} with the class?"
+        .bold= link_to "Turn on shared #{term_for :badges}!", edit_profile_users_path
 
   .small-12.columns
     %dl.tabs{:data => {'tab' => true}}

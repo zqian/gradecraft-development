@@ -17,8 +17,8 @@
 
     // Late alert if submitted after due date
     - if current_student.submission_for_assignment(@assignment).late?
-      %span.label.alert.round Late!
-
+      %span.label.alert.radius Late!
+      
     // Checking to see if the submission was updated - if the update date is different from the creation date, displaying it
   - if current_student.submission_for_assignment(@assignment).updated_at != current_student.submission_for_assignment(@assignment).created_at
     %p
@@ -59,8 +59,7 @@
 
     // Late alert if submitted after due date
     - if @group.submission_for_assignment(@assignment).late?
-      %span.label.alert.round Late!
-
+      %span.label.alert.radius Late!
     // Checking to see if the submission was updated - if the update date is different from the creation date, displaying it
   - if @group.submission_for_assignment(@assignment).updated_at != @group.submission_for_assignment(@assignment).created_at
     %p

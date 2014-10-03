@@ -1,6 +1,6 @@
 %h4.subtitle#inProgressTableCaption
   = "In Progress Grades"
-  .label.alert.round= @count_in_progress
+  .label.alert.radius= @count_in_progress
 
 - @in_progress_grades.group_by(&:assignment).each do |assignment, grades|
   .small-12.columns
@@ -25,29 +25,29 @@
           %th{"data-dynatable-no-sort" => "true" }
             %span.sr-only Check/Uncheck
             .button-bar
-              %ul.button-group.right.round
+              %ul.button-group.right.radius
                 %li
-                  %button.select-all.tiny= "Check"
+                  %button.button.select-all.tiny= "Check All"
                 %li
-                  %button.select-none.tiny= "Uncheck"
-
-      %tbody
-        - grades.each do |g|
-          %tr
-            - if assignment.is_individual?
-              %td= link_to g.student.try(:first_name), student_path(g.student)
-              %td= link_to g.student.try(:last_name), student_path(g.student)
+                  %button.button.select-none.tiny= "Uncheck All"
+        %tbody
+          - grades.each do |g|
+            %tr
+              - if assignment.is_individual?
+                %td= link_to g.student.try(:first_name), student_path(g.student)
+                %td= link_to g.student.try(:last_name), student_path(g.student)
+                %td
+                  - if current_course.has_teams? && g.student.present? && g.student.team_for_course(current_course).present?
+                    = link_to g.student.team_for_course(current_course).try(:name), g.student.team_for_course(current_course)
+                %td= points g.score
+                %td{:style => "width: 500px" }= raw g.feedback
               %td
-                - if current_course.has_teams? && g.student.present? && g.student.team_for_course(current_course).present?
-                  = link_to g.student.team_for_course(current_course).try(:name), g.student.team_for_course(current_course)
-              %td= points g.score
-              %td{:style => "width: 500px" }= raw g.feedback
-            %td
-              .button-bar
-                %ul.button-group.right.round
-                  %li= link_to "See", assignment_grade_path(g.assignment, :student_id => g.student_id), :class => "button"
-                  %li= link_to 'Edit', edit_assignment_grade_path("assignment_id"=>assignment.id, :student_id => g.student.try(:id)), :class => "button"
-            %td
-              .center= check_box_tag "grade_ids[]", g.id
-    .right
-      = submit_tag "Update Selected Grade Statuses", :class => "button tiny primary radius"
+                .button-bar
+                  %ul.button-group.right.radius
+                    %li
+                      = link_to "See", assignment_grade_path(g.assignment, :student_id => g.student_id), :class => "button"
+                    %li= link_to 'Edit', edit_assignment_grade_path("assignment_id"=>assignment.id, :student_id => g.student.try(:id)), :class => "button"
+              %td
+                .center= check_box_tag "grade_ids[]", g.id
+      .right
+        = submit_tag "Update Selected Grade Statuses", :class => "button tiny primary radius"

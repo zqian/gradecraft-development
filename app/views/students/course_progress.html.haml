@@ -6,7 +6,7 @@
     - if current_course.grade_scheme_elements.present?
       - @grade_scheme_elements.order_by_high_range.each do |element|
         - if current_student.cached_score_for_course(current_course) < element.low_range
-          .progress.round.bar_magic.transparent
+          .progress.radius.bar_magic.transparent
             %span.meter
               .center.pushdown
                 %span
@@ -17,7 +17,7 @@
                   %span= element.letter
                 %span=points element.low_range
         - elsif current_student.cached_score_for_course(current_course) >= element.high_range
-          .progress.success.round.bar_magic
+          .progress.success.radius.bar_magic
             .meter
               .center.pushdown
                 - if element.level.present?
@@ -38,7 +38,7 @@
             %span points.
             %span=points element.points_to_next_level(current_student, current_course)
             %span= " points to the next level!"
-          .progress.secondary.round.bar_magic
+          .progress.secondary.radius.bar_magic
             .meter{:style => "width: #{element.progress_percent(current_student, current_course)}%"}
               .striped
   .clearfix

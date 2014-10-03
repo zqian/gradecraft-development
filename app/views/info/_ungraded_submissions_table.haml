@@ -1,6 +1,6 @@
 %h4.subtitle#ungradedTableCaption
   = "Ungraded #{term_for :assignment} Submissions"
-  .label.alert.round= @count_ungraded
+  .label.alert.radius= @count_ungraded
 
 - @ungraded_submissions.group_by(&:assignment).each do |assignment, submissions|
   .small-12.columns
@@ -50,7 +50,7 @@
                     %td= link_to ug.group.try(:name), group_path(ug.group)
                     %td
                       .button-bar
-                        %ul.button-group.right.round
+                        %ul.button-group.right.radius
                           %li= link_to ug.group.try(:name), group_path(ug.group)
                           %li= link_to "See Submission", assignment_grade_path(ug.assignment, :group_id => ug.group.id), :class => "button tiny alert"
                     %td= link_to 'Grade', group_grade_assignment_path(ug.assignment, :group_id => ug.group, :class => "button tiny alert")
@@ -66,7 +66,7 @@
                       = link_to ug.student.team_for_course(current_course).try(:name), ug.student.team_for_course(current_course)
                   %td
                     .button-bar
-                      %ul.button-group.right.round
+                      %ul.button-group.right.radius
                         %li
                           %a.button{:href => "#{assignment_grade_path(ug.assignment, :student_id => ug.student_id)}" }
                             = "See Submission"
@@ -77,6 +77,6 @@
                   %td= link_to ug.group.try(:name), group_path(ug.group)
                   %td
                     .button-bar
-                      %ul.button-group.right.round
+                      %ul.button-group.right.radius
                         %li= link_to "See Submission", assignment_grade_path(ug.assignment, :group_id => ug.group.id), :class => "button"
                         %li= link_to 'Grade', group_grade_assignment_path(ug.assignment, :group_id => ug.group), :class => "button"

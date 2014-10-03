@@ -44,7 +44,7 @@
             %td= challenge.release_necessary? ? 'Yes' : 'No'
             %td
               .button-bar
-                %ul.button-group.round.right
+                %ul.button-group.radius.right
                   %li= link_to 'See', challenge, :class => 'button'
                   %li= link_to 'Edit', edit_challenge_path(challenge), :class => 'button'
                   %li= link_to 'Delete', challenge, :class => 'button', :method => :delete, data: { confirm: 'Are you sure?' }

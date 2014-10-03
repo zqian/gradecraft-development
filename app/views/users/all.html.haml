@@ -35,6 +35,6 @@
                 = points user.score_for_course(current_course) if user.respond_to?(:grades)
             %td
               .button-bar
-                %ul.button-group.right.round
+                %ul.button-group.right.radius
                   %li= link_to 'Edit', edit_user_path(user), :class => 'button'
                   %li= link_to 'Delete', user, :class => 'button', :data => { confirm: 'This will delete the student from GradeCraft - Are you sure?' } , :method => :delete

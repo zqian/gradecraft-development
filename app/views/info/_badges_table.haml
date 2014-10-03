@@ -18,7 +18,7 @@
         %td= badge.earned_badges.count
         %td
           .button-bar
-            %ul.button-group.right.round
+            %ul.button-group.right.radius
               %li= link_to "See", badge, :class => "button"
               %li= link_to "Award", new_badge_earned_badge_path(:badge_id => badge), :class => "button"
               %li= link_to "Quick Award", mass_award_badge_path(badge), :class => "button"

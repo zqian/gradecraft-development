@@ -26,7 +26,7 @@
                 = hidden_field_tag assignment.name, current_student_data.score_for_assignment(assignment), :'data-assignment-type-id' => assignment.assignment_type_id
               - else
                 - if assignment.past? && assignment.accepts_submissions && ! current_student.submission_for_assignment(assignment).present?
-                  %span.label.alert.round Late!
+                  %span.label.alert.radius Late!
                 = "–"
                 = "#{points current_student_data.point_total_for_assignment(assignment)} possible points"
             

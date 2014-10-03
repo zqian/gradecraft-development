@@ -45,7 +45,7 @@
             - if @challenge.release_necessary?
               %th{"data-dynatable-no-sort" => "true" }
                 .button-bar
-                  %ul.button-group.round
+                  %ul.button-group.radius
                     %li
                       %button.button.select-all.tiny= "Check All"
                     %li
@@ -72,7 +72,7 @@
                 %td
                   - if challenge_grade
                     .button-bar
-                      %ul.button-group.right.round
+                      %ul.button-group.right.radius
                         %li= link_to "See Grade", challenge_challenge_grade_path(@challenge.id, challenge_grade.id, :team_id => team.id), :class => 'button'
                         %li= link_to "Edit Grade", edit_challenge_challenge_grade_path(@challenge.id, challenge_grade.id, :team_id => team.id), :class => 'button'
                         %li= link_to "Delete", challenge_challenge_grade_path(@challenge.id, challenge_grade.id, :team_id => team.id), :class => 'button', :data => { confirm: 'Are you sure?', method: :delete }

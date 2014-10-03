@@ -215,7 +215,7 @@ $('table.nofeatures_default_due_date_dynatable').dynatable({
 });
 
 $('table.nofeatures_default_rank_dynatable').dynatable({
-
+  
   features: {
         paginate: false,
         search: false,
@@ -223,17 +223,14 @@ $('table.nofeatures_default_rank_dynatable').dynatable({
         sort: true
       },
   dataset: {
-      sorts: { 'rank': 1 }
+      sorts: { 'score': -1 }
   },
   readers: {
-      dueDate: function(el, record) {
-        record.parsedDate = Date.parse(el.innerHTML);
-        return el.innerHTML;
-      },
-      points: function(el, record) {
-        return Number(el.innerHTML.replace(",","")) || 0;
-      },
-      maxValue: function(el, record) {
+      rank: function(el, record) {
+        return Number(el.innerHTML) || 0;
+      }
+      ,
+      score: function(el, record) {
         return Number(el.innerHTML.replace(",","")) || 0;
       }
     }

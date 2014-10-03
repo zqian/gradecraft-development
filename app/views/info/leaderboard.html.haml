@@ -10,7 +10,7 @@
         = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "– Select #{current_course.team_term} –"
 
   .columns
-    %table.responsive.nofeatures_dynatable{"aria-describedby" => "tableCaption"}
+    %table.responsive.nofeatures_default_rank_dynatable{"aria-describedby" => "tableCaption"}
       %thead
         %tr
           %th{:scope => "col", "data-dynatable-sorts" => "rank"} Rank
@@ -40,7 +40,7 @@
               - if current_course.has_teams?
                 %td#team_for_course
                   = link_to student.team_for_course(current_course).try(:name), student.team_for_course(current_course) if student.team_for_course(current_course).present?
-              %td= student.cached_score_for_course(current_course)
+              %td= points student.cached_score_for_course(current_course)
               %td
                 = student.grade_letter_for_course(current_course)
                 - if student.grade_level_for_course(current_course).present?
@@ -53,7 +53,7 @@
                   = student.earned_badges.count
               %td
                 .button-bar
-                  %ul.button-group.round.right
+                  %ul.button-group.radius.right
                     %li= link_to "Dashboard", student_path(student), :class => "button"
                     %li= mail_to student.email, "Email", :class => "button"
                     %li= link_to "Edit", edit_user_path(student), :class => "button"
