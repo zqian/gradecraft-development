@@ -11,7 +11,6 @@ User.create! do |u|
   u.username = 'cholma'
   u.first_name = 'Caitlin'
   u.last_name = 'Holman'
-  u.role = 'admin'
   u.email = 'cholma@umich.edu'
   u.password = 'fawkes'
 end
@@ -22,7 +21,6 @@ User.create! do |u|
   u.username = 'fishman'
   u.first_name = 'Barry'
   u.last_name = 'Fishman'
-  u.role = 'admin'
   u.email = 'fishman@umich.edu'
 end
 puts "Barry is here..."

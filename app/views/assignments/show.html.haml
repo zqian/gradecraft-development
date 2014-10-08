@@ -12,7 +12,7 @@
       .right= render "assignments/description"
   .clearfix
 
- - if current_user.is_staff?
+  - if current_user_is_staff?
     .small-12.columns
       - if @assignment.rubric and @assignment.rubric.designed?
         %h3!= link_to "Edit Rubric", design_assignment_rubric_path(@assignment)
@@ -34,7 +34,7 @@
   .clearfix
    
   - if @assignment.rubric.present? && @assignment.rubric.designed?    
-    - if current_user.is_staff?
+    - if current_user_is_staff?
       %h3#rubric-preview-headline Rubric Preview 
       %h4#ungraded-subtitle= "#{@ungraded_percentage}% ungraded"
     - else

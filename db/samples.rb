@@ -188,7 +188,6 @@ User.create! do |u|
   u.username = 'albus'
   u.first_name = 'Albus'
   u.last_name = 'Dumbledore'
-  u.role = 'admin'
   u.email = 'dumbledore@hogwarts.edu'
   u.password = 'fawkes'
   u.save!
@@ -206,7 +205,6 @@ User.create! do |u|
   u.username = 'severus'
   u.first_name = 'Severus'
   u.last_name = 'Snape'
-  u.role = 'professor'
   u.email = 'snape@hogwarts.edu'
   u.password = 'lily'
   u.save!
@@ -222,7 +220,6 @@ User.create! do |u|
   u.username = 'mcgonagall'
   u.first_name = 'Minerva'
   u.last_name = 'McGonagall'
-  u.role = 'professor'
   u.email = 'mcgonagall@hogwarts.edu'
   u.password = 'pineanddragonheart'
   u.save!
@@ -238,7 +235,6 @@ User.create! do |u|
   u.username = 'headless_nick'
   u.first_name = 'Nicholas'
   u.last_name = 'de Mimsy-Porpington'
-  u.role = 'professor'
   u.email = 'headless_nick@hogwarts.edu'
   u.password = 'october31'
   u.save!
@@ -254,7 +250,6 @@ User.create! do |u|
   u.username = 'percy.weasley'
   u.first_name = 'Percy'
   u.last_name = 'Weasley'
-  u.role = 'gsi'
   u.email = 'percy.weasley@hogwarts.edu'
   u.password = 'bestprefect'
   u.save!
