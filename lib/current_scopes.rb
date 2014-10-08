@@ -1,5 +1,5 @@
 module CurrentScopes
-  
+
   def self.included(base)
     base.helper_method :current_user, :current_course, :current_student, :current_student_data, :current_course_data
   end
@@ -11,11 +11,16 @@ module CurrentScopes
   end
 
   def current_student
-    if current_user.is_staff?
+    if current_user_is_staff?
       @__current_student ||= (current_course.students.find_by(id: params[:student_id]) if params[:student_id])
     else
       current_user
     end
+  end
+
+  def current_role
+    return unless current_user && current_course
+    @__current_role ||= current_user.course_memberships.where(course: current_course).first.role
   end
 
   def current_student_data

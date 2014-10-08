@@ -1,5 +1,5 @@
 class Team < ActiveRecord::Base
-  attr_accessible :name, :course, :course_id, :student_ids, :score, :students, :teams_leaderboard, :in_team_leaderboard, :banner
+  attr_accessible :name, :course, :course_id, :student_ids, :score, :students, :leaders, :teams_leaderboard, :in_team_leaderboard, :banner
 
   validates_presence_of :course, :name
 
@@ -11,6 +11,8 @@ class Team < ActiveRecord::Base
 
   has_many :team_memberships
   has_many :students, :through => :team_memberships
+  has_many :team_leaderships
+  has_many :leaders, :through => :team_leaderships
 
   #Teams design banners that they display on the leadboard
   mount_uploader :banner, ThumbnailUploader
@@ -18,7 +20,7 @@ class Team < ActiveRecord::Base
   #Teams don't currently earn badges directly - but they are recognized for the badges their students earn
   has_many :earned_badges, :through => :students
 
-  #Teams compete through challenges, which receive points through challenge_grades 
+  #Teams compete through challenges, which receive points through challenge_grades
   has_many :challenge_grades
   has_many :challenges, :through => :challenge_grades
 
@@ -29,9 +31,11 @@ class Team < ActiveRecord::Base
   scope :order_by_high_score, -> { order 'teams.score DESC' }
   scope :order_by_low_score, -> { order 'teams.score ASC' }
 
-  #Getting the team leader - needs to be rebuilt so that the GSI isn't a student
+  # DEPRECATED -- Assume Teams can have more than one leader. This should be removed
+  # once we verify all uses are removed and new methods for cycling through team leaders
+  # are in place.
   def team_leader
-    students.gsis.first
+    leaders.first
   end
 
   #Sorting team's students by their score, currently only used for in team leaderboards
@@ -68,9 +72,9 @@ class Team < ActiveRecord::Base
   private
 
   #Teams rack up points in two ways, which is used is determined by the instructor in the course settings.
-  #The first way is that the team's score is the average of its students' scores, and challenge grades are 
+  #The first way is that the team's score is the average of its students' scores, and challenge grades are
   #added directly into students' scores
-  #The second way is that the teams compete in team challenges that earn the team points. At the end of the 
+  #The second way is that the teams compete in team challenges that earn the team points. At the end of the
   #semester these usually get added back into students' scores - this has not yet been built into GC.
   def cache_score
     if self.course.team_score_average?

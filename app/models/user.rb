@@ -8,8 +8,18 @@ class User < ActiveRecord::Base
 
   ROLES = %w(student professor gsi admin)
 
-  ROLES.each do |role|
-    scope role.pluralize, -> { where role: role }
+  class << self
+    def with_role_in_course(role, course)
+      user_ids = CourseMembership.where(course: course, role: role).pluck(:user_id)
+      User.where(id: user_ids)
+      #User.where(id: CourseMembership.where(course: course, role: role).pluck(:user_id))
+    end
+
+    ROLES.each do |role|
+      define_method(role.pluralize) do |course|
+        with_role_in_course(role,course)
+      end
+    end
   end
 
   attr_accessor :remember_me, :password, :password_confirmation, :cached_last_login_at, :course_team_ids
@@ -24,10 +34,10 @@ class User < ActiveRecord::Base
     :character_profile, :team_id, :lti_uid, :course_team_ids
 
   scope :alpha, -> { order 'last_name ASC' }
-  scope :order_by_high_score, -> { order 'course_memberships.score DESC' }
-  scope :order_by_low_score, -> { order 'course_memberships.score ASC' }
-  scope :being_graded, -> { where('course_memberships.auditing IS FALSE') }
-  scope :auditing, -> { where('course_memberships.auditing IS TRUE') }
+  scope :order_by_high_score, -> { joins(:course_memberships).order 'course_memberships.score DESC' }
+  scope :order_by_low_score, -> { joins(:course_memberships).order 'course_memberships.score ASC' }
+  scope :being_graded, -> { joins(:course_memberships).where('course_memberships.auditing IS FALSE') }
+  scope :auditing, -> { joins(:course_memberships).where('course_memberships.auditing IS TRUE') }
 
   has_many :course_memberships, :dependent => :destroy
   has_one :student_academic_history, :foreign_key => :student_id, :dependent => :destroy, :class_name => 'StudentAcademicHistory'
@@ -70,6 +80,8 @@ class User < ActiveRecord::Base
     end
   end
 
+  has_many :team_leaderships, :foreign_key => :leader_id, :dependent => :destroy
+
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
   validates :username, :presence => true,
@@ -96,13 +108,6 @@ class User < ActiveRecord::Base
         elsif extra['tool_consumer_info_product_family_code'] == "canvas"
           u.username = extra['custom_canvas_user_login_id']
           u.kerberos_uid = extra['custom_canvas_user_login_id']
-        end
-
-        case extra['roles']
-        when 'instructor'
-          u.role = 'professor'
-        else
-          u.role = 'student'
         end
       end
     end
@@ -141,37 +146,42 @@ class User < ActiveRecord::Base
     course_memberships.count > 1
   end
 
+  # DEPRECATED - Teams can now have more than one leader. This should be removed
+  # once we have a strategy for cycling through team leaders.
   def team_leader
     teams.first.try(:team_leader)
   end
 
- def is_prof?
-    role == "professor"
+  def team_leaders(course)
+    course_team(course).leaders rescue nil
   end
 
-  def is_gsi?
-    role == "gsi"
+  ROLES.each do |role|
+    define_method("is_#{role}?") do |course|
+      self.role(course) == role
+    end
   end
 
-  def is_student?
-    role == "student" || role.blank?
+  # During the migration where roles are transferred from the user to the
+  # course membership, we need to account for role being a column on users (before)
+  # and a method (after). Once this migration is complete, course should not be an
+  # optional parameter, and we should remove the if...else check and always go with else
+  def role(course=nil)
+    if self.attributes.include? "role"
+      self.attributes["role"]
+    else
+      return nil if self.course_memberships.where(course_id: course).empty?
+      self.course_memberships.where(course: course).first.role
+    end
   end
 
-  def is_admin?
-    role == "admin"
-  end
-
-  def role
-    super || "student"
-  end
-
-  def is_staff?
-    is_prof? || is_gsi? || is_admin?
+  def is_staff?(course)
+    is_professor?(course) || is_gsi?(course) || is_admin?(course)
   end
 
   # Find the team associated with the team membership for a given course id
   def course_team(course)
-    team_memberships.where("teams.course_id = ?", course.id) rescue nil
+    team_memberships.joins(:team).where("teams.course_id = ?", course.id).first.team rescue nil
   end
 
   def character_profile(course)
