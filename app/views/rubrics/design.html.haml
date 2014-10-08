@@ -16,31 +16,30 @@
         %h4.notice(ng-show="pointsOverage()") You have allocated more points than the assignment total
 
       .clear
-      %br
 
       .splash(ng-cloak) Loading rubric...
 
-      .row.assignment-return
+      .assignment-return
         = link_to '&laquo; Return to Assignment'.html_safe, assignment_path(@assignment), class: "return-link"
-      .row
-        .metric.small-3.columns.heading
+      #rubric-column-heading
+        .metric.metric-heading
           Criteria
           %button#add-metric(type="button" ng-click="newMetric()") + New Criterion
-        .tier.small-8.columns.heading Levels
+        .tier-heading Levels
+      .clear
 
       #metric-box(ng-cloak)
 
-        .row.divider(ng-repeat="metric in metrics")
+        .divider.rubric-container(ng-repeat="metric in metrics")
           .order-label {{$index + 1}}
           .metric.small-3.columns(name="metricForm" ng-form ng-submit="metric.create()" ng-class="{saved: metric.isSaved()}" ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}")
             = render "rubrics/new_metric"
-          .tier.small-3.columns(name="tierForm" ng-repeat="tier in metric.tiers" ng-form ng-submit="tier.create()" ng-class="{saved: tier.isSaved()}")
+          .tier.small-3.columns(name="tierForm" ng-repeat="tier in metric.tiers" ng-form ng-submit="tier.create()" ng-class="{saved: tier.isSaved(), nocredit: tier.noCredit}")
             = render "rubrics/new_tier"
           %button.add-tier(name="newTier" ng-click="metric.addTier()" ng-show="metric.isSaved()")
             + Level
           .clear
 
-      .row
-        %button#new-rubric-metric(type="button" ng-click="newMetric()") + Criterion
+      %button#new-rubric-metric(type="button" ng-click="newMetric()" ng-hide) + Criterion
 
   .clearfix

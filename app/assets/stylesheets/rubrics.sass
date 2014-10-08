@@ -36,6 +36,14 @@ $badge_green_border: #439A31
     display: block !important
     font-size: 26px
 
+#rubric-column-heading
+  width: 100%
+  clear: both
+  padding-bottom: 12px
+
+.clear
+  clear: both
+
 #rubric
   h5.subtitle
     font-style: italic
@@ -46,6 +54,11 @@ $badge_green_border: #439A31
 
   .clear
     clear: both
+
+  .row-100
+    width: 100%
+    height: 20px
+    background: gray
 
   #points-overview-floating
     float: right
@@ -105,12 +118,17 @@ $badge_green_border: #439A31
     font-weight: normal
     color: #666
 
+  #metric-box
+    width: 100%
+    margin-top: 12px
+
   .metric
     background: #eee
     border: 1px solid #ccc
-    padding: 24px
+    padding: 18px 12px
     float: left
     margin-right: 12px
+    max-width: 240px
 
     &.saved
       background: #D3EBF5
@@ -199,10 +217,14 @@ $badge_green_border: #439A31
   .tier
     background: #eee
     border: 1px solid #ccc
-    padding: 24px
+    padding: 18px 12px
     float: left
     margin-right: 12px
     margin-bottom: 12px
+    max-width: 240px
+
+    &.nocredit
+      width: 180px
     
     &.saved
       border: 1px solid $dark_green
@@ -324,6 +346,15 @@ $badge_green_border: #439A31
     border: none
     padding: 0 4px
 
+  .metric-heading
+    font-size: 19px
+    font-style: italic
+    color: #333
+    padding: 10px 16px
+    margin-left: 13px
+    width: 240px
+
+
   .metric, .tier
     &.heading
       font-size: 19px
@@ -338,6 +369,16 @@ $badge_green_border: #439A31
     input[type=text], input[type=number]
       font-size: 14px
       margin-top: -8px
+
+  .tier-heading
+    background: #eee
+    border: 1px solid #ccc
+    font-size: 19px
+    font-style: italic
+    color: #333
+    padding: 10px 16px
+    width: 75% 
+    float: left
 
   .add-tier
     background: $dark_green
@@ -354,7 +395,7 @@ $badge_green_border: #439A31
     font-style: italic
     background: $badass_blue
     padding: 12px 21px
-    margin-top: -8px
+    clear: both
 
   #add-metric
     font-size: 14px
@@ -377,12 +418,16 @@ $badge_green_border: #439A31
   .assignment-return
     padding-bottom: 8px
 
+  .rubric-container
+
   .divider
-    margin-bottom: 26px
+    margin: 0
+    margin-bottom: 18px
     border: 1px dashed #aaa
     padding: 10px
     cursor: move
     border-left: 2px solid #999
+    width: 100% !important
 
     .order-label
       position: relative
