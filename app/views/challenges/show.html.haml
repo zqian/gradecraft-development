@@ -7,7 +7,7 @@
     - else
       = render "students/student_profile_tabs"
 
-  .pagetitle= @title
+  %h3.pagetitle= @title
 
   .small-12.columns
     - if @challenge.challenge_files.present?
@@ -58,11 +58,29 @@
                   - if challenge_grade
                     .button-bar
                       %ul.button-group.right.round
-                        %li= link_to "See Grade", challenge_challenge_grade_path(@challenge.id, challenge_grade.id, :team_id => team.id), :class => 'button tiny secondary'
-                        %li= link_to "Edit Grade", edit_challenge_challenge_grade_path(@challenge.id, challenge_grade.id, :team_id => team.id), :class => 'button tiny secondary'
-                        %li= link_to "Delete", challenge_challenge_grade_path(@challenge.id, challenge_grade.id, :team_id => team.id), :class => 'button tiny secondary', :data => { confirm: 'Are you sure?', method: :delete }
+                        %li
+                          %a{:href => challenge_challenge_grade_path(@challenge.id, challenge_grade.id, :team_id => team.id), :class => 'button tiny secondary'}
+                            See
+                            %span.sr-only
+                              Grade for
+                            %span.sr-only= team.name
+                        %li
+                          %a{:href => edit_challenge_challenge_grade_path(@challenge.id, challenge_grade.id, :team_id => team.id), :class => 'button tiny secondary'}
+                            Edit
+                            %span.sr-only
+                              Grade for
+                            %span.sr-only= team.name
+                        %li
+                          %a{:href => challenge_challenge_grade_path(@challenge.id, challenge_grade.id, :team_id => team.id), :class => 'button tiny secondary', :data => { confirm: 'Are you sure?', method: :delete }}
+                            Delete
+                            %span.sr-only
+                              Grade for
+                            %span.sr-only= team.name
                   - else
-                    = link_to 'Grade', new_challenge_challenge_grade_path("challenge_id"=>@challenge.id, :team_id => team.id), :class => 'button tiny round secondary'
+                    %a{:href => new_challenge_challenge_grade_path("challenge_id"=>@challenge.id, :team_id => team.id), :class => 'button tiny round secondary'}
+                      Grade for
+                      %span.sr-only= team.name
+
               - if @challenge.release_necessary?
                 %td
                   - if challenge_grade
