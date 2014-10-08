@@ -63,15 +63,69 @@
                 = f.label :title, "Title"
                 = f.text_field :title
               - if current_user_is_staff?
+    .small-12.columns.panel
+
+      - if current_user.is_staff? && @group.persisted?
+        .small-12.medium-4.columns.callout.panel.right
+          = f.label :approved, "Status"
+          = f.select :approved, [[], ["Approved"], ["Rejected"]]
+          .form_label If rejected, this #{term_for :group} will be unable to submit any further work for these assignments
+
+      .small-12.medium-4.columns
+        = f.label "#{term_for :group} Name"
+        = f.text_field :name
+
+        %hr
+
+      .small-12.medium-6.columns
+        = f.association :assignments, :collection => @assignments, :as => :check_boxes, :label => "#{term_for :assignments}"
+        .form_label What #{term_for :assignments} will this #{term_for :group} work on together?
+
+        %hr
+
+      .clearfix
+
+      .small-12.medium-6.columns
+        - if current_user.is_student? && !@group.persisted?
+          = f.association :students, :collection => @other_students, as: :select, :label => "#{term_for :students}"
+          %span.italic= "You (#{current_student.name }) will be automatically included in this group."
+        - elsif current_user.is_student?
+          = f.association :students, :collection => current_course_data.students, as: :select, :label => "#{term_for :students}"
+        - if current_user.is_staff?
+          = f.association :students, :collection => current_course_data.students, as: :select, :label => "#{term_for :students}"
+        %br
+        .form_label Enter a fellow student's name to add them to this #{term_for :group}. Only one student needs to create the #{term_for :group}, after which all #{term_for :group} members will be able to submit work, see submitted materials, and see instructor grades and feedback.
+
+    - if current_user.is_student?
+      .small-12.textarea
+        .proposals
+          - if @group.persisted?
+            %script(id="proposal-template" type="text/x-template")
+              %fieldset.proposal.callout.panel
+                = f.simple_fields_for :proposals, Proposal.new, class: 'form-inline', child_index: 'child_index' do |pf|
+                  = render 'proposal_fields', f: pf
+            - i = 1
+            - @group.proposals.order_by_creation_date.each do |proposal|
+              %fieldset.proposal.panel
+                %span.columns
+                  %h6= "Created: #{proposal.created_at}"
+                  %p= proposal.proposal
+                  - i += 1
+                  = f.hidden_field :id
+          - else
+            = f.simple_fields_for :proposals, Proposal.new, class: 'form-inline', child_index: 'child_index' do |f|
+              .small-12.columns.panel
                 %span.large-3.columns
-                  = f.label :approved, "Approved?"
-                  = f.input :approved, :label => false
-              .small-12.columns.textarea
-                = f.label :proposal
-                = f.bootsy_area :proposal
-                = f.hidden_field :id
-        - if @group.persisted?
-          = link_to 'Add a Proposal', '#', class: 'add-proposal button tiny radius'
+                - if current_user.is_staff?
+                  %span.large-3.columns
+                    = f.label :approved, "Approved?"
+                    = f.input :approved, :label => false
+                .small-12.columns.textarea
+                  = f.label :proposal
+                  = f.bootsy_area :proposal
+                  = f.hidden_field :id
+          - if @group.persisted?
+            = link_to 'Add a Proposal', '#', class: 'add-proposal button tiny radius'
 
     %br
 

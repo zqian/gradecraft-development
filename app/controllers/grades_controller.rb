@@ -135,16 +135,11 @@ class GradesController < ApplicationController
       @title = "Quick Grade #{@assignment.name}"
       @assignment_type = @assignment.assignment_type
       @score_levels = @assignment_type.score_levels
-      @assignment_score_levels = @assignment.assignment_score_levels
-      if params[:group]
-        user_search_options = {}
-        user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
-        @students = current_course.students.includes(:teams).where(user_search_options).alpha
-      else
-        #TODO Needs to be fixed - shouldn't be referencing groups in this condition
-        @group = @assignment.groups.find(params[:group_id])
-        @students = @group.students
-      end
+      @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
+      @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
+      user_search_options = {}
+      user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
+      @students = current_course.students.includes(:teams).where(user_search_options).alpha
       @grades = @students.alpha.being_graded.map do |s|
         @assignment.grades.where(:student_id => s).first || @assignment.grades.new(:student => s, :assignment => @assignment, :graded_by_id => current_user)
       end

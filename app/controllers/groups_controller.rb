@@ -12,6 +12,7 @@ class GroupsController < ApplicationController
       @user = current_user
     end
     @group = current_course.groups.find(params[:id])
+    @title = "#{@group.name}"
     @assignments = current_course.assignments.group_assignments
   end
 
@@ -62,6 +63,8 @@ class GroupsController < ApplicationController
 
   def update
     @group = current_course.groups.includes(:proposals).find(params[:id])
+    @title = "Editing #{@group.name} Details"
+    @assignments = current_course.assignments.group_assignments
     @group.update_attributes(params[:group])
     if @group.approved.present?
       NotificationMailer.group_status_updated(@group.id).deliver
