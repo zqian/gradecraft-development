@@ -3,7 +3,7 @@
   = content_nav do
     = render "teams/tabs"
 
-  .pagetitle= @title
+  %h3.pagetitle= @title
 
   .small-12.columns
   
@@ -35,8 +35,17 @@
             %td
               .button-bar
                 %ul.button-group.round.right
-                  %li= link_to 'See', challenge, :class => 'button tiny secondary'
-                  %li= link_to 'Edit', edit_challenge_path(challenge), :class => 'button tiny secondary'
-                  %li= link_to 'Delete', challenge, :class => 'button tiny secondary', :method => :delete, data: { confirm: 'Are you sure?' }
+                  %li
+                    %a{:href => challenge, :class => 'button tiny secondary'}
+                      See 
+                      %span.sr-only= challenge.name
+                  %li
+                    %a{:href => edit_challenge_path(challenge), :class => 'button tiny secondary'}
+                      Edit
+                      %span.sr-only= challenge.name
+                  %li
+                    %a{:href => challenge, :class => 'button tiny secondary', :method => :delete, data: { confirm: 'Are you sure?'}}
+                      Delete
+                      %span.sr-only= challenge.name
 
   .clearfix
