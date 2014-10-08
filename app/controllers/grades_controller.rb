@@ -20,8 +20,8 @@ class GradesController < ApplicationController
     session[:return_to] = request.referer
     redirect_to @assignment and return unless current_student.present?
     @grade = current_student_data.grade_for_assignment(@assignment)
-    #@rubric = @assignment.rubric
-    #@metrics = existing_metrics_as_json if @rubric
+    @rubric = @assignment.rubric
+    @metrics = existing_metrics_as_json if @rubric
     @score_levels = @assignment.score_levels.order_by_value
     @course_badges = serialized_course_badges
     @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
