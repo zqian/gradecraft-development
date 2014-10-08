@@ -29,7 +29,16 @@
           %td
             .button-bar
               %ul.button-group.round.right
-                %li= link_to 'See', team, :class => 'button tiny secondary'
-                %li= link_to 'Edit', edit_team_path(team), :class => 'button tiny secondary'
-                %li= link_to 'Delete', team, :class => 'button tiny secondary', :data => { confirm: 'Are you sure?' }, :method => :delete
+                %li
+                  %a{:href => team, :class => 'button tiny secondary'}
+                    See
+                    %span.sr-only= team.name
+                %li
+                  %a{:href => edit_team_path(team), :class => 'button tiny secondary'}
+                    Edit
+                    %span.sr-only= team.name
+                %li
+                  %a{:href => edit_team_path(team), :class => 'button tiny secondary', :data => { confirm: 'Are you sure?' }, :method => :delete}
+                    Delete
+                    %span.sr-only= team.name
       - i += 1
