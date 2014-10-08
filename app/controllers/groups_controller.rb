@@ -69,7 +69,7 @@ class GroupsController < ApplicationController
     if @group.approved.present?
       NotificationMailer.group_status_updated(@group.id).deliver
     end
-    respond_with @group
+    redirect_to groups_path
   end
 
   def destroy
