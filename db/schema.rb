@@ -606,7 +606,7 @@ ActiveRecord::Schema.define(version: 20141008174828) do
   create_table "submission_files", force: true do |t|
     t.string  "filename",      null: false
     t.integer "submission_id", null: false
-    t.string  "filepath"
+    t.text    "filepath"
   end
 
   create_table "submissions", force: true do |t|
