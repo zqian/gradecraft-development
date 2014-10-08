@@ -6,13 +6,13 @@
           = "#{group.name} Grades"
           - group.submission_for_assignment(@assignment).tap do |submission|
             - if submission
-              = link_to "See Submission", assignment_grade_path(@assignment.id, :group_id => group.id), :class => 'button'
+              = link_to "See Submission", assignment_grade_path(@assignment.id, :group_id => group.id), :class => 'button radius'
             - else
-              = link_to "Submit", new_assignment_submission_path(@assignment, @submission, :group_id => group.id), :class => 'button'
+              = link_to "Submit", new_assignment_submission_path(@assignment, @submission, :group_id => group.id), :class => 'button radius'
           - if group.students.first.grade_for_assignment(@assignment).present?
-            = link_to "Edit Grade", group_grade_assignment_path(@assignment, :group_id => group), :class => 'button'
+            = link_to "Edit Grade", group_grade_assignment_path(@assignment, :group_id => group), :class => 'button radius'
           - else
-            = link_to "Grade", group_grade_assignment_path(@assignment, :group_id => group), :class => 'button'
+            = link_to "Grade", group_grade_assignment_path(@assignment, :group_id => group), :class => 'button radius'
 
       %table.responsive.nofeatures_dynatable
         %thead

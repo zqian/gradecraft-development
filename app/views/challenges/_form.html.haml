@@ -17,7 +17,7 @@
           %h5.bold Uploaded files
           - @challenge.challenge_files.each do |cf|
             %li
-              = link_to cf.filename, cf.filename
+              = link_to cf.filename, cf.url
               = link_to "(Remove)", remove_uploads_path({ :model => "ChallengeFile", :challenge_id => @challenge.id, :upload_id => cf.id } )
 
 .panel

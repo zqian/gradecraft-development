@@ -9,7 +9,7 @@
     %h4.subtitle= assignment_type.name 
 
     .columns
-      %table.responsive.nofeatures_dynatable
+      %table.responsive.nopage_dynatable
         %thead
           %tr
             %th Name
@@ -28,11 +28,11 @@
           - assignments.each do |assignment|
             %tr
               %td= link_to assignment.name, assignment
-              %td= points assignment.low_score
-              %td= points assignment.high_score
-              %td= points assignment.median
-              %td= points assignment.average
-              %td= points assignment.earned_average
+              %td= assignment.low_score
+              %td= assignment.high_score
+              %td= assignment.median
+              %td= assignment.average
+              %td= assignment.earned_average
               %td
                 - if assignment.accepts_submissions?
                   = assignment.submissions.count

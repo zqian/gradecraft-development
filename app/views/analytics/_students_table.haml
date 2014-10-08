@@ -1,4 +1,4 @@
-%table.responsive.nofeatures_dynatable
+%table.responsive.nofeatures_default_rank_dynatable
   %thead
     %tr
       %th= course.user_term
@@ -13,7 +13,7 @@
     - students.each do |student|
       %tr
         %td= link_to student.name, student_path(student)
-        %td= student.cached_score_for_course(current_course)
+        %td= points student.cached_score_for_course(current_course)
         - if course.has_badges?
           %td= student.earned_badges.count
 

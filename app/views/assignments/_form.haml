@@ -1,5 +1,3 @@
-= render 's3_uploader'  
-
 .small-12.columns
   = simple_form_for(@assignment) do |f|
     .panel
@@ -146,6 +144,10 @@
         = f.label :media_caption, "Caption"
         = f.text_field :media_caption
 
-    .right
+    .small-12.medium-3.right{:style => "margin-top: 6em !important; text-align: right"}
       = f.button :submit, "#{@assignment.persisted? ? 'Update' : 'Create'} #{term_for :assignment}", :class => "button radius tiny alert"
       = link_to 'Cancel', assignments_path, :class => "button radius transparent tiny"
+    .panel.small-12.medium-9.columns
+      = render 's3_uploader'  
+
+    
