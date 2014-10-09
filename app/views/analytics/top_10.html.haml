@@ -3,14 +3,14 @@
   = content_nav do
     = render "tabs"
 
-  .pagetitle Top 10
+  %h3.pagetitle Top 10
 
   .columns
     = render 'students_table', :course => current_course, :students => @top_ten_students
 
   .clearfix
 
-  .pagetitle Bottom 10
+  %h3.pagetitle Bottom 10
   
   .columns
     = render 'students_table', :course => current_course, :students => @bottom_ten_students.reverse

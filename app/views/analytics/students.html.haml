@@ -3,11 +3,11 @@
   = content_nav do
     = render "tabs"
 
-  .pagetitle= "#{term_for :students} Analytics"
+  %h3.pagetitle= "#{term_for :students} Analytics"
 
   .small-12.columns
 
-    %h3 Interactions
+    %h4 Interactions
     .small-12
       / Event counts
       = analytics_chart_inputs('role-events-chart', 'past_week')
@@ -16,7 +16,7 @@
 
     %hr
 
-    %h3 Pageviews
+    %h4 Pageviews
     .small-12.medium-6.columns
       / Pageviews Total
       = analytics_chart_inputs('all-pageviews-chart', 'past_week')
@@ -33,7 +33,7 @@
 
     %hr
 
-    %h3 Logins
+    %h4 Logins
     .small-12.medium-6.columns
       / Login counts
       = analytics_chart_inputs('role-logins-chart', 'past_week')
@@ -46,7 +46,7 @@
 
     %hr
 
-    %h3 Predictor
+    %h4 Predictor
     .small-12.medium-6.columns
       / Average Predictor Scores Set (%)
       = analytics_chart_inputs('predictions-chart', 'past_week')
@@ -65,7 +65,7 @@
     
   .clearfix
 
-  .pagetitle Per Student Analytics
+  %h3.pagetitle Per Student Analytics
   #per-student-analytics.small-12.columns
     .small-12.medium-4= select_tag :user, options_from_collection_for_select(current_course_data.students, "id", "name"), :id => 'per-student-select', :prompt => "Select Student"
 
