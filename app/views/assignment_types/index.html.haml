@@ -3,16 +3,17 @@
   = content_nav do
     = render "assignments/tabs"
 
-  .pagetitle= @title
+  %h3.pagetitle#tableCaption= @title
 
   .columns
-    %table.responsive.nofeatures_dynatable
+    %table.responsive.nofeatures_dynatable{"aria-describedby" => "tableCaption"}
       %thead
         %tr
-          %th Name
-          %th Predictor Display
-          %th Max value
+          %th{:scope => "col"} Name
+          %th{:scope => "col"} Predictor Display
+          %th{:scope => "col"} Max value
           %th.button-column
+            %span.sr-only Actions
         %tbody
           - current_course_data.assignment_types.each do |assignment_type|
             %tr
@@ -22,8 +23,17 @@
               %td
                 .button-bar
                   %ul.button-group.right.round
-                    %li= link_to 'See', assignment_type_path(assignment_type), :class => 'button tiny'
-                    %li= link_to 'Edit', edit_assignment_type_path(assignment_type), :class => 'button tiny'
+                    %li 
+                      %a{:href => assignment_type_path(assignment_type), :class => 'button tiny'}
+                        See
+                        %span.sr-only= assignment_type.name
+
+                    %li
+                      %a{:href => edit_assignment_type_path(assignment_type), :class => 'button tiny'}
+                        Edit
+                        %span.sr-only= assignment_type.name
+
                     %li
                       %a{:href => assignment_type_path(assignment_type), :data => { confirm: 'Are you sure?', method: :delete }, :class => "button tiny" }
                         Delete
+                        %span.sr-only= assignment_type.name

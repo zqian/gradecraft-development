@@ -28,6 +28,7 @@
                     %th{:style => "display: none"} Due Date
                     %th{:scope => "col"} Max Value
                     %th.button-column
+                      %span.sr-only Actions
                 %tbody
                   - assignments.each do |assignment|
                     %tr
@@ -56,10 +57,13 @@
                             %li
                               %a{:href => mass_grade_assignment_path(assignment), :class => 'button tiny' }
                                 Quick Grade
+                                %span.sr-only=assignment.name
                             %li
                               %a{:href => edit_assignment_path(assignment), :class => 'button tiny' }
                                 Edit
+                                %span.sr-only=assignment.name
                             %li
                               %a{:href => assignment_path(assignment), :class => "button tiny", :data => { confirm: 'Are you sure?', method: :delete } }
                                 Delete
+                                %span.sr-only=assignment.name
     .clearfix

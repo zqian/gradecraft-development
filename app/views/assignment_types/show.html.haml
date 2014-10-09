@@ -3,17 +3,18 @@
   = content_nav do
     = render "assignments/tabs"
 
-  .pagetitle= @title
+  %h3.pagetitle#pageCaption= @title
 
   .columns
-    %table.responsive.nofeatures_dynatable
+    %table.responsive.nofeatures_dynatable{"aria-describedby" => "tableCaption"}
       %thead
         %tr
-          %th Name
-          %th{"data-dynatable-sorts" => "dueDate"}  Open - Due
+          %th{:scope => "col"} Name
+          %th{:scope => "col", "data-dynatable-sorts" => "dueDate"}  Open - Due
           %th{:style => "display: none"} Due Date
-          %th Points
-          %th
+          %th{:scope => "col"} Points
+          %th{:scope => "col"}
+            %span.sr-only Actions
       %tbody
         - @assignment_type.assignments.alphabetical.chronological.each do |assignment|
           - if assignment.visible? || (current_user.is_student? && current_student_data.grade_released_for_assignment?(assignment)) || current_user.is_staff?
@@ -28,11 +29,19 @@
                 %td
                   .button-bar
                     %ul.button-group.right.round
-                      %li= link_to "Quick Grade", mass_grade_assignment_path(assignment), :class => "button tiny"
-                      %li= link_to "Edit", edit_assignment_path(assignment), :class => 'button tiny'
+                      %li
+                        %a{:href => mass_grade_assignment_path(assignment), :class => 'button tiny' }
+                          Quick Grade
+                          %span.sr-only=assignment.name
+                      %li
+                        %a{:href => edit_assignment_path(assignment), :class => "button tiny"}
+                          Edit
+                          %span.sr-only=assignment.name
                       %li
                         %a{:href => assignment_path(assignment), :data => { confirm: 'Are you sure?', method: :delete }, :class => "button tiny" }
                           Delete
+                          %span.sr-only=assignment.name
+
                       %li= link_to "Copy", copy_assignments_path(:id => assignment), :class => 'button tiny', :method => :copy
               - else
                 - if assignment.accepts_submissions? && assignment.has_groups?
