@@ -2,7 +2,8 @@
   - if current_user_is_student?
     %p.bold Your Results
   - else
-    %p.bold
+    %h4.sr-only #{current_student.try(:first_name)}'s Grade
+    %p.bold 
       #{current_student.try(:first_name)}'s Grade
       %span= link_to "Edit", edit_assignment_grade_path(@assignment, :student_id => current_student.id), :class => 'button tiny secondary radius'
 
