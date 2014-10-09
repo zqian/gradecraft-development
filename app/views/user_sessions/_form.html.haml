@@ -7,12 +7,16 @@
   .content.small-12#tabkerb.active
     .kerberos-auth
       = form_for User.new, :url => auth_kerberos_callback_path do |f|
+        = label_tag :username, 'User name', class:'sr-only'
         = text_field_tag :username, nil, placeholder: 'Uniqname', :autocorrect => "off", :autocapitalize => "off"
+        = label_tag :password, 'Password', class:'sr-only'
         = password_field_tag :password, nil, placeholder: 'Password'
         .right= f.submit 'Log in', class: 'button tiny radius', alt: 'Log in'
   .content.small-12#tabgc
     .gradegraft-auth
       = form_for User.new, :url => user_sessions_path do |f|
+        = label_tag :user_email, 'Email', class:'sr-only'
         = f.text_field :email, placeholder: "Email", :autocorrect => "off", :autocapitalize => "off"
+        = label_tag :user_password, 'Password', class:'sr-only'
         = f.password_field :password, placeholder: 'Password'
         .right= f.submit "Log in", class: 'button tiny radius', alt: "Log in"
