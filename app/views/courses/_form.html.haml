@@ -12,8 +12,8 @@
 
     .small-12.large-4.columns
       = f.label :courseno, "Course Number"
-      = f.text_field :courseno
-      .form_label This will be used as the prefix to the subject line on all email notifications sent for the course
+      = f.text_field :courseno, {"aria-describedby" => "txtCourseNo"}
+      .form_label{:id => "txtCourseNo"} This will be used as the prefix to the subject line on all email notifications sent for the course
 
     .clearfix
 
@@ -65,22 +65,22 @@
 
     .small-12.large-4.columns
       = f.label :point_total, "Maximum Number of Points"
-      = f.number_field :point_total
-      .form_label If you leave this blank, GradeCraft will calculate the total number of points based on the assignments you create.
+      = f.number_field :point_total, {"aria-describedby" => "txtMaxPoints"}
+      .form_label{:id => "txtMaxPoints"} If you leave this blank, GradeCraft will calculate the total number of points based on the assignments you create.
 
     .clearfix
 
     .small-12.large-4.columns
       = f.label :assignment_term, "Assignment Term"
-      = f.text_field :assignment_term
-      .form_label Would you like to call assignments something else?
+      = f.text_field :assignment_term, {"aria-describedby" => "txtAssignmentTerm"}
+      .form_label{:id => "txtAssignmentTerm"} Would you like to call assignments something else?
 
 
     .small-12.large-4.columns
       %label.checkbox{ :for => "accepts_submissions" }
         = f.label :accepts_submissions, "Assignment Submissions"
-        = f.check_box :accepts_submissions
-        .form_label Will you be using GradeCraft to accept assignment submissions?
+        = f.check_box :accepts_submissions, {"aria-describedby" => "txtAcceptSubmission"}
+        .form_label{:id => "txtAcceptSubmission"} Will you be using GradeCraft to accept assignment submissions?
 
     .small-12.large-4.columns
       = f.input :predictor_setting, :label => "Grade Predictor"
@@ -103,8 +103,8 @@
 
     .small-12.large-4.columns
       = f.label :badge_term, "Badge Term"
-      = f.text_field :badge_term
-      .form_label Would you like to call badges something else?
+      = f.text_field :badge_term, {"aria-describedby" => "txtBadgeTerm"}
+      .form_label{:id => "txtBadgeTerm"}  Would you like to call badges something else?
 
     .small-12.large-4.columns
       = f.input :shared_badges, :label => "Social Badges"
@@ -124,68 +124,68 @@
     .small-12.large-4.columns
       %label.checkbox{ :for => "team_setting" }
         = f.label :team_setting, "Sections"
-        = f.check_box :team_setting
-        .form_label  Will you have semester-long sections in your course?
+        = f.check_box :team_setting, {"aria-describedby" => "txtSections"}
+        .form_label{:id => "txtSections"}  Will you have semester-long sections in your course?
 
     .small-12.large-4.columns
       = f.label :team_term, "Section Term"
-      = f.text_field :team_term
-      .form_label  What will you call these? Team, House, Section...
+      = f.text_field :team_term, {"aria-describedby" => "txtTerm"}
+      .form_label{:id => "txtTerm"}  What will you call these? Team, House, Section...
 
 
 
     .small-12.large-4.columns
       %label.checkbox{ :for => "team_challenges" }
         = f.label :team_challenges, "Section Assignments"
-        = f.check_box :team_challenges
-        .form_label  Will the sections have to complete assignments collaboratively?
+        = f.check_box :team_challenges, {"aria-describedby" => "txtChallenge"}
+        .form_label{:id => "txtChallenge"}  Will the sections have to complete assignments collaboratively?
 
     .clearfix
 
     .small-12.large-4.columns
       %label.checkbox{ :for => "team_score_average" }
         = f.label :team_score_average, "Section Score = Average User Score"
-        = f.check_box :team_score_average
-        .form_label  Will sections' scores be the average of their students' scores?
+        = f.check_box :team_score_average, {"aria-describedby" => "txtScoreAverage"}
+        .form_label{:id => "txtScoreAverage"}   Will sections' scores be the average of their students' scores?
 
     .small-12.large-4.columns
       %label.checkbox{ :for => "add_team_score_to_student" }
         = f.label :add_team_score_to_student, "Student Score = Grades + Team Assignments"
-        = f.check_box :add_team_score_to_student
-        .form_label  Do you want team assignment scores to be added directly into student scores?
+        = f.check_box :add_team_score_to_student, {"aria-describedby" => "txtScoreToStudent"}
+        .form_label{:id => "txtScoreToStudent"} Do you want team assignment scores to be added directly into student scores?
 
 
 
     .small-12.large-4.columns
       %label.text_field{ :for => "challenge_term" }
         = f.label :challenge_term, "Section Assignment Term"
-        = f.text_field :challenge_term
-        .form_label What would you like to call these section assignments? Quests, Boss Battles, Challenges...
+        = f.text_field :challenge_term, {"aria-describedby" => "txtChallengeTerm"}
+        .form_label{:id => "txtChallengeTerm"} What would you like to call these section assignments? Quests, Boss Battles, Challenges...
 
     .small-12.large-4.columns
       %label.checkbox{ :for => "teams_visible" }
         = f.label :teams_visible, "Section Leaderboard"
-        = f.check_box :teams_visible
-        .form_label Can students see a leaderboard of the section rankings and their points?
+        = f.check_box :teams_visible, {"aria-describedby" => "txtSectionLeaderboard"}
+        .form_label{:id => "txtSectionLeaderboard"} Can students see a leaderboard of the section rankings and their points?
 
     .clearfix
 
     .small-12.large-4.columns
       %label.checkbox{ :for => "in_team_leaderboard" }
         = f.label :in_team_leaderboard, "In-Section Leaderboard"
-        = f.check_box :in_team_leaderboard
-        .form_label Can students see in-section rankings and points (students must opt in to this by adding a screenname to protect their privacy)?
+        = f.check_box :in_team_leaderboard, {"aria-describedby" => "txtInSectionLeaderboard"}
+        .form_label{:id => "txtInSectionLeaderboard"} Can students see in-section rankings and points (students must opt in to this by adding a screenname to protect their privacy)?
 
     .small-12.large-4.columns
       %label.checkbox{ :for => "team_roles" }
         = f.label :team_roles, "Section Roles"
-        = f.check_box :team_roles
-        .form_label Do students self-declare their role within the section?
+        = f.check_box :team_roles, {"aria-describedby" => "txtTeamRoles"}
+        .form_label{:id => "txtTeamRoles"} Do students self-declare their role within the section?
 
     .small-12.large-4.columns
       = f.label :team_leader_term, "What do you call your section leaders?"
-      = f.text_field :team_leader_term
-      .form_label TA, GSI, Team Leader..."
+      = f.text_field :team_leader_term, {"aria-describedby" => "txtTeamLeader"}
+      .form_label{:id => "txtTeamLeader"}  TA, GSI, Team Leader..."
 
     .clearfix
 
@@ -195,13 +195,13 @@
     .small-12.large-4.columns
       %label.checkbox{ :for => "group_setting" }
         = f.label :group_setting, "Groups"
-        = f.check_box :group_setting
-        .form_label Will students work in groups on any assignments, and thus all receive the same grade?
+        = f.check_box :group_setting, {"aria-describedby" => "txtGroups"}
+        .form_label{:id => "txtGroups"} Will students work in groups on any assignments, and thus all receive the same grade?
 
     .small-12.large-4.columns
       = f.label :group_term
-      = f.text_field :group_term
-      .form_label What will these groups be called?
+      = f.text_field :group_term, {"aria-describedby" => "txtGroupTerm"}
+      .form_label{:id => "txtGroupTerm"} What will these groups be called?
 
     .clearfix
 
@@ -222,8 +222,8 @@
 
     .small-12.large-4.columns
       = f.label :user_term, "User Term"
-      = f.text_field :user_term
-      .form_label What will you call your user? Student, Learner, Player..."
+      = f.text_field :user_term, {"aria-describedby" => "txtUserTerm"}
+      .form_label{:id => "txtUserTerm"} What will you call your user? Student, Learner, Player..."
 
     .small-12.large-4.columns
       %label.checkbox{ :for => "academic_history_visible" }
@@ -238,8 +238,8 @@
     %hr
     .small-12.large-4.columns
       = f.label :total_assignment_weight, "Multiplier Count"
-      = f.number_field :total_assignment_weight
-      .form_label= "How many multipliers do #{term_for :students} have to allocate?"
+      = f.number_field :total_assignment_weight, {"aria-describedby" => "txtMultiplierCount"}
+      .form_label{:id => "txtMultiplierCount"}= "How many multipliers do #{term_for :students} have to allocate?"
 
     .small-12.large-4.columns
       = f.label :assignment_weight_close_at, "Decision By..."
@@ -248,25 +248,25 @@
 
     .small-12.large-4.columns
       = f.label :max_assignment_weight, "Maximum Per #{term_for :assignment_type}"
-      = f.number_field :max_assignment_weight
-      .form_label Is there a maximum weight they may place on a single assignment type?
+      = f.number_field :max_assignment_weight, {"aria-describedby" => "txtMaxPerAssignment"}
+      .form_label{:id => "txtMaxPerAssignment"} Is there a maximum weight they may place on a single assignment type?
 
     .clearfix
 
     .small-12.large-4.columns
       = f.label :max_assignment_types_weighted, "Maximum Multiplied Assignment Types"
-      = f.number_field :max_assignment_types_weighted
-      .form_label Is there a maximum number of assignment types they can weight?
+      = f.number_field :max_assignment_types_weighted, {"aria-describedby" => "txtMaxWeighted"}
+      .form_label{:id => "txtMaxWeighted"} Is there a maximum number of assignment types they can weight?
 
     .small-12.large-4.columns
       = f.label :default_assignment_weight
-      = f.text_field :default_assignment_weight
-      .form_label What amount should the assignment types that the student doesn't select to boost be multiplied by?
+      = f.text_field :default_assignment_weight, {"aria-describedby" => "txtDefaultWeight"}
+      .form_label{:id => "txtDefaultWeight"} What amount should the assignment types that the student doesn't select to boost be multiplied by?
 
     .small-12.large-4.columns
       = f.label :weight_term
-      = f.text_field :weight_term
-      .form_label What do you want to call these weights/multipliers?
+      = f.text_field :weight_term, {"aria-describedby" => "txtWeightTerm"}
+      .form_label{:id => "txtWeightTerm"}  What do you want to call these weights/multipliers?
 
     .clearfix
 
@@ -276,15 +276,15 @@
     .small-12.large-4.columns
       %label.checkbox{ :for => "use_timeline" }
         = f.label :use_timeline, "Timeline"
-        = f.check_box :use_timeline
-        .form_label Would you like to use the interactive timeline to display your syllabus?
+        = f.check_box :use_timeline, {"aria-describedby" => "txtUseTimeline"}
+        .form_label{:id => "txtUseTimeline"} Would you like to use the interactive timeline to display your syllabus?
 
     .clearfix
 
     .small-12.large-4.columns
       = f.label :media_file
-      = f.text_field :media_file
-      .form_label What video or image file (on YouTube, Flickr or Vimeo) would you like to display here?
+      = f.text_field :media_file, {"aria-describedby" => "txtMediaFile"}
+      .form_label{:id => "txtMediaFile"}  What video or image file (on YouTube, Flickr or Vimeo) would you like to display here?
 
     .small-12.large-4.columns
       = f.label :media_credit, "Media Credit"
