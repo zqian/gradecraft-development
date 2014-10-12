@@ -20,7 +20,7 @@
       .small-12.columns.team{:id => "place-#{i}", class: ("complete" if current_student.present? && team == current_student.team_for_course(current_course)) }
         .small-1.columns.rank= i
         .small-9.columns.name
-          - if current_user.is_student?
+          - if current_user_is_student?
             = team.name
           - else 
             = link_to team.name, team_path(team)

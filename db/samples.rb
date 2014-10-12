@@ -196,7 +196,7 @@ User.create! do |u|
   courses.each do |c|
     u.course_memberships.create! do |cm|
       cm.course = c
-      cm.role = "professor"
+      cm.role = "admin"
     end
   end
 end

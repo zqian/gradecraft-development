@@ -1,5 +1,5 @@
 .small-12.columns
-  %table.responsive.nopage_dynatable
+  %table.responsive.nofeatures_dynatable
     %thead
       %tr
         %th Rank
@@ -10,7 +10,7 @@
         - else
           %th Challenge Score
         %th{ "data-dynatable-column" => "students"} #{term_for :students}
-        - if current_user.is_staff?
+        - if current_user_is_staff?
           %th{ "data-dynatable-column" => "badges"} #{term_for :badges} Earned
           %th.button-column
     %tbody
@@ -22,7 +22,7 @@
           %td= points team.try(:average_points)
           %td= points team.try(:score)
           %td= team.member_count
-          - if current_user.is_staff?
+          - if current_user_is_staff?
             %td= points team.badge_count
             %td
               .button-bar

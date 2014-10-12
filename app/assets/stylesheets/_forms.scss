@@ -37,10 +37,10 @@ fieldset {
 /** Styling to make labels on checkboxes and radio forms align properly**/
 .radio,
 .checkbox {
-  display: block;
+  display: block;/*
   min-height: 20px;
-  padding-left: 0px;
-  margin-bottom: 15px;
+  padding-left: 0px;*/
+  margin-bottom: 10px;
 }
 
 .radio input[type="radio"],
@@ -48,11 +48,24 @@ fieldset {
 .checkbox input[type="checkbox"],
 .checkbox-inline input[type="checkbox"] {
   float: left;
-  margin-left: 0px;
 }
 
-input[type="radio"], .radio-inline input[type="radio"], .checkbox input[type="checkbox"], select, .checkbox-inline input[type="checkbox"], input[type="text"] {
+input[type="radio"], 
+.radio-inline input[type="radio"], 
+.checkbox input[type="checkbox"], 
+select, 
+.checkbox-inline input[type="checkbox"], 
+input[type="text"] {
   margin-bottom: 0.5rem;
+}
+
+input[type="checkbox"] {
+  margin-top: 0.26rem;
+}
+
+input[type="checkbox"] + label {
+  margin-left: 0;
+  padding-top: 0;
 }
 
 

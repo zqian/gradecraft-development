@@ -9,7 +9,7 @@
     %h4.subtitle= assignment_type.name 
 
     .columns
-      %table.responsive.nopage_dynatable
+      %table.responsive.nofeatures_dynatable
         %thead
           %tr
             %th Name
@@ -24,6 +24,7 @@
               %i.fi-info{:title => "The average of all scores above zero", :data => {'tooltip' => true} }
             %th # Submissions
             %th # Grades 
+            %th
         %tbody
           - assignments.each do |assignment|
             %tr
@@ -37,5 +38,6 @@
                 - if assignment.accepts_submissions?
                   = assignment.submissions.count
               %th= assignment.grade_count
+              %th= link_to "Quick Grade", mass_grade_assignment_path(assignment), :class => "button radius"
     .clearfix
     %hr

@@ -454,7 +454,6 @@ ActiveRecord::Schema.define(version: 20141008174828) do
     t.integer  "predicted_score",    default: 0, null: false
   end
 
-  add_index "grades", ["assignment_id", "student_id"], name: "index_grades_on_assignment_id_and_student_id", unique: true, using: :btree
   add_index "grades", ["assignment_id"], name: "index_grades_on_assignment_id", using: :btree
   add_index "grades", ["assignment_type_id"], name: "index_grades_on_assignment_type_id", using: :btree
   add_index "grades", ["course_id"], name: "index_grades_on_course_id", using: :btree
@@ -606,7 +605,7 @@ ActiveRecord::Schema.define(version: 20141008174828) do
   create_table "submission_files", force: true do |t|
     t.string  "filename",      null: false
     t.integer "submission_id", null: false
-    t.text    "filepath"
+    t.string  "filepath"
   end
 
   create_table "submissions", force: true do |t|

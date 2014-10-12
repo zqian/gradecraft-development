@@ -39,7 +39,6 @@ class Course < ActiveRecord::Base
     c.has_many :grades
     c.has_many :groups
     c.has_many :group_memberships
-    #c.has_many :rubrics
     c.has_many :submissions
     c.has_many :teams
     c.has_many :course_memberships

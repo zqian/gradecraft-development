@@ -3,7 +3,7 @@ class AssignmentsController < ApplicationController
   before_filter :ensure_staff?, :except => [:feed, :show, :index]
 
   def index
-    redirect_to syllabus_path if current_user.is_student?
+    redirect_to syllabus_path if current_user_is_student?
     @title = "#{term_for :assignments}"
     @assignments = current_course.assignments.chronological.alphabetical
   end

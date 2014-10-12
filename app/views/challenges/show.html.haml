@@ -2,12 +2,12 @@
   - if current_user_is_student?
     = render "students/student_profile_tabs"
 
-  - if current_user.is_staff?
+  - if current_user_is_staff?
     = content_nav_for @challenge
 
   %h3.pagetitle= @title
 
-  - if current_user.is_staff?
+  - if current_user_is_staff?
     .small-12.medium-3.right.columns
       .button-bar.right
         %ul.button-group.context_menu
@@ -55,7 +55,7 @@
             - challenge_grade = @challenge.challenge_grades.find_by team: team
             %tr
               %td
-                - if current_user.is_staff?
+                - if current_user_is_staff?
                   = link_to team.name, team
                 - else
                   = team.name

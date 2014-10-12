@@ -11,6 +11,7 @@
   %li
     %i.fi-flag
     = link_to "Grading Status", grading_status_path
+
   - if current_course.student_weighted?
     %li
       %i.fi-die-three
@@ -39,8 +40,6 @@
       %i.fi-trophy
       = link_to term_for(:challenges), challenges_path
 
-  %li.divider
-
   %hr
 
   %li
@@ -54,8 +53,6 @@
   %li
     %i.fi-results-demographics
     = link_to "#{term_for :assignment} Analytics", analytics_per_assign_path
-
-  %li.divider
 
   %hr
 
@@ -74,8 +71,6 @@
   %li
     %i.fi-torso-business
     = link_to "Staff", staff_index_path 
-
-  %li.divider
   
   %hr
 
@@ -90,19 +85,16 @@
   %li
     %i.fi-list
     = link_to "Grading Scheme", grade_scheme_elements_path
-
-  %li.divider
   
-  %hr
+  - if LTIProvider.present?
+    %hr
 
-  %li
-    %label Tools
-  - LTIProvider.all.each do |tool|
     %li
-      %i.fi-puzzle
-      = link_to tool.name, launch_lti_provider_path(tool)
-
-  %li.divider
+      %label Tools
+    - LTIProvider.all.each do |tool|
+      %li
+        %i.fi-puzzle
+        = link_to tool.name, launch_lti_provider_path(tool)
 
   - if current_user_is_admin?
     %hr

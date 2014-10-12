@@ -99,7 +99,7 @@
 
       - if @assignment.release_necessary?
         .small-12.large-4.columns
-          - if current_user.is_gsi?
+          - if current_user_is_gsi?
             = f.input :status, as: :select, :collection => ["In Progress", "Graded"], :selected => @grade.status
             .form_label Is this grade ready to be reviewed? 
           - else
