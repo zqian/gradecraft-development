@@ -77,7 +77,7 @@
                           = image_tag "badge.png", width: "30px", height: "30px"
                     .clear
 
-                  - if current_user.is_student?
+                  - if current_user_is_student?
                     - if @rubric_grades.select {|rubric_grade| rubric_grade.tier_id == tier[:id] }.count > 0
                       .level-scored You scored at this level
 
