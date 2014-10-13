@@ -54,6 +54,9 @@
         = render "grades/group_show"
       - else
         = render "grades/individual_show"
+      .clearfix
+
+  .clearfix
    
   - if @assignment.rubric.present? && @assignment.rubric.designed?    
     - if current_user_is_staff?

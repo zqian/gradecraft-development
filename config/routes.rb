@@ -108,6 +108,7 @@ GradeCraft::Application.routes.draw do
   resources :assignment_types do
     member do
       get 'all_grades'
+      get 'export_scores'
     end
   end
 

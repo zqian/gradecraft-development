@@ -91,6 +91,32 @@ class AssignmentType < ActiveRecord::Base
     super.presence || assignments.map{ |a| a.point_total }.sum
   end
 
+  def score_for_student(student)
+    student.grades.where(:assignment_type => self).pluck('score').sum
+  end
+
+  def raw_score_for_student(student)
+    student.grades.where(:assignment_type => self).pluck('raw_score').sum
+  end
+
+  def export_scores
+    if student_weightable?
+      CSV.generate do |csv|
+        csv << ["First Name", "Last Name", "Username", "Raw Score", "Multiplied Score" ]
+        course.students.each do |student|
+          csv << [student.first_name, student.last_name, student.email, self.raw_score_for_student(student), self.score_for_student(student)]
+        end
+      end
+    else
+      CSV.generate do |csv|
+        csv << ["First Name", "Last Name", "Username", "Raw Score" ]
+        course.students.each do |student|
+          csv << [student.first_name, student.last_name, student.email, self.raw_score_for_student(student)]
+        end
+      end
+    end
+  end
+
   private
 
   #Checking to make sure there are score levels and warning if not

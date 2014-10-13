@@ -67,6 +67,10 @@ class StudentsController < ApplicationController
     end
   end
 
+  def badges
+    @title = "#{term_for :badges}"
+  end
+
   # Display the grade predictor
   def predictor
     @grade_scheme_elements = current_course.grade_scheme_elements

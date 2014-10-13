@@ -77,6 +77,13 @@ class AssignmentTypesController < ApplicationController
     end
   end
 
+  def export_scores
+    @assignment_type = current_course.assignment_types.find(params[:id])
+    respond_to do |format|
+      format.csv { send_data @assignment_type.export_scores }
+    end
+  end
+
   #display all grades for all assignments in an assignment type
   def all_grades  
     @assignment_type = current_course.assignment_types.find(params[:id])
