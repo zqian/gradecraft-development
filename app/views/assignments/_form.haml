@@ -1,7 +1,11 @@
 .small-12.columns
+  .small-12.panel.columns
+    = render 's3_uploader'
+  
   = simple_form_for(@assignment) do |f|
-    .panel
-      .small-12.large-4.columns.right.panel.callout.radius
+
+    .small-12.large-4.columns.right
+      .panel
         .small-12
           %label.checkbox{ :for => "visible" }
             = f.label :visible, "Visible to students"
@@ -59,12 +63,14 @@
             = f.check_box :include_in_predictor
             .form_label Can #{term_for :students} see this #{term_for :assignment} in the grade predictor?
 
-      .small-12.large-8.columns
-        .small-12.large-8
+    .small-12.large-8.columns.panel
+      %h4.bold Basic Settings
+      .small-12
+        .small-12.large-8.columns
           = f.label :assignment_type, "#{term_for :assignment} Type"
           = select_tag :assignment_type_id, options_from_collection_for_select(current_course.assignment_types, "id", "name", @assignment.try(:assignment_type_id))
 
-      .small-12.large-8
+      .small-12
 
         .small-12.large-8.columns
           = f.label :name
@@ -85,32 +91,58 @@
         .small-12.large-4.columns
           = f.input :accepts_submissions_until, as: :string, :include_blank => true, :input_html => { :class => 'datetimepicker', :value => @assignment.try(:accepts_submissions_until) }, :label => "Accept until"
 
-      .small-12.large-8.columns
 
-        .small-12.large-8
+      .small-12
+        .small-12.large-8.columns
           = f.label :grade_scope, "Do students do this individually or as a group?"
           = f.select :grade_scope, [["Individual"], ["Group"]]
-
-        .small-12.large-8
+      
+      .small-12
+        .small-12.large-8.columns
           = f.label :mass_grade_type, "How should this assignment appear in Quick Grade?"
           = f.select :mass_grade_type, [[],["Checkbox"], ["Select List"], ["Radio Buttons"], ["Text"]]
-
-        .small-12.large-8
+      
+      .small-12
+        .small-12.large-8.columns
           = f.label :points_predictor_display, "How should this assignment appear in the Grade Predictor?"
           = f.select :points_predictor_display, [[], ["Checkbox", "Fixed"], ["Select List"], ["Slider"], ]
+
+      .clearfix
 
       .small-12.large-4.columns
         
         = f.simple_fields_for :assignment_files, @assignment.assignment_files.new do |aff|
           = aff.input :filepath, :input_html => { :class => 's3_files' }, :as => :hidden
+      .clearfix
 
-      .small-12.textarea
+      .small-12.textarea.panel.callout
+        %h5.bold Assignment Description
         = f.bootsy_area :description
         .form_label 
-          %b Assignment Description: 
           %span This will be shown to students on their dashboard, and when they submit their assignment.
 
-    .panel
+    .small-12.large-4.columns.right
+
+      .panel
+        %h4.bold Timeline
+          
+        .small-12
+          = f.label :media, "Image/Video"
+          = f.text_field :media
+
+        .small-12
+          = f.label :thumbnail
+          = f.text_field :thumbnail
+
+        .small-12
+          = f.label :media_credit, "Media Credit"
+          = f.text_field :media_credit
+
+        .small-12
+          = f.label :media_caption, "Caption"
+          = f.text_field :media_caption
+
+    .panel.small-12.medium-8.columns
       %h4.bold Grade Levels
       .small-12.columns
         .assignment-score-levels
@@ -125,29 +157,10 @@
                 = render 'assignment_score_level_fields', f: slf
         = link_to 'Add a Level', '#', class: 'add-assignment-score-level button tiny radius'
 
-    .panel
-      %h4.bold Timeline
-        
-      .small-12.large-4.columns
-        = f.label :media, "Image/Video"
-        = f.text_field :media
+    .clearfix
 
-      .small-12.large-4.columns
-        = f.label :thumbnail
-        = f.text_field :thumbnail
-
-      .small-12.large-4.columns
-        = f.label :media_credit, "Media Credit"
-        = f.text_field :media_credit
-
-      .small-12.large-4.columns
-        = f.label :media_caption, "Caption"
-        = f.text_field :media_caption
-
-    .small-12.medium-3.right{:style => "margin-top: 6em !important; text-align: right"}
+    .small-12.medium-3.right
       = f.button :submit, "#{@assignment.persisted? ? 'Update' : 'Create'} #{term_for :assignment}", :class => "button radius tiny alert"
       = link_to 'Cancel', assignments_path, :class => "button radius transparent tiny"
-    .panel.small-12.medium-9.columns
-      = render 's3_uploader'  
 
     

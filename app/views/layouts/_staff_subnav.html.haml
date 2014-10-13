@@ -20,9 +20,6 @@
     %li
       %i.fi-star
       = link_to "Awarded #{current_course.badge_term.pluralize}", earned_badges_path
-  %li
-    %i.fi-book-bookmark
-    = link_to "Gradebook", gradebook_path
 
   %hr
 
@@ -53,6 +50,20 @@
   %li
     %i.fi-results-demographics
     = link_to "#{term_for :assignment} Analytics", analytics_per_assign_path
+
+  - if current_user_is_professor? || current_user_is_admin?
+    %hr
+
+    %li
+      %label Downloads
+    %li
+      %i.fi-book-bookmark
+      = link_to "Final Grades", final_grades_path(format: 'csv')
+    / %li
+    /   %i.fi-book
+    /   %a{:href => gradebook_path(format: 'csv') } Full Gradebook
+    /   - if current_course.student_weighted?
+    /     %a{:href => raw_points_gradebook_path(format: 'csv')} [Raw Points]
 
   %hr
 

@@ -1,11 +1,14 @@
 = csrf_meta_tag
 .small-12.panel.mainContent
+
+  = content_nav_for @assignment
+  
+  %h3.pagetitle Design Rubric for "#{@assignment.name}"
+
   .small-12.columns
     #rubric(ng-app="gradecraft" ng-controller="RubricCtrl" ng-init="init(#{@rubric[:id]}, #{@assignment.point_total}, #{@metrics}, #{@course_badges})")
 
-      #rubric-title
-        %h3 Design Rubric for "#{@assignment.name}"
-        %h5.subtitle Rubric is saved automatically.
+      .italic Rubric is saved automatically.
 
       #points-overview-floating(ng-cloak ng-hide="angular.element('#points-overview').isOnscreen()")
         %h4#points-legend
@@ -40,6 +43,6 @@
             + Level
           .clear
 
-      %button#new-rubric-metric(type="button" ng-click="newMetric()" ng-hide) + Criterion
+      %button.radius#new-rubric-metric(type="button" ng-click="newMetric()" ng-hide) + Criterion
 
   .clearfix

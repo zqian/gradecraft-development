@@ -126,11 +126,16 @@ img.earned {
 
 #levels_per_assignment {
   min-height: 250px;
-  width: 350px;
+  width: 100%;
   clear: both;
   .chart {
     height: 100px;
   }
 }
 
+#numberComplete {
+  #numberComplete_canvas {
+    width: 100% !important;
+  }
+}
 

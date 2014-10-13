@@ -4,6 +4,16 @@
 
   %h3.pagetitle= @title
 
+  .small-12.medium-3.right.columns
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li
+          %a{:href => gradebook_path(format: 'csv') }
+            %i.fi-page-export-csv
+            Download Grades
+
+  .clearfix 
+  
   .small-12.medium-4.columns.right
     / Checking to see if the current course has teams, displaying the team filter if it does
     - if current_course.has_teams?

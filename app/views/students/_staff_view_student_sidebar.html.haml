@@ -11,6 +11,8 @@
     %h3
       %small= "Last activity: #{current_student.try(:last_activity_at) || "(never)"} "
 
+  - if current_course.student_weighted?
+    .panel.radius= render 'students/sidebar/sidebar_assignment_weights'
 
   .panel.radius= render "students/sidebar/sidebar_to_do_list"
 

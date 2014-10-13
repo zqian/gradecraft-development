@@ -6,6 +6,7 @@ class GradesController < ApplicationController
 
   def show
     @assignment = current_course.assignments.find(params[:assignment_id])
+    @title = "#{current_student.name}'s Grade for #{ @assignment.name }"
     if current_user_is_student?
       redirect_to @assignment
     end
@@ -21,6 +22,7 @@ class GradesController < ApplicationController
     session[:return_to] = request.referer
     redirect_to @assignment and return unless current_student.present?
     @grade = current_student_data.grade_for_assignment(@assignment)
+    @title = "Editing #{current_student.name}'s Grade for #{@assignment.name}"
     @rubric = @assignment.rubric
     @metrics = existing_metrics_as_json if @rubric
     @score_levels = @assignment.score_levels.order_by_value
@@ -202,6 +204,7 @@ class GradesController < ApplicationController
   #upload grades for an assignment
   def import
     @assignment = current_course.assignments.find(params[:id])
+    @title = "Import Grades for #{@assignment.name}"
   end
 
   #upload based on username

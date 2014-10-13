@@ -1,8 +1,19 @@
 .small-12.panel.mainContent#leaderboard
+  
+  = content_nav_for "Leaderboard"
 
   %h3.pagetitle#tableCaption= @title
 
+  .small-12.medium-3.right.columns
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li
+          %a{:href => gradebook_path(format: 'csv') }
+            %i.fi-page-export-csv
+            Download Grades
+
   - if current_course.has_teams?
+    .clearfix 
     .small-12.large-4.medium-6.columns.right
       %label.sr-only{:for => "team_id"}
         Select Team
@@ -29,7 +40,7 @@
           - if @team
             - students = current_course_data.students_for_team(@team)
           - else
-            - students = current_course.students.being_graded.order_by_high_score
+            - students = current_course_data.students.being_graded.order_by_high_score
           - i = 1
           - students.each do |student|
             %tr

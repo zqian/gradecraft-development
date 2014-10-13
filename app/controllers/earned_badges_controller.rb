@@ -5,6 +5,7 @@ class EarnedBadgesController < ApplicationController
   before_filter :ensure_staff?, :except => :toggle_shared
 
   def index
+    @title = "Awarded #{term_for :badges}"
     @badge = current_course.badges.find(params[:badge_id])
     redirect_to badge_path(@badge)
   end

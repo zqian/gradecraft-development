@@ -3,7 +3,7 @@
   = content_nav_for @assignment, "See Grade"
   
   - if @assignment.is_individual?
-    %h3.pagetitle= "#{current_student.name}'s Grade for #{ @assignment.name }"
+    %h3.pagetitle= @title
 
     .small-12.medium-3.right.columns
       .button-bar.right

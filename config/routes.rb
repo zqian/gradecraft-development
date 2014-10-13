@@ -169,6 +169,8 @@ GradeCraft::Application.routes.draw do
   get 'earned_badges' => 'info#class_badges'
   get 'grading_status' => 'info#grading_status'
   get 'gradebook' => 'info#gradebook'
+  get 'raw_points_gradebook' => 'info#raw_points_gradebook'
+  get 'final_grades' => 'info#final_grades'
   get 'research_gradebook' => 'info#research_gradebook'
 
   #8. Groups

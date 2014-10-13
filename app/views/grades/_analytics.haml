@@ -1,23 +1,5 @@
-.small-12.columns
+.small-12
   %h3.center Class Analytics
-  %h6.small (click chart to see results)
-
-  %dl.tabs{:data => {'tab' => true}, :class => "analytics_tabs"}
-    %dd.active
-      = link_to image_tag(asset_path('boxplot.png'), :width => 80), "#boxplot"
-    %dd
-      = link_to image_tag(asset_path('halfcircle.png'), :width => 80), "#submitted"
-    %dd
-      = link_to image_tag(asset_path('pie.png'), :width => 80), "#levels"
-
-  .tabs-content{:style => "background-color: #FFFFFF;"}
-    .content.small-12#boxplot.active
-      %h4.bold.center Grade Distribution
-      .center
-        .chartcontainer
-          .grades_per_assign{ "data-scores" => @assignment.grades.graded.pluck('score') }
-
-        %h6.small= link_to "How do I read this chart?", "http://www.youtube.com/watch?v=7UK2DK7rblw&feature=youtu.be", :target => "_blank"
   %hr
 
   .row

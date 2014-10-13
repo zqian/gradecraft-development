@@ -1,6 +1,6 @@
 .small-12.right.medium-4.columns
 
-- if @rubric.designed?
+- if @rubric && @rubric.designed?
   #rubric-grader(ng-app="gradecraft" ng-controller="GradeRubricCtrl" ng-init="init(#{@rubric[:id]}, #{@metrics}, #{@assignment[:id]}, #{params[:student_id]}, #{@course_badges.html_safe})")
 
     .row
@@ -86,7 +86,7 @@
     = hidden_field_tag :student_id, current_student.id
     .panel
       .small-12.large-4.columns
-        = f.label :raw_score
+        = f.label :raw_score, "Raw Score (#{@assignment.point_total} points Possible)"
         - if @assignment.assignment_type.has_levels?
           = f.select :raw_score, @score_levels.map { |l| [l.name,l.value] }, :include_blank => true
         - elsif @assignment.has_levels?
@@ -120,6 +120,6 @@
 
       .clearfix
 
-  .right
-    = submit_tag "#{@grade.persisted? && @grade.is_graded? ? 'Update' : 'Submit'} Grade", :class => "button tiny radius alert"
-    = link_to 'Cancel', assignment_path(@assignment), :class => 'button tiny radius'
+    .right
+      = submit_tag "#{@grade.persisted? && @grade.is_graded? ? 'Update' : 'Submit'} Grade", :class => "button tiny radius alert"
+      = link_to 'Cancel', assignment_path(@assignment), :class => 'button tiny radius'

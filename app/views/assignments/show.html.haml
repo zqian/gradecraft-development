@@ -1,16 +1,13 @@
 .small-12.panel.mainContent
-  / Assignment Navigation
-  - if current_user_is_student?
-    = render "students/student_profile_tabs"
 
   - if current_user_is_staff?
     = content_nav_for @assignment
 
-  .small-12.medium-9
+  .small-12.medium-8
     %h3.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
 
   - if current_user_is_staff?
-    .small-12.medium-6.right.columns
+    .small-12.medium-8.right.columns
       .button-bar.right
         %ul.button-group.context_menu
           %li
@@ -18,7 +15,7 @@
           %li
             %a{:href => edit_assignment_path(@assignment) }
               %i.fi-pencil
-              Edit #{@assignment.name}
+              Edit
           - if @team.present?
             %li
               %a{:href => mass_grade_assignment_path(@assignment, :team_id => @team) }
@@ -27,8 +24,16 @@
           - else
             %li
               %a{:href => mass_grade_assignment_path(@assignment) }
-                %i.fi-list-thumbnails
+                %i.fi-check
                 Quick Grade
+
+          %li
+            %a{:href => design_assignment_rubric_path(@assignment) }
+              %i.fi-list-thumbnails
+              - if @assignment.rubric and @assignment.rubric.designed?
+                Edit Rubric
+              - else
+                Create Rubric 
           %li
             %a{:href => import_grades_assignment_path(@assignment) }
               %i.fi-upload
@@ -37,13 +42,6 @@
             %a{:href => export_grades_assignment_path(format: 'csv') }
               %i.fi-page-export-csv
               Download Grades
-
-  - if current_user_is_staff?
-    .small-12.columns
-      - if @assignment.rubric and @assignment.rubric.designed?
-        %h3!= link_to "Edit Rubric", design_assignment_rubric_path(@assignment)
-      - else
-        %h3!= link_to "Design Rubric", design_assignment_rubric_path(@assignment)
 
     .small-12.columns
       - if @assignment.has_groups?

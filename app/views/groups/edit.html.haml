@@ -1,7 +1,4 @@
 .small-12.panel.mainContent
-  / Groups Navigation
-  - if current_user_is_student?
-    = render "students/student_profile_tabs"
 
   = content_nav_for @group, "Edit #{term_for :group}"
 

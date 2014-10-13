@@ -216,8 +216,38 @@ class Course < ActiveRecord::Base
     course_memberships.where(:role => "professor").first.user
   end
 
-  #gradebook
-  def gradebook_for_course(course, options = {})
+  #final grades - total score + grade earned in course
+  def final_grades_for_course(course, options = {})
+    CSV.generate(options) do |csv|
+      csv << ["First Name", "Last Name", "Email", "Score", "Grade" ]
+      course.students.each do |student|
+        csv << [student.first_name, student.last_name, student.email, student.cached_score_for_course(course), student.grade_letter_for_course(course)]
+      end
+    end
+  end
+
+  #gradebook spreadsheet export for course
+  def gradebook_for_course(course)
+    CSV.generate do |csv|
+      assignment_names = []
+      assignment_names << "First Name"
+      assignment_names << "Last Name"
+      assignment_names << "Email"
+      course.assignments.chronological.alphabetical.each do |a|
+        assignment_names << a.name
+      end
+      csv << assignment_names
+      course.students.each do |student|
+        student_data = []
+        student_data << [student.first_name, student.last_name, student.email, student.team_for_course(course).try(:name)]
+        
+        csv << student_data
+      end
+    end
+  end
+
+  #raw points gradebook spreadsheet export for course - used in the event of multipliers
+  def raw_points_gradebook_for_course(course, options = {})
     CSV.generate(options) do |csv|
       csv << ["First Name", "Last Name", "Email", "Score", "Grade" ]
       course.students.each do |student|
@@ -234,6 +264,8 @@ class Course < ActiveRecord::Base
       end
     end
   end
+
+
 
   #badges
   def course_badge_count

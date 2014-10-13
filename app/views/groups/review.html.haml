@@ -2,13 +2,13 @@
   
   = content_nav_for @group, "Review Group"
 
-  %h3.pagetitle= "#{term_for :group}: #{@group.name}"
+  %h3.pagetitle= @title
   
   .small-12.medium-3.right.columns
     .button-bar.right
       %ul.button-group.context_menu
         %li
-          %a{:href => new_group_path }
+          %a{:href => group_path(@group) }
             %i.fi-list-thumbnails
             See #{term_for :group}
 
