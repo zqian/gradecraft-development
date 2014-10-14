@@ -36,16 +36,16 @@
               .button-bar
                 %ul.button-group.round.right
                   %li
-                    %a{:href => challenge, :class => 'button tiny secondary'}
-                      See 
-                      %span.sr-only= challenge.name
+                    = link_to challenge, :class => 'button tiny secondary' do
+                      See
+                      %span.sr-only=  challenge.name
                   %li
-                    %a{:href => edit_challenge_path(challenge), :class => 'button tiny secondary'}
+                    = link_to edit_challenge_path(challenge), :class => 'button tiny secondary' do
                       Edit
-                      %span.sr-only= challenge.name
+                      %span.sr-only=  challenge.name
                   %li
-                    %a{:href => challenge, :class => 'button tiny secondary', :method => :delete, data: { confirm: 'Are you sure?'}}
+                    = link_to challenge, :class => 'button tiny secondary', :method => :delete, data: { confirm: 'Are you sure?' } do
                       Delete
-                      %span.sr-only= challenge.name
+                      %span.sr-only=  challenge.name
 
   .clearfix
