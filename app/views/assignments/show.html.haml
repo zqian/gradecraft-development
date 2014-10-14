@@ -61,7 +61,7 @@
                   .clear
                 .metric-description= metric.wrapped_description(40).html_safe
 
-              - metric.tiers.each do |tier|
+              - metric.tiers.order("points ASC").each do |tier|
                 %td.tier
                   .tier-heading
                     .tier-name= tier.wrapped_name(25).html_safe
