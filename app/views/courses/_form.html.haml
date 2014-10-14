@@ -243,8 +243,8 @@
 
     .small-12.large-4.columns
       = f.label :assignment_weight_close_at, "Decision By..."
-      = f.input :assignment_weight_close_at, as: :string, :include_blank => true, :input_html => { :class => 'datetimepicker', :value => @assignment.try(:open_at) }, :label => false
-      .form_label What date must they make this decision by?
+      = f.input :assignment_weight_close_at, as: :string, :include_blank => true, :input_html => { :class => 'datetimepicker', :value => @assignment.try(:open_at), "aria-describedby" => "txtDecisionBy"}, :label => false
+      .form_label{:id => "txtDecisionBy"} What date must they make this decision by?
 
     .small-12.large-4.columns
       = f.label :max_assignment_weight, "Maximum Per #{term_for :assignment_type}"
