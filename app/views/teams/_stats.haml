@@ -30,15 +30,15 @@
             .button-bar
               %ul.button-group.round.right
                 %li
-                  %a{:href => team, :class => 'button tiny secondary'}
+                  = link_to team, :class => 'button tiny secondary' do
                     See
                     %span.sr-only= team.name
                 %li
-                  %a{:href => edit_team_path(team), :class => 'button tiny secondary'}
+                  = link_to edit_team_path(team), :class => 'button tiny secondary' do
                     Edit
                     %span.sr-only= team.name
                 %li
-                  %a{:href => edit_team_path(team), :class => 'button tiny secondary', :data => { confirm: 'Are you sure?' }, :method => :delete}
+                  = link_to edit_team_path(team), :class => 'button tiny secondary', :data => { confirm: 'Are you sure?' }, :method => :delete do
                     Delete
                     %span.sr-only= team.name
       - i += 1
