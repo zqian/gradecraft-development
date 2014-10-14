@@ -63,9 +63,10 @@
                         Edit
                         %span.sr-only record for #{g.student.try(:first_name)} #{g.student.try(:last_name)}
               %td
-                %label.sr-only-x
-                  Check/Uncheck #{g.student.try(:first_name)} #{g.student.try(:last_name)}
+                %label
                   .center= check_box_tag "grade_ids[]", g.id
+                  .sr-only
+                    Check/Uncheck #{g.student.try(:first_name)} #{g.student.try(:last_name)}
 
       .right
         = submit_tag "Update Selected Grade Statuses", :class => "button tiny primary radius"
