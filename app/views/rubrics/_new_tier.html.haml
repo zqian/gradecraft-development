@@ -7,10 +7,11 @@
 .row
   %input(type="text" ng-model="tier.description" placeholder="Description" value="{{tier.description}}" ng-blur="tier.modify(tierForm)" ng-change="tier.change()")
 
-.row.badge-row(ng-click="tier.editBadges()" ng-show="tier.isSaved()")
-  .badge-messages Badges
-  .tier-badge-image(ng-repeat="(tierBadgeId, tierBadge) in tier.badges")
-    = image_tag "badge.png", width: "50px", height: "50px"
+- if @course_badge_count > 0
+  .row.badge-row(ng-click="tier.editBadges()" ng-show="tier.isSaved()")
+    .badge-messages Badges
+    .tier-badge-image(ng-repeat="(tierBadgeId, tierBadge) in tier.badges")
+      = image_tag "badge.png", width: "50px", height: "50px"
 
 .modal-window(ng-show="tier.editingBadges")
   .row

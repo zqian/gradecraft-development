@@ -8,6 +8,7 @@ class RubricsController < ApplicationController
     @rubric = Rubric.find_or_create_by(assignment_id: @assignment.id)
     @metrics = existing_metrics_as_json
     @course_badges = serialized_course_badges
+    @course_badge_count = @assignment.course.badges.visible.count
     respond_with @rubric
   end
 
