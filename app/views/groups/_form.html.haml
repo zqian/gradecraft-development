@@ -2,7 +2,7 @@
   = simple_form_for @group do |f|
 
     .small-12.medium-4
-      = f.label "#{term_for :group} Name"
+      = f.label :name, "#{term_for :group} Name"
       = f.text_field :name
 
     %br
@@ -15,7 +15,7 @@
 
     .small-12.medium-4
       = f.association :assignments, :collection => @assignments, :as => :check_boxes
-      .form_label What #{term_for :assignments} will this #{term_for :group} work on together?
+      .form_label{:id => "txtGroupAssignment"} What #{term_for :assignments} will this #{term_for :group} work on together?
 
     %br
 
@@ -29,7 +29,7 @@
         = f.association :students, :collection => current_course_data.students, as: :select
       %br
       %br
-      .form_label Enter a fellow student's name to add them to this #{term_for :group}. Only one student needs to create the #{term_for :group}, after which all #{term_for :group} members will be able to submit work, see submitted materials, and see instructor grades and feedback.
+      .form_label{:id => "txtStudentName"} Enter a fellow student's name to add them to this #{term_for :group}. Only one student needs to create the #{term_for :group}, after which all #{term_for :group} members will be able to submit work, see submitted materials, and see instructor grades and feedback.
 
     %br
 
