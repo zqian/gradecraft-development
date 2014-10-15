@@ -28,6 +28,8 @@ class AssignmentsController < ApplicationController
     @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
     @course_student_ids = current_course.students.map(&:id)
 
+    session[:show_rubric] = session[:show_rubric] || false
+
     # Data for displaying student grading distribution
     @submissions_count = @assignment.submissions.count
     @ungraded_submissions_count = @assignment.ungraded_submissions.count
