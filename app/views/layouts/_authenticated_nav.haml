@@ -1,7 +1,7 @@
 %section.top-bar-section
   %ul.right
     - if current_user_is_staff?
-      %li.has-form.hide-for-small.hide-for-medium
+      %li.has-form.hide-for-small.hide-for-medium{:role => "search"}
         .row.collapse
           .large-8.small-9.columns
             :javascript
@@ -11,7 +11,8 @@
             %input.search-query#search-input{ :type => "text", :placeholder => "Search #{term_for :students}", :label => false }
           .large-4.small-3.columns
             %a.alert.button.expand{ :href => "#" } Search
-    %li.has-dropdown.course_switch.show-for-medium-up
+    %li.sr-only#my-courses-navigation Navigation for my courses        
+    %li.has-dropdown.course_switch.show-for-medium-up{:role => "navigation", "aria-describedBy" => "my-courses-navigation"}
       %a My Courses
       %ul.dropdown
         - current_user.courses.each do |c|
@@ -86,8 +87,8 @@
             %i.fi-clock
             Office Hours:
             = auto_link(current_course.office_hours)
-
-    %li.has-dropdown.show-for-small-up
+    %li.sr-only#user-profile-navigation Navigation to user profile and log out
+    %li.has-dropdown.show-for-small-up{:role => "navigation", "aria-describedBy" => "user-profile-navigation"}
       %a
         = gravatar_for current_user, :size => 30
         = current_user.public_name

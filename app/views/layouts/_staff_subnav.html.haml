@@ -1,4 +1,5 @@
-%ul.side-nav
+%h2.sr-only#staff-navigation Staff navigation
+%ul.side-nav{:role => "navigation", "aria-describedBy" => "staff-navigation"}
   %li
     %label Overview
   - if current_course.use_timeline?
