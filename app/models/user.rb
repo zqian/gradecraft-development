@@ -343,6 +343,42 @@ class User < ActiveRecord::Base
   #   end
   # end
 
+  # ui settings
+  def default_ui_settings
+    @default_ui_settings ||= {}
+    add_courses_to_settings
+    add_rubrics_to_settings
+  end
+
+  def add_courses_to_settings
+    @default_ui_settings.merge! courses_ui_base_settings
+  end
+
+  def add_rubrics_to_settings
+
+  end
+
+  def base_settings
+    {
+      courses: course_assignment_types
+    }
+  end
+
+  def user_courses
+  end
+
+  def courses_ui_base_settings
+    self.courses.inject({courses: {}}) do |memo, course|
+      memo = memo[:courses][course.id] = assignment_type_settings_for_course(course)
+    end
+  end
+
+  def assignment_type_settings_for_course(course)
+    course.assignment_types.inject({assignment_types: {}}) do |memo, assignment_type|
+      memo = memo[:assignment_types][assignment_type.id] = {}
+    end
+  end
+  
   #student setting as to whether or not they wish to share their earned badges for this course
   def badges_shared(course)
     course_memberships.any? { |m| m.course_id = course.id and m.shared_badges }
