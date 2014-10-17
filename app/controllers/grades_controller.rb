@@ -33,6 +33,7 @@ class GradesController < ApplicationController
   def update
     redirect_to @assignment and return unless current_student.present?
     @grade = current_student_data.grade_for_assignment(@assignment)
+    self.check_uploads
     @grade.update_attributes params[:grade]
 
     if @assignment.notify_released? && @grade.is_released?
@@ -315,6 +316,13 @@ class GradesController < ApplicationController
         end
       end
     redirect_to assignment_path(@assignment), :notice => "Upload successful"
+    end
+  end
+
+  def check_uploads
+    if params[:grade][:grade_files_attributes]["0"][:filepath].empty?
+      params[:grade].delete(:grade_files_attributes)
+      @grade.grade_files.destroy_all
     end
   end
 

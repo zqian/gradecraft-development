@@ -3,7 +3,6 @@
  *= require jquery-ui.min
  *= require jquery.circliful
  *= require animate.min
- *= require responsive-tables
  *= require bootstrap-datetimepicker
  *= require select2
  *= require foundation-icons
@@ -12,7 +11,6 @@
  *= require rubrics
  *= require grades
  *= require assignments
- *= require dynatable
  
 /* Branding colors */
 
@@ -32,7 +30,7 @@ $alert-color-3: #A6A400;
 $alert-color-4: #FFFD40;
 $alert-color-5: #FFFD73;*/
 
-$primary-color: #13157F;
+/*$primary-color: #13157F;
 $primary-color-2: #13157F;
 $primary-color-3: #6dd8f0;
 $primary-color-4: #56AABD;
@@ -46,7 +44,26 @@ $alert-color: #FFCC00;
 $alert-color-2: #BFBD30;
 $alert-color-3: #A6A400;
 $alert-color-4: #FFFD40;
+$alert-color-5: #FFFD73;*/
+
+$primary-color: #002d62;
+$primary-color-2: #234879;
+$primary-color-3: #55a9bc;
+$primary-color-4: #72cdf4;
+$primary-color-5: #0079c0;
+$secondary-color: #00BD39;
+$secondary-color-2: #6ac777;
+$secondary-color-3: #6ac777;
+$secondary-color-4: #6ac777;
+$secondary-color-5: #6ac777;
+$alert-color: #f1592a;
+$alert-color-2: #f7941e;
+$alert-color-3: #fcb040;
+$alert-color-4: #ffcf06;
 $alert-color-5: #FFFD73;
+$light-grey: #CCC;
+$medium-grey: #666;
+$dark-grey: #444444;
 
 
 /* Importing supporting files. If you create a new css file you'll need to add it here.  */

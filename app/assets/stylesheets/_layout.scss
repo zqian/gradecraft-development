@@ -4,11 +4,6 @@ body.logged-in, body.logged-out {
   background: image-url("cloud_bg.gif");
   padding-top: 3.6rem;
 }
-/*
-#leaderboard .name, #leaderboard .score {
-  padding: 0.5rem;
-  background: image-url("cloud_bg.gif");
-}*/
 
 /* Primary page content */ 
 .mainContent {
@@ -21,6 +16,16 @@ body.logged-in, body.logged-out {
   border-radius: $global-radius;
   border: none;
   overflow: hidden;
+}
+
+.title-area li.name, .top-bar-section .tagline {
+    margin-top: 3px;
+}
+
+.title-area li.name {
+  background: image-url("GradeCraft_Logo_Horizontal_White_Blue.png") no-repeat left 4px;
+  padding-left: 2.1rem;
+  margin-left: 1rem;
 }
 
 .panel.callout {

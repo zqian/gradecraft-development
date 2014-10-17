@@ -1,7 +1,5 @@
-
-/** Table Styles **/
-table tbody
-  vertical-align: top
+table td, table th
+  padding: 8px 10px !important
 
 #gradebook
   overflow: auto !important
@@ -12,12 +10,6 @@ table.responsive
   border-spacing: 0 !important
   margin-bottom: 1rem
   clear: both
-
-  a:hover
-    color: $alert-color
-
-  td
-    line-height: 1.5rem
 
   /* Table Header styles */
   th
@@ -32,72 +24,34 @@ table.responsive
     margin: 0 !important
     border-top-left-radius: $global-radius
     border-bottom-left-radius: $global-radius
-    background-color: #333
+    background-color: $primary-color-2
     padding: .3rem
+  
+  button.select-all.button.tiny:hover, button.select-none.button.tiny:hover
+    background-color: $secondary-color-2
 
   button.select-none.button.tiny
     margin: 0 !important
     border-top-right-radius: $global-radius
     border-bottom-right-radius: $global-radius
-    background-color: #333
+    background-color: $primary-color-2
     padding: .3rem
-
-
-  @media (min-width: 1151px)
-
-  table ul.table-bar 
-    list-style-type: none
-    margin: 0
-    text-transform: uppercase
-    padding: 0
-    
-    li
-    display: inline-block
-
-  .button-column
-    width: 300px
-
-@media (max-width: 1150px)
-  
-  table .button-group li a.button.tiny
-  padding: .25rem
-  border-radius: 0 !important
-  border: none
-  width: 5rem
-
-  table .button-group.round li
-    display: block !important
-
-  .round .button.tiny
-    padding: .4rem
-
-  .button-column
-    width: 6rem
-
-@media (max-width: 640px)
-  table .button-group li a.button.tiny
-  padding: .75rem
-  width: 5rem
-  border: 1px solid #eee
 
 /* Styling pattern tables for assignment outcome overview */ 
 td.complete, tr.achieved
-  background-color: #d7fae0
+  background-color: $secondary-color
 
 i.complete
   color: red
 
 td.absent
-  background-color: #f9adad
+  background-color: black
 
 i.absent
   color: black
 
-td.partial, td.need_to_be_released
+td.partial
   background-color: $primary-color-3
-
-td.in_progress
-  background-color: $alert-color-5
 
 i.partial
   color: $secondary-color
@@ -105,6 +59,7 @@ i.partial
 i.missing_grade
   color: #CCC
 
+/** Leaderboard Styles **/
 .small-12.columns.team
   border: 3px solid #FFF
 

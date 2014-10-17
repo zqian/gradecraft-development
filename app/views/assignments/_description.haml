@@ -1,6 +1,11 @@
-%a{:href => "#", "data-reveal-id" => "assignment_description", :data => {:reveal => "true" } } 
-  %i.fi-eye
-  Rules
+- if current_user_is_staff? 
+  %a{:href => "#", "data-reveal-id" => "assignment_description", :data => {:reveal => "true" } } 
+    %i.fi-eye
+    Rules
+- else
+  %a.button.radius{:href => "#", "data-reveal-id" => "assignment_description", :data => {:reveal => "true" } } 
+    %i.fi-eye
+    Rules
 #assignment_description.reveal-modal{:data => {:reveal => "true" }}
   %h3.bold= @assignment.name
   .italic= "Due: #{@assignment.due_at}"    

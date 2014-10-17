@@ -12,7 +12,7 @@ body
   font-weight: normal !important
 
 a:hover
-  color: $secondary-color !important
+  color: $secondary-color
 
 .inverse
   color: #FFF
@@ -56,7 +56,7 @@ a:hover
   font-size: 1.5rem
 
 hr
-  border-color: #DDD
+  border-color: $light-grey
   border-width: 1px 0 0
   margin: 1.5rem auto
 
@@ -68,7 +68,7 @@ hr
 /** Page Title **/
 h3.pagetitle
   color: #FFF
-  background-color: #444
+  background-color: $dark-grey
   padding: .8rem
   clear: both
   float: left
@@ -81,7 +81,7 @@ h3.pagetitle
 
 /** Subtitle **/
 h4.subtitle
-  background-color: $primary-color-4
+  background-color: $primary-color-2
   color: #FFF
   font-weight:lighter
   padding: .6rem .9rem .6rem .6rem
@@ -96,15 +96,24 @@ h4.subtitle
   box-shadow: 2px 2px 8px #ccc
   font-size: 1.3rem
 
+  .label.alert
+    top: -3px
+    margin-left: 6px
+
 h5.section-title
   font-size: 1.1rem
-  background-color: #666
+  background-color: $primary-color-3
   padding: .5rem 1rem 
   margin-bottom: 0
   overflow: hidden
+  font-weight: bold
+  border-top-right-radius: $global-radius
+  border-top-left-radius: $global-radius
 
   a 
-    color: $alert-color
+    color: $primary-color
+  a.button 
+    color: #FFF
 
 /* Used for screen reader only items */
 .sr-only 

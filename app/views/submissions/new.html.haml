@@ -1,6 +1,4 @@
 .small-12.panel.mainContent
-  - if current_user_is_student?
-    = render "students/student_profile_tabs"
 
   %h3.pagetitle
     - if @assignment.has_groups? && @group.present?

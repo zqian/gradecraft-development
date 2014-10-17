@@ -45,7 +45,7 @@
           = f.simple_fields_for :proposals, Proposal.new, class: 'form-inline', child_index: 'child_index' do |f|
             .small-12.columns.panel
               %span.large-3.columns
-              - if current_user.is_staff?
+              - if current_user_is_staff?
                 %span.large-3.columns
                   = f.label :approved, "Approved?"
                   = f.input :approved, :label => false

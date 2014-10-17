@@ -1,0 +1,56 @@
+.button
+  margin-bottom: 0
+  text-transform: capitalize
+  background-color: $primary-color
+  border: none
+  color: #FFF
+  padding: .4rem
+  cursor: pointer
+
+.button-group li, .button-group li a, .button-group li a:hover 
+  color: #FFF
+
+.button-bar.aindex
+  margin-top: -2.8rem
+
+  li:hover
+    background-color: $primary-color-2
+
+  .button
+    background-color: $primary-color-4
+    padding: .5rem
+
+.button:hover, .button:focus
+  background-color: $primary-color-5
+
+a.btn.btn-primary
+  background-color: $primary-color-2
+
+.button-bar ul
+  white-space: nowrap !important
+  display: inline !important
+
+th.center .button-bar, th.center .button-bar ul, th.center .button-bar ul.button-group 
+  margin: 0 auto
+
+ul.button-group.context_menu 
+  text-transform: capitalize
+
+  li
+    margin: 0
+    background-color: $secondary-color-4
+
+  li a
+    display: block
+    padding: .5rem
+
+  li:first-child, li:first-child a
+    border-bottom-left-radius: $global-radius
+    border-top-left-radius: $global-radius
+
+  li:last-child, li:last-child a
+    border-top-right-radius: $global-radius
+    border-bottom-right-radius: $global-radius
+
+  li:hover a, li:hover, li.active, li.active a
+    background-color: $primary-color-2

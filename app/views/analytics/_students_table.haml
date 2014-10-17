@@ -1,14 +1,14 @@
-%table.responsive.nofeatures_default_rank_dynatable
+%table.responsive.nofeatures_default_rank_dynatable{:role => "grid"}
   %thead
     %tr
-      %th= course.user_term
-      %th Score
+      %th{ :scope => "column", :width => "20%" }= course.user_term
+      %th{ :scope => "column", :width => "10%"} Score
       - if course.has_badges?
-        %th Badges
+        %th{ :scope => "column" } Badges
       - if course.has_teams?
-        %th= course.team_term
-        %th= course.team_leader_term
-      %th Last Login
+        %th{ :scope => "column" }= course.team_term
+        %th{ :scope => "column" }= course.team_leader_term
+      %th{ :scope => "column", :width => "20%"  } Last Login
   %tbody
     - students.each do |student|
       %tr

@@ -1,6 +1,6 @@
 /* Coloring the brand */
 .title-area li.name h1 a {
-  color: $secondary-color;
+  color: $secondary-color-2;
   white-space:nowrap;
 }
 
@@ -30,7 +30,7 @@
 
 .top-bar-section ul ul.dropdown li a {
   padding: 0.2rem;
-  color: $primary-color-3;
+  color: $secondary-color-2;
   line-height: 2rem !important;
 }
 
@@ -52,7 +52,7 @@
 
   a {
     margin: 0;
-    color: $primary-color-3;
+    color: $secondary-color-2;
     padding: 0;
     line-height: 1.5rem;
   }
@@ -63,7 +63,7 @@
 }
 
   .top-bar-section ul ul.dropdown a, .top-bar-section ul ul.dropdown a:hover {
-    color:  $primary-color-3;
+    color:  $secondary-color, 15%;
   }
 
  .top-bar-section ul ul.dropdown a:hover {

@@ -21,10 +21,10 @@
                 - if current_course
                   #{current_course.name}
                 - else
-                  gradecraft
+                  GradeCraft
         - if current_course && current_course.tagline?
           %section.top-bar-section.show-for-large-only
-            %ul.left
+            %ul.left.tagline
               %li
                 %a= current_course.try(:tagline)
         - if current_user
@@ -42,5 +42,3 @@
             = render 'layouts/footer'
     = render 'layouts/google_analytics'
     = javascript_include_tag 'application'
-
-

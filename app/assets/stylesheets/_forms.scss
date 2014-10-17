@@ -37,9 +37,7 @@ fieldset {
 /** Styling to make labels on checkboxes and radio forms align properly**/
 .radio,
 .checkbox {
-  display: block;/*
-  min-height: 20px;
-  padding-left: 0px;*/
+  display: block;
   margin-bottom: 10px;
 }
 
@@ -70,7 +68,7 @@ input[type="checkbox"] + label {
 
 
 select {
-  background-color: #F0F8FF !important;
+  background-color: #FFF !important;
   border-radius: $global-radius;
   margin-right: 0 !important;
 }
@@ -123,7 +121,7 @@ ul.dropdown-menu {
 }
 
 .textarea .form_label {
-  background-color: #eee;
+  background-color: $light-grey;
   font-style: italic;
   color: #000;
   padding: 1rem;
@@ -133,7 +131,7 @@ ul.dropdown-menu {
 }
 
 .img.form_label {
-  background-color: #333;
+  background-color: $dark-grey;
   padding: .5rem;
   border-bottom-right-radius: $global-radius;
   border-bottom-left-radius: $global-radius;

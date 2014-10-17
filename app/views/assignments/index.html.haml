@@ -38,12 +38,12 @@
             %table.responsive.nofeatures_default_due_date_dynatable
               %thead
                 %tr
-                  %th Name
+                  %th{:scope => "col", :width => "20%"} Name
                   - if assignment_type.name == "Class Attendance"
-                    %th Attendance Rate
-                  %th{"data-dynatable-sorts" => "dueDate"} Due
+                    %th{:width => "5%"} Attendance Rate
+                  %th{"data-dynatable-sorts" => "dueDate", :scope => "col", :width => "20%"} Due
                   %th{:style => "display: none"} Due Date
-                  %th Max Value
+                  %th{:width => "5%"}  Max Value
                   %th.button-column
               %tbody
                 - assignments.each do |assignment|

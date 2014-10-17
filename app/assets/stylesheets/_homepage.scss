@@ -18,7 +18,8 @@
   border: none;
 
   h5 {
-    color: $primary-color-3;
+    color: $primary-color-4;
+    font-size: 110%;
   }
 
   a {
@@ -33,6 +34,11 @@
   li {
     list-style-type: none;
     font-size: .9rem;
+  }
+
+  h6 {
+    color: #FFF;
+    font-size: 90%;
   }
 }
 
@@ -83,7 +89,6 @@
     background-color: #eee !important;
     color: #000 !important;
   }
-
 
   .right {
     margin-right: 25px;

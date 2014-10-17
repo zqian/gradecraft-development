@@ -12,22 +12,19 @@
         %th Last Name
         - if ! @assignment.assignment_type.student_weightable?
           %th Score
-        - elsif @assignment.assignment_type.student_weightable?
+        - else
           %th Raw Score
           %th Multiplied Score
-        - if @assignment.has_levels?
-          %th Level
         - if @assignment.release_necessary?
           %th Status
         %th
         - if @assignment.release_necessary?
-          %th{"data-dynatable-no-sort" => "true"} 
-            .button-bar
-              %ul.button-group.right.radius
-                %li
-                  %button.button.select-all.tiny= "Check All"
-                %li
-                  %button.button.select-none.tiny= "Uncheck All"
+          %th{"data-dynatable-no-sort" => "true"}
+            %ul.button-group.radius
+              %li
+                %button.button.select-all.tiny= "Check All"
+              %li
+                %button.button.select-none.tiny= "Uncheck All"
     %tbody
       - if @team
         - students = current_course_data.students_for_team(@team)
@@ -45,18 +42,8 @@
                 = points grade.score if grade.status?
               - else
                 = "(not yet assigned)"
-          - if @assignment.has_levels?
-            %td
-              = @assignment.grade_level(grade) if grade.status?
           - if @assignment.release_necessary?
-            - if grade.is_released?
-              %td= "Released" 
-            - elsif grade.is_graded?
-              %td.need_to_be_released= "Graded"
-            - elsif grade.in_progress?
-              %td.in_progress= "In Progress"
-            - else
-              %td
+            %td= grade.status
           %td
             - if @assignment.accepts_submissions?
               - student.submissions.where(:assignment_id => @assignment).each do |submission|
@@ -97,7 +84,7 @@
                   %ul.button-group.radius.right
                     %li= link_to "Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
           - if @assignment.release_necessary?
-            %td.text-center
+            %td
               - if grade.is_graded?
                 .center= check_box_tag "grade_ids[]", grade.id
 
@@ -114,11 +101,9 @@
           %th Last Name
           - if ! @assignment.assignment_type.student_weightable?
             %th Score
-          - elsif @assignment.assignment_type.student_weightable?
+          - else
             %th Raw Score
             %th Multiplied Score
-          - if @assignment.has_levels?
-            %th Level
           - if @assignment.release_necessary?
             %th Status
           %th{"data-dynatable-no-sort" => "true"} 
@@ -147,9 +132,6 @@
             - if @assignment.assignment_type.student_weightable?
               %td
                 = points grade.score if grade.status?
-            - if @assignment.has_levels?
-              %td
-                = @assignment.grade_level(grade) if grade.status?
             - if @assignment.release_necessary?
               %td
                 - if grade.is_released?
@@ -200,4 +182,4 @@
 
   - if @assignment.release_necessary? && @assignment.grades.present?
     .right
-      = submit_tag "Update Selected Grade Statuses", :class => "button tiny radius"
+      = submit_tag "Update Selected Grade Statuses", :class => "button radius"
