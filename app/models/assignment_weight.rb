@@ -50,8 +50,10 @@ class AssignmentWeight < ActiveRecord::Base
   end
 
   def course_max_assignment_weight_not_exceeded
-    if weight > course.max_assignment_weight
-      errors.add(:weight, "exceeded maximum allowed for course. Please select a lower #{course.weight_term.downcase}")
+    if course.max_assignment_weight? 
+      if weight > course.max_assignment_weight
+        errors.add(:weight, "exceeded maximum allowed for course. Please select a lower #{course.weight_term.downcase}")
+      end
     end
   end
 

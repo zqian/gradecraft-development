@@ -1,3 +1,7 @@
+- if current_user_is_staff?
+  = content_nav do
+    = render "students/student_profile_tabs"
+
 .small-12.panel.mainContent
 
   %h3.pagetitle= "#{term_for :teams}"

@@ -9,12 +9,13 @@ class AssignmentTypeWeightsController < ApplicationController
 
   def mass_update
     @form = AssignmentTypeWeightForm.new(current_student, current_course)
+    @title =  "Editing #{current_student.name}'s #{term_for :weights}"
 
     @form.update_attributes(student_params)
 
     if @form.save
       if current_user_is_student?
-        redirect_to syllabus_path , :notice => "You have successfully updated your #{(term_for :weight).upcase} choices!"
+        redirect_to syllabus_path , :notice => "You have successfully updated your #{(term_for :weight).titleize} choices!"
       else
         redirect_to multiplier_choices_path, :notice => "You have successfully updated #{current_student.name}'s #{(term_for :weight).capitalize} choices."
       end

@@ -10,7 +10,7 @@
     %br
     .center= link_to "Edit Your Choices", assignment_type_weights_path(:student_id => current_student.id), :class => "button radius alert"
     %hr
-    %h5.text-center Rules of The Game
+    %h5.text-center.italic Rules of The Game
     %ul.small 
       //%li You have until #{current_course.try(:assignment_weight_close_at).strftime("%A, %B %d, %Y, at %H:%M%p")} to make your #{(term_for :weight).titleize} decision
       %li You may place up to #{current_course.max_assignment_weight} #{ ( term_for :weights).titleize } on a single #{ (term_for :assignment_type).downcase}

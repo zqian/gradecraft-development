@@ -1,3 +1,7 @@
+- if current_user_is_staff?
+  = content_nav do
+    = render "students/student_profile_tabs"
+
 .small-12.panel.mainContent
 
   %h3.pagetitle= @title    
@@ -5,10 +9,7 @@
   .small-12.columns
     %dl.tabs{:data => {'tab' => true}}
       %dd.active
-        - if current_user_is_student?
-          %a{ "href" => "#tabb1"} My #{term_for :badges}
-        - else
-          %a{ "href" => "#tabb1"} #{current_student.name}'s #{term_for :badges}
+        %a{ "href" => "#tabb1"} #{term_for :badges}
 
       - if current_course.shared_badges?
         %dd
@@ -17,7 +18,7 @@
     //student badges table
     .tabs-content
       .content#tabb1.active.small-12
-        %table.responsive.columns
+        %table.responsive.no_radius
           %thead
             %tr
               %th.center
