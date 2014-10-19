@@ -1,17 +1,15 @@
 .small-12.panel.mainContent
-  / Assignment Charts Navigation
-  = content_nav do
-    = render "analytics/tabs"
 
-  .pagetitle= "#{term_for :assignments} Analytics"
+  = content_nav_for "#{term_for :assignment} Analytics"
 
-  .clearfix
+  .small-12.medium-8
+    %h3.pagetitle= "#{term_for :assignment} Analytics"
   
   - @assignments.group_by(&:assignment_type).each do |assignment_type, assignments|
-    .pagetitle.subtitle= assignment_type.name 
+    %h4.subtitle= assignment_type.name 
 
     .columns
-      %table.responsive.nopage_dynatable
+      %table.responsive.nofeatures_dynatable
         %thead
           %tr
             %th Name
@@ -19,21 +17,27 @@
             %th Max
             %th Median
             %th 
-              Ave
+              Avg
               %i.fi-info{:title => "The average of all grades, including those who earned zero", :data => {'tooltip' => true} }
             %th 
-              Ave Earned
+              Avg Earned
               %i.fi-info{:title => "The average of all scores above zero", :data => {'tooltip' => true} }
             %th # Submissions
+            %th # Grades 
+            %th
         %tbody
           - assignments.each do |assignment|
             %tr
               %td= link_to assignment.name, assignment
-              %td= points assignment.low_score
-              %td= points assignment.high_score
-              %td= points assignment.median
-              %td= points assignment.average
-              %td= points assignment.earned_average
-              %td= assignment.submissions.count
+              %td= assignment.low_score
+              %td= assignment.high_score
+              %td= assignment.median
+              %td= assignment.average
+              %td= assignment.earned_average
+              %td
+                - if assignment.accepts_submissions?
+                  = assignment.submissions.count
+              %th= assignment.grade_count
+              %th= link_to "Quick Grade", mass_grade_assignment_path(assignment), :class => "button radius"
     .clearfix
     %hr

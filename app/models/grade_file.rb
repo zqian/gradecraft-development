@@ -1,5 +1,5 @@
 class GradeFile < ActiveRecord::Base
-include S3File
+  include S3File
 
   attr_accessible :filename, :filepath, :grade_id
 

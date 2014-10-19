@@ -1,13 +1,9 @@
 .small-12.panel.mainContent
-  / Badge Navigation
-  = content_nav do
-    = render "tabs"
 
   = content_nav_for Badge, "New #{term_for(:badge)}"
   
-  .pagetitle= @title
-  
+  .small-12.medium-9
+    %h3.pagetitle= @title
+
   .small-12.columns
     = render 'form'
-
-  .clearfix

@@ -6,9 +6,11 @@ class GradesController < ApplicationController
 
   def show
     @assignment = current_course.assignments.find(params[:assignment_id])
+    @title = "#{current_student.name}'s Grade for #{ @assignment.name }"
     if current_user_is_student?
       redirect_to @assignment
     end
+    @grades_for_assignment = @assignment.grades_for_assignment(current_student)
     if @assignment.has_groups? && current_user_is_staff?
       @group = @assignment.groups.find(params[:group_id])
     elsif @assignment.has_groups? && current_user_is_student?
@@ -20,6 +22,7 @@ class GradesController < ApplicationController
     session[:return_to] = request.referer
     redirect_to @assignment and return unless current_student.present?
     @grade = current_student_data.grade_for_assignment(@assignment)
+    @title = "Editing #{current_student.name}'s Grade for #{@assignment.name}"
     @rubric = @assignment.rubric
     @metrics = existing_metrics_as_json if @rubric
     @score_levels = @assignment.score_levels.order_by_value
@@ -30,12 +33,17 @@ class GradesController < ApplicationController
   def update
     redirect_to @assignment and return unless current_student.present?
     @grade = current_student_data.grade_for_assignment(@assignment)
+    self.check_uploads
     @grade.update_attributes params[:grade]
 
     if @assignment.notify_released? && @grade.is_released?
       NotificationMailer.grade_released(@grade.id).deliver
     end
-    redirect_to session[:return_to]
+    if session[:return_to].present?
+      redirect_to session[:return_to]
+    else
+      redirect_to @assignment
+    end
   end
 
   def submit_rubric
@@ -72,9 +80,9 @@ class GradesController < ApplicationController
       @grade.status = "Graded"
       respond_to do |format|
         if @grade.save
-          format.html { redirect_to dashboard_path, notice: 'Thank you for logging your grade!' }
+          format.html { redirect_to syllabus_path, notice: 'Nice job! Thanks for logging your grade!' }
         else
-          format.html { redirect_to dashboard_path, notice: "We're sorry, this grade could not be added." }
+          format.html { redirect_to syllabus_path, notice: "We're sorry, this grade could not be added." }
         end
       end
     else
@@ -130,15 +138,11 @@ class GradesController < ApplicationController
       @title = "Quick Grade #{@assignment.name}"
       @assignment_type = @assignment.assignment_type
       @score_levels = @assignment_type.score_levels
-      @assignment_score_levels = @assignment.assignment_score_levels
-      if params[:group]
-        user_search_options = {}
-        user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
-        @students = current_course.students.includes(:teams).where(user_search_options).alpha
-      else
-        @group = @assignment.groups.find(params[:group_id])
-        @students = @group.students
-      end
+      @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
+      @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
+      user_search_options = {}
+      user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
+      @students = current_course.students.includes(:teams).where(user_search_options).alpha
       @grades = @students.alpha.being_graded.map do |s|
         @assignment.grades.where(:student_id => s).first || @assignment.grades.new(:student => s, :assignment => @assignment, :graded_by_id => current_user)
       end
@@ -201,10 +205,11 @@ class GradesController < ApplicationController
   #upload grades for an assignment
   def import
     @assignment = current_course.assignments.find(params[:id])
+    @title = "Import Grades for #{@assignment.name}"
   end
 
   #upload based on username
-  def upload
+  def username_import
     @assignment = current_course.assignments.find(params[:id])
     @students = current_course.students
 
@@ -240,8 +245,8 @@ class GradesController < ApplicationController
     end
   end
 
-  #upload based on "LastName, FirstName"
-  def upload2
+  #upload based on "email"
+  def email_import
     @assignment = current_course.assignments.find(params[:id])
     @students = current_course.students
 
@@ -253,7 +258,7 @@ class GradesController < ApplicationController
     else
       CSV.foreach(params[:file].tempfile, :headers => true, :encoding => 'ISO-8859-1') do |row|
         @students.each do |student|
-          if student.last_name + ", " + student.first_name == row[0] && row[3].present?
+          if student.email == row[2] && row[3].present?
             if student.grades.where(:assignment_id => @assignment).present?
               @assignment.all_grade_statuses_grade_for_student(student).tap do |grade|
                 grade.raw_score = row[3].to_i
@@ -274,6 +279,50 @@ class GradesController < ApplicationController
         end
       end
     redirect_to assignment_path(@assignment), :notice => "Upload successful"
+    end
+  end
+
+  #upload based on "LastName, FirstName"
+  def name_import
+    @assignment = current_course.assignments.find(params[:id])
+    @students = current_course.students
+
+    require 'csv'
+
+    if params[:file].blank?
+      flash[:notice] = "File missing"
+      redirect_to assignment_path(@assignment)
+    else
+      CSV.foreach(params[:file].tempfile, :headers => true, :encoding => 'ISO-8859-1') do |row|
+        @students.each do |student|
+          if student.last_name + ", " + student.first_name == row[0] && row[5].present?
+            if student.grades.where(:assignment_id => @assignment).present?
+              @assignment.all_grade_statuses_grade_for_student(student).tap do |grade|
+                grade.raw_score = row[5].to_i
+                #grade.feedback = row[4]
+                grade.status = "Graded"
+                grade.save!
+              end
+            else
+              @assignment.grades.create! do |g|
+                g.assignment_id = @assignment.id
+                g.student_id = student.id
+                g.raw_score = row[5].to_i
+                #g.feedback = row[4]
+                g.status = "Graded"
+              end
+            end
+          end
+        end
+      end
+    redirect_to assignment_path(@assignment), :notice => "Upload successful"
+    end
+  end
+
+  def check_uploads
+    if params[:grade][:grade_files_attributes]["0"][:filepath].empty?
+      params[:grade].delete(:grade_files_attributes)
+      @grade.grade_files.destroy_all
     end
   end
 

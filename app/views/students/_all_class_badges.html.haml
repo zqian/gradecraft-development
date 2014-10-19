@@ -1,4 +1,4 @@
-%table.responsive.nopage_dynatable
+%table.responsive.nofeatures_default_last_name_dynatable
   %thead
     %tr
       %th{:scope => "col"} First Name
@@ -30,11 +30,11 @@
   %table.responsive.nopage_dynatable{"aria-describedby" => "tableCaptionAuditing"}
     %thead
       %tr
-        %th First Name
-        %th Last Name
-        %th #{current_course.badge_term.pluralize}
+        %th{:scope => "col"} First Name
+        %th{:scope => "col"} Last Name
+        %th{:scope => "col"} #{current_course.badge_term.pluralize}
         - if current_course.valuable_badges?
-          %th Total Badge Score
+          %th{:scope => "col"} Total Badge Score
     %tbody
       - if @team
         - students = current_course_data.auditing_students_for_team(@team)

@@ -1,12 +1,9 @@
 .small-12.panel.mainContent
-  / Edit user breadcrumbs
-  = content_nav do
-    = render "users/tabs"
 
-  .pagetitle= @title
+  = content_nav_for @user, "Edit User"
+
+  %h3.pagetitle= @title
 
   .small-12.columns
     / Form to edit user    
     = render 'form'
-
-  .clearfix

@@ -1,9 +1,10 @@
 class AssignmentsController < ApplicationController
-
-  before_filter :ensure_staff?, :except => [:feed, :show]
+  
+  before_filter :ensure_staff?, :except => [:feed, :show, :index]
 
   def index
-    @title = "#{term_for :assignment} Index"
+    redirect_to syllabus_path if current_user_is_student?
+    @title = "#{term_for :assignments}"
     @assignments = current_course.assignments.chronological.alphabetical
   end
 
@@ -33,8 +34,9 @@ class AssignmentsController < ApplicationController
     @ungraded_submissions_count = @assignment.ungraded_submissions.count
     @ungraded_percentage = @ungraded_submissions_count / @submissions_count rescue 0
     @graded_count = @submissions_count - @ungraded_submissions_count
-
+    
     if current_user_is_student?
+      @grades_for_assignment = @assignment.grades_for_assignment(current_student)
       @rubric_grades = RubricGrade.joins("left outer join submissions on submissions.id = rubric_grades.submission_id").where("submissions.student_id =?", current_user[:id])
     end
 
@@ -78,7 +80,7 @@ class AssignmentsController < ApplicationController
         @assignment.assign_attributes(params[:assignment])
         if @assignment.save
           set_assignment_weights
-          format.html { respond_with @assignment, notice: "#{term_for :assignment} #{@assignment.name} successfully created" }
+          format.html { respond_with @assignment, notice: "#{(term_for :assignment).titleize}  #{@assignment.name} successfully created" }
         else
           respond_with @assignment
         end
@@ -113,7 +115,7 @@ class AssignmentsController < ApplicationController
         format.json { render json: @assignment.errors, status: :unprocessable_entity }
       else
         if @assignment.save
-          format.html { respond_with @assignment, notice: "#{term_for :assignment} #{@assignment.name} successfully updated" }
+          format.html { respond_with @assignment, notice: "#{(term_for :assignment).titleize} #{@assignment.name} successfully updated" }
         else
           format.html { redirect_to edit_assignment_path(@assignment) }
           format.json { render json: @assignment.errors, status: :unprocessable_entity }
@@ -126,7 +128,7 @@ class AssignmentsController < ApplicationController
     @assignment = current_course.assignments.find(params[:id])
     @name = @assignment.name
     @assignment.destroy
-    redirect_to assignments_url, notice: "#{term_for :assignment} #{@name} successfully deleted"
+    redirect_to assignments_url, notice: "#{(term_for :assignment).titleize} #{@name} successfully deleted"
   end
 
   # Calendar feed of assignments
@@ -140,22 +142,32 @@ class AssignmentsController < ApplicationController
   end
 
   # Export an example for grade imports
-  def sample_import
+  def email_based_grade_import
     @assignment = current_course.assignments.find(params[:id])
     respond_to do |format|
       format.html
       format.json { render json: @assignment }
-      format.csv { send_data @assignment.sample_grade_import(@assignment) }
+      format.csv { send_data @assignment.email_based_grade_import(@assignment) }
       format.xls { send_data @assignment.to_csv(col_sep: "\t") }
     end
   end
 
-  def sample_import_2
+  def username_based_grade_import
     @assignment = current_course.assignments.find(params[:id])
     respond_to do |format|
       format.html
       format.json { render json: @assignment }
-      format.csv { send_data @assignment.sample_grade_import_2(@assignment) }
+      format.csv { send_data @assignment.username_based_grade_import(@assignment) }
+      format.xls { send_data @assignment.to_csv(col_sep: "\t") }
+    end
+  end
+
+  def name_based_grade_import
+    @assignment = current_course.assignments.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json { render json: @assignment }
+      format.csv { send_data @assignment.name_based_grade_import(@assignment) }
       format.xls { send_data @assignment.to_csv(col_sep: "\t") }
     end
   end

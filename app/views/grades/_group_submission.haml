@@ -5,7 +5,7 @@
     - else
       Your Submission
     // link to edit the submission
-    %span= link_to "Edit", edit_assignment_submission_path(@assignment, current_student.submission_for_assignment(@assignment), :student_id => current_student.id), :class => "button tiny radius secondary no-margin"
+    %span= link_to "Edit", edit_assignment_submission_path(@assignment, current_student.submission_for_assignment(@assignment), :student_id => current_student.id), :class => "button radius no-margin"
   // Displaying when the assignment was submitted
   %p
     Submitted:
@@ -13,8 +13,8 @@
 
     // Late alert if submitted after due date
     - if current_student.submission_for_assignment(@assignment).late?
-      %span.label.alert.round Late!
-
+      %span.label.alert.radius Late!
+      
     // Checking to see if the submission was updated - if the update date is different from the creation date, displaying it
   - if current_student.submission_for_assignment(@assignment).updated_at != current_student.submission_for_assignment(@assignment).created_at
     %p
@@ -37,7 +37,7 @@
 
   - if current_student.submission_for_assignment(@assignment).text_comment?
     %p
-      Statement:
+      Content:
       = raw current_student.submission_for_assignment(@assignment).text_comment
 
 
@@ -48,7 +48,7 @@
   - else
     Your Submission
   // link to edit the submission
-  %span= link_to "Edit", edit_assignment_submission_path(@assignment, @group.submission_for_assignment(@assignment), :group_id => @group), :class => "button tiny radius secondary no-margin"
+  %span= link_to "Edit", edit_assignment_submission_path(@assignment, @group.submission_for_assignment(@assignment), :group_id => @group), :class => "button radius no-margin"
   // Displaying when the assignment was submitted
   %p
     %b Submitted:
@@ -56,8 +56,7 @@
 
     // Late alert if submitted after due date
     - if @group.submission_for_assignment(@assignment).late?
-      %span.label.alert.round Late!
-
+      %span.label.alert.radius Late!
     // Checking to see if the submission was updated - if the update date is different from the creation date, displaying it
   - if @group.submission_for_assignment(@assignment).updated_at != @group.submission_for_assignment(@assignment).created_at
     %p

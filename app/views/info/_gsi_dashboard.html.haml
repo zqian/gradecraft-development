@@ -1,7 +1,5 @@
 .small-12.panel.mainContent
-  = content_nav do
-    = render "tabs"
-      
-  #time_line{"data-timeline" => render(:partial => 'info/timeline', :handlers => [:jbuilder], :formats => [:js])}
 
-  .clearfix
+  %h3.pagetitle Course Timeline
+
+  #time_line{"data-timeline" => render(:partial => 'info/timeline', :handlers => [:jbuilder], :formats => [:js])}

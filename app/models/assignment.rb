@@ -115,18 +115,27 @@ class Assignment < ActiveRecord::Base
     joins("LEFT OUTER JOIN assignment_weights ON assignments.id = assignment_weights.assignment_id AND assignment_weights.student_id = '#{sanitize student.id}'").select('assignments.*, COALESCE(assignment_weights.point_total, assignments.point_total) AS student_point_total')
   end
 
+  def grades_for_assignment(student)
+    user_score = grades.where(:student_id => student.id).first.try(:raw_score)
+    scores = grades.graded.pluck('raw_score')
+    return {
+    :scores => scores,
+    :user_score => user_score
+   }
+  end
+
   #Basic result stats - high, low, average, median
   def high_score
-    grades.graded.maximum('grades.score')
+    grades.graded.maximum('grades.raw_score')
   end
 
   def low_score
-    grades.graded.minimum('grades.score')
+    grades.graded.minimum('grades.raw_score')
   end
 
   #average of all grades for an assignment
   def average
-    grades.graded.average('grades.score').to_i if grades.graded.present?
+    grades.graded.average('grades.raw_score').to_i if grades.graded.present?
   end
 
   def has_rubric?
@@ -290,7 +299,7 @@ class Assignment < ActiveRecord::Base
 
   #Checking to see if the assignment is still open and accepting submissons
   def open?
-    (open_at != nil && open_at < Time.now) && (due_at != nil && due_at > Time.now)
+    ((open_at != nil && open_at < Time.now) && (due_at != nil && due_at > Time.now)) || due_at.nil?
   end
 
   #Counting how many grades there are for an assignment
@@ -300,7 +309,7 @@ class Assignment < ActiveRecord::Base
 
   #Counting how many non-zero grades there are for an assignment
   def positive_grade_count
-    grades.where("score > 0").count
+    grades.graded.where("score > 0").count
   end
 
   #Calculating attendance rate, which tallies number of people who have positive grades for attendance divided by the total number of students in the class
@@ -324,14 +333,14 @@ class Assignment < ActiveRecord::Base
   #single assignment gradebook
   def gradebook_for_assignment(assignment, options = {})
     CSV.generate(options) do |csv|
-      csv << ["First Name", "Last Name", "Email", "Score", "Statement", "Feedback" ]
+      csv << ["First Name", "Last Name", "Uniqname", "Score", "Raw Score", "Statement", "Feedback" ]
       course.students.each do |student|
-        csv << [student.first_name, student.last_name, student.email, student.grade_for_assignment(assignment).score, student.submission_for_assignment(assignment).try(:text_comment), student.grade_for_assignment(assignment).try(:feedback) ]
+        csv << [student.first_name, student.last_name, student.username, student.grade_for_assignment(assignment).try(:score), student.grade_for_assignment(assignment).try(:raw_score), student.submission_for_assignment(assignment).try(:text_comment), student.grade_for_assignment(assignment).try(:feedback) ]
       end
     end
   end
 
-  def sample_grade_import(assignment, options = {})
+  def email_based_grade_import(assignment, options = {})
     CSV.generate(options) do |csv|
       csv << ["First Name", "Last Name", "Email", "Score"]
       course.students.each do |student|
@@ -340,12 +349,20 @@ class Assignment < ActiveRecord::Base
     end
   end
 
-  def sample_grade_import_2(assignment, options = {})
+  def username_based_grade_import(assignment, options = {})
     CSV.generate(options) do |csv|
-      csv << ["Student", "ID", "Section", assignment.name]
-      csv << ["    Points Possible", "", "", assignment.point_total]
+      csv << ["First Name", "Last Name", "Username", "Score"]
       course.students.each do |student|
-        csv << [student.last_name + ", " + student.first_name, student.id, student.team_for_course(course).try(:name), student.grade_for_assignment(assignment).try(:score)]
+        csv << [student.first_name, student.last_name, student.username, student.grade_for_assignment(assignment).try(:score)]
+      end
+    end
+  end
+
+  def name_based_grade_import(assignment, options = {})
+    CSV.generate(options) do |csv|
+      csv << ["Student", "ID", "SIS User ID", "SIS Login ID", "Section", assignment.name]
+      course.students.each do |student|
+        csv << [student.last_name + ", " + student.first_name, student.id, " ", " ", student.team_for_course(course).try(:name), student.grade_for_assignment(assignment).try(:score)]
       end
     end
   end
@@ -356,14 +373,24 @@ class Assignment < ActiveRecord::Base
   end
 
   # Calculating how many of each score exists
-  def percentage_score_count
-    Hash[grades.graded.group_by{ |g| g.score }.map{ |k, v| [k, v.size / grades.graded.count.to_f] }]
+  def earned_score_count
+    Hash[grades.graded.group_by{ |g| g.raw_score }.map{ |k, v| [k, v.size ] }]
+  end
+
+  def earned_scores
+    scores = []
+    earned_score_count.each do |score|
+      scores << { :data => score[1], :name => score[0] }
+    end
+    return {
+      :scores => scores
+    }
   end
 
   # Creating an array with the set of scores earned on the assignment, and 
   def percentage_score_earned
     scores = []
-    percentage_score_count.each do |score|
+    earned_score_count.each do |score|
       scores << { :data => score[1], :name => score[0] }
     end
     return {

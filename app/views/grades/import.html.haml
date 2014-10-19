@@ -1,40 +1,44 @@
 .small-12.panel.mainContent
-  / Assignments Navigation
-  = content_nav do
-    = render "assignments/tabs"
 
-  .pagetitle Import Grades for #{@assignment.name}
+  = content_nav_for @assignment, "Import Grades"
+
+  %h3.pagetitle= @title
 
   .small-12.columns
     %p
-      = "To import grades, upload a .csv file with either of the two following formats. These fields *MUST* be in the specified order. Note that you may include additional information in the extra columns, but that content will be ignored."
-      <br/>
-      <br/>
+      To import grades, upload a .csv file with either of the two following formats. These fields <b> MUST </b> be in the specified order. Two important keys:
+      %ul 
+        %li You may include additional information in the extra columns, but that content will be ignored.
+        %li If a student already has a grade for this assignment in GradeCraft, and there is a new grade present in the upload, <b> the old grade will be replaced. </b>
+
+    %hr
+
+      %p
+        %b By Email<br/>
+        #{term_for :student}'s first name, #{term_for :student}'s last name, email, score, and any text feedback you'd like to include. #{link_to "Download Sample File", email_based_grade_import_assignment_path(format: 'csv'), :class => "bold"}
+
+      = form_tag({:action => :email_import}, :multipart => true) do
+        = file_field_tag 'file'
+        = submit_tag("Import", :class => "button radius")
+        %br
+        %br
+        %br
 
       %p
         %b By Uniqname<br/>
-        = "#{term_for :student}'s first name, #{term_for :student}'s last name, uniqname, score, and any text feedback you'd like to include."
-      = link_to "Download Sample File", sample_import_assignment_path(format: 'csv'), :class => "button tiny radius"
-      <br/>
-      <br/>
+        #{term_for :student}'s first name, #{term_for :student}'s last name, uniqname, score, and any text feedback you'd like to include. #{link_to "Download Sample File", username_based_grade_import_assignment_path(format: 'csv'), :class => "bold"}
 
-      = form_tag({:action => :upload}, :multipart => true) do
+      = form_tag({:action => :username_import}, :multipart => true) do
         = file_field_tag 'file'
-        = submit_tag("Import")
-        <br/>
-        <br/>
-        <br/>
+        = submit_tag("Import", :class => "button radius")
+        %br
+        %br
+        %br
 
       %p
-        %b By Full Name<br/>
-        = %Q(#{term_for :student}'s "Lastname, Firstname", ID, section, and score.)
-      = link_to "Download Sample File", sample_import_2_assignment_path(format: 'csv'), :class => "button tiny radius"
-      <br/>
-      <br/>
+        %b By Full Name [Canvas Import]<br/>
+        #{term_for :student}'s "Lastname, Firstname", ID, section, and score. #{ link_to "Download Sample File", name_based_grade_import_assignment_path(format: 'csv'), :class => "bold" }
 
-      = form_tag({:action => :upload2}, :multipart => true) do
+      = form_tag({:action => :name_import}, :multipart => true) do
         = file_field_tag 'file'
-        = submit_tag("Import")
-
-
-  .clearfix
+        = submit_tag("Import", :class => "button radius")

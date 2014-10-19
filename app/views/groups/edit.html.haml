@@ -1,14 +1,16 @@
 .small-12.panel.mainContent
-  / Groups Navigation
-  = content_nav do
-    - if current_user_is_staff?
-      = render "tabs"
-    - else
-      = render "students/student_profile_tabs"
 
-  .pagetitle= @title
+  = content_nav_for @group, "Edit #{term_for :group}"
+
+  %h3.pagetitle= @title
+
+  .small-12.medium-3.right.columns.columns-no-padding
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li
+          %a{:href => group_path(@group) }
+            %i.fi-list-thumbnails
+            See #{term_for :group}
 
   .small-12.columns
     = render 'form'
-
-  .clearfix

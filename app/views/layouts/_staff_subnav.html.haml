@@ -11,6 +11,7 @@
   %li
     %i.fi-flag
     = link_to "Grading Status", grading_status_path
+
   - if current_course.student_weighted?
     %li
       %i.fi-die-three
@@ -19,11 +20,8 @@
     %li
       %i.fi-star
       = link_to "Awarded #{current_course.badge_term.pluralize}", earned_badges_path
-  %li
-    %i.fi-book-bookmark
-    = link_to "Gradebook", gradebook_path
 
-  %li.divider
+  %hr
 
   %li
     %label Coursework
@@ -39,7 +37,7 @@
       %i.fi-trophy
       = link_to term_for(:challenges), challenges_path
 
-  %li.divider
+  %hr
 
   %li
     %label Analytics
@@ -48,12 +46,26 @@
     = link_to "Top 10/Bottom 10", analytics_top_10_path
   %li
     %i.fi-graph-trend
-    = link_to "Course Analytics", analytics_root_path
+    = link_to "User Analytics", analytics_root_path
   %li
     %i.fi-results-demographics
     = link_to "#{term_for :assignment} Analytics", analytics_per_assign_path
 
-  %li.divider
+  - if current_user_is_professor? || current_user_is_admin?
+    %hr
+
+    %li
+      %label Downloads
+    %li
+      %i.fi-book-bookmark
+      = link_to "Final Grades", final_grades_path(format: 'csv')
+    / %li
+    /   %i.fi-book
+    /   %a{:href => gradebook_path(format: 'csv') } Full Gradebook
+    /   - if current_course.student_weighted?
+    /     %a{:href => raw_points_gradebook_path(format: 'csv')} [Raw Points]
+
+  %hr
 
   %li
     %label Users
@@ -69,9 +81,9 @@
     = link_to term_for(:groups), groups_path
   %li
     %i.fi-torso-business
-    = link_to "Staff", staff_index_path
-
-  %li.divider
+    = link_to "Staff", staff_index_path 
+  
+  %hr
 
   %li
     %label Course Setup
@@ -84,19 +96,20 @@
   %li
     %i.fi-list
     = link_to "Grading Scheme", grade_scheme_elements_path
+  
+  - if LTIProvider.present?
+    %hr
 
-  %li.divider
-
-  %li
-    %label Tools
-  - LTIProvider.all.each do |tool|
     %li
-      %i.fi-puzzle
-      = link_to tool.name, launch_lti_provider_path(tool)
-
-  %li.divider
+      %label Tools
+    - LTIProvider.all.each do |tool|
+      %li
+        %i.fi-puzzle
+        = link_to tool.name, launch_lti_provider_path(tool)
 
   - if current_user_is_admin?
+    %hr
+
     %li
       %label Admin
     %li

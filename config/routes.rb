@@ -62,8 +62,9 @@ GradeCraft::Application.routes.draw do
       get 'group_grade' => 'grades#group_edit', as: :group_grade
       put 'group_grade' => 'grades#group_update'
       get 'export_grades'
-      get 'sample_import' => 'assignments#sample_import'
-      get 'sample_import_2' => 'assignments#sample_import_2'
+      get 'email_based_grade_import' => 'assignments#email_based_grade_import'
+      get 'username_based_grade_import' => 'assignments#username_based_grade_import'
+      get 'name_based_grade_import' => 'assignments#name_based_grade_import'
       get 'detailed_grades' => 'assignments#show', detailed: true
       scope 'grades', as: :grades, controller: :grades do
         post :edit_status
@@ -71,8 +72,9 @@ GradeCraft::Application.routes.draw do
         post :self_log
         post :predict_score
         get :import
-        post :upload
-        post :upload2
+        post :email_import
+        post :username_import 
+        post :name_import
       end
     end
     resources :submissions do
@@ -106,6 +108,7 @@ GradeCraft::Application.routes.draw do
   resources :assignment_types do
     member do
       get 'all_grades'
+      get 'export_scores'
     end
   end
 
@@ -155,6 +158,10 @@ GradeCraft::Application.routes.draw do
     collection do
       post 'copy' => 'courses#copy'
     end
+    member do 
+      get 'timeline_settings' => 'courses#timeline_settings'
+      get 'predictor_settings' => "courses#predictor_settings"
+    end
   end
   resources :course_memberships
 
@@ -167,8 +174,9 @@ GradeCraft::Application.routes.draw do
   get 'earned_badges' => 'info#class_badges'
   get 'grading_status' => 'info#grading_status'
   get 'gradebook' => 'info#gradebook'
+  get 'raw_points_gradebook' => 'info#raw_points_gradebook'
+  get 'final_grades' => 'info#final_grades'
   get 'research_gradebook' => 'info#research_gradebook'
-  get 'all_grades' => 'courses#all_grades'
 
   #8. Groups
   resources :groups do 
@@ -191,12 +199,9 @@ GradeCraft::Application.routes.draw do
 
   resources :home
 
-  get 'submit_a_bug' => 'pages#submit_a_bug'
-  get 'features' => 'pages#features'
-  get 'news' => 'pages#news'
   get 'using_gradecraft' => 'pages#using_gradecraft'
   get 'contact' => 'pages#contact'
-  get 'documentation' => 'pages#documentation'
+  get 'features' => 'pages#features'
   get 'ping' => 'pages#ping'
 
   #10. Rubrics & Grade Schemes

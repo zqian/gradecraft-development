@@ -1,12 +1,26 @@
 .small-12.panel.mainContent
-  / Assignment Type Navigation
-  = content_nav do
-    = render "assignments/tabs"
 
-  .pagetitle= @title
+  = content_nav_for @assignment_type, "Edit #{term_for :assignment_type}"
+
+  .small-12.medium-6
+    %h3.pagetitle= @title
+
+  .small-12.medium-6.right.columns.columns-no-padding
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li
+          %a{:href => new_assignment_type_path }
+            %i.fi-plus
+            New #{term_for :assignment_type}
+        %li
+          %a{:href => assignment_type_path(@assignment_type) }
+            %i.fi-list-thumbnails
+            See #{@assignment_type.name} 
+        %li
+          %a{:href => all_grades_assignment_type_path(@assignment_type) }
+            %i.fi-graph-bar
+            #{@assignment_type.name} Performance
 
   / Display Assignment Type form
   .small-12.columns
     = render 'form'
-
-  .clearfix

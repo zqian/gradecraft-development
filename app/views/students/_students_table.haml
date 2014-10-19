@@ -1,4 +1,4 @@
-%table.responsive.nopage_dynatable
+%table.responsive.nofeatures_default_last_name_dynatable
   %thead
     %tr
       %th
@@ -12,7 +12,7 @@
         %th Role
       %th Score
       %th Grade
-      %th.button-column
+      %th
   %tbody
     - students.each do |student|
       %tr
@@ -36,6 +36,7 @@
             = student.grade_level_for_course(current_course)
         %td
           .button-bar
-            %ul.button-group.right.round
-              %li= link_to "Dashboard", student_path(student), :class => "button tiny secondary"
-              %li= link_to "Edit", edit_user_path(student), :class => "button tiny secondary"
+            %ul.button-group.right.radius
+              %li= link_to "Dashboard", student_path(student), :class => "button"
+              %li= link_to "Edit", edit_user_path(student), :class => "button"
+              %li= link_to "Delete", user_path(student), :class => "button", :data => { confirm: 'This will delete the student from GradeCraft - Are you sure?' }, :method => :delete

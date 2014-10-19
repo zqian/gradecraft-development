@@ -1,23 +1,47 @@
 .small-12.panel.mainContent
-  / Assignment Navigation
-  = content_nav do
-    - if current_user_is_staff?
-      = render "tabs", :assignment => @assignment
-    - else
-      = render "students/student_profile_tabs"
-
-  %span.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
-  - if @assignment.description.present?
-    .small-12.medium-4.columns.right
-      .right= render "assignments/description"
-  .clearfix
 
   - if current_user_is_staff?
-    .small-12.columns
-      - if @assignment.rubric and @assignment.rubric.designed?
-        %h3!= link_to "Edit Rubric", design_assignment_rubric_path(@assignment)
-      - else
-        %h3!= link_to "Design Rubric", design_assignment_rubric_path(@assignment)
+    = content_nav_for @assignment
+
+  .small-12.medium-8
+    %h3.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
+
+  - if current_user_is_staff?
+    .small-12.medium-8.right.columns.columns-no-padding
+      .button-bar.right
+        %ul.button-group.context_menu
+          %li
+            = render "assignments/description"
+          %li
+            %a{:href => edit_assignment_path(@assignment) }
+              %i.fi-pencil
+              Edit
+          - if @team.present?
+            %li
+              %a{:href => mass_grade_assignment_path(@assignment, :team_id => @team) }
+                %i.fi-list-thumbnails
+                Quick Grade
+          - else
+            %li
+              %a{:href => mass_grade_assignment_path(@assignment) }
+                %i.fi-check
+                Quick Grade
+
+          %li
+            %a{:href => design_assignment_rubric_path(@assignment) }
+              %i.fi-list-thumbnails
+              - if @assignment.rubric and @assignment.rubric.designed?
+                Edit Rubric
+              - else
+                Create Rubric 
+          %li
+            %a{:href => import_grades_assignment_path(@assignment) }
+              %i.fi-upload
+              Import Grades
+          %li
+            %a{:href => export_grades_assignment_path(format: 'csv') }
+              %i.fi-page-export-csv
+              Download Grades
 
     .small-12.columns
       - if @assignment.has_groups?
@@ -30,6 +54,7 @@
         = render "grades/group_show"
       - else
         = render "grades/individual_show"
+      .clearfix
 
   .clearfix
    

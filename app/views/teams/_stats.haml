@@ -1,35 +1,30 @@
-%table.responsive.nopage_dynatable
+%table.responsive.nofeatures_dynatable
   %thead
     %tr
       %th Rank
       %th Name
+      %th Mean Score
       - if current_course.team_score_average?
         %th Challenge Score
       - else
-        %th Mean Score
         %th Challenge Score
       %th{ "data-dynatable-column" => "students"} #{term_for :students}
       - if current_user_is_staff?
         %th{ "data-dynatable-column" => "badges"} #{term_for :badges} Earned
         %th.button-column
   %tbody
-    - i = 1
-    - @teams.alpha.order_by_high_score.each do |team|
+    - @teams.alpha.order_by_high_score.each_with_index do |team, index|
       %tr
-        %td= i
+        %td= index + 1
         %td= link_to team.name, team
-        - if current_course.team_score_average?
-          %td= points team.try(:average_points)
-        - else
-          %td= points team.try(:average_points)
-          %td= points team.try(:score)
+        %td= points team.try(:average_points)
+        %td= points team.try(:score)
         %td= team.member_count
         - if current_user_is_staff?
           %td= points team.badge_count
           %td
             .button-bar
-              %ul.button-group.round.right
-                %li= link_to 'See', team, :class => 'button tiny secondary'
-                %li= link_to 'Edit', edit_team_path(team), :class => 'button tiny secondary'
-                %li= link_to 'Delete', team, :class => 'button tiny secondary', :data => { confirm: 'Are you sure?' }, :method => :delete
-      - i += 1
+              %ul.button-group.radius.right
+                %li= link_to 'See', team, :class => 'button'
+                %li= link_to 'Edit', edit_team_path(team), :class => 'button'
+                %li= link_to 'Delete', team, :class => 'button', :data => { confirm: 'Are you sure?' }, :method => :delete

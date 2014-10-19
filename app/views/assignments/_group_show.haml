@@ -6,15 +6,15 @@
           = "#{group.name} Grades"
           - group.submission_for_assignment(@assignment).tap do |submission|
             - if submission
-              = link_to "See Submission", assignment_grade_path(@assignment.id, :group_id => group.id), :class => 'button tiny radius success'
+              = link_to "See Submission", assignment_grade_path(@assignment.id, :group_id => group.id), :class => 'button radius'
             - else
-              = link_to "Submit", new_assignment_submission_path(@assignment, @submission, :group_id => group.id), :class => 'button tiny radius success'
+              = link_to "Submit", new_assignment_submission_path(@assignment, @submission, :group_id => group.id), :class => 'button radius'
           - if group.students.first.grade_for_assignment(@assignment).present?
-            = link_to "Edit Grade", group_grade_assignment_path(@assignment, :group_id => group), :class => 'button tiny radius success'
+            = link_to "Edit Grade", group_grade_assignment_path(@assignment, :group_id => group), :class => 'button radius'
           - else
-            = link_to "Grade", group_grade_assignment_path(@assignment, :group_id => group), :class => 'button tiny radius success'
+            = link_to "Grade", group_grade_assignment_path(@assignment, :group_id => group), :class => 'button radius'
 
-      %table.responsive.nopage_dynatable
+      %table.responsive.nofeatures_dynatable
         %thead
           %tr
             %th= current_course.group_term
@@ -27,11 +27,11 @@
               %th Status
               %th
                 .button-bar
-                  %ul.button-group.right.round
+                  %ul.button-group.right.radius
                     %li
-                      %button.select-all.tiny= "Check"
+                      %button.button.select-all.tiny= "Check All"
                     %li
-                      %button.select-none.tiny= "Uncheck"
+                      %button.button.select-none.tiny= "Uncheck All"
         %tbody
           - group.students.each do |student|
             - grade = @assignment.grades.find_by student_id: student
@@ -53,7 +53,7 @@
                     = check_box_tag "grade_ids[]", grade.id
     .right.columns
       - if @assignment.release_necessary? && @assignment.grades.present?
-        = submit_tag "Update Grade Statuses", :class => "button tiny radius"
+        = submit_tag "Update Grade Statuses", :class => "button"
 - else
   - if current_student.group_for_assignment(@assignment)
     %h3
@@ -81,6 +81,4 @@
     - if @assignment.accepts_submissions?
       = render "students/group_submissions", assignment: @assignment, group: current_student.group_for_assignment(@assignment)
   - else
-    = link_to "Create a Group", new_group_path, :class => "button tiny radius"
-
-.clearfix
+    = link_to "Create a Group", new_group_path, :class => "button"

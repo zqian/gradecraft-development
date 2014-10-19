@@ -1,8 +1,10 @@
-.small-12.panel.mainContent
+- if current_user_is_staff?
   = content_nav do
-    = render "student_profile_tabs"
+    = render "students/student_profile_tabs"
 
-  .pagetitle= "#{term_for :teams}"
+.small-12.panel.mainContent
+
+  %h3.pagetitle= "#{term_for :teams}"
 
   .small-12.columns
 
@@ -34,9 +36,7 @@
     .tabs-content
       .content#tabt1.active
         = render "teams/leaderboard"
-      .content#tabt2.small-12
+      .content#tabt2
         = render "teams/in_team_rankings"
       .content#tabt3
         = render "challenges/student_index"
-
-  .clearfix

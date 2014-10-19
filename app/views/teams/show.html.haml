@@ -1,12 +1,19 @@
 .small-12.panel.mainContent
-  / Student Dashboard Breadcrumbs
-  = content_nav do
-    = render "tabs"
+  = content_nav_for @team
 
-  .pagetitle= @team.name
+  %h3.pagetitle= @team.name
 
+  .small-12.medium-3.right.columns.columns-no-padding
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li
+          %a{:href => edit_team_path(@team) }
+            %i.fi-pencil
+            Edit #{term_for :team}
+
+  %h4.subtitle= "#{term_for :student} Roster"
   .small-12.columns
-    %table.responsive.nopage_dynatable
+    %table.responsive.nofeatures_default_last_name_dynatable
       %thead
         %tr
           %th First Name
@@ -17,7 +24,8 @@
           %th Score
           %th Level
           - if current_course.has_badges?
-            %th{:width => 200} #{term_for :badges} Earned
+            %th{:scope => "col", "data-dynatable-sorts" => "badgeCount" }= "#{term_for :badges} Earned"
+            %th{:style => "display: none"} Badge Count
           %th.button-column
       %tbody
         - @team.students.each do |student|
@@ -34,38 +42,40 @@
                 = student.grade_level_for_course(current_course)
               - if current_course.has_badges?
                 %td
-                  - student.earned_badges.each do |badge|
-                    %span.has-tip.tip-top{:title => "#{badge.name}", :data => {'tooltip' => true}}
-                      %img{:src => asset_path(badge.icon), :alt => badge.name, :width => "25"}
+                  - student.earned_badges_for_course(current_course).each do |badge|
+                    %img.has-tip{:src => badge[1].icon, :alt => badge[1].name, :width => "20", :title => badge[1].name, :data => {'tooltip' => true}}
+                %th{:style => "display: none"}= student.earned_badges.count
               %td
                 .button-bar
-                  %ul.button-group.round.right
-                    %li= link_to 'Dashboard', student_path(student), :class => 'button tiny secondary'
-                    %li= link_to 'Edit', edit_user_path(student), :class => 'button tiny secondary'
+                  %ul.button-group.radius.right
+                    %li= link_to 'Dashboard', student_path(student), :class => 'button'
+                    %li= link_to 'Edit', edit_user_path(student), :class => 'button'
 
 
   %hr
 
-  .pagetitle Challenge Grades
+  %h4.subtitle Challenge Grades
 
   .small-12.columns
 
-    %table.responsive.nopage_dynatable
+    %table.responsive.nofeatures_default_score_dynatable
       %thead
         %tr
           %th Name
           %th Score
-          %th
+          %th{:width => "10%"}
 
       %tbody
         - @challenges.each do |challenge|
           %tr
-            %td= link_to challenge.name, challenge
+            %td
+              - if challenge.challenge_grades.present?
+                = link_to challenge.name, challenge
+              - else
+                = challenge.name
             %td= challenge.challenge_grade_for_team(@team).try(:score)
             %td
               - if challenge.challenge_grade_for_team(@team).present?
-                = link_to 'Edit Grade', edit_challenge_challenge_grade_path(:challenge_id => challenge, :id => challenge.challenge_grade_for_team(@team).id), :class => 'button tiny round secondary'
+                = link_to 'Edit Grade', edit_challenge_challenge_grade_path(:challenge_id => challenge, :id => challenge.challenge_grade_for_team(@team).id), :class => 'button radius'
               - else
-                = link_to "Grade", new_challenge_challenge_grade_path(:challenge_id => challenge, :team_id => @team.id), :class => 'button tiny round secondary'
-
-  .clearfix
+                = link_to "Grade", new_challenge_challenge_grade_path(:challenge_id => challenge, :team_id => @team.id), :class => 'button radius'

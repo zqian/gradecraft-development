@@ -359,9 +359,10 @@ class User < ActiveRecord::Base
     @weighted_assignments_present ||= assignment_weights.count > 0
   end
 
-  #Used for self-logged attendance to check if the student already has a grade
-  def present_for_class?(assignment)
-    grade_for_assignment(assignment).try(:score) == assignment.point_total
+  #Used to allow students to self-log a grade, currently only a boolean (complete or not)
+  #TODO Should allow them to use a select list or slider to determine their grade from a range of options
+  def self_reported_done?(assignment)
+    (grade_for_assignment(assignment).try(:score) ) && (grade_for_assignment(assignment).try(:score)== grade_for_assignment(assignment).try(:point_total))
   end
 
   #Counts how many assignments are weighted for this student - note that this is an ASSIGNMENT count, and not the assignment type count. Because students make the choice at the AT level rather than the A level, this can be confusing.
@@ -462,8 +463,10 @@ class User < ActiveRecord::Base
     course_memberships.each do |membership|
       if membership.course.add_team_score_to_student?
         membership.update_attribute :score, grades.released.where(course_id: membership.course_id).score + earned_badge_score_for_course(membership.course_id) + (team_for_course(membership.course_id).try(:challenge_grade_score) || 0)
+        team.save! if self.team_for_course(membership.course_id).present?
       else
         membership.update_attribute :score, grades.released.where(course_id: membership.course_id).score + earned_badge_score_for_course(membership.course_id)
+        team_for_course(membership.course_id).save! if team_for_course(membership.course_id).present?
       end
     end
   end

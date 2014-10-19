@@ -1,33 +1,27 @@
 - if current_course.has_teams? && @assignment.is_individual?
-  .small-12.medium-4.columns.right
+  .small-12.medium-4.right
     = form_tag assignment_path(@assignment), :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
       = hidden_field_tag :assignment_id, @assignment.id
       = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
 
 = form_tag edit_status_grades_assignment_path @assignment do
-  %table.responsive.nopage_dynatable
+  %table.responsive.nofeatures_default_last_name_dynatable
     %thead
       %tr
         %th First Name
         %th Last Name
         - if ! @assignment.assignment_type.student_weightable?
           %th Score
-        - elsif @assignment.assignment_type.student_weightable?
+        - else
           %th Raw Score
           %th Multiplied Score
-        - if @assignment.has_levels?
-          %th Level
         - if @assignment.release_necessary?
           %th Status
         %th
         - if @assignment.release_necessary?
-          %th{"data-dynatable-no-sort" => "true"} 
-            .button-bar
-              %ul.button-group.right.round
-                %li
-                  %button.button.select-all.tiny= "Check"
-                %li
-                  %button.button.select-none.tiny= "Uncheck"
+          %th.center{"data-dynatable-no-sort" => "true"}
+            %button.button.select-all.tiny= "Check All"
+            %button.button.select-none.tiny= "Uncheck All"
     %tbody
       - if @team
         - students = current_course_data.students_for_team(@team)
@@ -39,20 +33,14 @@
           %td= link_to student.first_name, student_path(student)
           %td= link_to student.last_name, student_path(student)
           %td{:data => { :"sort-value" => "#{grade.raw_score}"} }= points grade.raw_score if grade.status?
-          - if @assignment.assignment_type.student_weightable?
-            %td= points grade.score if grade.status?
-          - if @assignment.has_levels?
+          - if @assignment.assignment_type.student_weightable? 
             %td
-              = @assignment.grade_level(grade) if grade.status?
+              - if student.weighted_assignments?
+                = points grade.score if grade.status?
+              - else
+                = "(not yet assigned)"
           - if @assignment.release_necessary?
-            - if grade.is_released?
-              %td= "Released" 
-            - elsif grade.is_graded?
-              %td.need_to_be_released= "Graded"
-            - elsif grade.in_progress?
-              %td.in_progress= "In Progress"
-            - else
-              %td
+            %td= grade.status
           %td
             - if @assignment.accepts_submissions?
               - student.submissions.where(:assignment_id => @assignment).each do |submission|
@@ -60,40 +48,40 @@
                   .button-bar
                     - if submission.submission_files.present?
                       %i.fi-paperclip.right
-                    %ul.button-group.round.right
-                      %li= link_to "See Grade", assignment_grade_path(@assignment, :student_id => student.id), :class => 'button tiny'
-                      %li= link_to "Edit Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button tiny'
+                    %ul.button-group.radius.right
+                      %li= link_to "See Grade", assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
+                      %li= link_to "Edit Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
                       
                 - elsif submission
                   .button-bar
                     - if submission.submission_files.present?
                       %i.fi-paperclip.right
-                    %ul.button-group.round.right
-                      %li= link_to "Grade", edit_assignment_grade_path(@assignment.id, submission.id, :student_id => student.id), :class => 'button tiny'
+                    %ul.button-group.radius.right
+                      %li= link_to "Grade", edit_assignment_grade_path(@assignment.id, submission.id, :student_id => student.id), :class => 'button'
                   %i.fi-paperclip
               
               - if ! student.submissions.where(:assignment_id => @assignment).present?
                 - if grade && grade.status_is_graded_or_released?
                   .button-bar
-                    %ul.button-group.round.right
-                      %li= link_to "See Grade", assignment_grade_path(@assignment, :student_id => student.id), :class => 'button tiny'
-                      %li= link_to "Edit Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button tiny'
+                    %ul.button-group.radius.right
+                      %li= link_to "See Grade", assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
+                      %li= link_to "Edit Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
                 - else
                   .button-bar
-                    %ul.button-group.round.right
-                      %li= link_to "Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button tiny'
+                    %ul.button-group.radius.right
+                      %li= link_to "Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
             - else
               - if grade && grade.status_is_graded_or_released?
                 .button-bar
-                  %ul.button-group.round.right
-                    %li= link_to "See Grade", assignment_grade_path(@assignment, :student_id => student.id), :class => 'button tiny'
-                    %li= link_to "Edit Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button tiny'
+                  %ul.button-group.radius.right
+                    %li= link_to "See Grade", assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
+                    %li= link_to "Edit Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
               - else
                 .button-bar
-                  %ul.button-group.round.right
-                    %li= link_to "Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button tiny'
+                  %ul.button-group.radius.right
+                    %li= link_to "Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
           - if @assignment.release_necessary?
-            %td.text-center
+            %td
               - if grade.is_graded?
                 .center= check_box_tag "grade_ids[]", grade.id
 
@@ -110,22 +98,20 @@
           %th Last Name
           - if ! @assignment.assignment_type.student_weightable?
             %th Score
-          - elsif @assignment.assignment_type.student_weightable?
+          - else
             %th Raw Score
             %th Multiplied Score
-          - if @assignment.has_levels?
-            %th Level
           - if @assignment.release_necessary?
             %th Status
           %th{"data-dynatable-no-sort" => "true"} 
           - if @assignment.release_necessary?
             %th{"data-dynatable-no-sort" => "true"} 
               .button-bar
-                %ul.button-group.right.round
+                %ul.button-group.right.radius
                   %li
-                    %button.button.select-all.tiny= "Check"
+                    %button.button.select-all.tiny= "Check All"
                   %li
-                    %button.button.select-none.tiny= "Uncheck"
+                    %button.button.select-none.tiny= "Uncheck All"
 
                     %tr
         
@@ -143,9 +129,6 @@
             - if @assignment.assignment_type.student_weightable?
               %td
                 = points grade.score if grade.status?
-            - if @assignment.has_levels?
-              %td
-                = @assignment.grade_level(grade) if grade.status?
             - if @assignment.release_necessary?
               %td
                 - if grade.is_released?
@@ -159,36 +142,36 @@
                     .button-bar
                       - if submission.submission_files.present?
                         %i.fi-paperclip.right
-                      %ul.button-group.round.right
-                        %li= link_to "See Grade", assignment_grade_path(@assignment, :student_id => student.id), :class => 'button tiny'
-                        %li= link_to "Edit Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button tiny'
+                      %ul.button-group.radius.right
+                        %li= link_to "See Grade", assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
+                        %li= link_to "Edit Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
                         
                   - elsif submission
                     .button-bar
                       - if submission.submission_files.present?
                         %i.fi-paperclip.right
-                      %ul.button-group.round.right
-                        %li= link_to "Grade", edit_assignment_grade_path(@assignment.id, submission.id, :student_id => student.id), :class => 'button tiny'
+                      %ul.button-group.radius.right
+                        %li= link_to "Grade", edit_assignment_grade_path(@assignment.id, submission.id, :student_id => student.id), :class => 'button'
                     %i.fi-paperclip
                   - elsif grade && grade.status_is_graded_or_released?
                     .button-bar
-                      %ul.button-group.round.right
-                        %li= link_to "See Grade", assignment_grade_path(@assignment, :student_id => student.id), :class => 'button tiny'
-                        %li= link_to "Edit Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button tiny'
+                      %ul.button-group.radius.right
+                        %li= link_to "See Grade", assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
+                        %li= link_to "Edit Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
                   - elsif ! student.submissions.where(:assignment_id => @assignment).present?
                     .button-bar
-                      %ul.button-group.round.right
-                        %li= link_to "Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button tiny'
+                      %ul.button-group.radius.right
+                        %li= link_to "Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
               - else
                 - if grade && grade.status_is_graded_or_released?
                   .button-bar
-                    %ul.button-group.round.right
-                      %li= link_to "See Grade", assignment_grade_path(@assignment, :student_id => student.id), :class => 'button tiny'
-                      %li= link_to "Edit Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button tiny'
+                    %ul.button-group.radius.right
+                      %li= link_to "See Grade", assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
+                      %li= link_to "Edit Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
                 - else
                   .button-bar
-                    %ul.button-group.round.right
-                      %li= link_to "Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button tiny'
+                    %ul.button-group.radius.right
+                      %li= link_to "Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
             - if @assignment.release_necessary?
               %td.text-center
                 - if grade.is_graded?
@@ -196,4 +179,4 @@
 
   - if @assignment.release_necessary? && @assignment.grades.present?
     .right
-      = submit_tag "Update Selected Grade Statuses", :class => "button tiny radius"
+      = submit_tag "Update Selected Grade Statuses", :class => "button radius"

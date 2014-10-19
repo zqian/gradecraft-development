@@ -10,7 +10,7 @@ class AssignmentWeight < ActiveRecord::Base
   belongs_to :submission
 
   before_validation :cache_associations, :cache_point_total
-  after_save :save_grades
+  after_save :save_grades, :save_student
 
   validates_presence_of :student, :assignment, :assignment_type, :course
 
@@ -50,8 +50,10 @@ class AssignmentWeight < ActiveRecord::Base
   end
 
   def course_max_assignment_weight_not_exceeded
-    if weight > course.max_assignment_weight
-      errors.add(:weight, "exceeded maximum allowed for course. Please select a lower #{course.weight_term.downcase}")
+    if course.max_assignment_weight? 
+      if weight > course.max_assignment_weight
+        errors.add(:weight, "exceeded maximum allowed for course. Please select a lower #{course.weight_term.downcase}")
+      end
     end
   end
 
@@ -66,5 +68,9 @@ class AssignmentWeight < ActiveRecord::Base
 
   def save_grades
     assignment.grades.where(student: student).each(&:save)
+  end
+
+  def save_student
+    student.save
   end
 end

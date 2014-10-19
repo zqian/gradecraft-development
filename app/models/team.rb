@@ -10,7 +10,7 @@ class Team < ActiveRecord::Base
   belongs_to :course
 
   has_many :team_memberships
-  has_many :students, :through => :team_memberships
+  has_many :students, :through => :team_memberships, :autosave => true
   has_many :team_leaderships
   has_many :leaders, :through => :team_leaderships
 
@@ -30,6 +30,7 @@ class Team < ActiveRecord::Base
   scope :alpha, -> { order 'name ASC' }
   scope :order_by_high_score, -> { order 'teams.score DESC' }
   scope :order_by_low_score, -> { order 'teams.score ASC' }
+  scope :order_by_average_high_score, -> { order 'average_points DESC'}
 
   # DEPRECATED -- Assume Teams can have more than one leader. This should be removed
   # once we verify all uses are removed and new methods for cycling through team leaders
@@ -77,11 +78,8 @@ class Team < ActiveRecord::Base
   #The second way is that the teams compete in team challenges that earn the team points. At the end of the
   #semester these usually get added back into students' scores - this has not yet been built into GC.
   def cache_score
-    if self.course.team_score_average?
-      if self.score_changed?
-        self.score = average_points
-        students.save
-      end
+    if course.team_score_average?
+      self.score = average_points
     else
       self.score = challenge_grade_score
     end

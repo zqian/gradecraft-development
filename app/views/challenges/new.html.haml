@@ -1,13 +1,8 @@
 .small-12.panel.mainContent
-  / Create a Challenge Navigation
-  = content_nav do
-    = render "teams/tabs"
 
-  .pagetitle= @title
+  = content_nav_for Challenge, "New #{term_for :challenge}"
+
+  %h3.pagetitle= @title
   
   .small-12.columns
     = render 'form'
-
-  .clearfix
-
-

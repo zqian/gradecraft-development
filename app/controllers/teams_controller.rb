@@ -21,7 +21,7 @@ class TeamsController < ApplicationController
     @course = current_course
     @users = current_course.users
     @team.team_memberships.build
-    @students = @users.students
+    @students = current_course.students
     @submit_message = "Create #{term_for :team}"
     respond_with @team
   end
@@ -37,7 +37,7 @@ class TeamsController < ApplicationController
     @team =  current_course.teams.find(params[:id])
     @title = "Editing #{@team.name}"
     @users = current_course.users
-    @students = @users.students
+    @students = current_course.students
     @submit_message = "Update #{term_for :team}"
   end
 

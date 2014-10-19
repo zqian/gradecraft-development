@@ -1,10 +1,17 @@
 .small-12.panel.mainContent
-  = content_nav do
-    = render "assignments/tabs"
 
+  = content_nav_for @assignment, "See Grade"
   
   - if @assignment.is_individual?
-    %h3.pagetitle= "#{current_student.name}'s #{ @assignment.name }"
+    %h3.pagetitle= @title
+
+    .small-12.medium-3.right.columns.columns-no-padding
+      .button-bar.right
+        %ul.button-group.context_menu
+          %li
+            %a{:href => edit_assignment_grade_path(@assignment, :student_id => current_student.id) }
+              %i.fi-pencil
+              Edit Grade
 
     .small-12.columns= render "individual_show"
     
@@ -12,5 +19,3 @@
     %h3.pagetitle #{@group.try(:name)}'s #{@assignment.name}
       
     .small-12.columns= render "group_show"
-
-  .clearfix

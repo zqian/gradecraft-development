@@ -5,6 +5,7 @@ class EarnedBadgesController < ApplicationController
   before_filter :ensure_staff?, :except => :toggle_shared
 
   def index
+    @title = "Awarded #{term_for :badges}"
     @badge = current_course.badges.find(params[:badge_id])
     redirect_to badge_path(@badge)
   end
@@ -73,7 +74,7 @@ class EarnedBadgesController < ApplicationController
     respond_to do |format|
       if @earned_badge.update_attributes(params[:earned_badge])
         expire_fragment "earned_badges"
-        format.html { redirect_to student_path(@earned_badge.student), notice: "#{@earned_badge.student.name}'s #{@badge.name} #{term_for :badge} was successfully updated." }
+        format.html { redirect_to badge_path(@badge), notice: "#{@earned_badge.student.name}'s #{@badge.name} #{term_for :badge} was successfully updated." }
         format.json { head :ok }
       else
         format.html { render action: "edit" }

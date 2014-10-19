@@ -3,7 +3,16 @@ class AnalyticsController < ApplicationController
   before_filter :set_granularity_and_range
 
   def index
+    @title = "User Analytics"
     @students = current_course.students.order('last_name ASC')
+  end
+
+  def students
+    @title = "#{term_for :student} Analytics"
+  end
+
+  def staff
+    @title = "Staff Analytics"
   end
 
   def all_events
@@ -14,6 +23,7 @@ class AnalyticsController < ApplicationController
 
   # Displaying the top 10 and bottom 10 students for quick overview
   def top_10
+    @title = "Top 10/Bottom 10"
     @teams = current_course.teams.includes(:earned_badges)
     @students = current_course.students.being_graded
     @top_ten_students = @students.order_by_high_score.limit(10)

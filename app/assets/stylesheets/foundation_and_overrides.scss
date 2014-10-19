@@ -143,7 +143,7 @@ $h6-font-size: .6rem;
 // $alert-border-style: solid;
 // $alert-border-width: 1px;
 // $alert-border-color: darken($primary-color, $alert-function-factor);
-$alert-bottom-margin: 2.5rem !important;
+$alert-bottom-margin: 1.0rem !important;
 
 // We use these to style the close buttons
 // $alert-close-color: #333;
@@ -175,8 +175,8 @@ $alert-bottom-margin: 2.5rem !important;
 $crumb-bg: #FFF;
 
 // We use these to set the padding around the breadcrumbs.
-$crumb-padding: .5rem .5rem 0;
-// $crumb-side-padding: rem-calc(12);
+$crumb-padding: .25rem .5rem 0 1rem;
+$crumb-side-padding: .5rem;
 
 // We use these to control border styles.
 // $crumb-function-factor: 10%;
@@ -203,7 +203,7 @@ $crumb-font-size: rem-calc(18);
 
 // Sets the margin for the right side by default, and the left margin if right-to-left direction is used
 // $button-bar-margin-opposite: rem-calc(10);
-$button-group-border-width: 1px;
+$button-group-border-width: 0px;
 
 // Clearing
 
@@ -611,7 +611,7 @@ $off-canvas-link-padding: 1rem;
 // $include-html-panel-classes: $include-html-classes;
 
 // We use these to control the background and border styles
-$panel-bg: darken(#fff, 2%);
+$panel-bg: darken(#FFF, 6%);
 // $panel-border-style: solid;
 // $panel-border-size: 1px;
 
@@ -835,29 +835,29 @@ $sub-nav-active-padding: .5rem 1rem;
 
 // These control the background color for the table and even rows
 // $table-bg: #fff;
-// $table-even-row-bg: #f9f9f9 ;
+$table-even-row-bg: darken(#FFF, 8%);
 
 // These control the table cell border style
-// $table-border-style: solid;
-$table-border-size: 0px;
-// $table-border-color: #eee;
+$table-border-style: solid;
+$table-border-size: 1px;
+$table-border-color: #eee;
 
 // These control the table head styles
-// $table-head-bg: #555 ;
- $table-head-font-size: rem-calc(2);
-// $table-head-font-color: #FFF;
+//$table-head-bg: #666;
+$table-head-font-size: rem-calc(2);
+//$table-head-font-color: #FFF;
 //$table-head-font-weight: bold;
- $table-head-padding: rem-calc(0);
+//$table-head-padding: rem-calc(0);
 
 // These control the row padding and font styles
-$table-row-padding: rem-calc(0 0);
+$table-row-padding: 8px 10px;
 $table-row-font-size: .8rem;
 $table-row-font-color: #222;
 $table-line-height: rem-calc(0);
 
 // These are for controlling the display and margin of tables
 // $table-display: table-cell;
- $table-margin-bottom: rem-calc(0);
+$table-margin-bottom: rem-calc(0);
 
 //
 // TABS
@@ -866,9 +866,9 @@ $table-line-height: rem-calc(0);
 // $include-html-tabs-classes: $include-html-classes;
 
 $tabs-navigation-padding: 0.25rem;
-// $tabs-navigation-bg-color: #efefef  ;
-// $tabs-navigation-hover-bg-color: darken($tabs-navigation-bg-color, 5%);
-// $tabs-navigation-font-color: #222;
+$tabs-navigation-bg-color: #ccc;
+$tabs-navigation-hover-bg-color: darken($tabs-navigation-bg-color, 5%);
+$tabs-navigation-font-color: #FFF;
 // $tabs-navigation-font-size: rem-calc(16);
 // $tabs-navigation-font-family: $body-font-family;
 
@@ -960,7 +960,7 @@ $has-tip-border-bottom-hover: none;
 // $topbar-link-bg-active-hover: darken($primary-color, 5%);
 // $topbar-link-font-family: $body-font-family;
 
-// $topbar-button-font-size: 0.75rem;
+// $topbar-button-font-size: 0.95rem;
 
 // $topbar-dropdown-label-color: #777;
 // $topbar-dropdown-label-text-transform: uppercase;

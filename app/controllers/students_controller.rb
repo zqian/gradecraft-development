@@ -30,9 +30,9 @@ class StudentsController < ApplicationController
       redirect_to dashboard_path
     end
     if current_course.team_challenges?
-      @events = current_course.assignments.timelineable.to_a + current_course.challenges
+      @events = current_course.assignments.timelineable.with_due_date.to_a + current_course.challenges
     else
-      @events = current_course.timelineable.to_a
+      @events = current_course.assignments.timelineable.with_due_date.to_a
     end
   end
 
@@ -65,6 +65,10 @@ class StudentsController < ApplicationController
     if current_user_is_staff?
       @scores_for_current_course = current_student.scores_for_course(current_course)
     end
+  end
+
+  def badges
+    @title = "#{term_for :badges}"
   end
 
   # Display the grade predictor

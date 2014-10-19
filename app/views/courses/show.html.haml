@@ -1,9 +1,16 @@
 .small-12.panel.mainContent
-  / Courses Navigation
-  = content_nav do
-    = render "tabs"
 
-  .pagetitle= @title
+  = content_nav_for @course
+
+  %h3.pagetitle= @title
+
+  .small-12.medium-3.right.columns.columns-no-padding
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li
+          %a{:href => edit_course_path(@course) }
+            %i.fi-pencil
+            Edit
 
   .small-12.columns
     .panel
@@ -141,5 +148,3 @@
       %p
         %b What amount should other (unselected) assignment types be multiplied by?
         = @course.default_assignment_weight
-
-  .clearfix

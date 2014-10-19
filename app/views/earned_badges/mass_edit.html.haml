@@ -1,9 +1,8 @@
 .small-12.panel.mainContent
-  / Earned Badges Navigation
-  = content_nav do
-    = render "badges/tabs"
 
-  %span.pagetitle= @title
+  = content_nav_for @badge, "Quick Award #{term_for :badge}"
+
+  %h3.pagetitle= @title
 
   - if current_course.has_teams?
     .small-12.medium-4.columns.right
@@ -16,22 +15,18 @@
         %table.responsive
           %thead
             %tr
-              %th
+              %th Name
               %th Earned
-              %th{"data-dynatable-no-sort" => "true"} 
-                .button-bar
-                  %ul.button-group.right.round
-                    %li
-                      %button.select-all.tiny= "Check All"
-                    %li
-                      %button.select-none.tiny= "Uncheck"
+              %th.center{"data-dynatable-no-sort" => "true", :width => "15%"} 
+                %button.button.select-all.tiny= "Check All"
+                %button.button.select-none.tiny= "Uncheck"
           - @earned_badges.each_with_index do |eb, i|
             %tr
               %td= link_to eb.student.name, student_path(eb.student)
               %td
                 - eb.student.earned_badges.where(:badge_id => @badge).each do |eb|
                   %img{:src => eb.badge.try(:icon), :alt => eb.badge.try(:name), :width => "25", :height => "25"}
-              %td.right
+              %td.center
                 = f.simple_fields_for :earned_badges, eb do |ebf|
                   = ebf.hidden_field :student_id
                   - if @badge.can_earn_multiple_times? 
@@ -41,7 +36,5 @@
                     = ebf.check_box :score, {}, @badge.point_total, nil
                   
         .right
-          = f.button :submit, "Award", :class => "button tiny radius"
-          = link_to 'Cancel', badges_path, :class => 'button tiny transparent radius'
-
-  .clearfix
+          = f.button :submit, "Award", :class => "button radius alert"
+          = link_to 'Cancel', badges_path, :class => 'button transparent radius'

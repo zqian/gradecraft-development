@@ -1,9 +1,8 @@
 .small-12.panel.mainContent
-  / Leaderboards
-  = content_nav do
-    = render "tabs"
 
-  .pagetitle #{term_for :team} Grade Distribution
+  = content_nav_for "Analytics"
+
+  %h3.pagetitle #{term_for :team} Grade Distribution
 
   .small-12.columns
         

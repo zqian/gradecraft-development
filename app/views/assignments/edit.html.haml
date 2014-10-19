@@ -1,14 +1,21 @@
 .small-12.panel.mainContent
-  / Assignment Navigation
-  = content_nav do
-    = render "tabs"
 
-  .pagetitle= @title
+  = content_nav_for @assignment, "Edit #{term_for :assignment}"
+
+  %h3.pagetitle= @title
+
+  .small-12.medium-6.right.columns.columns-no-padding
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li
+          %a{ :href => new_assignment_path }
+            %i.fi-plus
+            New #{term_for :assignment}
+        %li
+          %a{ :href => assignment_path(@assignment) }
+            %i.fi-list-thumbnails
+            See #{@assignment.name}
   
   .small-12.columns
 
     = render 'form'
-
-  .clearfix
-  
-  

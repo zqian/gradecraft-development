@@ -1,3 +1,8 @@
+- if current_course.student_weighted?
+  .panel.radius= render 'students/sidebar/sidebar_assignment_weights'
+
+.panel.radius.show-for-small-only= render 'students/sidebar/sidebar_course_info'
+
 .panel.radius= render 'students/sidebar/sidebar_to_do_list'
 
 .panel.radius= render 'students/sidebar/sidebar_grade_distribution'

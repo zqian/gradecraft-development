@@ -1,26 +1,19 @@
-%table.responsive
+%table.responsive.nofeatures_default_rank_dynatable{:role => "grid"}
   %thead
     %tr
-      %th= course.user_term
-      %th Score
-      %th{"data-dynatable-no-sort" => "true"} Chart
-      - if course.has_teams?
-        %th= course.team_term
+      %th{ :scope => "column", :width => "20%" }= course.user_term
+      %th{ :scope => "column", :width => "10%"} Score
       - if course.has_badges?
-        %th Badges
+        %th{ :scope => "column" } Badges
       - if course.has_teams?
-        %th= course.team_leader_term
-      %th Last Login
+        %th{ :scope => "column" }= course.team_term
+        %th{ :scope => "column" }= course.team_leader_term
+      %th{ :scope => "column", :width => "20%"  } Last Login
   %tbody
     - students.each do |student|
       %tr
         %td= link_to student.name, student_path(student)
-        %td= student.cached_score_for_course(current_course)
-        %td{ :data => { :id => student.id.to_s, :max => current_course.total_points }, :class => "bar-chart" }
-        - if course.has_teams?
-          %td
-            - if student.team_for_course(current_course).present?
-              = link_to student.team_for_course(current_course).name, student.team_for_course(current_course)
+        %td= points student.cached_score_for_course(current_course)
         - if course.has_badges?
           %td= student.earned_badges.count
 
@@ -30,4 +23,9 @@
               %ul
                 - student.team_for_course(course).leaders.each do |leader|
                   %li= link_to leader.first_name, staff_path(leader)
+
+              = link_to student.team_for_course(current_course).name, student.team_for_course(current_course)
+          %td
+            - if student.team_for_course(course) && student.team_for_course(course).team_leader.present?
+              = link_to student.team_for_course(course).team_leader.first_name, staff_path(student.team_for_course(course).team_leader)
         %td= student.try(:last_activity_at) || "(never)"

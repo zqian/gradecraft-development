@@ -1,12 +1,9 @@
 .small-12.panel.mainContent
-  / Earned Badge Navigation
-  = content_nav do
-    = render "badges/tabs"
 
-  .pagetitle= @title
+  = content_nav_for @badge, "Award #{term_for :badge}"
+
+  %h3.pagetitle= @title
 
   .small-12.columns
   
     = render 'form'
-
-  .clearfix

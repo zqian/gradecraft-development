@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   before_filter :ensure_admin?, :only => [:all]
 
   def index
-    @title = "View All Users"
+    @title = "All Users"
     @users =  current_course.users
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
     user_search_options = {}
@@ -22,6 +22,7 @@ class UsersController < ApplicationController
   # Admin only view of all users
   def all
     @users = User.all.order('last_name ASC')
+    @title = "All Users"
   end
 
   def new
@@ -34,7 +35,7 @@ class UsersController < ApplicationController
 
   def edit
     session[:return_to] = request.referer
-    @teams = current_course.teams
+    @teams = current_course.teams.alpha
     @user = current_course.users.find(params[:id])
     if @user.is_staff?(current_course)
       @courses = Course.all
@@ -66,7 +67,7 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     @course_membership = @user.course_memberships.where(course_id: current_course).first
-    @teams = current_course.teams
+    @teams = current_course.teams.alpha
     @user.teams.set_for_course(current_course.id, params[:user][:course_team_ids])
     @user.update_attributes(params[:user])
     if @user.save && @user.is_student?(current_course)

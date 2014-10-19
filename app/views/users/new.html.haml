@@ -1,12 +1,9 @@
 .small-12.panel.mainContent
-  / New user navigation
-  = content_nav do
-    = render "tabs"
-  
-  .pagetitle= @title
+
+  = content_nav_for User, "New User"
+
+  %h3.pagetitle= @title
 
   .small-12.columns
     / Form for creating a new user
     = render 'form'
-
-  .clearfix

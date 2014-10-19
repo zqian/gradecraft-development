@@ -14,14 +14,19 @@ class InfoController < ApplicationController
       end
     end
     if current_course.team_challenges?
-      @events = current_course.assignments.timelineable.to_a + current_course.challenges
+      @events = current_course.assignments.timelineable.with_due_date.to_a + current_course.challenges
     else
-      @events = current_course.assignments.timelineable.to_a
+      @events = current_course.assignments.timelineable.with_due_date.to_a
     end
+  end
+
+  def class_badges
+    @title = "Awarded #{term_for :badges}"
   end
 
   # Displaying all ungraded (but submitted) assignments in the system, needs to have a new section that highlights "Graded-not-Released"
   def grading_status
+    @title = "Grading Status"
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
     @students = current_course.students
     user_search_options = {}
@@ -37,12 +42,28 @@ class InfoController < ApplicationController
 
   #grade index export
   def gradebook
-    @title = "#{current_course.name} Gradebook"
+    @title = "Gradebook"
     respond_to do |format|
       format.html
       format.json { render json: current_course.assignments }
       format.csv { send_data current_course.gradebook_for_course(current_course) }
       format.xls { send_data current_course.gradebook_for_course(current_course).to_csv(col_sep: "\t") }
+    end
+  end
+
+  #grade index export
+  def raw_points_gradebook
+    @title = "Gradebook"
+    respond_to do |format|
+      format.csv { send_data current_course.raw_points_gradebook_for_course(current_course) }
+      format.xls { send_data current_course.raw_points_gradebook_for_course(current_course).to_csv(col_sep: "\t") }
+    end
+  end
+
+  def final_grades
+    respond_to do |format|
+      format.csv { send_data current_course.final_grades_for_course(current_course) }
+      format.xls { send_data current_course.final_grades_for_course(current_course).to_csv(col_sep: "\t") }
     end
   end
 
@@ -55,7 +76,7 @@ class InfoController < ApplicationController
 
   # Chart displaying all of the student weighting choices thus far
   def choices
-    @title = "View all #{current_course.weight_term} Choices"
+    @title = "#{current_course.weight_term} Choices"
     @assignment_types = current_course.assignment_types
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
   end
@@ -67,7 +88,7 @@ class InfoController < ApplicationController
 
   #Course wide leaderboard - excludes auditors from view
   def leaderboard
-    @title = "#{current_course.name} Leaderboard"
+    @title = "Leaderboard"
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
     user_search_options = {}
     user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?

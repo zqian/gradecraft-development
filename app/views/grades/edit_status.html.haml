@@ -1,9 +1,8 @@
 .small-12.panel.mainContent
-  / Grades Navigation
-  = content_nav do
-    = render "assignments/tabs"
 
-  .pagetitle Updating Selected Grades
+  = content_nav_for @assignment, "Update Grade Status"
+
+  %h3.pagetitle= @title
 
   .small-12.columns            
     %table.responsive.nopage_dynatable
@@ -26,6 +25,4 @@
         .medium-3.right= f.input :status, :label => "Update Status to:", :as => :select, :collection => Grade::STATUSES
         %hr
         .right
-          = f.button :submit, "Update Statuses", :class => "button tiny radius"
-
-  .clearfix
+          = f.button :submit, "Update Statuses", :class => "button radius"

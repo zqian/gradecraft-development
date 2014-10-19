@@ -1,8 +1,6 @@
 .small-12.panel.mainContent
-  = content_nav do
-    = render "students/student_profile_tabs"
 
-  .pagetitle
+  %h3.pagetitle
     
     / Check to see if the course has scheme elements
     - if current_course.grade_scheme_elements.present?
@@ -26,5 +24,3 @@
         %span#userScoreNum= current_user.grade_level_for_course(current_course)
 
   #time_line{"data-timeline" => render(:partial => 'info/timeline', :handlers => [:jbuilder], :formats => [:js])}
-
-  .clearfix

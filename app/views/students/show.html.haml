@@ -1,9 +1,8 @@
+= content_nav do
+  = render "students/student_profile_tabs"
 .small-12.panel.mainContent
-  / Student Dashboard Breadcrumbs
-  = content_nav do
-    = render "student_profile_tabs"
     
-  .pagetitle
+  %h3.pagetitle
     Current Score:
     / Check to see if the course has a pre-determined total number of points
     - if current_course.point_total?
@@ -18,7 +17,13 @@
       – Current Level:
       %span.bold= current_student.grade_level_for_course(current_course)
 
-  .clearfix
+  .small-12.medium-3.right.columns.columns-no-padding
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li
+          %a{:href => edit_user_path(current_student) }
+            %i.fi-pencil
+            Edit #{term_for :student}
   
   .small-12.medium-9.columns#syllabus
 
@@ -28,7 +33,3 @@
 
   .small-12.medium-3.columns
     = render "staff_view_student_sidebar"
-
-  .clearfix
-
-

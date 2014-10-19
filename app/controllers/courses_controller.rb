@@ -1,7 +1,7 @@
 class CoursesController < ApplicationController
 
   before_filter :ensure_staff?, :except => :timeline
-  before_filter :ensure_admin?, :only => [:all_grades, :index]
+  before_filter :ensure_admin?, :only => [:index]
 
   def index
     @title = "Course Index"
@@ -59,6 +59,7 @@ class CoursesController < ApplicationController
 
   def update
     @course = Course.find(params[:id])
+    @title = "Editing Basic Settings"
 
     respond_to do |format|
       if @course.update_attributes(params[:course])
@@ -75,6 +76,18 @@ class CoursesController < ApplicationController
         format.json { render json: @course.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def timeline_settings
+    @course = current_course
+    @assignments = current_course.assignments
+    @title = "Timeline Settings"
+  end
+
+  def predictor_settings
+    @course = current_course
+    @assignments = current_course.assignments
+    @title = "Predictor Settings"
   end
 
   def destroy

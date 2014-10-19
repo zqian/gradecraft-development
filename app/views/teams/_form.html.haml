@@ -1,21 +1,36 @@
 = simple_form_for @team do |f|
-  .small-12.medium-4.columns
-    = f.label :name, "#{current_course.team_term} Name"
-    = f.text_field :name
-  .small-12.medium-4.columns
-    = f.file_field :banner, :label => "Select a banner for this #{term_for :team}"
-    .form_label Choose an icon for this #{term_for :team}
-  .small-12.medium-4.columns
-    = f.association :students, :collection => current_course_data.students, as: :select
-  .small-12.columns.medium-4
-    = f.input :teams_leaderboard, :label => "#{term_for :team} Leaderboard Display"
-    .form_label= "#{term_for :students} in this #{term_for :team} will be able to see the overall #{term_for :team} rankings and scores"
-  .small-12.columns.medium-4
-    = f.input :in_team_leaderboard, :label => "In-#{term_for :team} Leaderboard Display"
-    .form_label= "#{term_for :students} in this #{term_for :team} will be able to see the in-#{term_for :team} rankings, with #{term_for :students}'s listed by their chosen screenname, and accompanying scores"
+  .small-12.medium-8.columns.panel
+    
+    %h4.bold Basic Settings
+    .small-12.medium-8.columns
+      = f.label :name, "#{current_course.team_term} Name"
+      = f.text_field :name
+    .small-12.medium-8.columns
+      %label Banner
+      = f.file_field :banner
+      .form_label= "Select a banner for this #{term_for :team}"
+
+    .clearfix
+
+    .small-12.medium-8.columns
+      = f.association :students, :collection => current_course_data.students, as: :select
+
+  .small-12.medium-4.columns.columns-no-padding_right
+    .panel
+      %h4.bold Leaderboard Settings
+      .small-12
+        %label.checkbox{ :for => "teams_leaderboard" }
+          = f.label :teams_leaderboard, "#{term_for :team} Leaderboard Display"
+          = f.check_box :teams_leaderboard
+          .form_label= "#{term_for :students} in this #{term_for :team} will be able to see the overall #{term_for :team} rankings and scores"
+      .small-12
+        %label.checkbox{ :for => "in_team_leaderboard" }
+          = f.label :in_team_leaderboard, "In-#{term_for :team} Leaderboard Display"
+          = f.check_box :in_team_leaderboard
+          .form_label= "#{term_for :students} in this #{term_for :team} will be able to see the in-#{term_for :team} rankings, with #{term_for :students}'s listed by their chosen screenname, and accompanying scores"
 
   .clearfix
   
   .right
-    = f.submit "#{@team.persisted? ? 'Update' : 'Create'} #{ term_for :team }", :class => 'button tiny radius'
-    = link_to 'Cancel', teams_path, :class => 'button tiny radius transparent'
+    = f.submit "#{@team.persisted? ? 'Update' : 'Create'} #{ term_for :team }", :class => 'button radius alert'
+    = link_to 'Cancel', teams_path, :class => 'button radius transparent'

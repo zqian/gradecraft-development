@@ -1,8 +1,10 @@
-.small-12.panel.mainContent
+- if current_user_is_staff?
   = content_nav do
-    = render "student_profile_tabs"
+    = render "students/student_profile_tabs"
 
-  .pagetitle= "Plan Your Coursework"
+.small-12.panel.mainContent
+
+  %h3.pagetitle= "Plan Your Coursework"
 
   .small-12.columns
 
@@ -34,5 +36,3 @@
           = render partial: 'students/predictor/assignments', collection: current_course_data.predictable_by_assignment_type.to_a, as: :assignment_type_and_assignments
         = render 'students/predictor/badges'
         //= render 'students/predictor/challenges'
-
-  .clearfix

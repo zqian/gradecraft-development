@@ -1,40 +1,40 @@
 .small-12.panel.mainContent
-  / User All navigation
-  = content_nav do
-    = render "tabs"
+  
+  = content_nav_for User, "All Users"
 
-  .pagetitle= @title
-
-  %table.columns.dynatable
-    %thead
-      %tr
-        %th First Name
-        %th Last Name
-        %th Email
-        %th Role
-        %th Courses
-        %th Score
-        %th
-    %tbody
-      - @users.alpha.each do |user|
+  %h3.pagetitle= @title
+  
+  .small-12.columns
+    %table.responsive.dynatable
+      %thead
         %tr
-          %td
-            = link_to user.first_name, student_path(user) if user.is_student?(current_course)
-            = link_to user.first_name, staff_path(user) if user.is_staff?(current_course)
-          %td
-            = link_to user.last_name, student_path(user) if user.is_student?(current_course)
-            = link_to user.last_name, staff_path(user) if user.is_staff?(current_course)
-          %td= user.email
-          %td= user.role(current_course).capitalize
-          %td
-            %ul
-              - user.course_memberships.each do |cm|
-                %li= cm.course.name
-          %td
-            - if user.is_student?(current_course)
-              = points user.score_for_course(current_course) if user.respond_to?(:grades)
-          %td
-            .button-bar
-              %ul.button-group.right.round
-                %li= link_to 'Edit', edit_user_path(user), :class => 'button tiny secondary'
-                %li= link_to 'Delete', user, :class => 'button tiny secondary', :data => { confirm: 'This will delete the student from GradeCraft - Are you sure?' } , :method => :delete
+          %th First Name
+          %th Last Name
+          %th Email
+          %th Role
+          %th Courses
+          %th Score
+          %th
+      %tbody
+        - @users.alpha.each do |user|
+          %tr
+            %td
+              = link_to user.first_name, student_path(user) if user.is_student?(current_course)
+              = link_to user.first_name, staff_path(user) if user.is_staff?(current_course)
+            %td
+              = link_to user.last_name, student_path(user) if user.is_student?(current_course)
+              = link_to user.last_name, staff_path(user) if user.is_staff?(current_course)
+            %td= user.email
+            %td= user.role(current_course).capitalize
+            %td
+              %ul
+                - user.course_memberships.each do |cm|
+                  %li= cm.course.name
+            %td
+              - if user.is_student?(current_course)
+                = points user.score_for_course(current_course) if user.respond_to?(:grades)
+            %td
+              .button-bar
+                %ul.button-group.right.radius
+                  %li= link_to 'Edit', edit_user_path(user), :class => 'button'
+                  %li= link_to 'Delete', user, :class => 'button', :data => { confirm: 'This will delete the student from GradeCraft - Are you sure?' } , :method => :delete

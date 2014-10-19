@@ -1,31 +1,24 @@
 /* Add the sprite to the assignment expand */ 
 h3.collapse a {
-  background: image-url("sprite.png") 10px 16px no-repeat;
-  padding: .5rem 1.6rem;
+  background: image-url("sprite.png") .9rem .9rem no-repeat;
+  padding: .5rem 1.8rem;
+  margin: 0.25rem 0;
   border-radius: .5rem;
+  float: left;
+  clear: both;
 }
 
 h3.collapse.open a { 
   background-position: 13px -25px;
 }
 
-h3.collapse+div { padding: 10px; }
+.collapse-hidden table {
+  margin-bottom: 2rem;
+}
 
 /* Pre hide sections with JavaScript on */
-
-h3.collapse+div {
+h3.collapse+div { 
   display: none;
-}
-
-.assignment_type {
-  margin-bottom: 2rem !important;
-}
-
-.assignment_type table {
-  margin: 0;
-}
-
-.assignment_type .small-3 {
-  height: 0;
+  padding: 0px 0 1rem; 
 }
 

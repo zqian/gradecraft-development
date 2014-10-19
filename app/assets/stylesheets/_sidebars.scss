@@ -1,8 +1,9 @@
 /** Staff Sidebar **/
 .staff_subnav {
   background-color: #FFF;
-  padding: 1rem;
+  padding: 1rem 0rem 1rem 0;
   display: table-cell; 
+  border-radius: $global-radius;
   
   /* Subheadings */
   label{
@@ -11,14 +12,16 @@
 
   /* Spacing out the list items*/ 
   li {
-    margin: .25rem 0;
+    text-transform: capitalize;
+    margin: .25rem 0 .25rem 1rem;
   }
 
   /* Spacing the list divider */
-  li.divider {
-    margin: 1rem 0;
+  hr {
+    margin: 1rem auto;
     width: 85%;
   }  
+
 }
 
 /* Forcing buttons and icons to display inline */ 

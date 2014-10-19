@@ -1,17 +1,23 @@
 .small-12.columns.mainContent
-  = content_nav do
-    = render "tabs"
-  .pagetitle= "#{term_for :group}: #{@group.name}"
-  = link_to "Edit", edit_group_path(@group), :class => "button tiny radius"
+  
+  = content_nav_for @group, "Review Group"
+
+  %h3.pagetitle= @title
+  
+  .small-12.medium-3.right.columns.columns-no-padding
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li
+          %a{:href => group_path(@group) }
+            %i.fi-list-thumbnails
+            See #{term_for :group}
 
   .small-12.columns
-
     .small-12.medium-3.columns
-      %h4 Assignment(s)
+      %h4 #{term_for :assignments}:
       %ul
         - @group.assignment_groups.each do |ag|
           %li= link_to ag.assignment.name, ag.assignment
-
     .small-12.medium-3.columns
       %h4
         Members:
@@ -22,32 +28,37 @@
           - else
             %li= gm.student.name
 
+
+
     .small-12.columns
       - i = 1
       - @group.proposals.order_by_creation_date.each do |p|
-        .panel
-          %h4.bold= "Proposal ##{i}: #{p.title}"
+        .panel.callout
+          %h4.bold= "Proposal ##{i}: #{p.title}" 
           %h6= "Created: #{p.created_at}"
           %p= p.proposal
         - i += 1
 
       %hr
 
-    .small-12.columns
-      = simple_form_for @group do |f|
-        .small-12.medium-4
-          = f.label :approved, "Status"
-          = f.select :approved, [[], ["Approved"], ["Rejected"]]
-          .form_label If rejected, this #{term_for :group} will be unable to submit any further work for these assignments
 
-        %br
+      .small-12.columns.panel
 
-        .small-12.textarea
-          = f.bootsy_area :text_feedback
-          .form_label #{term_for :group} Feedback
+        .small-12.columns
+          = simple_form_for @group do |f|
+            .small-12.medium-4
+              = f.label :approved, "Status"
+              = f.select :approved, [["Pending"], ["Approved"], ["Rejected"]]
+              .form_label If rejected, this #{term_for :group} will be unable to submit any further work for these assignments
 
-        %br
+            %br
 
-        .right
-          = submit_tag "#{@group.persisted? ? 'Update' : 'Create'} #{ term_for :group } ",  :class => 'button tiny radius'
-          = link_to 'Cancel', groups_path, :class => 'button tiny radius transparent'
+            .small-12.textarea
+              = f.bootsy_area :text_feedback
+              .form_label #{(term_for :group).capitalize} Feedback
+
+            %br
+
+            .right
+              = submit_tag "#{@group.persisted? ? 'Update' : 'Create'} #{ term_for :group } ",  :class => 'button radius alert'
+              = link_to 'Cancel', groups_path, :class => 'button radius transparent'

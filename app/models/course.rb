@@ -39,7 +39,6 @@ class Course < ActiveRecord::Base
     c.has_many :grades
     c.has_many :groups
     c.has_many :group_memberships
-    #c.has_many :rubrics
     c.has_many :submissions
     c.has_many :teams
     c.has_many :course_memberships
@@ -59,6 +58,9 @@ class Course < ActiveRecord::Base
   validates_numericality_of :max_assignment_types_weighted, :allow_blank => true
   validates_numericality_of :default_assignment_weight, :allow_blank => true
   validates_numericality_of :point_total, :allow_blank => true
+
+  validates_format_of :twitter_hashtag, :with => /\A[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)*\z/, :allow_blank => true, :length   => { :within => 3..20 }
+
 
   def user_term
     super.presence || 'Player'
@@ -120,24 +122,8 @@ class Course < ActiveRecord::Base
     badges_value == true
   end
 
-  def predictor_on?
-    predictor_setting == true
-  end
-
   def has_groups?
     group_setting == true
-  end
-
-  def course_badges?
-    badge_use_scope == "Course"
-  end
-
-  def assignment_badges?
-    badge_use_scope == "Assignment"
-  end
-
-  def multi_badges?
-    badge_use_scope == "Both"
   end
 
   def shared_badges?
@@ -205,22 +191,19 @@ class Course < ActiveRecord::Base
     course_memberships.where(:user_id => student).first.score
   end
 
+  #Descriptive stats of the grades
   def minimum_course_score
-    course_memberships.order('course_memberships.score ASC').first.user
+    course_memberships.minimum('course_memberships.score')
   end
 
   def maximum_course_score
-    #.max
+    course_memberships.maximum('course_memberships.score')
   end
 
   def average_course_score
-    #.max
+    course_memberships.average('course_memberships.score').to_i
   end
-
-  def median_course_score
-    #len % 2 == 1 ? sorted[len/2] : (sorted[len/2 - 1] + sorted[len/2]).to_f / 2
-  end
-
+  
   def student_count
     students.count
   end
@@ -233,8 +216,38 @@ class Course < ActiveRecord::Base
     course_memberships.where(:role => "professor").first.user
   end
 
-  #gradebook
-  def gradebook_for_course(course, options = {})
+  #final grades - total score + grade earned in course
+  def final_grades_for_course(course, options = {})
+    CSV.generate(options) do |csv|
+      csv << ["First Name", "Last Name", "Email", "Score", "Grade" ]
+      course.students.each do |student|
+        csv << [student.first_name, student.last_name, student.email, student.cached_score_for_course(course), student.grade_letter_for_course(course)]
+      end
+    end
+  end
+
+  #gradebook spreadsheet export for course
+  def gradebook_for_course(course)
+    CSV.generate do |csv|
+      assignment_names = []
+      assignment_names << "First Name"
+      assignment_names << "Last Name"
+      assignment_names << "Email"
+      course.assignments.chronological.alphabetical.each do |a|
+        assignment_names << a.name
+      end
+      csv << assignment_names
+      course.students.each do |student|
+        student_data = []
+        student_data << [student.first_name, student.last_name, student.email, student.team_for_course(course).try(:name)]
+        
+        csv << student_data
+      end
+    end
+  end
+
+  #raw points gradebook spreadsheet export for course - used in the event of multipliers
+  def raw_points_gradebook_for_course(course, options = {})
     CSV.generate(options) do |csv|
       csv << ["First Name", "Last Name", "Email", "Score", "Grade" ]
       course.students.each do |student|
@@ -251,6 +264,8 @@ class Course < ActiveRecord::Base
       end
     end
   end
+
+
 
   #badges
   def course_badge_count
