@@ -12,6 +12,10 @@ h3.collapse.open a {
   background-position: 13px -25px;
 }
 
+.collapse-hidden table {
+  margin-bottom: 2rem;
+}
+
 /* Pre hide sections with JavaScript on */
 h3.collapse+div { 
   display: none;

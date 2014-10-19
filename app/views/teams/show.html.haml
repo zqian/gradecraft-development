@@ -63,7 +63,7 @@
         %tr
           %th Name
           %th Score
-          %th
+          %th{:width => "10%"}
 
       %tbody
         - @challenges.each do |challenge|
@@ -78,4 +78,4 @@
               - if challenge.challenge_grade_for_team(@team).present?
                 = link_to 'Edit Grade', edit_challenge_challenge_grade_path(:challenge_id => challenge, :id => challenge.challenge_grade_for_team(@team).id), :class => 'button radius'
               - else
-                = link_to "Grade", new_challenge_challenge_grade_path(:challenge_id => challenge, :team_id => @team.id), :class => 'button'
+                = link_to "Grade", new_challenge_challenge_grade_path(:challenge_id => challenge, :team_id => @team.id), :class => 'button radius'
