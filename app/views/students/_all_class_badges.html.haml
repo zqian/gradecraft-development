@@ -1,5 +1,33 @@
-.small-12.columns
-  %table.responsive.nofeatures_default_last_name_dynatable
+%table.responsive.nofeatures_default_last_name_dynatable
+  %thead
+    %tr
+      %th{:scope => "col"} First Name
+      %th{:scope => "col"} Last Name
+      %th{:scope => "col"} #{current_course.badge_term.pluralize}
+      - if current_course.valuable_badges?
+        %th{:scope => "col"} Total Badge Score
+  %tbody
+    - if @team
+      - students = current_course_data.students_for_team(@team)
+    - else
+      - students = current_course_data.students
+    - students.each do |student|
+      %tr
+        %td= link_to student.first_name, student_path(student)
+        %td= link_to student.last_name, student_path(student)
+        %td
+          - student.earned_badges.each do |eb|
+            %img.has-tip{:src => eb.try(:icon), :alt => eb.try(:name), :width => "20", :title => eb.name, :data => {'tooltip' => true}}
+        - if current_course.valuable_badges?
+          %td= points student.earned_badge_score_for_course(current_course)
+
+- if (@team && current_course_data.auditing_students_for_team(@team).present?)
+
+  %hr
+
+  %h3.pagetitle#tableCaptionAuditing Auditing
+
+  %table.responsive.nopage_dynatable{"aria-describedby" => "tableCaptionAuditing"}
     %thead
       %tr
         %th{:scope => "col"} First Name
@@ -9,9 +37,9 @@
           %th{:scope => "col"} Total Badge Score
     %tbody
       - if @team
-        - students = current_course_data.students_for_team(@team)
+        - students = current_course_data.auditing_students_for_team(@team)
       - else
-        - students = current_course_data.students
+        - students = current_course_data.auditing_students
       - students.each do |student|
         %tr
           %td= link_to student.first_name, student_path(student)
@@ -21,32 +49,3 @@
               %img.has-tip{:src => eb.try(:icon), :alt => eb.try(:name), :width => "20", :title => eb.name, :data => {'tooltip' => true}}
           - if current_course.valuable_badges?
             %td= points student.earned_badge_score_for_course(current_course)
-
-  - if (@team && current_course_data.auditing_students_for_team(@team).present?)
-
-    %hr
-
-    %h3.pagetitle#tableCaptionAuditing Auditing
-
-    %table.responsive.nopage_dynatable{"aria-describedby" => "tableCaptionAuditing"}
-      %thead
-        %tr
-          %th{:scope => "col"} First Name
-          %th{:scope => "col"} Last Name
-          %th{:scope => "col"} #{current_course.badge_term.pluralize}
-          - if current_course.valuable_badges?
-            %th{:scope => "col"} Total Badge Score
-      %tbody
-        - if @team
-          - students = current_course_data.auditing_students_for_team(@team)
-        - else
-          - students = current_course_data.auditing_students
-        - students.each do |student|
-          %tr
-            %td= link_to student.first_name, student_path(student)
-            %td= link_to student.last_name, student_path(student)
-            %td
-              - student.earned_badges.each do |eb|
-                %img.has-tip{:src => eb.try(:icon), :alt => eb.try(:name), :width => "20", :title => eb.name, :data => {'tooltip' => true}}
-            - if current_course.valuable_badges?
-              %td= points student.earned_badge_score_for_course(current_course)

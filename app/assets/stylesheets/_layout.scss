@@ -18,6 +18,14 @@ body.logged-in, body.logged-out {
   overflow: hidden;
 }
 
+.tabs-content > .content {
+  padding: 0;
+
+  table {
+    border-top-right-radius: $global-radius !important;
+  }
+}
+
 .title-area li.name, .top-bar-section .tagline {
     margin-top: 3px;
 }

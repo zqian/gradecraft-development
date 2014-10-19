@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   before_filter :ensure_admin?, :only => [:all]
 
   def index
-    @title = "View All Users"
+    @title = "All Users"
     @users =  current_course.users
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
     user_search_options = {}

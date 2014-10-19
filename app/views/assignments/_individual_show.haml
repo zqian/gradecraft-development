@@ -19,12 +19,9 @@
           %th Status
         %th
         - if @assignment.release_necessary?
-          %th{"data-dynatable-no-sort" => "true"}
-            %ul.button-group.radius
-              %li
-                %button.button.select-all.tiny= "Check All"
-              %li
-                %button.button.select-none.tiny= "Uncheck All"
+          %th.center{"data-dynatable-no-sort" => "true"}
+            %button.button.select-all.tiny= "Check All"
+            %button.button.select-none.tiny= "Uncheck All"
     %tbody
       - if @team
         - students = current_course_data.students_for_team(@team)

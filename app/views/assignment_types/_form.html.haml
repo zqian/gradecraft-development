@@ -119,8 +119,8 @@
         %fieldset.score-level.callout.panel
           = f.simple_fields_for :score_levels, score_level, class: 'form-inline' do |slf|
             = render 'score_level_fields', f: slf
-    = link_to 'Add a Level', '#', class: 'add-level button tiny radius'
+    = link_to 'Add a Level', '#', class: 'add-level button radius'
 
   .right
-    = f.button :submit, "#{@assignment_type.persisted? ? 'Update' : 'Create'} #{term_for :assignment_type}", :class => "button radius tiny alert"
-    = link_to 'Cancel', assignment_types_path, :class => "button radius tiny transparent"
+    = f.button :submit, "#{@assignment_type.persisted? ? 'Update' : 'Create'} #{term_for :assignment_type}", :class => "button radius alert"
+    = link_to 'Cancel', assignment_types_path, :class => "button radius transparent"

@@ -4,24 +4,12 @@
 
   %h3.pagetitle= @title
 
-  .clearfix
-
   = render 'ungraded_submissions_table', :course => current_course, :submissions => @ungraded_submissions
 
-  .clearfix
-
   .small-12.columns
-    %hr
-
-  .clearfix
-
+  
   = render 'unreleased_grades_table', :course => current_course
 
-  .clearfix
-
   .small-12.columns
-    %hr
-
-  .clearfix
 
   = render 'in_progress_grades_table', :course => current_course

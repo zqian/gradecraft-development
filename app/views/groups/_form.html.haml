@@ -54,10 +54,10 @@
                 = f.bootsy_area :proposal
                 = f.hidden_field :id
         - if @group.persisted?
-          = link_to 'Add a Proposal', '#', class: 'add-proposal button tiny radius'
+          = link_to 'Add a Proposal', '#', class: 'add-proposal button radius'
 
     %br
 
     .right
-      = submit_tag "#{@group.persisted? ? 'Update' : 'Create'} #{ term_for :group } ",  :class => 'button tiny radius alert'
-      = link_to 'Cancel', groups_path, :class => 'button tiny radius transparent'
+      = submit_tag "#{@group.persisted? ? 'Update' : 'Create'} #{ term_for :group } ",  :class => 'button radius alert'
+      = link_to 'Cancel', groups_path, :class => 'button radius transparent'

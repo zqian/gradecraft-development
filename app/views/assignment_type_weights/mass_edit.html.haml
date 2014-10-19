@@ -24,8 +24,8 @@
               %h3.panel-title= atwf.object.assignment_type.name
               = atwf.input :weight, :label => "#{term_for :weight}"
           .right
-            = f.button :submit, "Update #{term_for :weights}", :class => "button radius tiny alert"
-            = link_to 'Cancel', current_user_is_student? ? dashboard_path : choices_students_path, class: 'button radius tiny transparent'
+            = f.button :submit, "Update #{term_for :weights}", :class => "button radius alert"
+            = link_to 'Cancel', current_user_is_student? ? dashboard_path : choices_students_path, class: 'button radius transparent'
 
 
       - else

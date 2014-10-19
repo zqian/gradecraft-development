@@ -22,7 +22,7 @@
     - else
       %p.bold
         #{current_student.try(:first_name)}'s Grade
-        %span= link_to "Edit", edit_assignment_grade_path(@assignment, :student_id => current_student.id), :class => 'button tiny secondary radius'
+        %span= link_to "Edit", edit_assignment_grade_path(@assignment, :student_id => current_student.id), :class => 'button radius'
 
     - grade = current_student.grade_for_assignment(@assignment)
     %p
@@ -41,7 +41,7 @@
     - if student.grade_for_assignment(@assignment).present?
       %p.bold
         #{student.try(:first_name)}'s Grade
-        %span= link_to "Edit", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button tiny secondary radius'
+        %span= link_to "Edit", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button radius'
 
       - grade = student.grade_for_assignment(@assignment)
       %p

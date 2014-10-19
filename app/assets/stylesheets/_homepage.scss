@@ -50,13 +50,18 @@
   border: none;
 
   .content {
+    border-top-right-radius: $global-radius;
     background-color: #eee;
+    padding: 1rem 0;
     border-bottom-right-radius: $global-radius;
     border-bottom-left-radius: $global-radius;
 
     input {
       width: 90% !important;
       margin-left: 15px !important;
+    }
+    button {
+      margin: 0;
     }
   }
 
@@ -91,6 +96,6 @@
   }
 
   .right {
-    margin-right: 25px;
+    margin-right: 1.25rem;
   }
 }

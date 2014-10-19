@@ -5,7 +5,7 @@
   .small-12.medium-8
     %h3.pagetitle= @title
 
-  .small-12.medium-4.right.columns
+  .small-12.medium-4.right.columns.columns-no-padding
     .button-bar.right
       %ul.button-group.context_menu
         %li
@@ -20,27 +20,29 @@
           %th Name
           %th Predictor Display
           %th Max value
-          %th.button-column
+          %th
         %tbody
           - current_course_data.assignment_types.each do |assignment_type|
             %tr
               %td= link_to assignment_type.name, assignment_type
               %td= assignment_type.points_predictor_display
-              %td= assignment_type.max_value
+              %td= points assignment_type.max_value
               %td
                 .button-bar
                   %ul.button-group.right.radius
                     %li= link_to 'See', assignment_type_path(assignment_type), :class => 'button'
                     %li= link_to 'Edit', edit_assignment_type_path(assignment_type), :class => 'button'
                     %li
+                      %a{:href => export_scores_assignment_type_path(assignment_type.id, format: 'csv'), :class => "button"}
+                        Download Scores
+                    %li
                       %a{:href => assignment_type_path(assignment_type), :data => { confirm: 'Are you sure?', method: :delete }, :class => "button" }
                         Delete
-  %hr
 
   %h4.subtitle= "#{term_for :student} Scores"
 
   .small-12.columns
-    %table.responsive
+    %table.responsive.nofeatures_default_name_dynatable
       %thead
         %tr
           %th First Name
@@ -48,9 +50,6 @@
           - current_course.assignment_types.each do |at|
             %th
               = at.name
-              %br
-              %a{:href => export_scores_assignment_type_path(at.id, format: 'csv')}
-                Download Scores
       %tbody
         - current_course.students.alpha.each do |student| 
           %tr
@@ -58,6 +57,6 @@
             %td= student.last_name
             - current_course.assignment_types.each do |at|
               %td
-                = at.score_for_student(student)
+                = points at.score_for_student(student)
                 - if at.student_weightable?
                   = "[#{ at.raw_score_for_student(student)}]"

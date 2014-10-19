@@ -20,8 +20,6 @@
               %a(href="/dashboard")
                 - if current_course
                   #{current_course.name}
-                - else
-                  GradeCraft
         - if current_course && current_course.tagline?
           %section.top-bar-section.show-for-large-only
             %ul.left.tagline

@@ -19,7 +19,7 @@
           %th Courses
           %th #{term_for :team}
           %th Score
-          %th.button-column
+          %th
       %tbody
         - @users.each do |user|
           %tr
@@ -44,9 +44,7 @@
               .button-bar
                 %ul.button-group.right.radius
                   %li
-                    = link_to "Dashboard", student_path(user), :class => 'button tiny' if user.is_student?(current_course)
-                    = link_to "Dashboard", staff_path(user), :class => 'button tiny' if user.is_staff?(current_course)
-                  %li= link_to 'Edit', edit_user_path(user), :class => 'button tiny'
-                  %li= link_to 'Delete', users_path, :class => 'button tiny', :data => { confirm: 'This will delete the student from GradeCraft - Are you sure?' }, :method => :delete
-
-  .clearfix
+                    = link_to "Dashboard", student_path(user), :class => 'button' if user.is_student?(current_course)
+                    = link_to "Dashboard", staff_path(user), :class => 'button' if user.is_staff?(current_course)
+                  %li= link_to 'Edit', edit_user_path(user), :class => 'button'
+                  %li= link_to 'Delete', users_path, :class => 'button', :data => { confirm: 'This will delete the student from GradeCraft - Are you sure?' }, :method => :delete

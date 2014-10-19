@@ -4,7 +4,7 @@
 
   %h3.pagetitle= @title
   
-  .small-12.medium-3.right.columns
+  .small-12.medium-3.right.columns.columns-no-padding
     .button-bar.right
       %ul.button-group.context_menu
         %li
@@ -60,5 +60,5 @@
             %br
 
             .right
-              = submit_tag "#{@group.persisted? ? 'Update' : 'Create'} #{ term_for :group } ",  :class => 'button tiny radius alert'
-              = link_to 'Cancel', groups_path, :class => 'button tiny radius transparent'
+              = submit_tag "#{@group.persisted? ? 'Update' : 'Create'} #{ term_for :group } ",  :class => 'button radius alert'
+              = link_to 'Cancel', groups_path, :class => 'button radius transparent'

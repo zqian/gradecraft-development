@@ -10,7 +10,7 @@
         = link_to 'Quick Grade', mass_grade_assignment_path(assignment), :class => "button radius"
 
   .columns
-    %table.responsive.nofeatures_default_last_name_dynatable{"aria-describedby" => "ungradedTableCaption"}
+    %table.responsive.no_radius.nofeatures_default_last_name_dynatable{"aria-describedby" => "ungradedTableCaption"}
       %thead
         %tr
           - if assignment.is_individual?

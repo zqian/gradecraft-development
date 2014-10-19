@@ -1,15 +1,31 @@
-table td, table th
-  padding: 8px 10px !important
-
 #gradebook
   overflow: auto !important
 
 /* Set the tables to be full width of the page*/
 table.responsive
   width: 100%
+  border-radius: $global-radius
   border-spacing: 0 !important
-  margin-bottom: 1rem
   clear: both
+  overflow-x: scroll !important
+
+  thead
+    tr:first-child th:first-child 
+      border-top-left-radius: $global-radius
+
+    tr:first-child th:last-child 
+      border-top-right-radius: $global-radius
+
+    tr
+      background-color: $light-grey
+      color: #FFF !important
+
+  .button
+    font-size: .7rem
+    background-color: $secondary-color-2
+
+  .button:hover 
+    background-color: darken($secondary-color-2, 15%)
 
   /* Table Header styles */
   th
@@ -32,10 +48,20 @@ table.responsive
 
   button.select-none.button.tiny
     margin: 0 !important
+    left: -4px
     border-top-right-radius: $global-radius
     border-bottom-right-radius: $global-radius
     background-color: $primary-color-2
     padding: .3rem
+
+table.responsive.no_radius 
+  border-top: none
+
+  thead
+    tr:first-child th:first-child 
+      border-top-left-radius: 0
+    tr:first-child th:last-child 
+      border-top-right-radius: 0
 
 /* Styling pattern tables for assignment outcome overview */ 
 td.complete, tr.achieved

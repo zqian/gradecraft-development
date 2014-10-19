@@ -19,8 +19,7 @@ label, input {
   display: inline;
 }
 
-label.checkbox input, label.checkbox, label.radio, label.radio input {
-  margin-right: 10px;
+label.checkbox input, label.check_boxes input, label.checkbox, label.radio, label.radio input {
   clear: both;
 }
 
@@ -61,11 +60,9 @@ input[type="checkbox"] {
   margin-top: 0.26rem;
 }
 
-input[type="checkbox"] + label {
+label.boolean {
   margin-left: 0;
-  padding-top: 0;
 }
-
 
 select {
   background-color: #FFF !important;
@@ -116,19 +113,28 @@ ul.dropdown-menu {
   text-transform: none;
 }
 
+.checkbox label {
+  margin-left: .5rem;
+}
+
 .checkbox .form_label {
-  margin-left: 1.5rem;
+  margin-left: 1.6rem;
 }
 
 .textarea .form_label {
-  background-color: $light-grey;
+  background-color: $medium-grey;
   font-style: italic;
-  color: #000;
+  color: #FFF;
   padding: 1rem;
   margin-bottom: 1rem;
   border-bottom-right-radius: $global-radius;
   border-bottom-left-radius: $global-radius;
 }
+
+.textarea .wysihtml5-toolbar {
+  background-color: $medium-grey;
+}
+
 
 .img.form_label {
   background-color: $dark-grey;

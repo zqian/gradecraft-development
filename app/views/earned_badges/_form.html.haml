@@ -13,5 +13,5 @@
       .form_label Enter a message to the #{term_for :student} regarding their work
 
     .right
-      = f.button :submit, "#{@earned_badge.persisted? ? 'Update' : 'Award '} #{term_for :badge}",  :class => "button tiny radius alert"
-      = link_to 'Cancel', badge_path(@badge), :class => 'button tiny radius transparent'
+      = f.button :submit, "#{@earned_badge.persisted? ? 'Update' : 'Award '} #{term_for :badge}",  :class => "button radius alert"
+      = link_to 'Cancel', badge_path(@badge), :class => 'button radius transparent'

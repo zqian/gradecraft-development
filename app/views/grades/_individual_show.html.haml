@@ -7,7 +7,7 @@
       .panel= render "grades/submission"
     - elsif @assignment.future? || @assignment.still_accepted?
       .panel
-        = link_to "Submit", new_assignment_submission_path(@assignment, :student_id => current_student), :class => 'button tiny secondary radius'
+        = link_to "Submit", new_assignment_submission_path(@assignment, :student_id => current_student), :class => 'button radius'
         - if @assignment.past?
           .label.alert.radius= "Past due"
 

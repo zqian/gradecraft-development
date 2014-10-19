@@ -12,9 +12,9 @@
         - else 
           = link_to 'Grade', assignment, :class => "button radius"
 
-  .columns
-    = form_tag edit_status_grades_assignment_path assignment do
-      %table.responsive.nofeatures_default_last_name_dynatable{"aria-describedby" => "unreleasedTableCaption"}
+  = form_tag edit_status_grades_assignment_path assignment do
+    .columns
+      %table.responsive.no_radius.nofeatures_default_last_name_dynatable{"aria-describedby" => "unreleasedTableCaption"}
         %thead
           %tr
             - if assignment.is_individual?
@@ -30,12 +30,8 @@
               %span.sr-only Actions
             %th.center{:align => "center", :scope => "col", "data-dynatable-no-sort" => "true", :width => "15%" }
               %span.sr-only Check/Uncheck
-              .button-bar
-                %ul.button-group
-                  %li
-                    %button.button.select-all.tiny= "Check All"
-                  %li
-                    %button.button.select-none.tiny= "Uncheck All"
+              %button.button.select-all.tiny= "Check All"
+              %button.button.select-none.tiny= "Uncheck All"
         %tbody
           - grades.each do |g|
             %tr
