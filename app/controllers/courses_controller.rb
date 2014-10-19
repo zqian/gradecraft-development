@@ -78,6 +78,18 @@ class CoursesController < ApplicationController
     end
   end
 
+  def timeline_settings
+    @course = current_course
+    @assignments = current_course.assignments
+    @title = "Timeline Settings"
+  end
+
+  def predictor_settings
+    @course = current_course
+    @assignments = current_course.assignments
+    @title = "Predictor Settings"
+  end
+
   def destroy
     @course = Course.find(params[:id])
     @name = @course.name

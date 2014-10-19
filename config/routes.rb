@@ -158,6 +158,10 @@ GradeCraft::Application.routes.draw do
     collection do
       post 'copy' => 'courses#copy'
     end
+    member do 
+      get 'timeline_settings' => 'courses#timeline_settings'
+      get 'predictor_settings' => "courses#predictor_settings"
+    end
   end
   resources :course_memberships
 

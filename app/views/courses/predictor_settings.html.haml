@@ -1,0 +1,32 @@
+.small-12.panel.mainContent
+
+  = content_nav_for current_course, "Timeline Settings"
+
+  %h3.pagetitle= @title
+
+  .small-12.columns
+    #massGrade
+      = simple_form_for @course, method: :put, :url => predictor_settings_course_path(@course) do |f|
+
+        %table.responsive
+          %thead
+            %tr
+              %th= "#{term_for :assignment}"
+              %th Display Type
+              %th Include in Predictor
+              %th Preview
+
+          - @assignments.each_with_index do |assignment, i|
+            %tr
+              %td
+                = assignment.name
+              = f.simple_fields_for :assignments, assignment do |af|
+                %td= af.check_box :include_in_predictor
+                %td= af.select :points_predictor_display, [[], ["Checkbox", "Fixed"], ["Select List"], ["Slider"], ]
+                %td
+
+
+
+        .right
+          = f.button :submit, "Update Settings", :class => "button radius alert"
+          = link_to 'Cancel', dashboard_path, :class => "button radius transparent"
