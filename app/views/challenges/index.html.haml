@@ -45,6 +45,15 @@
             %td
               .button-bar
                 %ul.button-group.radius.right
-                  %li= link_to 'See', challenge, :class => 'button'
-                  %li= link_to 'Edit', edit_challenge_path(challenge), :class => 'button'
-                  %li= link_to 'Delete', challenge, :class => 'button', :method => :delete, data: { confirm: 'Are you sure?' }
+                  %li
+                    = link_to challenge, :class => 'button' do
+                      See
+                      %span.sr-only=  challenge.name
+                  %li
+                    = link_to edit_challenge_path(challenge), :class => 'button' do
+                      Edit
+                      %span.sr-only=  challenge.name
+                  %li
+                    = link_to challenge, :class => 'button', :method => :delete, data: { confirm: 'Are you sure?' } do
+                      Delete
+                      %span.sr-only=  challenge.name
