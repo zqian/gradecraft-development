@@ -3,7 +3,7 @@
   = content_nav_for Course
 
   .small-12.medium-9
-    %h3.pagetitle= @title
+    %h3.pagetitle#tableCaption= @title
 
   .small-12.medium-3.right.columns.columns-no-padding
     .button-bar.right
@@ -13,17 +13,19 @@
             %i.fi-plus
             New Course
 
+
   .small-12.columns
-    %table.responsive.nosearch_dynatable
+    %table.columns.nosearch_dynatable{"aria-describedby" => "tableCaption"}
       %thead
         %tr
-          %th Name
-          %th Course No
-          %th Year
-          %th Semester
-          %th Badges
-          %th Total Points
-          %th
+          %th{:scope => "col"} Name
+          %th{:scope => "col"} Course No
+          %th{:scope => "col"} Year
+          %th{:scope => "col"} Semester
+          %th{:scope => "col"} Badges
+          %th{:scope => "col"} Total Points
+          %th{:scope => "col"}
+            %span.sr-only Actions
       %tbody
         - @courses.each do |course|
           %tr
@@ -41,6 +43,15 @@
             %td
               .button-bar
                 %ul.button-group.radius.right
-                  %li= link_to 'Edit', edit_course_path(course), :class => 'button'
-                  %li= link_to 'Delete', course, :class => 'button', :data => { confirm: 'Are you sure?' }, :method => :delete
-                  %li= link_to "Copy", copy_courses_path(:id => current_course), :class => 'button', :method => :copy
+                  %li
+                    = link_to edit_course_path(course), :class => 'button' do
+                      Edit
+                      %span.sr-only #{course.name}
+                  %li
+                    = link_to course, :class => 'button', :data => { confirm: 'Are you sure?' }, :method => :delete do
+                      Delete
+                      %span.sr-only #{course.name}
+                  %li
+                    = link_to copy_courses_path(:id => current_course), :class => 'button', :method => :copy do
+                      Copy
+                      %span.sr-only #{course.name}
