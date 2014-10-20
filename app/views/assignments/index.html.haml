@@ -36,7 +36,7 @@
                     = link_to "Edit", edit_assignment_type_path(assignment_type)
 
             .columns
-              %table.responsive.nofeatures_default_due_date_dynatable
+              %table.responsive.nofeatures_default_due_date_dynatable{"aria-describedby" => "assignment-type-#{assignment_type.id}"}
                 %thead
                   %tr
                     %th{:scope => "col", :width => "20%"} Name
@@ -44,7 +44,7 @@
                       %th{:width => "5%"} Attendance Rate
                     %th{"data-dynatable-sorts" => "dueDate", :scope => "col", :width => "20%"} Due
                     %th{:style => "display: none"} Due Date
-                    %th{:width => "10%"}  Max Value
+                    %th{:scope => "col", :width => "10%"}  Max Value
                     %th
                 %tbody
                   - assignments.each do |assignment|
@@ -74,9 +74,12 @@
                             %li
                               %a{:href => mass_grade_assignment_path(assignment), :class => 'button' }
                                 Quick Grade
+                                %span.sr-only=assignment.name
                             %li
                               %a{:href => edit_assignment_path(assignment), :class => 'button' }
                                 Edit
+                                %span.sr-only=assignment.name
                             %li
                               %a{:href => assignment_path(assignment), :class => "button", :data => { confirm: 'Are you sure?', method: :delete } }
                                 Delete
+                                %span.sr-only=assignment.name

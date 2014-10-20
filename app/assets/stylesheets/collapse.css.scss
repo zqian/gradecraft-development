@@ -22,3 +22,7 @@ h3.collapse+div {
   padding: 0px 0 1rem; 
 }
 
+h3.collapse.open a:focus, h3.collapse a:focus  {
+   color:#4448e4;
+   outline: 1px dotted #4448E4;
+} 
