@@ -1,7 +1,6 @@
 .small-12.panel.mainContent
 
   = content_nav_for current_course, "Edit Grading Scheme"
-
   %h3.pagetitle= @title
 
   .small-12.columns
@@ -12,9 +11,10 @@
           = f.simple_fields_for :grade_scheme_elements, GradeSchemeElement.new, child_index: 'child_index' do |ef|
             = render 'element_fields', f: ef
 
-      %fieldset.elements.panel
+      .elements.panel
         - @grade_scheme_elements.order_by_high_range.each do |element|
           %fieldset.element
+            %legend.sr-only #{element.letter} #{element.level}
             = f.simple_fields_for :grade_scheme_elements, element do |ef|
               = render 'element_fields', f: ef
 
