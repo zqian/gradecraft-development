@@ -1,8 +1,9 @@
-%ul.side-nav
+%h2.sr-only#staff-navigation Staff navigation
+%ul.side-nav{:role => "navigation", "aria-labeledby" => "staff-navigation", "title" => "Staff navigation"}
   %li
     %label Overview
   - if current_course.use_timeline?
-    %li
+    %link_to
       %i.fi-home
       = link_to "Timeline", dashboard_path
   %li
