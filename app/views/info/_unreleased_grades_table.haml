@@ -50,10 +50,18 @@
                 .button-bar
                   %ul.button-group.right.radius
                     %li
-                      = link_to "See Grade", assignment_grade_path(g.assignment, :student_id => g.student_id), :class => "button"
-                    %li= link_to 'Edit', edit_assignment_grade_path("assignment_id"=>assignment.id, :student_id => g.student.try(:id)), :class => "button"
+                      %a{:href => "#{assignment_grade_path(g.assignment)}?student_id=#{g.student_id}", :class => "button"}
+                        See Grade
+                        %span.sr-only for #{g.student.try(:first_name)} #{g.student.try(:last_name)}
+                    %li
+                      %a{:href => "#{edit_assignment_grade_path("assignment_id"=>assignment.id)}?student_id=#{g.student_id}", :class => "button"}
+                        Edit
+                        %span.sr-only record for #{g.student.try(:first_name)} #{g.student.try(:last_name)}
               %td
-                .center= check_box_tag "grade_ids[]", g.id
+                %label
+                  .center= check_box_tag "grade_ids[]", g.id
+                  .sr-only
+                    Check/Uncheck #{g.student.try(:first_name)} #{g.student.try(:last_name)}
 
       .right
         = submit_tag "Update Selected Grade Statuses", :class => "button radius"
