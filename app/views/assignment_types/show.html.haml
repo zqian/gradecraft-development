@@ -3,7 +3,7 @@
   = content_nav_for @assignment_type
   
   .small-12.medium-8
-    %h3.pagetitle= @title
+    %h3.pagetitle#pageCaption= @title
 
   .small-12.medium-4.right.columns.columns-no-padding
     .button-bar.right
@@ -21,15 +21,16 @@
             %i.fi-graph-bar
             Performance
 
-  .small-12.columns
-    %table.responsive.nofeatures_dynatable
+  .columns
+    %table.responsive.nofeatures_dynatable{"aria-describedby" => "tableCaption"}
       %thead
         %tr
-          %th Name
-          %th{"data-dynatable-sorts" => "dueDate"}  Open - Due
+          %th{:scope => "col"} Name
+          %th{:scope => "col", "data-dynatable-sorts" => "dueDate"}  Open - Due
           %th{:style => "display: none"} Due Date
-          %th Points
-          %th
+          %th{:scope => "col"} Points
+          %th{:scope => "col"}
+            %span.sr-only Actions
       %tbody
         - @assignment_type.assignments.alphabetical.chronological.each do |assignment|
           - if assignment.visible? || (current_user_is_student? && current_student_data.grade_released_for_assignment?(assignment)) || current_user_is_staff?
@@ -42,14 +43,21 @@
               %td= points assignment.point_total
               - if current_user_is_staff?
                 %td
-                  .button-bar
-                    %ul.button-group.right.radius
-                      %li= link_to "Quick Grade", mass_grade_assignment_path(assignment), :class => "button"
-                      %li= link_to "Edit", edit_assignment_path(assignment), :class => 'button'
-                      %li
-                        %a{:href => assignment_path(assignment), :data => { confirm: 'Are you sure?', method: :delete }, :class => "button" }
-                          Delete
-                      %li= link_to "Copy", copy_assignments_path(:id => assignment), :class => 'button', :method => :copy
+                  %ul.button-group.right.round
+                    %li
+                      %a{:href => mass_grade_assignment_path(assignment), :class => 'button' }
+                        Quick Grade
+                        %span.sr-only=assignment.name
+                    %li
+                      %a{:href => edit_assignment_path(assignment), :class => "button"}
+                        Edit
+                        %span.sr-only=assignment.name
+                    %li
+                      %a{:href => assignment_path(assignment), :data => { confirm: 'Are you sure?', method: :delete }, :class => "button" }
+                        Delete
+                    %li
+                      = link_to "Copy", copy_assignments_path(:id => assignment), :class => 'button', :method => :copy
+                      %span.sr-only=assignment.name
               - else
                 - if assignment.accepts_submissions? && assignment.has_groups?
                   - if current_student.group_for_assignment(assignment)

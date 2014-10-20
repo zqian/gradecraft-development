@@ -2,22 +2,26 @@
   .small-12.medium-4.right
     = form_tag assignment_path(@assignment), :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
       = hidden_field_tag :assignment_id, @assignment.id
+      %label.sr-only{:for => "team_id"}
+        Select Team
       = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
 
 = form_tag edit_status_grades_assignment_path @assignment do
   %table.responsive.nofeatures_default_last_name_dynatable
     %thead
       %tr
-        %th First Name
-        %th Last Name
+        %th{:scope => "col"} First Name
+        %th{:scope => "col"} Last Name
         - if ! @assignment.assignment_type.student_weightable?
-          %th Score
-        - else
-          %th Raw Score
-          %th Multiplied Score
+          %th{:scope => "col"} Score
+        - elsif @assignment.assignment_type.student_weightable?
+          %th{:scope => "col"} Raw Score
+          %th{:scope => "col"} Multiplied Score
+        - if @assignment.has_levels?
+          %th{:scope => "col"} Level
         - if @assignment.release_necessary?
-          %th Status
-        %th
+          %th{:scope => "col"} Status
+        %th{:scope => "col"}
         - if @assignment.release_necessary?
           %th.center{"data-dynatable-no-sort" => "true"}
             %button.button.select-all.tiny= "Check All"
@@ -49,9 +53,14 @@
                     - if submission.submission_files.present?
                       %i.fi-paperclip.right
                     %ul.button-group.radius.right
-                      %li= link_to "See Grade", assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
-                      %li= link_to "Edit Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
-                      
+                      %li
+                        %a{:href => assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'}
+                          See Grade
+                          %span.sr-only for #{student.first_name} #{student.last_name}
+                      %li
+                        %a{:href => edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'}
+                          Edit Grade
+                          %span.sr-only for #{student.first_name} #{student.last_name}
                 - elsif submission
                   .button-bar
                     - if submission.submission_files.present?
@@ -74,12 +83,30 @@
               - if grade && grade.status_is_graded_or_released?
                 .button-bar
                   %ul.button-group.radius.right
-                    %li= link_to "See Grade", assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
-                    %li= link_to "Edit Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
+                    %li
+                      %a{:href => assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'}
+                        See Grade
+                        %span.sr-only for #{student.first_name} #{student.last_name}
+                    %li
+                      %a{:href => edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'}
+                        Edit Grade
+                        %span.sr-only for #{student.first_name} #{student.last_name}
               - else
                 .button-bar
                   %ul.button-group.radius.right
-                    %li= link_to "Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
+                    %li
+                      %a{:href => edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'}
+                        Grade
+                        %span.sr-only #{student.first_name} #{student.last_name}
+                  %ul.button-group.round.right
+                    %li
+                      %a{:href => assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'}
+                        See Grade
+                        %span.sr-only for #{student.first_name} #{student.last_name}
+                    %li
+                      %a{:href => edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'}
+                        Edit Grade
+                        %span.sr-only for #{student.first_name} #{student.last_name}
           - if @assignment.release_necessary?
             %td
               - if grade.is_graded?
@@ -105,15 +132,9 @@
             %th Status
           %th{"data-dynatable-no-sort" => "true"} 
           - if @assignment.release_necessary?
-            %th{"data-dynatable-no-sort" => "true"} 
-              .button-bar
-                %ul.button-group.right.radius
-                  %li
-                    %button.button.select-all.tiny= "Check All"
-                  %li
-                    %button.button.select-none.tiny= "Uncheck All"
-
-                    %tr
+            %th.center{"data-dynatable-no-sort" => "true"}
+              %button.button.select-all.tiny= "Check All"
+              %button.button.select-none.tiny= "Uncheck All"
         
       %tbody
         - if @team
