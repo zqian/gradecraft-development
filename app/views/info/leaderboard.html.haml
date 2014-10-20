@@ -41,11 +41,9 @@
             - students = current_course_data.students_for_team(@team)
           - else
             - students = current_course.students.being_graded.order_by_high_score
-          - i = 1
-          - students.each do |student|
+          - students.each_with_index do |student, index|
             %tr
-              %td
-                = i
+              %td= index + 1
               %td= link_to student.first_name, student_path(student)
               %td= link_to student.last_name, student_path(student)
               %td= points student.cached_score_for_course(current_course)
@@ -68,4 +66,3 @@
                     %li= link_to "Dashboard", student_path(student), :class => "button"
                     %li= mail_to student.email, "Email", :class => "button"
                     %li= link_to "Edit", edit_user_path(student), :class => "button"
-            - i += 1
