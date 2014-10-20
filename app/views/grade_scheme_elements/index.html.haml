@@ -2,7 +2,7 @@
 
   = content_nav_for "Grading Scheme"
 
-  %h3.pagetitle= @title
+  %h3.pagetitle#tableCaption= @title
 
   .small-12.medium-3.right.columns.columns-no-padding
     .button-bar.right
@@ -14,13 +14,13 @@
 
   .small-12.columns
     / Grade Scheme Elements Table Display
-    %table.responsive.nofeatures_dynatable
+    %table.responsive.nopage_dynatable{"aria-describedby" => "tableCaption"}
       %thead
         %tr
-          %th Grade
-          %th Level
-          %th Low Range
-          %th High Range
+          %th{:scope => "col"} Grade
+          %th{:scope => "col"} Level
+          %th{:scope => "col"} Low Range
+          %th{:scope => "col"} High Range
       %tbody
         - @grade_scheme_elements.order_by_high_range.each do |element|
           %tr
