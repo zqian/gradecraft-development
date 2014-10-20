@@ -6,7 +6,10 @@
     - else
       Your Submission
     // link to edit the submission
-    %span= link_to "Edit", edit_assignment_submission_path(@assignment, current_student.submission_for_assignment(@assignment), :student_id => current_student.id), :class => "button radius"
+    %span
+      %a{:href => "#{edit_assignment_submission_path(@assignment, current_student.submission_for_assignment(@assignment))}?student_id=#{current_student.id}", :class => 'button radius'  }
+        Edit
+        %span.sr-only #{current_student.try(:first_name)}'s Submission
   // Displaying when the assignment was submitted
   %p
     %span.smallcaps Due:

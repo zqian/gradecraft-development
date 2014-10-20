@@ -5,6 +5,10 @@
     %h4.sr-only #{current_student.try(:first_name)}'s Grade
     %p.bold 
       #{current_student.try(:first_name)}'s Grade
+      %span
+        %a{:href => "#{edit_assignment_grade_path(@assignment)}?student_id=#{current_student.id}", :class => 'button radius'  }
+          Edit
+          %span.sr-only #{current_student.try(:first_name)}'s Grade
 
   - grade = current_student.grade_for_assignment(@assignment)
   %p
