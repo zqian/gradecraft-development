@@ -45,8 +45,6 @@ class User < ActiveRecord::Base
   scope :alpha, -> { order 'last_name ASC' }
   scope :order_by_high_score, -> { includes(:course_memberships).order 'course_memberships.score DESC' }
   scope :order_by_low_score, -> { includes(:course_memberships).order 'course_memberships.score ASC' }
-  scope :being_graded, -> { joins(:course_memberships).where(course_memberships: {auditing: false}).select('distinct users') }
-  scope :auditing, -> { includes(:course_memberships).where(course_memberships: {auditing: true}) }
 
   has_many :course_memberships, :dependent => :destroy
   has_one :student_academic_history, :foreign_key => :student_id, :dependent => :destroy, :class_name => 'StudentAcademicHistory'

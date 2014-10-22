@@ -118,10 +118,10 @@ class GradesController < ApplicationController
     user_search_options = {}
     user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
     @students = current_course.students.includes(:teams).where(user_search_options).alpha
-    @grades = @students.alpha.being_graded.map do |s|
+    @grades = current_course.students_being_graded.alpha.map do |s|
       @assignment.grades.where(:student_id => s).first || @assignment.grades.new(:student => s, :assignment => @assignment, :graded_by_id => current_user)
     end
-    @auditor_grades = @students.alpha.auditing.map do |s|
+    @auditor_grades = current_course.students_auditing.alpha.map do |s|
       @assignment.grades.where(:student_id => s).first || @assignment.grades.new(:student => s, :assignment => @assignment, :graded_by_id => current_user)
     end
   end
