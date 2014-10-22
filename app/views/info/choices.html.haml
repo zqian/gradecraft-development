@@ -4,12 +4,12 @@
 
   %h3.pagetitle= @title
 
-  
+
   - if current_course.has_teams?
     .small-12.large-4.medium-6.columns.right
       = form_tag choices_students_path, :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
         = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
-        
+
   .columns
     %table.responsive.nofeatures_default_last_name_dynatable
       %thead
@@ -41,7 +41,7 @@
                   %li= link_to "Dashboard", student_path(student), :class => "button"
                   %li= link_to "Edit #{term_for :weights}", assignment_type_weights_path(:student_id => student.id), :class => "button"
 
-  - if current_course_data.auditing_students.present?
+  - if current_course_data.students_auditing.present?
     .clearfix
 
     .small-12
@@ -60,9 +60,9 @@
             %th{:width => '350'}
         %tbody
           - if @team
-            - students = current_course_data.auditing_students_for_team(@team)
+            - students = current_course_data.students_auditing_for_team(@team)
           - else
-            - students = current_course_data.auditing_students
+            - students = current_course_data.students_auditing
           - students.each do |student|
             %tr
               %td= link_to student.first_name, student_path(student)

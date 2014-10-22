@@ -146,7 +146,7 @@ class GradesController < ApplicationController
       @grades = @students.alpha.being_graded.map do |s|
         @assignment.grades.where(:student_id => s).first || @assignment.grades.new(:student => s, :assignment => @assignment, :graded_by_id => current_user)
       end
-      @auditor_grades = @students.alpha.auditing.map do |s|
+      @auditor_grades = @students_auditing.alpha.map do |s|
         @assignment.grades.where(:student_id => s).first || @assignment.grades.new(:student => s, :assignment => @assignment, :graded_by_id => current_user)
       end
       respond_with @assignment, :template => "grades/mass_edit"

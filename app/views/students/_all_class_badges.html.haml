@@ -22,7 +22,7 @@
         - if current_course.valuable_badges?
           %td= points student.earned_badge_score_for_course(current_course)
 
-- if (@team && current_course_data.auditing_students_for_team(@team).present?)
+- if (@team && current_course_data.students_auditing_for_team(@team).present?)
 
   %hr
 
@@ -38,9 +38,9 @@
           %th{:scope => "col"} Total Badge Score
     %tbody
       - if @team
-        - students = current_course_data.auditing_students_for_team(@team)
+        - students = current_course_data.students_auditing_for_team(@team)
       - else
-        - students = current_course_data.auditing_students
+        - students = current_course_data.students_auditing
       - students.each do |student|
         %tr
           %td= link_to student.first_name, student_path(student)

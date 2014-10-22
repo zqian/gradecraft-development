@@ -102,9 +102,9 @@
                     %button.select-none.tiny= "Uncheck All"
       %tbody
         - if @team
-          - students = current_course_data.auditing_students_for_team(@team)
+          - students = current_course_data.students_auditing_for_team(@team)
         - else
-          - students = current_course_data.auditing_students
+          - students = current_course_data.students_auditing
         - students.each do |student|
           - grade = current_course_data.grade_for_student_and_assignment(student, @assignment)
           %tr

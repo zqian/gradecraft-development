@@ -2,8 +2,8 @@ class Grade < ActiveRecord::Base
   include Canable::Ables
 
   attr_accessible :raw_score, :predicted_score, :final_score, :feedback, :assignment,
-    :assignment_id, :status, :attempted, :student, :student_id, :submission, :submission_id, :released, 
-    :group, :group_id, :group_type, :task, :task_id, :graded_by_id, :team_id, :grade_file_ids, 
+    :assignment_id, :status, :attempted, :student, :student_id, :submission, :submission_id, :released,
+    :group, :group_id, :group_type, :task, :task_id, :graded_by_id, :team_id, :grade_file_ids,
     :grade_files_attributes, :grade_file, :assignments_attributes, :point_total
 
   STATUSES=%w(Graded Released)
@@ -71,14 +71,15 @@ class Grade < ActiveRecord::Base
     self.status == 'In Progress'
   end
 
-  def self.excluding_auditing_students
-    joins('INNER JOIN course_memberships ON (grades.student_id = course_memberships.user_id AND grades.course_id = course_memberships.course_id AND course_memberships.auditing = ?)', false)
-  end
+  # DEPRECATED
+  # def self.excluding_auditing_students
+  #   joins('INNER JOIN course_memberships ON (grades.student_id = course_memberships.user_id AND grades.course_id = course_memberships.course_id AND course_memberships.auditing = ?)', false)
+  # end
 
   def score
     if student.weighted_assignments?
       final_score || (raw_score * assignment_weight).round
-    else 
+    else
       final_score || raw_score
     end
   end

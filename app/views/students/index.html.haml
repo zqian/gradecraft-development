@@ -1,5 +1,5 @@
 .small-12.panel.mainContent
-  
+
   = content_nav_for User, "#{term_for :students}"
 
   %h3.pagetitle= @title
@@ -12,8 +12,8 @@
             %i.fi-page-export-csv
             Download Grades
 
-  .clearfix 
-  
+  .clearfix
+
   .small-12.medium-4.columns.right
     / Checking to see if the current course has teams, displaying the team filter if it does
     - if current_course.has_teams?
@@ -25,17 +25,17 @@
     / Display the table of course students, their leaderboard display, their team affiation, their score and their grade
     - if @team
       = render 'students_table', :course => current_course, :students => current_course_data.students_for_team(@team)
-    - else 
+    - else
       = render 'students_table', :course => current_course, :students => current_course_data.students
 
   .clearfix
 
-  - if (! @team && current_course_data.auditing_students.present?) || (@team && current_course_data.auditing_students_for_team(@team).present?)
+  - if (! @team && current_course_data.students_auditing.present?) || (@team && current_course_data.students_auditing_for_team(@team).present?)
     / Display the table of auditing students if they're present
     .pagetitle= "Auditing Roster"
 
     .small-12.columns
       - if @team
-        = render 'students_table', :course => current_course, :students => current_course_data.auditing_students_for_team(@team)
-      - else 
-        = render 'students_table', :course => current_course, :students => current_course_data.auditing_students
+        = render 'students_table', :course => current_course, :students => current_course_data.students_auditing_for_team(@team)
+      - else
+        = render 'students_table', :course => current_course, :students => current_course_data.students_auditing
