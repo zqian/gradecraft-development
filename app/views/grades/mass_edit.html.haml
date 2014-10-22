@@ -25,16 +25,15 @@
           - if @assignment.grade_checkboxes?
             %thead
               %tr
-                %th= "#{term_for :student}"
-                %th
-                  .button-bar
-                    %ul.button-group.radius.right
-                      %li.select-all.button.tiny= "Check All"
-                      %li.select-none.button.tiny= "Uncheck All"
+                %th{:style => "text-align: right"}= "#{term_for :student}"
+                %th.center{:align => "center", :scope => "col", "data-dynatable-no-sort" => "true", :width => "15%" } 
+                  %span.sr-only Check/Uncheck
+                  %button.button.select-all.tiny= "Check All"
+                  %button.button.select-none.tiny= "Uncheck All"
           - @grades.each_with_index do |grade, i|
             %tr
-              %td= link_to grade.student.name, student_path(grade.student)
-              %td.right
+              %td{:style => "text-align: right"}= link_to grade.student.name, student_path(grade.student)
+              %td.center
                 = f.simple_fields_for :grades, grade do |gf|
                   = gf.hidden_field :graded_by_id, :value => current_user.id
                   - if !grade.status
@@ -72,8 +71,8 @@
               %td.bold AUDITORS
             - @auditor_grades.each_with_index do |grade, i|
               %tr
-                %td= link_to grade.student.name, student_path(grade.student)
-                %td.right
+                %td.right= link_to grade.student.name, student_path(grade.student)
+                %td.center
                   = f.simple_fields_for :grades, grade do |gf|
                     = gf.hidden_field :graded_by_id, :value => current_user.id
                     - if !grade.status

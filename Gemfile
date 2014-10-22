@@ -69,8 +69,8 @@ group :development do
   gem 'valid_attribute'
   gem 'quiet_assets'
   gem 'foreman'
+  gem 'rack-mini-profiler', require: false
   gem 'rubystats'
-  gem 'rack-mini-profiler'
   gem 'spring'
   # gem 'guard-spring'
 end

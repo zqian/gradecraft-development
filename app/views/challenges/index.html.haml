@@ -28,7 +28,7 @@
           %th Visible
           %th Submissions?
           %th Release necessary
-          %th.button-column
+          %th
 
       %tbody
         - @challenges.each do |challenge|
@@ -46,9 +46,9 @@
               .button-bar
                 %ul.button-group.radius.right
                   %li
-                    = link_to challenge, :class => 'button' do
-                      See
-                      %span.sr-only=  challenge.name
+                    %a.button{:href => mass_edit_challenge_challenge_grades_path(challenge) }
+                      Quick Grade 
+                      %span.sr-only= challenge.name
                   %li
                     = link_to edit_challenge_path(challenge), :class => 'button' do
                       Edit

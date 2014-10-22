@@ -15,14 +15,15 @@
         %table.responsive
           %thead
             %tr
-              %th Name
+              %th{:style => "text-align: right"} Name
               %th Earned
-              %th.center{"data-dynatable-no-sort" => "true", :width => "15%"}
+              %th.center{:align => "center", :scope => "col", "data-dynatable-no-sort" => "true", :width => "15%" } 
+                %span.sr-only Check/Uncheck
                 %button.button.select-all.tiny= "Check All"
-                %button.button.select-none.tiny= "Uncheck"
+                %button.button.select-none.tiny= "Uncheck All"
           - @earned_badges.each_with_index do |eb, i|
             %tr
-              %td= link_to eb.student.name, student_path(eb.student)
+              %td{:style => "text-align: right"}= link_to eb.student.name, student_path(eb.student)
               %td
                 - eb.student.earned_badges.where(:badge_id => @badge).each do |eb|
                   %img{:src => eb.badge.try(:icon), :alt => eb.badge.try(:name), :width => "25", :height => "25"}

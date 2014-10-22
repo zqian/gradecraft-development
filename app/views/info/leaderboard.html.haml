@@ -49,7 +49,7 @@
               %td
                 = student.grade_letter_for_course(current_course)
                 - if student.grade_level_for_course(current_course).present?
-                  = "(#{student.grade_level_for_course(current_course)})"
+                  = "#{student.grade_level_for_course(current_course)}"
               - if current_course.has_badges?
                 %td#earned_badges
                   - student.earned_badges_for_course(current_course).each do |badge|

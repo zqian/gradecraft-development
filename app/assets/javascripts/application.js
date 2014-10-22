@@ -36,6 +36,7 @@
 //= require preload_store
 //= require users
 //= require selectToUISlider.jQuery
+
 //= require analytics
 //= require analytics_dashboard
 //= require assignment_types
@@ -49,6 +50,7 @@
 //= require submission_file
 //= require timelineJS/embed
 //= require timeline_settings
+
 //= require earned_badges
 //= require highcharts
 //= require datetimepicker
