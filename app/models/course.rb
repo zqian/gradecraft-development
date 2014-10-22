@@ -11,6 +11,14 @@ class Course < ActiveRecord::Base
     end
   end
 
+  def students_being_graded
+    User.students_being_graded(self)
+  end
+
+  def students_auditing
+    User.students_being_graded(self)
+  end
+
   attr_accessible :courseno, :name,
     :semester, :year, :badge_setting, :team_setting, :team_term, :user_term,
     :user_id, :course_id, :homepage_message, :group_setting,
@@ -209,7 +217,7 @@ class Course < ActiveRecord::Base
   end
 
   def graded_student_count
-    students.being_graded.count
+    students_being_graded.count
   end
 
   def professor

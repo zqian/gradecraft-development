@@ -92,7 +92,7 @@ class InfoController < ApplicationController
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
     user_search_options = {}
     user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
-    @students = current_course.students.being_graded.order_by_high_score.includes(:earned_badges, :teams)
+    @students = current_course.students_being_graded.order_by_high_score.includes(:earned_badges, :teams)
   end
 
 end

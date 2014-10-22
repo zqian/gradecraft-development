@@ -25,7 +25,7 @@ class AnalyticsController < ApplicationController
   def top_10
     @title = "Top 10/Bottom 10"
     @teams = current_course.teams.includes(:earned_badges)
-    @students = current_course.students.being_graded
+    @students = current_course.students_being_graded
     @top_ten_students = @students.order_by_high_score.limit(10)
     @bottom_ten_students = @students.order_by_low_score.limit(10)
   end

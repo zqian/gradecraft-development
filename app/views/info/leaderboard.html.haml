@@ -40,7 +40,7 @@
           - if @team
             - students = current_course_data.students_for_team(@team)
           - else
-            - students = current_course.students.being_graded.order_by_high_score
+            - students = current_course.students_being_graded.order_by_high_score
           - students.each_with_index do |student, index|
             %tr
               %td= index + 1

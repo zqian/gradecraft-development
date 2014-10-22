@@ -12,13 +12,22 @@ class User < ActiveRecord::Base
     def with_role_in_course(role, course)
       user_ids = CourseMembership.where(course: course, role: role).pluck(:user_id)
       User.where(id: user_ids)
-      #User.where(id: CourseMembership.where(course: course, role: role).pluck(:user_id))
     end
 
     ROLES.each do |role|
       define_method(role.pluralize) do |course|
         with_role_in_course(role,course)
       end
+    end
+
+    def students_being_graded(course)
+      user_ids = CourseMembership.where(course: course, role: "student", auditing: false).pluck(:user_id)
+      User.where(id: user_ids)
+    end
+
+    def students_auditing(course)
+      user_ids = CourseMembership.where(course: course, role: "student", auditing: true).pluck(:user_id)
+      User.where(id: user_ids)
     end
   end
 
@@ -36,8 +45,8 @@ class User < ActiveRecord::Base
   scope :alpha, -> { order 'last_name ASC' }
   scope :order_by_high_score, -> { includes(:course_memberships).order 'course_memberships.score DESC' }
   scope :order_by_low_score, -> { includes(:course_memberships).order 'course_memberships.score ASC' }
-  scope :being_graded, -> { includes(:course_memberships).where('course_memberships.auditing IS FALSE') }
-  scope :auditing, -> { includes(:course_memberships).where('course_memberships.auditing IS TRUE') }
+  scope :being_graded, -> { joins(:course_memberships).where(course_memberships: {auditing: false}).select('distinct users') }
+  scope :auditing, -> { includes(:course_memberships).where(course_memberships: {auditing: true}) }
 
   has_many :course_memberships, :dependent => :destroy
   has_one :student_academic_history, :foreign_key => :student_id, :dependent => :destroy, :class_name => 'StudentAcademicHistory'
@@ -232,7 +241,7 @@ class User < ActiveRecord::Base
   #I think this may be a little bit faster - ch
   def scores_for_course(course)
      user_score = course_memberships.where(:course_id => course, :auditing => FALSE).pluck('score')
-     scores = course.students.being_graded.pluck('score')
+     scores = course.students_being_graded.pluck('score')
      return {
       :scores => scores,
       :user_score => user_score

@@ -46,7 +46,7 @@ class CourseData < Struct.new(:course)
     @by_assignment_type ||= assignments.group_by(&:assignment_type)
   end
 
-  #Sometimes we don't want students to be able to predict an assignment (like those that have 0 points), 
+  #Sometimes we don't want students to be able to predict an assignment (like those that have 0 points),
   #so we don't include them in the predictor
   def predictable_by_assignment_type
     @by_assignment_type ||= predictable_assignments.group_by(&:assignment_type)
@@ -76,7 +76,7 @@ class CourseData < Struct.new(:course)
 
   #Students in a course, sorted alphabetically
   def students
-    @students ||= course.students.being_graded.alpha
+    @students ||= course.students_being_graded.alpha
   end
 
   #Students in a course, sorted alphabetically
@@ -86,7 +86,7 @@ class CourseData < Struct.new(:course)
 
   #Students in a particular team within a course
   def students_for_team(team)
-    course.students.being_graded.order_by_high_score.select { |student| team.student_ids.include? student.id }
+    course.students_being_graded.order_by_high_score.select { |student| team.student_ids.include? student.id }
   end
 
   #Auditing students in a particular team within a course
