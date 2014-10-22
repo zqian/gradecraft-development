@@ -76,12 +76,12 @@ class CourseData < Struct.new(:course)
 
   #Students in a course, sorted alphabetically
   def students
-    @students ||= course.students_being_graded.alpha
+    @students ||= course.students_being_graded
   end
 
   #Students in a course, sorted alphabetically
   def students_auditing
-    @students_auditing ||= course.students_auditing.alpha
+    @students_auditing ||= course.students_auditing
   end
 
   #Students in a particular team within a course

@@ -6,7 +6,7 @@
     = hidden_field_tag :badge_id, @badge.id
     .small-12.medium-4.columns
 
-      = select_tag :student, options_from_collection_for_select(current_course.students.alpha, "id", "name", @earned_badge.try(:student_id)), :prompt => "Select Student"
+      = select_tag :student, options_from_collection_for_select(current_course.students, "id", "name", @earned_badge.try(:student_id)), :prompt => "Select Student"
 
     .small-12.columns.textarea.panel.callout
       = f.bootsy_area :feedback

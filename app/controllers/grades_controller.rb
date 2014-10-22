@@ -117,11 +117,11 @@ class GradesController < ApplicationController
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
     user_search_options = {}
     user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
-    @students = current_course.students.includes(:teams).where(user_search_options).alpha
-    @grades = current_course.students_being_graded.alpha.map do |s|
+    @students = current_course.students.includes(:teams).where(user_search_options)
+    @grades = current_course.students_being_graded.map do |s|
       @assignment.grades.where(:student_id => s).first || @assignment.grades.new(:student => s, :assignment => @assignment, :graded_by_id => current_user)
     end
-    @auditor_grades = current_course.students_auditing.alpha.map do |s|
+    @auditor_grades = current_course.students_auditing.map do |s|
       @assignment.grades.where(:student_id => s).first || @assignment.grades.new(:student => s, :assignment => @assignment, :graded_by_id => current_user)
     end
   end
@@ -142,11 +142,11 @@ class GradesController < ApplicationController
       @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
       user_search_options = {}
       user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
-      @students = current_course.students.includes(:teams).where(user_search_options).alpha
-      @grades = @students.alpha.being_graded.map do |s|
+      @students = current_course.students.includes(:teams).where(user_search_options)
+      @grades = @students.being_graded.map do |s|
         @assignment.grades.where(:student_id => s).first || @assignment.grades.new(:student => s, :assignment => @assignment, :graded_by_id => current_user)
       end
-      @auditor_grades = @students_auditing.alpha.map do |s|
+      @auditor_grades = @students_auditing.map do |s|
         @assignment.grades.where(:student_id => s).first || @assignment.grades.new(:student => s, :assignment => @assignment, :graded_by_id => current_user)
       end
       respond_with @assignment, :template => "grades/mass_edit"
@@ -161,7 +161,7 @@ class GradesController < ApplicationController
     @assignment_type = @assignment.assignment_type
     @score_levels = @assignment_type.score_levels
     @assignment_score_levels = @assignment.assignment_score_levels
-    @grades = @group.students.alpha.map do |student|
+    @grades = @group.students.map do |student|
       @assignment.grades.where(:student_id => student).first || @assignment.grades.new(:student => student, :assignment => @assignment, :graded_by_id => current_user, :status => "Graded")
     end
     @submit_message = "Submit Grades"
@@ -170,7 +170,7 @@ class GradesController < ApplicationController
   def group_update
     @assignment = current_course.assignments.find(params[:id])
     @group = @assignment.groups.find(params[:group_id])
-    @grades = @group.students.alpha.map do |student|
+    @grades = @group.students.map do |student|
       @assignment.grades.where(:student_id => student).first || @assignment.grades.new(:student => student, :assignment => @assignment, :graded_by_id => current_user, :status => "Graded", :group_id => @group.id)
     end
     @grades = @grades.each do |grade|

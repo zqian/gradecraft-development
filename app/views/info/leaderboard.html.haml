@@ -1,5 +1,5 @@
 .small-12.panel.mainContent#leaderboard
-  
+
   = content_nav_for "Leaderboard"
 
   %h3.pagetitle#tableCaption= @title
@@ -13,12 +13,12 @@
             Download Grades
 
   - if current_course.has_teams?
-    .clearfix 
+    .clearfix
     .small-12.large-4.medium-6.columns.right
       %label.sr-only{:for => "team_id"}
         Select Team
       = form_tag leaderboard_path, :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
-        = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "– Select #{current_course.team_term} –"
+        = select_tag :team_id, options_for_select(current_course.teams.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "– Select #{current_course.team_term} –"
 
   .columns
     %table.responsive.nofeatures_default_rank_dynatable{"aria-describedby" => "tableCaption"}

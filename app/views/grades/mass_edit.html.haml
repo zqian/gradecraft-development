@@ -4,13 +4,13 @@
   %h3.pagetitle= @title
 
   .small-12.medium-4.columns.right
-    
+
     - if current_course.has_teams? && @assignment.is_individual?
       = form_tag mass_grade_assignment_path, :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
         = hidden_field_tag :assignment_id, @assignment.id
         %label.sr-only{:for => "team_id"}
           Select Team
-        = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
+        = select_tag :team_id, options_for_select(current_course.teams.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
 
     .clearfix
 
@@ -19,7 +19,7 @@
       = simple_form_for @assignment, method: :put, :url => mass_grade_assignment_path(@assignment) do |f|
         - if @team.present?
           = hidden_field_tag :team_id, @team.id
-        
+
 
         %table.responsive
           - if @assignment.grade_checkboxes?
@@ -62,7 +62,7 @@
                       - if grade.persisted? && (grade.status == "Graded" || grade.status == "Released")
                         %td
                           = gf.text_field :raw_score, data: {autonumeric: true, "m-dec" => "0"}
-                          
+
                       - else
                         %td= gf.text_field :raw_score, :value => nil, data: {autonumeric: true, "m-dec" => "0"}
                         %td= gf.label :raw_score, "/ #{points @assignment.point_total}"
@@ -101,7 +101,7 @@
                         - if grade.persisted? && (grade.status == "Graded" || grade.status == "Released")
                           %td
                             = gf.text_field :raw_score, data: {autonumeric: true, "m-dec" => "0"}
-                            
+
                         - else
                           %td= gf.text_field :raw_score, :value => nil, data: {autonumeric: true, "m-dec" => "0"}
                           %td= gf.label :raw_score, "/ #{points @assignment.point_total}"

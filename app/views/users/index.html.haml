@@ -2,11 +2,11 @@
   = content_nav_for User
 
   %h3.pagetitle= @title
-  
+
   - if current_course.has_teams?
     .small-12.medium-4.columns.right
       = form_tag users_path, :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
-        = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
+        = select_tag :team_id, options_for_select(current_course.teams.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
 
   .small-12.columns
     %table.responsive.nopage_dynatable

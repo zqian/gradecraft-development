@@ -44,7 +44,7 @@
                 %button.button.select-all.tiny= "Check All"
                 %button.button.select-none.tiny= "Uncheck"
         %tbody
-          - @teams.alpha.each do |team|
+          - @teams.each do |team|
             - challenge_grade = @challenge.challenge_grades.find_by team: team
             %tr
               %td

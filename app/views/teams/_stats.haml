@@ -13,7 +13,7 @@
         %th{ "data-dynatable-column" => "badges"} #{term_for :badges} Earned
         %th.button-column
   %tbody
-    - @teams.alpha.order_by_high_score.each_with_index do |team, index|
+    - @teams.order_by_high_score.each_with_index do |team, index|
       %tr
         %td= index + 1
         %td= link_to team.name, team

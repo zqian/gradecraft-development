@@ -1,9 +1,9 @@
 .small-12.panel.mainContent
-  
+
   = content_nav_for User, "All Users"
 
   %h3.pagetitle= @title
-  
+
   .small-12.columns
     %table.responsive.dynatable
       %thead
@@ -16,7 +16,7 @@
           %th Score
           %th
       %tbody
-        - @users.alpha.each do |user|
+        - @users.each do |user|
           %tr
             %td
               = link_to user.first_name, student_path(user) if user.is_student?(current_course)

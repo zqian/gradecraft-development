@@ -8,7 +8,7 @@
     .small-12.medium-4.columns.right
       = form_tag mass_award_badge_path, :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
         = hidden_field_tag :badge_id, @badge.id
-        = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
+        = select_tag :team_id, options_for_select(current_course.teams.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
 
     .small-12.columns#massGrade
       = simple_form_for @badge, method: :put, :html => {:class => 'mass-edit-earned-badges' }, :url => mass_award_badge_path(@badge) do |f|
@@ -17,7 +17,7 @@
             %tr
               %th Name
               %th Earned
-              %th.center{"data-dynatable-no-sort" => "true", :width => "15%"} 
+              %th.center{"data-dynatable-no-sort" => "true", :width => "15%"}
                 %button.button.select-all.tiny= "Check All"
                 %button.button.select-none.tiny= "Uncheck"
           - @earned_badges.each_with_index do |eb, i|
@@ -29,12 +29,12 @@
               %td.center
                 = f.simple_fields_for :earned_badges, eb do |ebf|
                   = ebf.hidden_field :student_id
-                  - if @badge.can_earn_multiple_times? 
+                  - if @badge.can_earn_multiple_times?
                     = ebf.check_box :score, {}, @badge.point_total, nil
                   - elsif ! eb.student.earned_badges.where(:badge_id => @badge).present?
                     = ebf.hidden_field :_destroy, class: 'destroy'
                     = ebf.check_box :score, {}, @badge.point_total, nil
-                  
+
         .right
           = f.button :submit, "Award", :class => "button radius alert"
           = link_to 'Cancel', badges_path, :class => 'button transparent radius'

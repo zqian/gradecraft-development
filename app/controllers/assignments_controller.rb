@@ -21,7 +21,7 @@ class AssignmentsController < ApplicationController
     user_search_options = {}
     user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
-    @auditing = current_course.students_auditing.includes(:teams).where(user_search_options).alpha
+    @auditing = current_course.students_auditing.includes(:teams).where(user_search_options)
     @rubric = @assignment.fetch_or_create_rubric
     @metrics = @rubric.metrics
     @score_levels = @assignment.score_levels.order_by_value

@@ -31,7 +31,7 @@
               %td
                 .button-bar
                   %ul.button-group.right.radius
-                    %li 
+                    %li
                       %a{:href => assignment_type_path(assignment_type), :class => 'button'}
                         See
                         %span.sr-only= assignment_type.name
@@ -59,7 +59,7 @@
             %th
               = at.name
       %tbody
-        - current_course.students.alpha.each do |student| 
+        - current_course.students.each do |student|
           %tr
             %td= student.first_name
             %td= student.last_name

@@ -42,7 +42,6 @@ class User < ActiveRecord::Base
     :student_academic_history_attributes, :team_role, :course_memberships_attributes,
     :character_profile, :team_id, :lti_uid, :course_team_ids
 
-  scope :alpha, -> { order 'last_name ASC' }
   scope :order_by_high_score, -> { includes(:course_memberships).order 'course_memberships.score DESC' }
   scope :order_by_low_score, -> { includes(:course_memberships).order 'course_memberships.score ASC' }
 
