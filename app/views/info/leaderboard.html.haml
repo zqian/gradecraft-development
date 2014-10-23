@@ -2,18 +2,10 @@
 
   = content_nav_for "Leaderboard"
 
-  %h3.pagetitle#tableCaption= @title
-
-  .small-12.medium-3.right.columns.columns-no-padding
-    .button-bar.right
-      %ul.button-group.context_menu
-        %li
-          %a{:href => gradebook_path(format: 'csv') }
-            %i.fi-page-export-csv
-            Download Grades
+  .small-12.medium-6
+    %h3.pagetitle#tableCaption= @title
 
   - if current_course.has_teams?
-    .clearfix
     .small-12.large-4.medium-6.columns.right
       %label.sr-only{:for => "team_id"}
         Select Team

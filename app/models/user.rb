@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   include Canable::Cans
 
   before_validation :set_default_course
-  after_save :cache_scores
+  after_validation :cache_scores
 
   ROLES = %w(student professor gsi admin)
 
@@ -84,7 +84,7 @@ class User < ActiveRecord::Base
         proxy_association.owner.team_ids = other_team_ids | [ids]
       else
         if ids.present?
-          proxy_association.owner.team_ids = other_team_ids | ids
+          proxy_association.owner.team_ids = other_team_ids | [ids]
         end
       end
     end
@@ -459,8 +459,24 @@ class User < ActiveRecord::Base
     end
   end
 
+  def assignment_scores_for_course(course)
+    grades.released.where(course: course).score
+  end
+
   def archived_courses
     courses.where(:status => false)
+  end
+
+  def cache_scores
+    course_memberships.each do |membership|
+      if membership.course.add_team_score_to_student?
+        membership.update_attribute :score, grades.released.where(course_id: membership.course_id).score + earned_badge_score_for_course(membership.course_id) + self.team_for_course(membership.course_id).try(:score)
+        #self.team_for_course(membership.course_id).save! if self.team_for_course(membership.course_id).present?
+      else
+        membership.update_attribute :score, grades.released.where(course_id: membership.course_id).score + earned_badge_score_for_course(membership.course_id)
+        #team_for_course(membership.course_id).save! if team_for_course(membership.course_id).present?
+      end
+    end
   end
 
   private
@@ -469,19 +485,9 @@ class User < ActiveRecord::Base
     self.default_course ||= courses.first
   end
 
-  def cache_scores
-    course_memberships.each do |membership|
-      if membership.course.add_team_score_to_student?
-        membership.update_attribute :score, grades.released.where(course_id: membership.course_id).score + earned_badge_score_for_course(membership.course_id) + (team_for_course(membership.course_id).try(:challenge_grade_score) || 0)
-        team.save! if self.team_for_course(membership.course_id).present?
-      else
-        membership.update_attribute :score, grades.released.where(course_id: membership.course_id).score + earned_badge_score_for_course(membership.course_id)
-        team_for_course(membership.course_id).save! if team_for_course(membership.course_id).present?
-      end
-    end
-  end
-
   def cache_last_login
     self.cached_last_login_at = self.last_login_at
   end
+
+  
 end

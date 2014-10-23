@@ -1,6 +1,6 @@
 .small-12.panel.mainContent
 
-  = content_nav_for "Grading Scheme"
+  = content_nav_for "#{@title}"
 
   %h3.pagetitle#tableCaption= @title
 
@@ -14,7 +14,7 @@
 
   .small-12.columns
     / Grade Scheme Elements Table Display
-    %table.responsive.nopage_dynatable{"aria-describedby" => "tableCaption"}
+    %table.responsive.nofeatures_dynatable{"aria-describedby" => "tableCaption"}
       %thead
         %tr
           %th{:scope => "col"} Grade
@@ -30,5 +30,6 @@
             %td{:data => { :"sort-value" => "#{element.high_range }" }}= points element.high_range
 
     .small-12.columns
+      %p
       %p= raw current_course.grading_philosophy
       %h6= "-- Prof. #{current_course.professor.try(:last_name) }"
