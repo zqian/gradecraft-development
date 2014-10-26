@@ -84,7 +84,7 @@ class User < ActiveRecord::Base
         proxy_association.owner.team_ids = other_team_ids | [ids]
       else
         if ids.present?
-          proxy_association.owner.team_ids = other_team_ids | [ids]
+          proxy_association.owner.team_ids = other_team_ids | ids
         end
       end
     end
