@@ -579,7 +579,6 @@ class User < ActiveRecord::Base
 
   def default_ui_settings
     course_settings = courses_with_assignment_types.inject({}) do |memo, course|
-      memo.merge({course[:id] = DEFAULT
     end
   end
 
@@ -588,14 +587,6 @@ class User < ActiveRecord::Base
   end
 
   def default_settings_for_course(course)
-    assignments: {
-      index: {
-        collapse_assignment_types: course_assignment_type_settings(course)
-      },
-      show: {
-        collapse_rubric_overview: false
-      }
-    }
   end
 
   def course_assignment_type_settings(course)

@@ -77,6 +77,11 @@ class ApplicationController < ActionController::Base
 
   private
 
+  # set user ui settings variables for session
+  def load_ui_settings
+    session[:collapse_rubric_overview] = current_user[:collapse_rubric_overview].nil? ? false : current_user[:collapse_rubric_overview]
+  end
+
   # Canable checks on permission
   def enforce_view_permission(resource)
     raise Canable::Transgression unless can_view?(resource)

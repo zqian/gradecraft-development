@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141008174828) do
+ActiveRecord::Schema.define(version: 20141027211857) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
 
   create_table "assignment_files", force: true do |t|
     t.string  "filename"
@@ -740,6 +741,8 @@ ActiveRecord::Schema.define(version: 20141008174828) do
     t.string   "lti_uid"
     t.string   "last_login_from_ip_address"
     t.string   "kerberos_uid"
+    t.hstore   "ui_settings"
+    t.boolean  "collapse_rubric_overview",        default: false
   end
 
   add_index "users", ["kerberos_uid"], name: "index_users_on_kerberos_uid", using: :btree
