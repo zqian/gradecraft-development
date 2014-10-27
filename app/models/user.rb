@@ -507,4 +507,55 @@ class User < ActiveRecord::Base
   def cache_last_login
     self.cached_last_login_at = self.last_login_at
   end
+
+  def ui_settings
+    load_default_ui_settings unless self[:ui_settings]
+  end
+
+  def load_default_ui_settings
+    update_attributes ui_settings: default_ui_settings
+  end
+
+  def courses_with_assignment_types
+    self.courses.include(:assignment_types)
+  end
+
+  def default_ui_settings
+    course_settings = courses_with_assignment_types.inject({}) do |memo, course|
+      memo.merge({course[:id] = DEFAULT
+    end
+  end
+
+  def ui_settings_builder
+    @ui_settings_builder ||= {courses: {}}
+  end
+
+  def default_settings_for_course(course)
+    assignments: {
+      index: {
+        collapse_assignment_types: course_assignment_type_settings(course)
+      },
+      show: {
+        collapse_rubric_overview: false
+      }
+    }
+  end
+
+  def course_assignment_type_settings(course)
+    course.assignment_types.inject({}) do |memo, assignment_type|
+      memo[assignment_type.id] = false 
+    end
+  end
+
+  DEFAULT_COURSE_UI_SETTINGS= {
+    assignments: {
+      index: {
+        collapse_assignment_types: {
+        }
+      },
+      show: {
+        collapse_rubric_overview: false
+      }
+    }
+  }
 end
