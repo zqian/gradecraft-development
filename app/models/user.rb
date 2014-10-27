@@ -454,7 +454,7 @@ class User < ActiveRecord::Base
 
     grade_levels = []
     course.grade_scheme_elements.each do |gse|
-      grade_levels << { :from => [gse.low_range], :to => [gse.high_range], :borderColor => '#DDD', :borderWidth => 1, :label => { :text => "#{ gse.level} / #{gse.letter}" , textAlign: 'left', y: 95, :rotation => 270 } }
+      grade_levels << { :from => [gse.low_range], :to => [gse.high_range], :borderColor => '#DDD', :borderWidth => 1, :label => { :text => "#{ gse.level} / #{gse.letter}" , textAlign: 'left', y: 95, :rotation => -45 } }
     end
 
       

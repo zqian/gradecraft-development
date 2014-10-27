@@ -28,8 +28,8 @@ a.btn.btn-primary
   background-color: $primary-color-2
 
 .button-bar ul
-  white-space: nowrap !important
-  display: inline !important
+  white-space: nowrap 
+  display: inline 
 
 th.center button.button
   margin: 0
@@ -56,3 +56,13 @@ ul.button-group.context_menu
 
   li:hover a, li:hover, li.active, li.active a
     background-color: darken($primary-color-3, 30%)
+
+/* Responsive outer container */ 
+@media (max-width: 1100px) 
+  .button 
+    border-radius: $global-radius
+    width: 100% !important
+    float: left 
+    clear: both
+    display: block
+    white-space: wrap
