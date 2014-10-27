@@ -26,11 +26,7 @@ $(document).ready(function() {
     chart: {
       type: 'bar',
       backgroundColor:null,
-    },
-    title: {
-      style: {
-        color: "#FFFFFF"
-      }
+      paddingTop: 100
     },
     colors: [
      '#1A1EB2',
@@ -53,25 +49,25 @@ $(document).ready(function() {
       enabled: false
     },
     xAxis: {
+      gridLineWidth: 0,
+      lineColor: '#FFFFFF',
       title: {
         text: ' '
       },
       labels: {
         style: {
-          color: "#222"
+          color: "#FFF"
         }
       }
     },
     yAxis: {
+      gridLineWidth: 0,
+      lineColor: '#FFFFFF',
+      offset: -30,
       min: 0,
       title: {
-        text: 'Available Points'
+        text: ' '
       }
-    },
-    labels: {
-      plotLines: [{
-        color: '#808080'
-      }]
     },
     tooltip: {
       formatter: function() {
@@ -81,7 +77,9 @@ $(document).ready(function() {
     },
     plotOptions: {
       series: {
-        stacking: 'normal'
+        stacking: 'normal',
+        borderWidth: 0,
+        pointWidth: 40
       }
     },
     legend: {
@@ -89,10 +87,9 @@ $(document).ready(function() {
       borderColor:null,
       reversed: true,
       itemStyle: {
-        color: '#CCCCCC'
+        color: '#BBB'
       }
-    },
-    plotBands: []
+    }
   };
   }
 
@@ -102,7 +99,7 @@ $(document).ready(function() {
 
       var options = createOptions()
       options.chart.renderTo = 'userBarTotal';
-      options.title = { text: 'Total Possible Points' };
+      options.title = { text: 'Total Possible Points', margin: 30 };
       options.xAxis.categories = { text: ' ' };
       options.yAxis.max = data.course_total;
       options.yAxis.plotBands = data.grade_levels;

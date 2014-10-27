@@ -43,11 +43,10 @@
               %i.fi-page-export-csv
               Download Grades
 
-    .small-12.columns
-      - if @assignment.has_groups?
-        = render "group_show"
-      - else
-        = render "individual_show"
+    - if @assignment.has_groups?
+      = render "group_show"
+    - else
+      = render "individual_show"
   - else
     .small-12.columns
       - if @assignment.has_groups?

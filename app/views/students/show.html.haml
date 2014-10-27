@@ -1,6 +1,7 @@
 = content_nav do
   = render "students/student_profile_tabs"
-.small-12.panel.mainContent
+
+.small-12.medium-9.panel.columns.mainContent
     
   %h3.pagetitle
     Current Score:
@@ -25,11 +26,10 @@
             %i.fi-pencil
             Edit #{term_for :student}
   
-  .small-12.medium-9.columns#syllabus
 
-    = render 'students/syllabus'
+  = render 'students/syllabus'
 
-    = render 'students/scoreboard'
+  = render 'students/scoreboard'
 
-  .small-12.medium-3.columns
-    = render "staff_view_student_sidebar"
+.small-12.medium-3.columns
+  = render "staff_view_student_sidebar"

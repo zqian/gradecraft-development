@@ -220,6 +220,10 @@ class Course < ActiveRecord::Base
     course_memberships.average('course_memberships.score').to_i
   end
 
+  def median_course_score
+    course_memberships.median('course_memberships.score').to_i
+  end
+  
   def student_count
     students.count
   end
