@@ -20,9 +20,13 @@ class User < ActiveRecord::Base
       end
     end
 
-    def students_being_graded(course)
+    def students_being_graded(course, team=nil)
       user_ids = CourseMembership.where(course: course, role: "student", auditing: false).pluck(:user_id)
-      User.where(id: user_ids)
+      if team
+        User.where(id: user_ids).select { |student| team.student_ids.include? student.id }
+      else
+        User.where(id: user_ids)
+      end
     end
 
     def students_auditing(course)
@@ -31,7 +35,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  attr_accessor :remember_me, :password, :password_confirmation, :cached_last_login_at, :course_team_ids
+  attr_accessor :remember_me, :password, :password_confirmation, :cached_last_login_at, :course_team_ids, :score
   attr_accessible :username, :email, :password, :password_confirmation,
     :avatar_file_name, :role, :first_name, :last_name, :rank, :user_id,
     :display_name, :private_display, :default_course_id, :last_activity_at,

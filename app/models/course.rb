@@ -15,6 +15,10 @@ class Course < ActiveRecord::Base
     User.students_being_graded(self)
   end
 
+  def students_being_graded_by_team(team)
+    User.students_being_graded(self,team)
+  end
+
   def students_auditing
     User.students_being_graded(self)
   end
@@ -211,7 +215,7 @@ class Course < ActiveRecord::Base
   def average_course_score
     course_memberships.average('course_memberships.score').to_i
   end
-  
+
   def student_count
     students.count
   end
@@ -248,7 +252,7 @@ class Course < ActiveRecord::Base
       course.students.each do |student|
         student_data = []
         student_data << [student.first_name, student.last_name, student.email, student.team_for_course(course).try(:name)]
-        
+
         csv << student_data
       end
     end
