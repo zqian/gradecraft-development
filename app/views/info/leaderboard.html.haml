@@ -37,11 +37,7 @@
           %th{:scope => "col", "data-dynatable-no-sort" => "true", :width => "20%" }
             %span.sr-only Actions
         %tbody
-          - if @team
-            - students = current_course_data.students_for_team(@team)
-          - else
-            - students = current_course.students_being_graded.order_by_high_score
-          - students.each_with_index do |student, index|
+          - @students.each_with_index do |student, index|
             %tr
               %td= index + 1
               %td= link_to student.first_name, student_path(student)
@@ -59,7 +55,7 @@
                   - student.earned_badges_for_course(current_course).each do |badge|
                     %img.has-tip{:src => badge[1].icon, :alt => badge[1].name, :width => "20", :title => badge[1].name, :data => {'tooltip' => true}}
                 %td{:style => "display: none"}
-                  = student.earned_badges.count
+                  = student.earned_badges_for_course(current_course).count
               %td
                 .button-bar
                   %ul.button-group.radius.right
