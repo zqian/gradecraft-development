@@ -1,5 +1,5 @@
 .small-12.panel.mainContent#leaderboard
-  
+
   = content_nav_for "Leaderboard"
 
   %h3.pagetitle#tableCaption= @title
@@ -13,12 +13,12 @@
             Download Grades
 
   - if current_course.has_teams?
-    .clearfix 
+    .clearfix
     .small-12.large-4.medium-6.columns.right
       %label.sr-only{:for => "team_id"}
         Select Team
       = form_tag leaderboard_path, :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
-        = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "– Select #{current_course.team_term} –"
+        = select_tag :team_id, options_for_select(current_course.teams.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "– Select #{current_course.team_term} –"
 
   .columns
     %table.responsive.nofeatures_default_rank_dynatable{"aria-describedby" => "tableCaption"}
@@ -37,15 +37,9 @@
           %th{:scope => "col", "data-dynatable-no-sort" => "true", :width => "20%" }
             %span.sr-only Actions
         %tbody
-          - if @team
-            - students = current_course_data.students_for_team(@team)
-          - else
-            - students = current_course.students.being_graded.order_by_high_score
-          - i = 1
-          - students.each do |student|
+          - @students.each_with_index do |student, index|
             %tr
-              %td
-                = i
+              %td= index + 1
               %td= link_to student.first_name, student_path(student)
               %td= link_to student.last_name, student_path(student)
               %td= points student.cached_score_for_course(current_course)
@@ -61,11 +55,10 @@
                   - student.earned_badges_for_course(current_course).each do |badge|
                     %img.has-tip{:src => badge[1].icon, :alt => badge[1].name, :width => "20", :title => badge[1].name, :data => {'tooltip' => true}}
                 %td{:style => "display: none"}
-                  = student.earned_badges.count
+                  = student.earned_badges_for_course(current_course).count
               %td
                 .button-bar
                   %ul.button-group.radius.right
                     %li= link_to "Dashboard", student_path(student), :class => "button"
                     %li= mail_to student.email, "Email", :class => "button"
                     %li= link_to "Edit", edit_user_path(student), :class => "button"
-            - i += 1

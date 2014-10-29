@@ -1,5 +1,5 @@
 = form_tag edit_status_grades_assignment_path @assignment do
-  %table.responsive.nofeatures_dynatable
+  %table.responsive.nofeatures_default_last_name_dynatable
     %thead
       %tr
         %th First Name
@@ -16,19 +16,11 @@
           %th Submission
         %th
         - if @assignment.release_necessary?
-          %th
-            .button-bar
-              %ul.button-group.right.radius
-                %li
-                  %button.button.select-all.tiny= "Check All"
-                %li
-                  %button.button.select-none.tiny= "Uncheck All"
+          %th.center{"data-dynatable-no-sort" => "true"}
+            %button.button.select-all.tiny= "Check All"
+            %button.button.select-none.tiny= "Uncheck All"
     %tbody
-      - if @team
-        - students = current_course_data.students_for_team(@team)
-      - else
-        - students = current_course_data.students
-      - students.each do |student|
+      - @students.each do |student|
         - grade = current_course_data.grade_for_student_and_assignment(student, @assignment)
         %tr
           %td= link_to student.first_name, student_path(student)
@@ -52,11 +44,11 @@
             %td
               - student.submissions.where(:assignment_id => @assignment).each do |submission|
                 - if submission && grade
-                  = link_to "See Submission", assignment_grade_path(@assignment.id, :student_id => student.id), :class => 'button'
+                  = link_to "See Submission", assignment_grade_path(@assignment.id, :student_id => student.id), :class => 'button radius'
                 - elsif submission
-                  = link_to "See Submission", assignment_grade_path(@assignment.id, :student_id => student.id), :class => 'button'
+                  = link_to "See Submission", assignment_grade_path(@assignment.id, :student_id => student.id), :class => 'button radius'
                 - else
-                  = link_to "Submit", new_assignment_submission_path(@assignment, @submission, :user_id => student.id, :student_type => "User"), :class => 'button'
+                  = link_to "Submit", new_assignment_submission_path(@assignment, @submission, :user_id => student.id, :student_type => "User"), :class => 'button radius'
           %td
             .button-bar
               %ul.button-group.radius.right
@@ -66,9 +58,9 @@
                 - else
                   %li= link_to 'Grade', edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
           - if @assignment.release_necessary?
-            %td.text-center
+            %td
               - if grade.is_graded?
-                = check_box_tag "grade_ids[]", grade.id
+                .center= check_box_tag "grade_ids[]", grade.id
 
   %p
 
@@ -77,7 +69,7 @@
 
     %h3 Auditing #{term_for :students}
 
-    %table.responsive.dynatable
+    %table.responsive.nofeatures_default_last_name_dynatable
       %thead
         %tr
           %th First Name
@@ -93,19 +85,11 @@
             %th Submission
           %th
           - if @assignment.release_necessary?
-            %th
-              .button-bar
-                %ul.button-group.right.radius
-                  %li
-                    %button.select-all.tiny= "Check All"
-                  %li
-                    %button.select-none.tiny= "Uncheck All"
+            %th.center{"data-dynatable-no-sort" => "true"}
+              %button.button.select-all.tiny= "Check All"
+              %button.button.select-none.tiny= "Uncheck All"
       %tbody
-        - if @team
-          - students = current_course_data.auditing_students_for_team(@team)
-        - else
-          - students = current_course_data.auditing_students
-        - students.each do |student|
+        - @auditing.each do |student|
           - grade = current_course_data.grade_for_student_and_assignment(student, @assignment)
           %tr
             %td= link_to student.first_name, student_path(student)
@@ -127,11 +111,11 @@
               %td
                 - student.submissions.where(:assignment_id => @assignment).each do |submission|
                   - if submission && grade
-                    = link_to "See Submission", assignment_grade_path(@assignment.id, :student_id => student.id), :class => 'button'
+                    = link_to "See Submission", assignment_grade_path(@assignment.id, :student_id => student.id), :class => 'button radius'
                   - elsif submission
-                    = link_to "See Submission", assignment_grade_path(@assignment.id, :student_id => student.id), :class => 'button'
+                    = link_to "See Submission", assignment_grade_path(@assignment.id, :student_id => student.id), :class => 'button radius'
                   - else
-                    = link_to "Submit", new_assignment_submission_path(@assignment, @submission, :user_id => student.id, :student_type => "User"), :class => 'button'
+                    = link_to "Submit", new_assignment_submission_path(@assignment, @submission, :user_id => student.id, :student_type => "User"), :class => 'button radius'
             %td
               .button-bar
                 %ul.button-group.right.radius
@@ -141,9 +125,9 @@
                   - else
                     %li= link_to 'Grade', edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
             - if @assignment.release_necessary?
-              %td.text-center
+              %td
                 - if grade.is_graded?
-                  = check_box_tag "grade_ids[]", grade.id
+                  .center= check_box_tag "grade_ids[]", grade.id
 
   - if @assignment.release_necessary? && @assignment.grades.present?
     .right

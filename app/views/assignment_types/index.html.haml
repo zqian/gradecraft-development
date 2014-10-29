@@ -23,7 +23,7 @@
           %th.button-column
             %span.sr-only Actions
         %tbody
-          - current_course_data.assignment_types.each do |assignment_type|
+          - current_course.assignment_types.each do |assignment_type|
             %tr
               %td= link_to assignment_type.name, assignment_type
               %td= assignment_type.points_predictor_display
@@ -31,7 +31,7 @@
               %td
                 .button-bar
                   %ul.button-group.right.radius
-                    %li 
+                    %li
                       %a{:href => assignment_type_path(assignment_type), :class => 'button'}
                         See
                         %span.sr-only= assignment_type.name
@@ -59,7 +59,7 @@
             %th
               = at.name
       %tbody
-        - current_course.students.alpha.each do |student| 
+        - current_course.students.each do |student|
           %tr
             %td= student.first_name
             %td= student.last_name
@@ -68,4 +68,4 @@
                 = points at.score_for_student(student)
                 - if at.student_weightable?
                   = "[#{ at.raw_score_for_student(student)}]"
-                  %span.sr-only= assignment_type.name
+                  %span.sr-only= at.name

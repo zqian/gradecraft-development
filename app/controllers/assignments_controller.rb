@@ -1,5 +1,5 @@
 class AssignmentsController < ApplicationController
-  
+
   before_filter :ensure_staff?, :except => [:feed, :show, :index]
 
   def index
@@ -18,10 +18,18 @@ class AssignmentsController < ApplicationController
     @assignment = current_course.assignments.find(params[:id])
     @title = @assignment.name
     @groups = @assignment.groups
+    
+    @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
+    if @team
+      students = current_course.students_being_graded_by_team(@team)
+    else
+      students = current_course.students_being_graded
+    end
     user_search_options = {}
     user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
-    @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
-    @auditing = current_course.students.auditing.includes(:teams).where(user_search_options).alpha
+    @students = students
+
+    @auditing = current_course.students_auditing.includes(:teams).where(user_search_options)
     @rubric = @assignment.fetch_or_create_rubric
     @metrics = @rubric.metrics
     @score_levels = @assignment.score_levels.order_by_value
@@ -34,7 +42,7 @@ class AssignmentsController < ApplicationController
     @ungraded_submissions_count = @assignment.ungraded_submissions.count
     @ungraded_percentage = @ungraded_submissions_count / @submissions_count rescue 0
     @graded_count = @submissions_count - @ungraded_submissions_count
-    
+
     if current_user_is_student?
       @grades_for_assignment = @assignment.grades_for_assignment(current_student)
       @rubric_grades = RubricGrade.joins("left outer join submissions on submissions.id = rubric_grades.submission_id").where("submissions.student_id =?", current_user[:id])

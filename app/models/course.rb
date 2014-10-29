@@ -11,6 +11,22 @@ class Course < ActiveRecord::Base
     end
   end
 
+  def students_being_graded
+    User.students_being_graded(self)
+  end
+
+  def students_being_graded_by_team(team)
+    User.students_being_graded(self,team)
+  end
+
+  def students_auditing
+    User.students_auditing(self)
+  end
+
+  def students_auditing_by_team(team)
+    User.students_auditing(self,team)
+  end
+
   attr_accessible :courseno, :name,
     :semester, :year, :badge_setting, :team_setting, :team_term, :user_term,
     :user_id, :course_id, :homepage_message, :group_setting,
@@ -203,13 +219,13 @@ class Course < ActiveRecord::Base
   def average_course_score
     course_memberships.average('course_memberships.score').to_i
   end
-  
+
   def student_count
     students.count
   end
 
   def graded_student_count
-    students.being_graded.count
+    students_being_graded.count
   end
 
   def professor
@@ -240,7 +256,7 @@ class Course < ActiveRecord::Base
       course.students.each do |student|
         student_data = []
         student_data << [student.first_name, student.last_name, student.email, student.team_for_course(course).try(:name)]
-        
+
         csv << student_data
       end
     end

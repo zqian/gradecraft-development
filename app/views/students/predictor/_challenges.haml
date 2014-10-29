@@ -5,7 +5,7 @@
       .assignmentType
         %span.badge.badge-warning.pull-right #{current_student.team_score(current_course)} points
       .assignment.clear
-        - current_course_data.challenges.each do |challenge|
+        - current_course.challenges.each do |challenge|
           %span.assignmentName= challenge.name
           %span.earned= points challenge.challenge_grade_for_team(current_student.team_for_course(current_course)).try(:score)
           = " / #{points challenge.point_total} points"

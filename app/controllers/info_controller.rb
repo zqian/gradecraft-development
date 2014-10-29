@@ -6,6 +6,7 @@ class InfoController < ApplicationController
   # Displays instructor dashboard, with or without Team Challenge dates
   def dashboard
     @grade_scheme_elements = current_course.grade_scheme_elements
+    #checking to see if the course uses the interactive timeline - if not sending students to their syllabus, and the staff to top 10
     if ! current_course.use_timeline?
       if current_user_is_student?
         redirect_to syllabus_path
@@ -24,13 +25,9 @@ class InfoController < ApplicationController
     @title = "Awarded #{term_for :badges}"
   end
 
-  # Displaying all ungraded (but submitted) assignments in the system, needs to have a new section that highlights "Graded-not-Released"
+  # Displaying all ungraded, graded but unreleased, and in progress assignment submissions in the system"
   def grading_status
     @title = "Grading Status"
-    @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
-    @students = current_course.students
-    user_search_options = {}
-    user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
     @ungraded_submissions = current_course.submissions.ungraded
     @unreleased_grades = current_course.grades.not_released
     @in_progress_grades = current_course.grades.in_progress
@@ -79,6 +76,16 @@ class InfoController < ApplicationController
     @title = "#{current_course.weight_term} Choices"
     @assignment_types = current_course.assignment_types
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
+    user_search_options = {}
+    user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
+
+    if @team
+      students = current_course.students_being_graded_by_team(@team)
+    else
+      students = current_course.students_being_graded
+    end
+    @students = students
+    @auditing = current_course.students_auditing
   end
 
   # Display all grades in the course in list form
@@ -92,7 +99,15 @@ class InfoController < ApplicationController
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
     user_search_options = {}
     user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
-    @students = current_course.students.being_graded.order_by_high_score.includes(:earned_badges, :teams)
-  end
 
+    if @team
+      students = current_course.students_being_graded_by_team(@team)
+    else
+      students = current_course.students_being_graded
+    end
+    students.each do |s|
+      s.score = s.cached_score_for_course(current_course)
+    end
+    @students = students.to_a.sort_by {|student| student.score}.reverse
+  end
 end

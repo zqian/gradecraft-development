@@ -6,7 +6,7 @@
 
   .small-12.columns
     %ul
-      - @group.students.alpha.each do |s|
+      - @group.students.each do |s|
         %li= link_to s.name, student_path(s)
 
       - if @group.proposals.present?

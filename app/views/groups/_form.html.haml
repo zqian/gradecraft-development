@@ -20,9 +20,9 @@
         = f.association :students, :collection => @other_students, as: :select, :label => "#{term_for :students}"
         %span.italic= "You (#{current_student.name }) will be automatically included in this group."
       - elsif current_user_is_student?
-        = f.association :students, :collection => current_course_data.students, as: :select, :label => "#{term_for :students}"
+        = f.association :students, :collection => current_course.students, as: :select, :label => "#{term_for :students}"
       - if current_user_is_staff?
-        = f.association :students, :collection => current_course_data.students, as: :select, :label => "#{term_for :students}"
+        = f.association :students, :collection => current_course.students, as: :select, :label => "#{term_for :students}"
       %br
       .form_label{:id => "txtStudentName"} Enter a fellow student's name to add them to this #{term_for :group}. Only one student needs to create the #{term_for :group}, after which all #{term_for :group} members will be able to submit work, see submitted materials, and see instructor grades and feedback.
 

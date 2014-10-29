@@ -12,7 +12,6 @@ class User < ActiveRecord::Base
     def with_role_in_course(role, course)
       user_ids = CourseMembership.where(course: course, role: role).pluck(:user_id)
       User.where(id: user_ids)
-      #User.where(id: CourseMembership.where(course: course, role: role).pluck(:user_id))
     end
 
     ROLES.each do |role|
@@ -20,9 +19,23 @@ class User < ActiveRecord::Base
         with_role_in_course(role,course)
       end
     end
+
+    def students_being_graded(course, team=nil)
+      user_ids = CourseMembership.where(course: course, role: "student", auditing: false).pluck(:user_id)
+      if team
+        User.where(id: user_ids).select { |student| team.student_ids.include? student.id }
+      else
+        User.where(id: user_ids)
+      end
+    end
+
+    def students_auditing(course, team=nil)
+      user_ids = CourseMembership.where(course: course, role: "student", auditing: true).pluck(:user_id)
+      User.where(id: user_ids)
+    end
   end
 
-  attr_accessor :remember_me, :password, :password_confirmation, :cached_last_login_at, :course_team_ids
+  attr_accessor :remember_me, :password, :password_confirmation, :cached_last_login_at, :course_team_ids, :score
   attr_accessible :username, :email, :password, :password_confirmation,
     :avatar_file_name, :role, :first_name, :last_name, :rank, :user_id,
     :display_name, :private_display, :default_course_id, :last_activity_at,
@@ -33,11 +46,8 @@ class User < ActiveRecord::Base
     :student_academic_history_attributes, :team_role, :course_memberships_attributes,
     :character_profile, :team_id, :lti_uid, :course_team_ids
 
-  scope :alpha, -> { order 'last_name ASC' }
-  scope :order_by_high_score, -> { joins(:course_memberships).order 'course_memberships.score DESC' }
-  scope :order_by_low_score, -> { joins(:course_memberships).order 'course_memberships.score ASC' }
-  scope :being_graded, -> { joins(:course_memberships).where('course_memberships.auditing IS FALSE') }
-  scope :auditing, -> { joins(:course_memberships).where('course_memberships.auditing IS TRUE') }
+  scope :order_by_high_score, -> { includes(:course_memberships).order 'course_memberships.score DESC' }
+  scope :order_by_low_score, -> { includes(:course_memberships).order 'course_memberships.score ASC' }
 
   has_many :course_memberships, :dependent => :destroy
   has_one :student_academic_history, :foreign_key => :student_id, :dependent => :destroy, :class_name => 'StudentAcademicHistory'
@@ -70,7 +80,7 @@ class User < ActiveRecord::Base
   has_many :teams, :through => :team_memberships do
     def set_for_course(course_id, ids)
       other_team_ids = proxy_association.owner.teams.where("course_id != ?", course_id).pluck(:id)
-      if  proxy_association.owner.role == "student"
+      if proxy_association.owner.course_memberships.where("course_id = ?", course_id).first.role == "student"
         proxy_association.owner.team_ids = other_team_ids | [ids]
       else
         if ids.present?
@@ -232,7 +242,7 @@ class User < ActiveRecord::Base
   #I think this may be a little bit faster - ch
   def scores_for_course(course)
      user_score = course_memberships.where(:course_id => course, :auditing => FALSE).pluck('score')
-     scores = course.students.being_graded.pluck('score')
+     scores = CourseMembership.where(course: course).pluck(:score)
      return {
       :scores => scores,
       :user_score => user_score

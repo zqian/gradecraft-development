@@ -26,7 +26,7 @@ class EarnedBadgesController < ApplicationController
     @badge = current_course.badges.find(params[:badge_id])
     @title = "Award #{@badge.name}"
     @earned_badge = @badge.earned_badges.new
-    @students = current_course.students.alpha
+    @students = current_course.students
   end
 
   # Allows the student to change whether or not they've shared having earned this badge with the class
@@ -90,7 +90,7 @@ class EarnedBadgesController < ApplicationController
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
     user_search_options = {}
     user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
-    @students = current_course.students.includes(:teams).where(user_search_options).alpha
+    @students = current_course.students.includes(:teams).where(user_search_options)
     if @badge.can_earn_multiple_times?
       @earned_badges = @students.map do |s|
         @badge.earned_badges.new(:student => s, :badge => @badge)
@@ -110,7 +110,7 @@ class EarnedBadgesController < ApplicationController
       @title = "Quick Award #{@badge.name}"
       user_search_options = {}
       user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
-      @students = current_course.students.includes(:teams).where(user_search_options).alpha
+      @students = current_course.students.includes(:teams).where(user_search_options)
       if @badge.can_earn_multiple_times?
         @earned_badges = @students.map do |s|
           @badge.earned_badges.new(:student => s, :badge => @badge)

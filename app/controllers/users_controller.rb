@@ -10,7 +10,7 @@ class UsersController < ApplicationController
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
     user_search_options = {}
     user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
-    @users = current_course.users.includes(:teams, :earned_badges).where(user_search_options).alpha
+    @users = current_course.users.includes(:teams, :earned_badges).where(user_search_options)
     respond_to do |format|
       format.html
       format.json { render json: @users }
@@ -27,7 +27,7 @@ class UsersController < ApplicationController
 
   def new
     @title = "Create a New User"
-    @teams = current_course.teams.alpha
+    @teams = current_course.teams
     @courses = Course.all
     @user = current_course.users.new
     respond_with @user
@@ -35,7 +35,7 @@ class UsersController < ApplicationController
 
   def edit
     session[:return_to] = request.referer
-    @teams = current_course.teams.alpha
+    @teams = current_course.teams
     @user = current_course.users.find(params[:id])
     if @user.is_staff?(current_course)
       @courses = Course.all
@@ -67,7 +67,7 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     @course_membership = @user.course_memberships.where(course_id: current_course).first
-    @teams = current_course.teams.alpha
+    @teams = current_course.teams
     @user.teams.set_for_course(current_course.id, params[:user][:course_team_ids])
     @user.update_attributes(params[:user])
     if @user.save && @user.is_student?(current_course)

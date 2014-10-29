@@ -5,7 +5,7 @@
       .right.label.radius #{points current_student.earned_badge_score} possible points
     .slide-panel
       .row
-      - current_course_data.badges.each do |badge|
+      - current_course.badges.each do |badge|
         - if badge.point_total.present? && badge.point_total > 0
           .small-12.medium-3.columns.predictor_badge
             - if current_student_data.earned_badge?(badge)

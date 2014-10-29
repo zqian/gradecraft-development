@@ -15,7 +15,7 @@
           %th #{term_for :team}
           %th.button-column
       %tbody
-        - current_course.users.alpha.each do |user|
+        - current_course.users.each do |user|
           - if user.is_staff?(current_course)
             %tr
               %td= link_to user.first_name, staff_path(user)
