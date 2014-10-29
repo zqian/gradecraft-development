@@ -242,8 +242,6 @@ class User < ActiveRecord::Base
   #I think this may be a little bit faster - ch
   def scores_for_course(course)
      user_score = course_memberships.where(:course_id => course, :auditing => FALSE).pluck('score')
-     #TODO This needs to be fixed
-     #scores = course.students_being_graded.pluck('score')
      scores = CourseMembership.where(course: course).pluck(:score)
      return {
       :scores => scores,
