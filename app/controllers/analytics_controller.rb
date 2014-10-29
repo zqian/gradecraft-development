@@ -24,9 +24,17 @@ class AnalyticsController < ApplicationController
   # Displaying the top 10 and bottom 10 students for quick overview
   def top_10
     @title = "Top 10/Bottom 10"
-    @students = current_course.students_being_graded
-    @top_ten_students = @students.order_by_high_score.limit(10)
-    @bottom_ten_students = @students.order_by_low_score.limit(10)
+    students = current_course.students_being_graded
+    students.each do |s|
+      s.score = s.cached_score_for_course(current_course)
+    end
+    @students = students.to_a.sort_by {|student| student.score}.reverse
+    if @students.length < 20
+      @top_ten_students = @bottom_ten_students = []
+    else
+      @top_ten_students = @students[0..9]
+      @bottom_ten_students = @students[-10..-1]
+    end
   end
 
   # Displaying per assignment summary outcome statistics
