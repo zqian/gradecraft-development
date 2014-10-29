@@ -51,7 +51,7 @@
 
   .content {
     border-top-right-radius: $global-radius;
-    background-color: #eee;
+    background-color: $light-grey;
     padding: 1rem 0;
     border-bottom-right-radius: $global-radius;
     border-bottom-left-radius: $global-radius;
@@ -72,28 +72,10 @@
     border-bottom-left-radius:  $global-radius;
   }
 
-  dl.tabs dd {
-    border-top-right-radius: $global-radius;
-    border-top-left-radius: $global-radius;
-    background-color: $primary-color-3 !important;
-  }
-
   dl.tabs dd > a {
-    border-collapse: true !important;
-    color: #FFF;
-    font-size: 100%;
-    text-transform: none;
+    margin: 0 !important;
   }
 
-   dl.tabs dd:hover {
-    background-color: darken($primary-color-3, 10%);
-    color: #000 !important;
-   }
-
-  dl.tabs dd.active > a {
-    background-color: #eee !important;
-    color: #000 !important;
-  }
 
   .right {
     margin-right: 1.25rem;
