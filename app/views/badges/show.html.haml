@@ -21,7 +21,16 @@
             %i.fi-results-demographics
             Quick Award
 
-  .small-12.columns
+  - if current_course.has_teams?
+    .clearfix
+    .small-12.medium-4.right.columns
+      = form_tag badge_path(@badge), :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
+        = hidden_field_tag :badge_id, @badge.id
+        %label.sr-only{:for => "team_id"}
+          Select Team
+        = select_tag :team_id, options_for_select(current_course.teams.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
+
+  .small-12.columns.columns-no-padding_right
     //badge icon, total awarded, and points
     .panel.small-12.medium-2.columns.text-center
       %img{:src => @badge.icon, :alt => @badge.name, :width => "100" }
@@ -65,11 +74,7 @@
               %th{"data-dynatable-sorts" => "dateStamp"} Date Awarded
               %th{:style => "display: none"} Date Stamp
           %tbody
-            - if @team
-              - students = current_course_data.students_for_team(@team)
-            - else
-              - students = current_course_data.students
-            - students.each do |student|
+            - @students.each do |student|
               %tr
                 %td= link_to student.first_name, student_path(student)
                 %td= link_to student.last_name, student_path(student)

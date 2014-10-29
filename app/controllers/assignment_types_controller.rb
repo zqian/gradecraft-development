@@ -88,9 +88,17 @@ class AssignmentTypesController < ApplicationController
   def all_grades  
     @assignment_type = current_course.assignment_types.find(params[:id])
     @title = "#{@assignment_type.name} Grade Patterns"
+    
+    @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
+    if @team
+      students = current_course.students_being_graded_by_team(@team)
+    else
+      students = current_course.students_being_graded
+    end
     user_search_options = {}
     user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
-    @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
+    @students = students
+    
   end
 
   #delete the specified assignment type

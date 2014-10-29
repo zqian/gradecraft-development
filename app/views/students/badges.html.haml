@@ -28,7 +28,7 @@
               - if current_course.shared_badges?
                 %th Share this with the class?
           %tbody
-            - current_course_data.badges.each do |badge|
+            - current_course.badges.each do |badge|
               %tr
                 %td.center
                   %img{ :src => badge.icon, :alt => badge.name, :width => "100" }

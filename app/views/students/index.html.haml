@@ -23,19 +23,13 @@
   .small-12.columns
 
     / Display the table of course students, their leaderboard display, their team affiation, their score and their grade
-    - if @team
-      = render 'students_table', :course => current_course, :students => current_course_data.students_for_team(@team)
-    - else
-      = render 'students_table', :course => current_course, :students => current_course_data.students
+    = render 'students_table', :course => current_course, :students => @students
 
   .clearfix
 
-  - if (! @team && current_course_data.students_auditing.present?) || (@team && current_course_data.students_auditing_for_team(@team).present?)
+  - if @auditing
     / Display the table of auditing students if they're present
     .pagetitle= "Auditing Roster"
 
     .small-12.columns
-      - if @team
-        = render 'students_table', :course => current_course, :students => current_course_data.students_auditing_for_team(@team)
-      - else
-        = render 'students_table', :course => current_course, :students => current_course_data.students_auditing
+      = render 'students_table', :course => current_course, :students => @auditing

@@ -20,7 +20,11 @@ class Course < ActiveRecord::Base
   end
 
   def students_auditing
-    User.students_being_graded(self)
+    User.students_auditing(self)
+  end
+
+  def students_auditing_by_team(team)
+    User.students_auditing(self,team)
   end
 
   attr_accessible :courseno, :name,

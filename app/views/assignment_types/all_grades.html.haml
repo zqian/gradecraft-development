@@ -61,13 +61,7 @@
                 - if assignment.point_total > 0
                   %th.sortable{"data-sort" => "int"}= assignment.due_at.strftime("%b %d") if assignment.due_at.present?
           %tbody
-            - if @team
-              // Checking to see if a team is declared, if it is only displaying students for that team
-              - students = current_course_data.students_for_team(@team)
-            - else
-              // otherwise displaying students from the entire class
-              - students = current_course_data.students
-            - students.each do |student|
+            - @students.each do |student|
               %tr
                 %td= link_to student.first_name, student_path(student)
                 %td= link_to student.last_name, student_path(student)

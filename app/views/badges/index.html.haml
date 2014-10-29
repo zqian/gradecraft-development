@@ -26,7 +26,7 @@
           %th Visible to Students
           %th.button-column
       %tbody
-        - current_course_data.badges.each do |badge|
+        - current_course.badges.each do |badge|
           %tr
             %td.center
               %img{ :src => badge.icon, :alt => badge.name, :width => "100" }

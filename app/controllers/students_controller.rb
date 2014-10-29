@@ -11,8 +11,13 @@ class StudentsController < ApplicationController
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
     user_search_options = {}
     user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
-    @auditing = current_course.students.auditing.includes(:teams).where(user_search_options)
-    @students = current_course.students_being_graded
+    if @team
+      students = current_course.students_being_graded_by_team(@team)
+    else
+      students = current_course.students_being_graded
+    end
+    @students = students
+    @auditing = current_course.students_auditing.includes(:teams).where(user_search_options)
     respond_to do |format|
       format.html
       format.csv { send_data @students.csv_for_course(current_course) }

@@ -10,7 +10,7 @@
         %th Point total
 
   %tbody
-    - current_course_data.challenges.each do |challenge|
+    - current_course.challenges.each do |challenge|
       - if challenge.visible?
         %tr
           %td

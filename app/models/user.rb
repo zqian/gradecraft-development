@@ -29,7 +29,7 @@ class User < ActiveRecord::Base
       end
     end
 
-    def students_auditing(course)
+    def students_auditing(course, team=nil)
       user_ids = CourseMembership.where(course: course, role: "student", auditing: true).pluck(:user_id)
       User.where(id: user_ids)
     end
@@ -80,7 +80,7 @@ class User < ActiveRecord::Base
   has_many :teams, :through => :team_memberships do
     def set_for_course(course_id, ids)
       other_team_ids = proxy_association.owner.teams.where("course_id != ?", course_id).pluck(:id)
-      if  proxy_association.owner.role == "student"
+      if proxy_association.owner.course_memberships.where("course_id = ?", course_id).first.role == "student"
         proxy_association.owner.team_ids = other_team_ids | [ids]
       else
         if ids.present?
@@ -242,9 +242,10 @@ class User < ActiveRecord::Base
   #I think this may be a little bit faster - ch
   def scores_for_course(course)
      user_score = course_memberships.where(:course_id => course, :auditing => FALSE).pluck('score')
-     scores = course.students_being_graded.pluck('score')
+     #TODO This needs to be fixed
+     #scores = course.students_being_graded.pluck('score')
      return {
-      :scores => scores,
+      #:scores => scores,
       :user_score => user_score
      }
   end

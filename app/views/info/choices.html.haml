@@ -22,11 +22,7 @@
           %th #{current_course.weight_term.pluralize} Awarded?
           %th.button-column
       %tbody
-        - if @team
-          - students = current_course_data.students_for_team(@team)
-        - else
-          - students = current_course_data.students
-        - students.each do |student|
+        - @students.each do |student|
           %tr
             %td= link_to student.first_name, student_path(student)
             %td= link_to student.last_name, student_path(student)
@@ -41,7 +37,7 @@
                   %li= link_to "Dashboard", student_path(student), :class => "button"
                   %li= link_to "Edit #{term_for :weights}", assignment_type_weights_path(:student_id => student.id), :class => "button"
 
-  - if current_course_data.students_auditing.present?
+  - if @auditing.present?
     .clearfix
 
     .small-12
@@ -59,11 +55,7 @@
             %th #{current_course.weight_term.pluralize} Awarded?
             %th{:width => '350'}
         %tbody
-          - if @team
-            - students = current_course_data.students_auditing_for_team(@team)
-          - else
-            - students = current_course_data.students_auditing
-          - students.each do |student|
+          - @auditing.each do |student|
             %tr
               %td= link_to student.first_name, student_path(student)
               %td= link_to student.last_name, student_path(student)

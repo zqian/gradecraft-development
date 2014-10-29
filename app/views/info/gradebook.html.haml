@@ -12,7 +12,7 @@
           %tr
             %th{:scope => "col"} First Name
             %th{:scope => "col"} Last Name
-            - for assignment in current_course_data.assignments
+            - for assignment in current_course.assignments
               %th{:scope => "col"}= assignment.name
             - if current_course.valuable_badges?
               %th{:scope => "col"} Badge Score
@@ -20,11 +20,11 @@
             %th{:scope => "col"} Final Grade
             %th{:scope => "col"} #{current_course.user_term}
         %tbody
-          - current_course_data.students.each do |student|
+          - current_course.students.each do |student|
             %tr
               %td= link_to student.first_name, student_path(student)
               %td= link_to student.last_name, student_path(student)
-              - current_course_data.assignments.each do |assignment|
+              - current_course.assignments.each do |assignment|
                 - assignment.grade_for_student(student).tap do |grade|
                   - if grade
                     %td= link_to "#{grade.score}", edit_assignment_grade_path(assignment, :student_id => student.id)

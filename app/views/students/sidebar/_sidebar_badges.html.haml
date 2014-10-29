@@ -2,7 +2,7 @@
   %h3= term_for :badges
   %hr
   %ul.small-block-grid-6.medium-block-grid-4
-    - current_course_data.badges.each do |badge|
+    - current_course.badges.each do |badge|
       - if current_student_data.earned_badge?(badge)
         %li
           - if ! current_course.valuable_badges? || ! badge.point_total.present?
