@@ -318,7 +318,7 @@ class User < ActiveRecord::Base
   end
 
   def grade_level_for_course(course)
-    course.grade_level_for_score(cached_score_for_course(course))
+    Course.find(course.id).grade_level_for_score(cached_score_for_course(course))
   end
 
   def grade_letter_for_course(course)
@@ -326,23 +326,24 @@ class User < ActiveRecord::Base
   end
 
   def next_element_level(course)
-    n = 1
-    stop = 0
-    level = ''
+    next_element = nil
     course.grade_scheme_elements.order_by_low_range.each do |element|
-      n += 1
-      if n == stop
-        level = element.level
+      if (element.high_range >= cached_score_for_course(course)) && (cached_score_for_course(course) >= element.low_range)
+        next_element = element.next
       end
-      if element.high_range >= cached_score_for_course(course) && cached_score_for_course(course) >= element.low_range
-        stop = n + 1
+      if next_element.nil?
+        next_element = course.grade_scheme_elements.order_by_low_range.first
       end
     end
-    if level == ''
-      return false
-    else
-      return level
-    end
+    return next_element
+  end
+
+  def points_to_next_level(course)
+    next_element_level(course).low_range - cached_score_for_course(course)
+  end
+
+  def won(course)
+    Course.find(course.id).grade_scheme_elements.order_by_high_range.first.high_range < cached_score_for_course(course)
   end
 
   def point_total_for_course(course)
