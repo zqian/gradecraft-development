@@ -163,7 +163,7 @@ class Assignment < ActiveRecord::Base
   def median
     sorted_grades = grades.graded_or_released.pluck('score').sort
     len = sorted_grades.length
-    return (sorted_grades[(len - 1) / 2] + sorted_grades[len / 2]) / 2.0
+    return (sorted_grades[(len - 1) / 2] + sorted_grades[len / 2]) / 2
   end
 
   #Checking to see if an assignment is individually graded 

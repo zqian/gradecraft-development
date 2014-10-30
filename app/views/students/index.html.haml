@@ -17,7 +17,7 @@
 
   .clearfix
 
-  - if @auditing
+  - if @auditing.count > 0
     / Display the table of auditing students if they're present
     %h4.subtitle= "Auditing Roster"
 

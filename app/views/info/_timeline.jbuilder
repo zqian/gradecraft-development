@@ -13,11 +13,11 @@ json.set! :timeline do
   json.set! :date do
     json.array! @events do |event|
       if event.open_at
-        json.startDate event.open_at.strftime("%Y,%m,%d")
+        json.startDate event.open_at
       elsif event.due_at
-        json.startDate event.due_at.strftime("%Y,%m,%d")
+        json.startDate event.due_at
       end
-      json.endDate event.due_at.strftime("%Y,%m,%d") if event.due_at
+      json.endDate event.due_at if event.due_at
       json.headline event.name
       json.text event.description
       json.set! :asset do
