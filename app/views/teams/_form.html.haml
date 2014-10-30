@@ -1,7 +1,7 @@
 = simple_form_for @team do |f|
   .small-12.medium-8.columns.panel
     
-    %h4.bold Basic Settings
+    %h4.uppercase Basic Info
     .small-12.medium-8.columns
       = f.label :name, "#{current_course.team_term} Name"
       = f.text_field :name
@@ -17,7 +17,7 @@
 
   .small-12.medium-4.columns.columns-no-padding_right
     .panel
-      %h4.bold Leaderboard Settings
+      %h4.uppercase Leaderboard Settings
       .small-12
         %label.checkbox{ :for => "teams_leaderboard" }
           = f.label :teams_leaderboard, "#{term_for :team} Leaderboard Display"

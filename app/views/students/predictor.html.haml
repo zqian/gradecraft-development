@@ -26,8 +26,6 @@
 
       .clearfix
 
-    %hr
-
     #predictorPage{ 'data-student-name' => current_student.name, 'data-course-total' => current_course.total_points }
       %ul.slides.small-12.columns
         - if current_user_is_staff?

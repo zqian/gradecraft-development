@@ -85,4 +85,4 @@ $("#team_student_ids").select2({
 // Initializing highcharts table data, currently used to display team charts
 $('table.highchart').highchartTable();
 
-$(".gradePredictor").sticky({topSpacing:35});
+$(".gradePredictor").sticky({topSpacing:55});

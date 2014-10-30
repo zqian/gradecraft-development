@@ -13,12 +13,15 @@
             Edit #{term_for :group} 
 
   .small-12.columns
-    .label.right.radius
-      Status:
-      - if @group.approved.present?
-        = @group.approved
+    %h4
+      - if @group.approved?
+        .label.right.radius.success
+          = "Status: #{@group.approved}"
       - else
-        Pending
+        .label.right.radius.alert
+          %span.has-tip{:title => "This #{term_for :group} must be approved by your instructor before you can proceed", :data => {'tooltip' => true}}
+            %i.fi-flag
+            Status: Pending 
 
     .small-12.medium-3.columns
       %h4 #{term_for :assignments}: 

@@ -25,15 +25,15 @@
           - if @assignment.grade_checkboxes?
             %thead
               %tr
-                %th{:style => "text-align: right"}= "#{term_for :student}"
+                %th{:style => "text-align: right", :width => "20%"}= "#{term_for :student}"
                 %th.center{:align => "center", :scope => "col", "data-dynatable-no-sort" => "true", :width => "15%" } 
                   %span.sr-only Check/Uncheck
                   %button.button.select-all.tiny= "Check All"
                   %button.button.select-none.tiny= "Uncheck All"
           - @grades.each_with_index do |grade, i|
             %tr
-              %td{:style => "text-align: right"}= link_to grade.student.name, student_path(grade.student)
-              %td.center
+              %td{:style => "text-align: right", :width => "20%"}= link_to grade.student.name, student_path(grade.student)
+              %td.center{:style => "text-align: right"}
                 = f.simple_fields_for :grades, grade do |gf|
                   = gf.hidden_field :graded_by_id, :value => current_user.id
                   - if !grade.status
@@ -59,12 +59,11 @@
                       = gf.check_box :raw_score, {}, @assignment.point_total, nil
                     - else
                       - if grade.persisted? && (grade.status == "Graded" || grade.status == "Released")
-                        %td
-                          = gf.text_field :raw_score, data: {autonumeric: true, "m-dec" => "0"}
+                        = gf.text_field :raw_score, data: {autonumeric: true, "m-dec" => "0"}
 
                       - else
-                        %td= gf.text_field :raw_score, :value => nil, data: {autonumeric: true, "m-dec" => "0"}
-                        %td= gf.label :raw_score, "/ #{points @assignment.point_total}"
+                        = gf.text_field :raw_score, :value => nil, data: {autonumeric: true, "m-dec" => "0"}
+                    %td{:style => "text-align: right", :width => "20%"}= gf.label :raw_score, "/ #{points @assignment.point_total}"
 
           - if @auditors.present?
             %tr

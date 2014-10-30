@@ -7,7 +7,7 @@
     - if current_course.assignment_weight_open? || current_user_is_staff?
       = simple_form_for @form, as: :student, url: assignment_type_weights_path, method: :put do |f|
         .panel.assignment_weights
-          %h4.bold Rules of The Game
+          %h4 RULES OF THE GAME
           %ul 
             - if current_course.assignment_weight_close_at?
               %li You have until #{current_course.try(:assignment_weight_close_at).strftime("%A, %B %d, %Y, at %H:%M%p")} to make your #{(term_for :weight).titleize} decision

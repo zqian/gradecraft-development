@@ -5,6 +5,7 @@
   = simple_form_for(@challenge) do |f|
     .small-12.large-4.columns.columns-no-padding_right.right
       .panel
+        %h4.uppercase SETTINGS
         .small-12
           %label.checkbox{ :for => "visible" }
             = f.label :visible, "Visible to students?"
@@ -23,7 +24,7 @@
             .form_label Do you want to release all grades at once? This is particularly useful for situations where extensive feedback is important.
 
     .small-12.medium-8.columns.panel
-      %h4.bold Basic Settings
+      %h4.uppercase Basic Info
 
       .small-12.large-6.columns
         = f.label :name
@@ -42,13 +43,13 @@
         = f.input :due_at, as: :string, :include_blank => true, :input_html => { :class => 'datetimepicker', :value => @challenge.try(:due_at) }
 
     .small-12.medium-8.columns.textarea.panel
-      %h4.bold Description
+      %h4.uppercase Description
 
       = f.bootsy_area :description
       .form_label What do the #{term_for :teams} need to do to succeed?
 
     .small-12.medium-8.panel
-      %h4.bold Grade Levels
+      %h4.uppercase Grade Levels
       .small-12.columns
         .challenge-score-levels
           %p.hint Example: You could create three levels to produce a quick grading scheme for just this #{term_for :challenge} - Complete (5000 points), Finalist (7000 points), and Winner (10,000 points). These levels will then show in the quick grade, and when students are setting goals in the grade predictor.

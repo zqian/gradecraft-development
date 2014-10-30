@@ -27,8 +27,6 @@
       - if assignment_type.predictor_description?
         .small-10.columns
           %p= raw assignment_type.predictor_description
-        .columns
-          %hr
 
       .small-12.columns
 
@@ -89,6 +87,14 @@
                   %td
                     - if current_student.group_for_assignment(assignment).present?
                       = link_to "See Group", group_path(current_student.group_for_assignment(assignment)), :class => "button tiny radius"
+                      - if current_student.group_for_assignment(assignment).approved?
+                        .label.right.radius.success
+                          = "Status: #{@group.approved}"
+                      - else
+                        .label.right.radius.alert
+                          %span.has-tip{:title => "This #{term_for :group} must be approved by your instructor before you can proceed", :data => {'tooltip' => true}}
+                            %i.fi-flag
+                            Status: Pending 
                       - if assignment.accepts_submissions?
                         = render "students/group_submissions", assignment: assignment, group: current_student.group_for_assignment(assignment)
                     - else

@@ -1,7 +1,7 @@
 = simple_form_for @user do |f|
 
   .panel
-    %h4.bold= "User Profile"
+    %h4.uppercase= "User Profile"
     .small-12.medium-4.columns
       = f.label :first_name
       = f.text_field :first_name
@@ -35,7 +35,7 @@
   - if current_user_is_staff?
 
     .panel
-      %h4.bold= "Course Settings"
+      %h4.uppercase= "Course Settings"
 
       - if current_course.has_teams? && @user.is_student?(current_course)
         .small-12.medium-4.columns

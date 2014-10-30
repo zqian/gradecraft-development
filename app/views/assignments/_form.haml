@@ -6,6 +6,7 @@
 
     .small-12.large-4.columns.columns-no-padding_right.right
       .panel
+        %h4 SETTINGS
         .small-12
           %label.checkbox{ :for => "visible" }
             = f.label :visible, "Visible to students"
@@ -64,7 +65,7 @@
             .form_label Can #{term_for :students} see this #{term_for :assignment} in the grade predictor?
 
     .small-12.large-8.columns.panel
-      %h4.bold Basic Settings
+      %h4.uppercase Basic Settings
       .small-12
         .small-12.large-8.columns
           = f.label :assignment_type, "#{term_for :assignment} Type"
@@ -119,7 +120,7 @@
     .small-12.large-4.columns.right.columns-no-padding_right
 
       .panel
-        %h4.bold Timeline
+        %h4.uppercase Timeline
           
         .small-12
           = f.label :media, "Image/Video"
@@ -138,7 +139,7 @@
           = f.text_field :media_caption
     
     .small-12.medium-8.textarea.panel
-      %h4.bold Assignment Description
+      %h4.uppercase Assignment Description
       = f.bootsy_area :description
       .form_label 
         %span This will be shown to students on their dashboard, and when they submit their assignment.
@@ -146,7 +147,7 @@
     .clearfix
 
     .small-12.large-8.columns.panel
-      %h4.bold Grade Levels
+      %h4.uppercase Grade Levels
       .small-12.columns
         .assignment-score-levels
           %p.hint Example: You could create three levels to produce a quick grading scheme for just this #{term_for :assignment} - Complete (5000 points), Finalist (7000 points), and Winner (10,000 points). These levels will then show in the quick grade, and when students are setting goals in the grade predictor.
