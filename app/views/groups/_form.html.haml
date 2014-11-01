@@ -1,6 +1,13 @@
 .small-12.columns
   = simple_form_for @group do |f|
 
+    - if @group.errors.any? 
+      .alert-box.alert.radius
+        .italic= "#{pluralize(@group.errors.count, "error")} prohibited this group from being saved:"
+        %ul
+          - @group.errors.full_messages.each do |msg|
+            %li= msg
+
     .small-12.panel
       %h4.uppercase= "#{term_for :group} Name"
       = f.text_field :name
@@ -8,7 +15,7 @@
     - if current_user_is_staff? && @group.persisted?
       .small-12.medium-4
         = f.label :approved, "Status"
-        = f.select :approved, [[], ["Approved"], ["Rejected"]]
+        = f.select :approved, [["Pending"], ["Approved"], ["Rejected"]]
         .form_label If rejected, this #{term_for :group} will be unable to submit any further work for these assignments
 
     .small-12.panel

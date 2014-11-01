@@ -31,11 +31,13 @@
 
 
     .small-12.columns
-      - @group.proposals.order_by_creation_date.each_with_index do |p, index|
-        .panel.callout
-          %h4.bold= "Proposal ##{i}: #{p.title}" 
-          %h6= "Created: #{p.created_at}"
-          %p= p.proposal
+      - if @group.proposals.present?
+        - @group.proposals.order_by_creation_date.each_with_index do |p, index|
+          - if p.proposal.present?
+            .panel.callout
+              %h4.bold= "Proposal ##{index + 1}: #{p.title}" 
+              %h6= "Created: #{p.created_at}"
+              %p= p.proposal
 
 
       = simple_form_for @group do |f|

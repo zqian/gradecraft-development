@@ -1,4 +1,11 @@
 .small-12
+  - if @assignment.errors.any? 
+    .alert-box.alert.radius
+      .italic= "#{pluralize(@assignment.errors.count, "error")} prohibited this #{term_for :assignment} from being saved:"
+      %ul
+        - @assignment.errors.full_messages.each do |msg|
+          %li= msg
+
   .small-12.panel.columns
     = render 's3_uploader'
   
@@ -65,7 +72,7 @@
             .form_label Can #{term_for :students} see this #{term_for :assignment} in the grade predictor?
 
     .small-12.large-8.columns.panel
-      %h4.uppercase Basic Settings
+      %h4.uppercase Basic Info
       .small-12
         .small-12.large-8.columns
           = f.label :assignment_type, "#{term_for :assignment} Type"

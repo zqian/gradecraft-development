@@ -75,6 +75,7 @@ hr
 h3.pagetitle
   color: #FFF
   background-color: $dark-grey
+  border-left: 5px solid #666
   padding: .8rem !important
   float: left
   clear: both
@@ -104,6 +105,12 @@ h4.subtitle
     margin-left: 6px
     margin-bottom: 0 !important
 
+h4.subtitle.fail
+  background-color: $alert-color
+
+h4.subtitle.success
+  background-color: $secondary-color
+
 h5.section-title
   font-size: 1.3rem
   background-color: $primary-color-3
@@ -120,7 +127,16 @@ h5.section-title
   a.button 
     color: #FFF
 
-.label.right.radius.success, .label.right.radius.alert
+.label.radius a
+  color: #FFF  
+
+.label.radius a:hover
+  color: $primary-color-4
+
+.label.right.radius.success
+  background-color: $secondary-color-2
+
+.label.right.radius.success, .label.right.radius.alert, .label.right.radius
 
   span.has-tip  
     font-size: 120%

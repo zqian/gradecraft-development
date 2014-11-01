@@ -61,7 +61,24 @@ form .tabs-content .content {
   padding: 1rem;
 } 
 
+.alert-box {
+  background-color: $primary-color;
+  font-size: 120%;
+}
 
+.alert-box.success {
+  background-color: darken($secondary-color-5, 2%);
+  font-size: 120%;
+}
+
+.alert-box.alert {
+  background-color: darken($alert-color, 2%);
+  font-size: 120%;
+
+  ul {
+    margin-bottom: 0;  
+  }
+}
 
 
 .assignment_weights .panel.callout.columns {

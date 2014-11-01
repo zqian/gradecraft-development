@@ -35,11 +35,6 @@ class Assignment < ActiveRecord::Base
 
   has_many :users, :through => :grades
 
-  # Mike, pretty sure these are old, okay if we delete?
-  #has_many :assignment_rubrics, dependent: :destroy
-  #accepts_nested_attributes_for :assignment_rubrics, allow_destroy: true
-  #has_many :rubrics, through: :assignment_rubrics, dependent: :destroy
-  
   #Instructor uploaded resource files
   has_many :assignment_files, :dependent => :destroy
   accepts_nested_attributes_for :assignment_files
@@ -56,10 +51,9 @@ class Assignment < ActiveRecord::Base
   after_save :save_weights
 
   # Check to make sure the assignment has a name before saving 
-  validates :name, presence: true
+  validates_presence_of :name, :assignment_type_id
 
-  #Check to make sure the assignment has an assignment type before saving
-  validates :assignment_type_id, presence: true
+  validate :open_before_close, :submissions_after_due, :submissions_after_open
 
   # Filtering Assignments by Team Work, Group Work, and Individual Work
   scope :individual_assignments, -> { where grade_scope: "Individual" }
@@ -399,6 +393,24 @@ class Assignment < ActiveRecord::Base
   end
 
   private
+
+  def open_before_close
+    if (due_at.present? && open_at.present?) && (due_at < open_at)
+      errors.add :base, 'Due date must be after open date.'
+    end
+  end
+
+  def submissions_after_due
+    if (accepts_submissions_until.present? && due_at.present?) && (accepts_submissions_until < due_at)
+      errors.add :base, 'Submission accept date must be after due date.'
+    end
+  end
+
+  def submissions_after_open
+    if (accepts_submissions_until.present? && open_at.present?) && (accepts_submissions_until < open_at)
+      errors.add :base, 'Submission accept date must be after open date.'
+    end
+  end
 
   #Stripping the description of extra code
   def clean_html

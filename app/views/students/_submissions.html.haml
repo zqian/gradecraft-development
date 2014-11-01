@@ -1,6 +1,4 @@
 - if current_student.submission_for_assignment(assignment).present?
-  = link_to "See Submission", assignment_grade_path(assignment, :student_id => current_student), :class => 'button radius'
+  %li= link_to "See Submission", assignment_grade_path(assignment, :student_id => current_student), :class => 'button'
 - elsif assignment.future? || assignment.still_accepted?
-  = link_to "Submit", new_assignment_submission_path(assignment, :student_id => current_student), :class => 'button radius'
-  - if assignment.past?
-    .label.alert.radius= "Late!"
+  %li= link_to "Submit", new_assignment_submission_path(assignment, :student_id => current_student), :class => 'button'
