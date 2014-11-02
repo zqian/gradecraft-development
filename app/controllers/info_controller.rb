@@ -1,7 +1,7 @@
 class InfoController < ApplicationController
   helper_method :sort_column, :sort_direction, :predictions
 
-  before_filter :ensure_staff?, :except => [ :dashboard ]
+  before_filter :ensure_staff?, :except => [ :dashboard, :timeline_events ]
 
   # Displays instructor dashboard, with or without Team Challenge dates
   def dashboard
@@ -14,12 +14,18 @@ class InfoController < ApplicationController
         redirect_to analytics_top_10_path
       end
     end
+  end
+
+  def timeline_events
     if current_course.team_challenges?
       @events = current_course.assignments.timelineable.with_due_date.to_a + current_course.challenges
     else
       @events = current_course.assignments.timelineable.with_due_date.to_a
     end
+    render(:partial => 'info/timeline', :handlers => [:jbuilder], :formats => [:js])
   end
+
+
 
   def class_badges
     @title = "Awarded #{term_for :badges}"

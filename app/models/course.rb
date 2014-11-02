@@ -234,7 +234,7 @@ class Course < ActiveRecord::Base
   end
 
   def professor
-    course_memberships.where(:role => "professor").first.user
+    course_memberships.where(:role => "professor").first.user if course_memberships.where(:role => "professor").first.present?
   end
 
   #final grades - total score + grade earned in course

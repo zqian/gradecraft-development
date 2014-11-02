@@ -198,6 +198,7 @@ GradeCraft::Application.routes.draw do
     get :dashboard
     get :grading_status
     get :leaderboard
+    get :timeline_events
   end
 
   resources :home
