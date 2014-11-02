@@ -70,8 +70,8 @@
               %td.bold AUDITORS
             - @auditor_grades.each_with_index do |grade, i|
               %tr
-                %td.right= link_to grade.student.name, student_path(grade.student)
-                %td.center
+                %td{:style => "text-align: right", :width => "20%"}= link_to grade.student.name, student_path(grade.student)
+                %td.center{:style => "text-align: right"}
                   = f.simple_fields_for :grades, grade do |gf|
                     = gf.hidden_field :graded_by_id, :value => current_user.id
                     - if !grade.status
@@ -102,8 +102,8 @@
 
                         - else
                           %td= gf.text_field :raw_score, :value => nil, data: {autonumeric: true, "m-dec" => "0"}
-                          %td= gf.label :raw_score, "/ #{points @assignment.point_total}"
+                    %td{:style => "text-align: right", :width => "20%"}= gf.label :raw_score, "/ #{points @assignment.point_total}"
 
-        .right
+        .right.form_buttons
           = f.button :submit, "Submit Grades", :class => "button radius"
           = link_to 'Cancel', assignments_path, :class => "button radius transparent"

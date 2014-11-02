@@ -80,6 +80,19 @@ form .tabs-content .content {
   }
 }
 
+@media (min-width: 1072px) {
+  .panel .row {
+    border-bottom: 1px solid $light-grey;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 1072px) {
+    .box {
+    border-bottom: 1px solid $light-grey;
+    padding: 1rem;
+  }
+}
 
 .assignment_weights .panel.callout.columns {
   margin-right: 1rem; 

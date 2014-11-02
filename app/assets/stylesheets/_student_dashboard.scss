@@ -42,7 +42,7 @@
 }
 
 .ui-widget-header {
-  background: $secondary-color;
+  background: $secondary-color-2;
 }
 
 .ui-slider .ui-slider-handle {
@@ -51,7 +51,7 @@
   position:absolute;
   top:-5px;
   margin-left:-12px;
-  background: $secondary-color;
+  background: darken($secondary-color-2, 15%);
 }
 
 /* Styling the bar charts on the syllabus page */

@@ -36,6 +36,6 @@
                     = ebf.hidden_field :_destroy, class: 'destroy'
                     = ebf.check_box :score, {}, @badge.point_total, nil
 
-        .right
+        .right.form_buttons
           = f.button :submit, "Award", :class => "button radius"
           = link_to 'Cancel', badges_path, :class => 'button transparent radius'

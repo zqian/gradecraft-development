@@ -42,7 +42,7 @@ class Course < ActiveRecord::Base
     :challenge_term, :badge_term, :grading_philosophy, :team_score_average,
     :team_challenges, :team_leader_term, :max_assignment_types_weighted,
     :point_total, :in_team_leaderboard, :grade_scheme_elements_attributes,
-    :add_team_score_to_student, :status
+    :add_team_score_to_student, :status, :assignments_attributes
 
   with_options :dependent => :destroy do |c|
     c.has_many :assignment_types
@@ -62,6 +62,7 @@ class Course < ActiveRecord::Base
 
   has_many :users, :through => :course_memberships
   accepts_nested_attributes_for :users
+  accepts_nested_attributes_for :assignments
 
 
   accepts_nested_attributes_for :grade_scheme_elements, allow_destroy: true

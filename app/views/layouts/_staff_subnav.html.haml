@@ -119,3 +119,7 @@
     %li
       %i.fi-key
       = link_to "Course Index", courses_path
+    %li
+      = link_to "Predictor Settings", predictor_settings_course_path(current_course)
+    %li
+      = link_to "Timeline Settings", timeline_settings_course_path(current_course)

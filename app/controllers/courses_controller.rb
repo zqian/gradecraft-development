@@ -78,6 +78,17 @@ class CoursesController < ApplicationController
     @title = "Predictor Settings"
   end
 
+  def predictor_settings_update
+    @course = current_course
+    if @course.update_attributes(params[:course])
+      respond_with @course
+    else
+      @assignments = @course.assignments
+      @title = "Predictor Settings"
+      render :action => "predictor_settings", :course => @course
+    end
+  end
+
   def destroy
     @course = Course.find(params[:id])
     @name = @course.name
