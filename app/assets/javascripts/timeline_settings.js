@@ -18,7 +18,7 @@ $(document).ready(function() {
     createStoryJS({
       type: 'timeline',
       width: '100%',
-      height: '600',
+      height: '80%',
       hash_bookmark: 'true',
       source: source,
       embed_id: 'time_line',
