@@ -38,6 +38,7 @@ class BadgesController < ApplicationController
 
   def create
     @badge = current_course.badges.new(params[:badge])
+    @title = "Create a New #{term_for :badge}"
 
     respond_to do |format|
       self.check_uploads

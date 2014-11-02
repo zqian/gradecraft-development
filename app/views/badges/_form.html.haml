@@ -1,4 +1,12 @@
 .small-12
+
+  - if @badge.errors.any? 
+    .alert-box.alert.radius
+      .italic= "#{pluralize(@badge.errors.count, "error")} prohibited this #{term_for :badge} from being saved:"
+      %ul
+        - @badge.errors.full_messages.each do |msg|
+          %li= msg
+
   .small-12.medium-4.columns.columns-no-padding_right.right
     .panel= render 's3_uploader'
 

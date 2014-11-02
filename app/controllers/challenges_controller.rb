@@ -25,23 +25,16 @@ class ChallengesController < ApplicationController
 
   def create
     @challenge = current_course.challenges.create(params[:challenge])
-
-    if @challenge.due_at.present? && @challenge.open_at.present? && @challenge.due_at < @challenge.open_at
-      flash[:error] = 'Due date must be after open date.'
-      render :action => "new", :challenge => @challenge
-    elsif (@challenge.point_total.present?) && (@challenge.point_total < 1)
-      flash[:error] = 'Point total must be a positive number'
-      render :action => "new", :challenge => @challenge
-    else
-      respond_to do |format|
-        if @challenge.save
-          self.check_uploads
-          format.html { redirect_to @challenge, notice: "Challenge #{@challenge.name} successfully created" }
-          format.json { render json: @challenge, status: :created, location: @challenge }
-        else
-          format.html { render action: "new" }
-          format.json { render json: @challenge.errors, status: :unprocessable_entity }
-        end
+    @title = "Create a New #{term_for :challenge}"
+    
+    respond_to do |format|
+      if @challenge.save
+        self.check_uploads
+        format.html { redirect_to @challenge, notice: "Challenge #{@challenge.name} successfully created" }
+        format.json { render json: @challenge, status: :created, location: @challenge }
+      else
+        format.html { render action: "new" }
+        format.json { render json: @challenge.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -51,23 +44,13 @@ class ChallengesController < ApplicationController
     @challenge.assign_attributes(params[:challenge])
     @title = "Editing #{@challenge.name}"
     respond_to do |format|
-      if @challenge.due_at.present? && @challenge.open_at.present? && @challenge.due_at < @challenge.open_at
-        flash[:error] = 'Due date must be after open date.'
-        format.html { render action: "edit" }
-        format.json { render json: @challenge.errors, status: :unprocessable_entity }
-      elsif (@challenge.point_total.present?) && (@challenge.point_total < 1)
-        flash[:error] = 'Point total must be a positive number'
-        format.html { render action: "edit" }
-        format.json { render json: @challenge.errors, status: :unprocessable_entity }
+      if @challenge.save
+        self.check_uploads
+        format.html { redirect_to @challenge, notice: "Challenge #{@challenge.name} successfully updated" }
+        format.json { head :ok }
       else
-        if @challenge.save
-          self.check_uploads
-          format.html { redirect_to @challenge, notice: "Challenge #{@challenge.name} successfully updated" }
-          format.json { head :ok }
-        else
-          format.html { render action: "edit" }
-          format.json { render json: @challenge.errors, status: :unprocessable_entity }
-        end
+        format.html { render action: "edit" }
+        format.json { render json: @challenge.errors, status: :unprocessable_entity }
       end
     end
   end

@@ -1,4 +1,11 @@
 .small-12
+  - if @challenge.errors.any? 
+    .alert-box.alert.radius
+      .italic= "#{pluralize(@challenge.errors.count, "error")} prohibited this #{term_for :challenge} from being saved:"
+      %ul
+        - @challenge.errors.full_messages.each do |msg|
+          %li= msg
+
   .small-12.columns.panel
     = render 's3_uploader'
 
