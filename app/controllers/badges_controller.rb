@@ -85,7 +85,4 @@ class BadgesController < ApplicationController
     end
   end
 
-  private
-
-
 end

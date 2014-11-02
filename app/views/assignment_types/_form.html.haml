@@ -1,5 +1,12 @@
 .small-12
   / Using Simple Form to create an assignment type
+  - if @assignment_type.errors.any? 
+    .alert-box.alert.radius
+      .italic= "#{pluralize(@assignment_type.errors.count, "error")} prohibited this #{(term_for :assignment_type).downcase} from being saved:"
+      %ul
+        - @assignment_type.errors.full_messages.each do |msg|
+          %li= msg
+
   = simple_form_for(@assignment_type) do |f|
     / First section should cover the simple stuff we need to know about every assignment type
     .small-12.medium-4.columns.columns-no-padding_right.right

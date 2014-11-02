@@ -52,7 +52,7 @@ class AssignmentWeight < ActiveRecord::Base
   def course_max_assignment_weight_not_exceeded
     if course.max_assignment_weight? 
       if weight > course.max_assignment_weight
-        errors.add :base "Please select a lower #{course.weight_term.downcase} value"
+        errors.add :base, "Please select a lower #{course.weight_term.downcase} value"
       end
     end
   end

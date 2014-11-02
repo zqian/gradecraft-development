@@ -3,10 +3,11 @@
   - if current_user_is_staff?
     = content_nav_for @assignment
   
-  %h3.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
+  .small-12.medium-5
+    %h3.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
 
   - if current_user_is_staff?
-    .small-12.medium-8.right.columns.columns-no-padding
+    .small-12.medium-7.right.columns.columns-no-padding
       .button-bar.right
         %ul.button-group.context_menu
           - if @assignment.description.present?

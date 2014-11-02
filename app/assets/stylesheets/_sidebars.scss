@@ -40,3 +40,9 @@
 #student_grade_distro canvas {
   width: 100% !important;
 }
+
+.sideBar .todo li {
+  list-style-type: none;
+
+  .button { border-radius: $global-radius; }
+}
