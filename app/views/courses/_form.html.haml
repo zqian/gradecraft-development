@@ -1,3 +1,10 @@
+- if @course.errors.any? 
+  .alert-box.alert.radius
+    .italic= "#{pluralize(@course.errors.count, "error")} prohibited this course from being saved:"
+    %ul
+      - @course.errors.full_messages.each do |msg|
+        %li= msg
+
 = simple_form_for(@course, :validate => false)  do |f|
  
   .small-12.large-4.columns.right.columns-no-padding_right
