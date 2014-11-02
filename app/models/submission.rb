@@ -28,8 +28,6 @@ class Submission < ActiveRecord::Base
 
   before_validation :cache_associations
 
-  #validates_presence_of :student, if: 'assignment.is_individual?'
-  #validates_presence_of :group, if: 'assignment.has_groups?'
   validates_uniqueness_of :task, :scope => :student, :allow_nil => true
   validates_uniqueness_of :assignment_id, { :scope => :student_id }
 

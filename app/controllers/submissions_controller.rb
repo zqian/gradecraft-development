@@ -10,14 +10,7 @@ class SubmissionsController < ApplicationController
     @assignment = current_course.assignments.find(params[:assignment_id])
     redirect_to @assignment
   end
-
-  def show
-    @assignment = current_course.assignments.find(params[:assignment_id])
-    @submission = @assignment.submissions.find(params[:id])
-    #@grade = @assignment.grades.find(@submission)
-    redirect_to assignment_grade_path(@assignment, @submission.student)
-  end
-
+  
   def new
     session[:return_to] = request.referer
     @assignment = current_course.assignments.find(params[:assignment_id])
