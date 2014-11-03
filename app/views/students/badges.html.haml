@@ -60,10 +60,8 @@
                     - elsif earned_badge.present?
                       - if earned_badge.shared?
                         = "Shared"
-                        %a.btn{:id => 'shared_' + badge.id.to_s, :class=>"remove_badge button radius"} Stop Sharing
                       - else
                         = "Not Shared"
-                        %a.btn{:id => 'shared_' + badge.id.to_s, :class=>"add_badge button radius"} Share
 
       .content#tabb2.small-12
         = render "students/public_class_badges"

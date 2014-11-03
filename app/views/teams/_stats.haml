@@ -1,4 +1,4 @@
-%table.responsive.nofeatures_dynatable
+%table.responsive.nofeatures_dynatable.no_radius
   %thead
     %tr
       %th Rank
@@ -37,4 +37,3 @@
                   = link_to edit_team_path(team), :class => 'button', :data => { confirm: 'Are you sure?' }, :method => :delete do
                     Delete
                     %span.sr-only= team.name
-      - i += 1

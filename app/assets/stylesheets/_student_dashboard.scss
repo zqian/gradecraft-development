@@ -42,7 +42,7 @@
 }
 
 .ui-widget-header {
-  background: $secondary-color;
+  background: $secondary-color-2;
 }
 
 .ui-slider .ui-slider-handle {
@@ -51,21 +51,15 @@
   position:absolute;
   top:-5px;
   margin-left:-12px;
-  background: $secondary-color;
+  background: darken($secondary-color-2, 15%);
 }
 
 /* Styling the bar charts on the syllabus page */
-#userBarInProgress, #userBarTotal {
-  min-height: 350px;
+#userBarTotal {
+  min-height: 200px;
   width: 100%;
   clear: both;
   margin-left: -20px;
-  .chart {
-    height: 280px;
-  }
-  text {
-    padding-bottom: 1rem;
-  }
 }
 
 /* Adjusting the margin between panels */

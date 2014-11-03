@@ -42,7 +42,7 @@ class Course < ActiveRecord::Base
     :challenge_term, :badge_term, :grading_philosophy, :team_score_average,
     :team_challenges, :team_leader_term, :max_assignment_types_weighted,
     :point_total, :in_team_leaderboard, :grade_scheme_elements_attributes,
-    :add_team_score_to_student, :status
+    :add_team_score_to_student, :status, :assignments_attributes
 
   with_options :dependent => :destroy do |c|
     c.has_many :assignment_types
@@ -62,6 +62,7 @@ class Course < ActiveRecord::Base
 
   has_many :users, :through => :course_memberships
   accepts_nested_attributes_for :users
+  accepts_nested_attributes_for :assignments
 
 
   accepts_nested_attributes_for :grade_scheme_elements, allow_destroy: true
@@ -76,7 +77,7 @@ class Course < ActiveRecord::Base
   validates_numericality_of :point_total, :allow_blank => true
 
   validates_format_of :twitter_hashtag, :with => /\A[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)*\z/, :allow_blank => true, :length   => { :within => 3..20 }
-
+  validate :max_more_than_min
 
   def user_term
     super.presence || 'Player'
@@ -220,6 +221,10 @@ class Course < ActiveRecord::Base
     course_memberships.average('course_memberships.score').to_i
   end
 
+  def median_course_score
+    course_memberships.median('course_memberships.score').to_i
+  end
+  
   def student_count
     students.count
   end
@@ -281,8 +286,6 @@ class Course < ActiveRecord::Base
     end
   end
 
-
-
   #badges
   def course_badge_count
    badges.count
@@ -290,6 +293,12 @@ class Course < ActiveRecord::Base
 
   def awarded_course_badge_count
    earned_badges.count
+  end
+
+  def max_more_than_min
+    if (max_group_size? && min_group_size?) && (max_group_size < min_group_size)
+      errors.add :base, 'Maximum group size must be greater than minimum group size.'
+    end
   end
 
 end

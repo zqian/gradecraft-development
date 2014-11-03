@@ -1,4 +1,12 @@
 .small-12
+
+  - if @badge.errors.any? 
+    .alert-box.alert.radius
+      .italic= "#{pluralize(@badge.errors.count, "error")} prohibited this #{term_for :badge} from being saved:"
+      %ul
+        - @badge.errors.full_messages.each do |msg|
+          %li= msg
+
   .small-12.medium-4.columns.columns-no-padding_right.right
     .panel= render 's3_uploader'
 
@@ -6,7 +14,7 @@
 
     .small-12.medium-8.columns.panel
 
-      %h4.bold Basic Settings
+      %h4.uppercase Basic Settings
 
       .small-12.medium-3.columns
         = f.label :name, "Name"
@@ -43,5 +51,5 @@
     .clearfix
 
     .right
-      = submit_tag "#{@badge.persisted? ? 'Update' : 'Create'} #{term_for :badge}", :class => "button radius alert"
+      = submit_tag "#{@badge.persisted? ? 'Update' : 'Create'} #{term_for :badge}", :class => "button radius"
       = link_to 'Cancel', badges_path, :class => 'button radius transparent' 

@@ -9,12 +9,11 @@
         = select_tag :team_id, options_for_select(current_course.teams.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
 
   .small-12.columns
-    %table.responsive.nopage_dynatable
+    %table.responsive.nofeatures_default_last_name_dynatable
       %thead
         %tr
           %th First Name
           %th Last Name
-          %th Email
           %th Role
           %th Courses
           %th #{term_for :team}
@@ -29,7 +28,6 @@
             %td
               = link_to user.last_name, student_path(user) if user.is_student?(current_course)
               = link_to user.last_name, staff_path(user) if user.is_staff?(current_course)
-            %td= user.email
             %td= user.role(current_course).capitalize
             %td
               - user.courses.each do |course|

@@ -30,6 +30,7 @@
   line-height: 2rem !important
 
 .top-bar-section ul ul.dropdown.classInfo
+  width: 20rem
 
   li
     margin-bottom: .5rem
@@ -61,7 +62,7 @@
 .top-bar-section .left a, .top-bar-section .left li a:hover
   color: $primary-color-3
   margin-top: 1px
-  height: 1rem !important
+  height: 1rem
   position: relative
   margin-right: 0
   background-color: #333 !important
@@ -93,13 +94,20 @@ dl.tabs dd > a
   border-top-right-radius: $global-radius
   border-top-left-radius:  $global-radius
   text-transform: capitalize
+  background-color: #eee
+  color: #000
+  margin: 1px
 
 dl.tabs dd > a:hover
-  color: #FFF !important
-  background-color: $primary-color-4
+  background-color: $primary-color-5
+  color: #FFF
 
 dl.tabs dd.active > a
-  background-color: $primary-color-2
+  background-color: $light-grey
+
+dl.tabs dd.active > a:hover
+  color: #000
+
 
 .past_courses
 

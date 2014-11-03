@@ -11,7 +11,7 @@
           - else
             .right= render "students/group_submissions", assignment: assignment, group: current_student.group_for_assignment(assignment)
         - if current_student.submission_for_assignment(assignment).present?
-          %p.strikethrough= link_to "#{assignment.try(:name)}", assignment
+          %span.bold.strikethrough= link_to "#{assignment.try(:name)}", assignment
           %span.small_uppercase= "#{assignment.assignment_type.name}"
         - else
           %p

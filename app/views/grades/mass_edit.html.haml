@@ -22,19 +22,19 @@
 
 
         %table.responsive
-          - if @assignment.grade_checkboxes?
-            %thead
-              %tr
-                %th= "#{term_for :student}"
-                %th
-                  .button-bar
-                    %ul.button-group.radius.right
-                      %li.select-all.button.tiny= "Check All"
-                      %li.select-none.button.tiny= "Uncheck All"
+          %thead
+            %tr
+              %th{:style => "text-align: right", :width => "60%"}= "#{term_for :student}"
+              %th.center{:align => "center", :scope => "col", "data-dynatable-no-sort" => "true" } 
+                - if @assignment.grade_checkboxes?
+                  %span.sr-only Check/Uncheck
+                  %button.button.select-all.tiny= "Check All"
+                  %button.button.select-none.tiny= "Uncheck All"
+              %th
           - @grades.each_with_index do |grade, i|
             %tr
-              %td= link_to grade.student.name, student_path(grade.student)
-              %td.right
+              %td{:style => "text-align: right"}= link_to grade.student.name, student_path(grade.student)
+              %td.center{:style => "text-align: right"}
                 = f.simple_fields_for :grades, grade do |gf|
                   = gf.hidden_field :graded_by_id, :value => current_user.id
                   - if !grade.status
@@ -60,20 +60,19 @@
                       = gf.check_box :raw_score, {}, @assignment.point_total, nil
                     - else
                       - if grade.persisted? && (grade.status == "Graded" || grade.status == "Released")
-                        %td
-                          = gf.text_field :raw_score, data: {autonumeric: true, "m-dec" => "0"}
+                        = gf.text_field :raw_score, data: {autonumeric: true, "m-dec" => "0"}
 
                       - else
-                        %td= gf.text_field :raw_score, :value => nil, data: {autonumeric: true, "m-dec" => "0"}
-                        %td= gf.label :raw_score, "/ #{points @assignment.point_total}"
+                        = gf.text_field :raw_score, :value => nil, data: {autonumeric: true, "m-dec" => "0"}
+              %td{:style => "text-align: right"}= "/ #{points @assignment.point_total}"
 
           - if @auditors.present?
             %tr
               %td.bold AUDITORS
             - @auditor_grades.each_with_index do |grade, i|
               %tr
-                %td= link_to grade.student.name, student_path(grade.student)
-                %td.right
+                %td{:style => "text-align: right"}= link_to grade.student.name, student_path(grade.student)
+                %td.center{:style => "text-align: right"}
                   = f.simple_fields_for :grades, grade do |gf|
                     = gf.hidden_field :graded_by_id, :value => current_user.id
                     - if !grade.status
@@ -99,13 +98,12 @@
                         = gf.check_box :raw_score, {}, @assignment.point_total, nil
                       - else
                         - if grade.persisted? && (grade.status == "Graded" || grade.status == "Released")
-                          %td
-                            = gf.text_field :raw_score, data: {autonumeric: true, "m-dec" => "0"}
+                          = gf.text_field :raw_score, data: {autonumeric: true, "m-dec" => "0"}
 
                         - else
-                          %td= gf.text_field :raw_score, :value => nil, data: {autonumeric: true, "m-dec" => "0"}
-                          %td= gf.label :raw_score, "/ #{points @assignment.point_total}"
+                          = gf.text_field :raw_score, :value => nil, data: {autonumeric: true, "m-dec" => "0"}
+                %td{:style => "text-align: right"}= "/ #{points @assignment.point_total}"
 
-        .right
-          = f.button :submit, "Submit Grades", :class => "button radius alert"
+        .right.form_buttons
+          = f.button :submit, "Submit Grades", :class => "button radius"
           = link_to 'Cancel', assignments_path, :class => "button radius transparent"

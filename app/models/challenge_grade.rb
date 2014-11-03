@@ -4,7 +4,7 @@ class ChallengeGrade < ActiveRecord::Base
 
   belongs_to :course
   belongs_to :challenge
-  belongs_to :team
+  belongs_to :team, :autosave => true
   belongs_to :submission # Optional
   belongs_to :task # Optional
 

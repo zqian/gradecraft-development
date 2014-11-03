@@ -61,7 +61,7 @@
                 - if current_user_is_staff?
                   = link_to "(Remove)", remove_uploads_path({ :model => "BadgeFile", :upload_id => bf.id } )
     - if current_user_is_staff?
-      .small-12.medium-10.columns.responsive
+      .small-12.medium-10.columns.columns-no-padding_right
         //staff individual badge award index
         %table.responsive.nofeatures_default_last_name_dynatable
           %thead

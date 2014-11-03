@@ -61,6 +61,39 @@ form .tabs-content .content {
   padding: 1rem;
 } 
 
+.alert-box {
+  background-color: $primary-color;
+  font-size: 120%;
+}
+
+.alert-box.success {
+  background-color: darken($secondary-color-5, 2%);
+  font-size: 120%;
+}
+
+.alert-box.alert {
+  background-color: darken($alert-color, 2%);
+  font-size: 120%;
+
+  ul {
+    margin-bottom: 0;  
+  }
+}
+
+@media (min-width: 1072px) {
+  .panel .row {
+    border-bottom: 1px solid $light-grey;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 1072px) {
+    .box {
+    border-bottom: 1px solid $light-grey;
+    padding: 1rem;
+  }
+}
+
 .assignment_weights .panel.callout.columns {
   margin-right: 1rem; 
   width: 23%;

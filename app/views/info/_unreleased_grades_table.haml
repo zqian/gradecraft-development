@@ -63,5 +63,7 @@
                   .sr-only
                     Check/Uncheck #{g.student.try(:first_name)} #{g.student.try(:last_name)}
 
-      .right
+      .right.form_buttons
         = submit_tag "Update Selected Grade Statuses", :class => "button radius"
+        %br
+        %br

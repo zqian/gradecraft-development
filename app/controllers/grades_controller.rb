@@ -117,11 +117,12 @@ class GradesController < ApplicationController
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
     user_search_options = {}
     user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
-    @students = current_course.students.includes(:teams).where(user_search_options)
-    @grades = current_course.students_being_graded.map do |s|
+    @students = current_course.students_being_graded.includes(:teams).where(user_search_options)
+    @auditors = current_course.students_auditing.includes(:teams).where(user_search_options)
+    @grades = @students.map do |s|
       @assignment.grades.where(:student_id => s).first || @assignment.grades.new(:student => s, :assignment => @assignment, :graded_by_id => current_user)
     end
-    @auditor_grades = current_course.students_auditing.map do |s|
+    @auditor_grades = @auditors.map do |s|
       @assignment.grades.where(:student_id => s).first || @assignment.grades.new(:student => s, :assignment => @assignment, :graded_by_id => current_user)
     end
   end

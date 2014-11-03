@@ -12,7 +12,7 @@
             %i.fi-list-thumbnails
             See #{term_for :group}
 
-  .small-12.columns
+  .small-12.columns.columns-no-padding
     .small-12.medium-3.columns
       %h4 #{term_for :assignments}:
       %ul
@@ -31,34 +31,28 @@
 
 
     .small-12.columns
-      - i = 1
-      - @group.proposals.order_by_creation_date.each do |p|
-        .panel.callout
-          %h4.bold= "Proposal ##{i}: #{p.title}" 
-          %h6= "Created: #{p.created_at}"
-          %p= p.proposal
-        - i += 1
-
-      %hr
+      - if @group.proposals.present?
+        - @group.proposals.order_by_creation_date.each_with_index do |p, index|
+          - if p.proposal.present?
+            .panel.callout
+              %h4.bold= "Proposal ##{index + 1}: #{p.title}" 
+              %h6= "Created: #{p.created_at}"
+              %p= p.proposal
 
 
-      .small-12.columns.panel
+      = simple_form_for @group do |f|
+        .panel
+          .small-12.medium-4
+            = f.label :approved, "Status"
+            = f.select :approved, [["Pending"], ["Approved"], ["Rejected"]]
+            .form_label If rejected, this #{term_for :group} will be unable to submit any further work for these assignments
 
-        .small-12.columns
-          = simple_form_for @group do |f|
-            .small-12.medium-4
-              = f.label :approved, "Status"
-              = f.select :approved, [["Pending"], ["Approved"], ["Rejected"]]
-              .form_label If rejected, this #{term_for :group} will be unable to submit any further work for these assignments
+          %br
 
-            %br
+          .small-12.textarea
+            = f.bootsy_area :text_feedback
+            .form_label #{(term_for :group).capitalize} Feedback
 
-            .small-12.textarea
-              = f.bootsy_area :text_feedback
-              .form_label #{(term_for :group).capitalize} Feedback
-
-            %br
-
-            .right
-              = submit_tag "#{@group.persisted? ? 'Update' : 'Create'} #{ term_for :group } ",  :class => 'button radius alert'
-              = link_to 'Cancel', groups_path, :class => 'button radius transparent'
+        .right
+          = submit_tag "#{@group.persisted? ? 'Update' : 'Create'} #{ term_for :group } ",  :class => 'button radius'
+          = link_to 'Cancel', groups_path, :class => 'button radius transparent'

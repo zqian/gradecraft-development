@@ -7,7 +7,7 @@ class StudentsController < ApplicationController
 
   #Lists all studnets in the course, broken out by those being graded and auditors
   def index
-    @title = "#{current_course.user_term} Roster"
+    @title = "#{(current_course.user_term).singularize} Roster"
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
     user_search_options = {}
     user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?

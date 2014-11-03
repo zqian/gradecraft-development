@@ -26,7 +26,7 @@
           - if current_course.has_badges?
             %th{:scope => "col", "data-dynatable-sorts" => "badgeCount" }= "#{term_for :badges} Earned"
             %th{:style => "display: none"} Badge Count
-          %th.button-column
+          %th
       %tbody
         - @team.students.each do |student|
           - if student.is_student?(current_course)
@@ -51,9 +51,6 @@
                     %li= link_to 'Dashboard', student_path(student), :class => 'button'
                     %li= link_to 'Edit', edit_user_path(student), :class => 'button'
 
-
-  %hr
-
   %h4.subtitle Challenge Grades
 
   .small-12.columns
@@ -73,7 +70,7 @@
                 = link_to challenge.name, challenge
               - else
                 = challenge.name
-            %td= challenge.challenge_grade_for_team(@team).try(:score)
+            %td= points challenge.challenge_grade_for_team(@team).try(:score)
             %td
               - if challenge.challenge_grade_for_team(@team).present?
                 = link_to 'Edit Grade', edit_challenge_challenge_grade_path(:challenge_id => challenge, :id => challenge.challenge_grade_for_team(@team).id), :class => 'button radius'

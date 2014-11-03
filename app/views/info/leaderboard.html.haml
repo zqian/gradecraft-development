@@ -2,18 +2,10 @@
 
   = content_nav_for "Leaderboard"
 
-  %h3.pagetitle#tableCaption= @title
-
-  .small-12.medium-3.right.columns.columns-no-padding
-    .button-bar.right
-      %ul.button-group.context_menu
-        %li
-          %a{:href => gradebook_path(format: 'csv') }
-            %i.fi-page-export-csv
-            Download Grades
+  .small-12.medium-6
+    %h3.pagetitle#tableCaption= @title
 
   - if current_course.has_teams?
-    .clearfix
     .small-12.large-4.medium-6.columns.right
       %label.sr-only{:for => "team_id"}
         Select Team
@@ -49,7 +41,7 @@
               %td
                 = student.grade_letter_for_course(current_course)
                 - if student.grade_level_for_course(current_course).present?
-                  = "(#{student.grade_level_for_course(current_course)})"
+                  = "#{student.grade_level_for_course(current_course)}"
               - if current_course.has_badges?
                 %td#earned_badges
                   - student.earned_badges_for_course(current_course).each do |badge|

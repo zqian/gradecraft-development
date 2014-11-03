@@ -5,6 +5,7 @@ class Team < ActiveRecord::Base
 
   #Saving the team score if a challenge grade has been added
   after_validation :cache_score
+  after_save :save_students
 
   #Teams belong to a single course
   belongs_to :course
@@ -30,6 +31,7 @@ class Team < ActiveRecord::Base
   scope :order_by_high_score, -> { order 'teams.score DESC' }
   scope :order_by_low_score, -> { order 'teams.score ASC' }
   scope :order_by_average_high_score, -> { order 'average_points DESC'}
+  scope :alpha, -> { order 'teams.name ASC'}
 
   # DEPRECATED -- Assume Teams can have more than one leader. This should be removed
   # once we verify all uses are removed and new methods for cycling through team leaders
@@ -57,7 +59,7 @@ class Team < ActiveRecord::Base
   def average_points
     total_score = 0
     students.each do |student|
-      total_score += (student.cached_score_for_course(course) || 0 )
+      total_score += (student.assignment_scores_for_course(course) || 0 )
     end
     if member_count > 0
       average_points = total_score / member_count
@@ -78,9 +80,17 @@ class Team < ActiveRecord::Base
   #semester these usually get added back into students' scores - this has not yet been built into GC.
   def cache_score
     if course.team_score_average?
+      save_students
       self.score = average_points
     else
       self.score = challenge_grade_score
+      save_students
+    end
+  end
+
+  def save_students
+    students.each do |student|
+      student.cache_scores
     end
   end
 end

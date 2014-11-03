@@ -3,18 +3,26 @@
   .slide-panel.assignmentType
     %h3.bold.collapse
       = assignment_type.name
-      .right.label.radius
-        = "#{points current_student_data.score_for_assignment_type(assignment_type)} / "
-        - if assignment_type.max_value?
-          = "#{points assignment_type.max_value} possible points"
-        - else
-          = "#{points current_student_data.point_total_for_assignment_type(assignment_type)} possible points"
-        .clearfix
+      - if current_student_data.score_for_assignment_type(assignment_type) > 0
+        .right.radius.label.success
+          = "#{points current_student_data.score_for_assignment_type(assignment_type)}"
+          - if assignment_type.max_value?
+            = "/ #{points assignment_type.max_value} points earned"
+          - else
+            = "/ #{points current_student_data.point_total_for_assignment_type(assignment_type)} points earned"
+      - else
+        .right.radius.label.fade
+          - if assignment_type.max_value?
+            = "#{points assignment_type.max_value} points possible"
+          - else
+            = "#{points current_student_data.point_total_for_assignment_type(assignment_type)} points possible"
     .small-12
       - assignments.each do |assignment|
+        .clearfix
         - if assignment.point_total > 0
           .assignment
             .small-12.medium-7.columns
+
               - if assignment.required?
                 %span.has-tip{:title => "This #{term_for :assignment} is required!", :data => {'tooltip' => true} }
                   %i.fi-star
@@ -51,4 +59,3 @@
                   - elsif assignment.select?
                     = select_tag assignment.name, options_from_collection_for_select(assignment_type.score_levels,'value','name', current_student_data.grade_for_assignment(assignment).score), :class => 'point-value', :id => "total-#{assignment.id}", :include_blank => true
             .clearfix
-    %hr

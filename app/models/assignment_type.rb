@@ -15,6 +15,7 @@ class AssignmentType < ActiveRecord::Base
   accepts_nested_attributes_for :score_levels, allow_destroy: true, :reject_if => proc { |a| a['value'].blank? || a['name'].blank? }
 
   validates_presence_of :name, :points_predictor_display
+  validate :positive_universal_value, :positive_max_points
   before_save :ensure_score_levels, :if => :multi_select?
 
   scope :student_weightable, -> { where(:student_weightable => true) }
@@ -119,10 +120,22 @@ class AssignmentType < ActiveRecord::Base
 
   private
 
+  def positive_universal_value
+    if universal_point_value? && universal_point_value < 1
+      errors.add :base, "Point value must be a positive number."
+    end
+  end
+
+  def positive_max_points
+    if max_value? && max_value < 1
+      errors.add :base, "Maximum points must be a positive number."
+    end
+  end
+
   #Checking to make sure there are score levels and warning if not
   def ensure_score_levels
     if score_levels.count <= 1
-      errors.add(:assignment_type, "To use the selected method of quick grading you must create at least 2 score levels")
+      errors.add :base, "To use the selected method of quick grading you must create at least 2 score levels."
     end
   end
 end

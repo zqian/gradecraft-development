@@ -38,21 +38,17 @@ class CoursesController < ApplicationController
 
   def create
     @course = Course.new(params[:course])
+    @title = "Create a New Course"
 
-    if @course.max_group_size.present? && @course.min_group_size.present? && @course.max_group_size < @course.min_group_size
-      flash[:error] = 'Maximum group size must be greater than minimum group size.'
-      render :action => "new", :course => @course
-    else
-      respond_to do |format|
-        if @course.save
-          @course.course_memberships.create(:user_id => current_user.id)
-          session[:course_id] = @course.id
-          format.html { redirect_to course_path(@course), notice: "Course #{@course.name} successfully created" }
-          format.json { render json: @course, status: :created, location: @course }
-        else
-          format.html { render action: "new" }
-          format.json { render json: @course.errors, status: :unprocessable_entity }
-        end
+    respond_to do |format|
+      if @course.save
+        @course.course_memberships.create(:user_id => current_user.id)
+        session[:course_id] = @course.id
+        format.html { redirect_to course_path(@course), notice: "Course #{@course.name} successfully created" }
+        format.json { render json: @course, status: :created, location: @course }
+      else
+        format.html { render action: "new" }
+        format.json { render json: @course.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -63,17 +59,9 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       if @course.update_attributes(params[:course])
-        if @course.max_group_size.present? && @course.min_group_size.present? && @course.max_group_size < @course.min_group_size
-          flash[:error] = 'Maximum group size must be greater than minimum group size.'
-          format.html { render action: "edit" }
-          format.json { render json: @course.errors, status: :unprocessable_entity }
-        else
-          format.html { redirect_to @course, notice: "Course #{@course.name} successfully updated" }
-          format.json { head :no_content }
-        end
+        format.html { redirect_to @course, notice: "Course #{@course.name} successfully updated" }
       else
         format.html { render action: "edit" }
-        format.json { render json: @course.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -84,10 +72,32 @@ class CoursesController < ApplicationController
     @title = "Timeline Settings"
   end
 
+  def timeline_settings_update
+    @course = current_course
+    if @course.update_attributes(params[:course])
+      redirect_to dashboard_path
+    else
+      @assignments = @course.assignments
+      @title = "Timeline Settings"
+      render :action => "timeline_settings", :course => @course
+    end
+  end
+
   def predictor_settings
     @course = current_course
     @assignments = current_course.assignments
     @title = "Predictor Settings"
+  end
+
+  def predictor_settings_update
+    @course = current_course
+    if @course.update_attributes(params[:course])
+      respond_with @course
+    else
+      @assignments = @course.assignments
+      @title = "Predictor Settings"
+      render :action => "predictor_settings", :course => @course
+    end
   end
 
   def destroy

@@ -4,16 +4,6 @@
 
   %h3.pagetitle= @title
 
-  .small-12.medium-3.right.columns.columns-no-padding
-    .button-bar.right
-      %ul.button-group.context_menu
-        %li
-          %a{:href => gradebook_path(format: 'csv') }
-            %i.fi-page-export-csv
-            Download Grades
-
-  .clearfix
-
   .small-12.medium-4.columns.right
     / Checking to see if the current course has teams, displaying the team filter if it does
     - if current_course.has_teams?
@@ -27,9 +17,9 @@
 
   .clearfix
 
-  - if @auditing
+  - if @auditing.count > 0
     / Display the table of auditing students if they're present
-    .pagetitle= "Auditing Roster"
+    %h4.subtitle= "Auditing Roster"
 
     .small-12.columns
       = render 'students_table', :course => current_course, :students => @auditing

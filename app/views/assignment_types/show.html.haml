@@ -2,10 +2,10 @@
 
   = content_nav_for @assignment_type
   
-  .small-12.medium-8
+  .small-12.medium-5
     %h3.pagetitle#pageCaption= @title
 
-  .small-12.medium-4.right.columns.columns-no-padding
+  .small-12.medium-7.right.columns.columns-no-padding
     .button-bar.right
       %ul.button-group.context_menu
         %li
@@ -43,7 +43,7 @@
               %td= points assignment.point_total
               - if current_user_is_staff?
                 %td
-                  %ul.button-group.right.round
+                  %ul.button-group.right.radius
                     %li
                       %a{:href => mass_grade_assignment_path(assignment), :class => 'button' }
                         Quick Grade

@@ -35,11 +35,6 @@ class Assignment < ActiveRecord::Base
 
   has_many :users, :through => :grades
 
-  # Mike, pretty sure these are old, okay if we delete?
-  #has_many :assignment_rubrics, dependent: :destroy
-  #accepts_nested_attributes_for :assignment_rubrics, allow_destroy: true
-  #has_many :rubrics, through: :assignment_rubrics, dependent: :destroy
-  
   #Instructor uploaded resource files
   has_many :assignment_files, :dependent => :destroy
   accepts_nested_attributes_for :assignment_files
@@ -56,10 +51,9 @@ class Assignment < ActiveRecord::Base
   after_save :save_weights
 
   # Check to make sure the assignment has a name before saving 
-  validates :name, presence: true
+  validates_presence_of :name, :assignment_type_id
 
-  #Check to make sure the assignment has an assignment type before saving
-  validates :assignment_type_id, presence: true
+  validate :open_before_close, :submissions_after_due, :submissions_after_open
 
   # Filtering Assignments by Team Work, Group Work, and Individual Work
   scope :individual_assignments, -> { where grade_scope: "Individual" }
@@ -117,7 +111,7 @@ class Assignment < ActiveRecord::Base
 
   def grades_for_assignment(student)
     user_score = grades.where(:student_id => student.id).first.try(:raw_score)
-    scores = grades.graded.pluck('raw_score')
+    scores = grades.graded_or_released.pluck('raw_score')
     return {
     :scores => scores,
     :user_score => user_score
@@ -126,16 +120,16 @@ class Assignment < ActiveRecord::Base
 
   #Basic result stats - high, low, average, median
   def high_score
-    grades.graded.maximum('grades.raw_score')
+    grades.graded_or_released.maximum('grades.raw_score')
   end
 
   def low_score
-    grades.graded.minimum('grades.raw_score')
+    grades.graded_or_released.minimum('grades.raw_score')
   end
 
   #average of all grades for an assignment
   def average
-    grades.graded.average('grades.raw_score').to_i if grades.graded.present?
+    grades.graded_or_released.average('grades.raw_score').to_i if grades.graded.present?
   end
 
   def has_rubric?
@@ -153,17 +147,17 @@ class Assignment < ActiveRecord::Base
 
   #average of above-zero grades for an assignment
   def earned_average
-    if grades.graded.present?
-      grades.graded.where("score > 0").average('score').to_i
+    if grades.graded_or_released.present?
+      grades.graded_or_released.where("score > 0").average('score').to_i
     else
       0
     end
   end
 
   def median
-    sorted_grades = grades.graded.pluck('score').sort
+    sorted_grades = grades.graded_or_released.pluck('score').sort
     len = sorted_grades.length
-    return (sorted_grades[(len - 1) / 2] + sorted_grades[len / 2]) / 2.0
+    return (sorted_grades[(len - 1) / 2] + sorted_grades[len / 2]) / 2
   end
 
   #Checking to see if an assignment is individually graded 
@@ -200,12 +194,12 @@ class Assignment < ActiveRecord::Base
 
   #Getting a student's grade object for an assignment
   def grade_for_student(student)
-    grades.graded.where(student_id: student).first
+    grades.graded_or_released.where(student_id: student).first
   end
 
   #Getting a student's score for an assignment
   def score_for_student(student)
-    grades.graded.where(student_id: student).pluck('score').first
+    grades.graded_or_released.where(student_id: student).pluck('score').first
   end
 
   #Getting a student's released score for an assignment
@@ -369,12 +363,12 @@ class Assignment < ActiveRecord::Base
 
   # Calculating how many of each score exists
   def score_count
-    Hash[grades.graded.group_by{ |g| g.score }.map{ |k, v| [k, v.size] }]
+    Hash[grades.graded_or_released.group_by{ |g| g.score }.map{ |k, v| [k, v.size] }]
   end
 
   # Calculating how many of each score exists
   def earned_score_count
-    Hash[grades.graded.group_by{ |g| g.raw_score }.map{ |k, v| [k, v.size ] }]
+    Hash[grades.graded_or_released.group_by{ |g| g.raw_score }.map{ |k, v| [k, v.size ] }]
   end
 
   def earned_scores
@@ -399,6 +393,24 @@ class Assignment < ActiveRecord::Base
   end
 
   private
+
+  def open_before_close
+    if (due_at.present? && open_at.present?) && (due_at < open_at)
+      errors.add :base, 'Due date must be after open date.'
+    end
+  end
+
+  def submissions_after_due
+    if (accepts_submissions_until.present? && due_at.present?) && (accepts_submissions_until < due_at)
+      errors.add :base, 'Submission accept date must be after due date.'
+    end
+  end
+
+  def submissions_after_open
+    if (accepts_submissions_until.present? && open_at.present?) && (accepts_submissions_until < open_at)
+      errors.add :base, 'Submission accept date must be after open date.'
+    end
+  end
 
   #Stripping the description of extra code
   def clean_html

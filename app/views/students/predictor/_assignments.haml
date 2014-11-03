@@ -1,14 +1,22 @@
+%br
 - assignment_type, assignments = assignment_type_and_assignments
 %li{:id => "slide-#{assignment_type.id}", :'data-assignment-type-id' => assignment_type.id, :'data-assignment-type-name' => assignment_type.name}
   .slide-panel.assignmentType
     %h3.collapse
       = assignment_type.name
-      .right.radius.label
-        = "#{points current_student_data.score_for_assignment_type(assignment_type)} / "
-        - if assignment_type.max_value?
-          = "#{points assignment_type.max_value} possible points"
-        - else
-          = "#{points current_student_data.point_total_for_assignment_type(assignment_type)} possible points"
+      - if current_student_data.score_for_assignment_type(assignment_type) > 0
+        .right.radius.label.success
+          = "#{points current_student_data.score_for_assignment_type(assignment_type)}"
+          - if assignment_type.max_value?
+            = "/ #{points assignment_type.max_value} points earned"
+          - else
+            = "/ #{points current_student_data.point_total_for_assignment_type(assignment_type)} points earned"
+      - else
+        .right.radius.label.fade
+          - if assignment_type.max_value?
+            = "#{points assignment_type.max_value} points possible"
+          - else
+            = "#{points current_student_data.point_total_for_assignment_type(assignment_type)} points possible"
     
     .collapse-hidden        
       .small-12.columns
@@ -54,4 +62,3 @@
                     - elsif assignment.select?
                       = select_tag assignment.name, options_from_collection_for_select(assignment.assignment_score_levels,'value','name', current_student_data.grade_for_assignment(assignment).predicted_score), :class => 'point-value right', :id => "total-#{assignment.id}", :include_blank => true
               .clearfix
-        %hr

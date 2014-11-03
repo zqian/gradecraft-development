@@ -72,26 +72,16 @@ class AssignmentsController < ApplicationController
 
   def create
     @assignment = current_course.assignments.new(params[:assignment])
+    @title = "Create a New #{term_for :assignment}"
     @assignment.assignment_type = current_course.assignment_types.find_by_id(params[:assignment_type_id])
-    if @assignment.due_at.present? && @assignment.open_at.present? && @assignment.due_at < @assignment.open_at
-      flash[:error] = 'Due date must be after open date.'
-      render :action => "new", :assignment => @assignment
-    elsif @assignment.accepts_submissions_until.present? && @assignment.due_at.present? && @assignment.accepts_submissions_until < @assignment.due_at
-      flash[:error] = 'Submission accept date must be after due date.'
-      render :action => "new", :assignment => @assignment
-    elsif @assignment.accepts_submissions_until.present? && @assignment.open_at.present? && @assignment.accepts_submissions_until < @assignment.open_at
-      flash[:error] = 'Submission accept date must be after open date.'
-      render :action => "new", :assignment => @assignment
-    else
-      respond_to do |format|
-        self.check_uploads
-        @assignment.assign_attributes(params[:assignment])
-        if @assignment.save
-          set_assignment_weights
-          format.html { respond_with @assignment, notice: "#{(term_for :assignment).titleize}  #{@assignment.name} successfully created" }
-        else
-          respond_with @assignment
-        end
+    respond_to do |format|
+      self.check_uploads
+      @assignment.assign_attributes(params[:assignment])
+      if @assignment.save
+        set_assignment_weights
+        format.html { respond_with @assignment, notice: "#{(term_for :assignment).titleize}  #{@assignment.name} successfully created" }
+      else
+        format.html {render :action => "new", :group => @group }
       end
     end
   end
@@ -105,29 +95,15 @@ class AssignmentsController < ApplicationController
 
   def update
     @assignment = current_course.assignments.includes(:assignment_score_levels).find(params[:id])
+    @title = "Edit #{term_for :assignment}"
     respond_to do |format|
       self.check_uploads
       @assignment.assign_attributes(params[:assignment])
-      @assignment.assignment_type = current_course.assignment_types.find_by_id(params[:assignment_type_id])
-      if @assignment.due_at.present? && @assignment.open_at.present? && @assignment.due_at < @assignment.open_at
-        flash[:error] = 'Due date must be after open date.'
-        format.html { redirect_to edit_assignment_path(@assignment) }
-        format.json { render json: @assignment.errors, status: :unprocessable_entity }
-      elsif @assignment.accepts_submissions_until.present? && @assignment.due_at.present? && @assignment.accepts_submissions_until < @assignment.due_at
-        flash[:error] = 'Submission accept date must be after due date.'
-        format.html { redirect_to edit_assignment_path(@assignment) }
-        format.json { render json: @assignment.errors, status: :unprocessable_entity }
-      elsif @assignment.accepts_submissions_until.present? && @assignment.open_at.present? && @assignment.accepts_submissions_until < @assignment.open_at
-        flash[:error] = 'Submission accept date must be after open date.'
-        format.html { redirect_to edit_assignment_path(@assignment) }
-        format.json { render json: @assignment.errors, status: :unprocessable_entity }
+      if @assignment.save
+        set_assignment_weights
+        format.html { respond_with @assignment, notice: "#{(term_for :assignment).titleize}  #{@assignment.name} successfully updated" }
       else
-        if @assignment.save
-          format.html { respond_with @assignment, notice: "#{(term_for :assignment).titleize} #{@assignment.name} successfully updated" }
-        else
-          format.html { redirect_to edit_assignment_path(@assignment) }
-          format.json { render json: @assignment.errors, status: :unprocessable_entity }
-        end
+        format.html {render :action => "new", :group => @group }
       end
     end
   end

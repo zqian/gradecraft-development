@@ -1,20 +1,18 @@
 .small-12.panel.mainContent
 
-  %h3.pagetitle
+  %h4.subtitle
     
     / Check to see if the course has scheme elements
     - if current_course.grade_scheme_elements.present?
-      - if  current_user.next_element_level(current_course) == false
-        Congratulations! You beat #{current_course.name}.
+      - if current_student.won(current_course)
+        = "Congratulations! You beat #{current_course.name}."
+      - elsif current_course.grade_level_for_score(current_student.cached_score_for_course(current_course)).present?
+        .italic= "You are a #{current_course.grade_level_for_score(current_student.cached_score_for_course(current_course))}"
       - else
-        - @grade_scheme_elements.order_by_low_range.each do |element|  
-          -if element.high_range >= current_user.cached_score_for_course(current_course) && current_user.cached_score_for_course(current_course) >= element.low_range
-            %span=points element.points_to_next_level(current_user, current_course)
-            %span points until next rank:
-            %span.bold= current_user.next_element_level(current_course)
-
-
-          
+        You're just getting started!
+      %span= points current_student.points_to_next_level(current_course)
+      %span points until your next rank:
+      %span.bold= current_student.next_element_level(current_course).level      
       / Else tally all of the points for all of the assignments in the course
     - else
       %span#userScoreNum #{points current_user.cached_score_for_course(current_course)}

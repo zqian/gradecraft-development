@@ -3,7 +3,8 @@
   text-transform: capitalize
   border: none
   color: #FFF
-  padding: .4rem
+  padding: .6rem
+  font-size: .8rem
   cursor: pointer
 
 .button-group li, .button-group li a, .button-group li a:hover 
@@ -14,24 +15,32 @@
   padding-right: .5rem
 
   li:hover
-    background-color: $primary-color-2
+    background-color: darken($primary-color-3, 30%)
 
   .button
-    background-color: $primary-color-4
+    background-color: darken($primary-color-3, 20%)
     padding: .5rem
 
 .button:hover, .button:focus
-  background-color: $primary-color-5
+  background-color: darken($primary-color-3, 30%)
 
 a.btn.btn-primary
   background-color: $primary-color-2
 
 .button-bar ul
-  white-space: nowrap !important
-  display: inline !important
+  white-space: nowrap 
+  display: inline 
 
 th.center button.button
   margin: 0
+
+.sideBar .button, .panel a.button.radius
+  font-size: .7rem
+  padding: .4rem
+  background-color: darken($secondary-color-2, 15%)
+
+.sideBar .button:hover 
+  background-color: darken($secondary-color-2, 30%)
 
 ul.button-group.context_menu 
   text-transform: capitalize
@@ -54,4 +63,28 @@ ul.button-group.context_menu
     border-bottom-right-radius: $global-radius
 
   li:hover a, li:hover, li.active, li.active a
-    background-color: $primary-color-2
+    background-color: darken($primary-color-3, 30%)
+
+/* Responsive outer container */ 
+@media (max-width: 1270px) 
+  .button 
+    border-radius: $global-radius
+    width: 100% !important
+    float: left 
+    clear: both
+    display: block
+    white-space: wrap
+
+  .button-bar.right li
+    font-size: 80%
+
+  .button-bar.right li a:hover
+    border-radius: $global-radius
+
+@media (max-width: 550px)
+  .button-bar.right li
+    border-radius: $global-radius
+    font-size: 80%
+    margin-right: 0.5rem !important
+    margin-bottom: 0.5rem !important
+

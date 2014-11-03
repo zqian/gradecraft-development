@@ -57,5 +57,4 @@ class Badge < ActiveRecord::Base
     earned_badges.where(:student_id => student).pluck('score').sum
   end
 
-
 end

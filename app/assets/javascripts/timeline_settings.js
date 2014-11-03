@@ -9,6 +9,7 @@ $(document).ready(function() {
   var target_date = new Date(); //set whatever date you want as your start date
   for(x in timeline_dates) {
       var slide_date = new Date( timeline_dates[x].startDate );
+      console.log(slide_date);
       if( slide_date < target_date) start_index++;
   }
 
@@ -17,7 +18,7 @@ $(document).ready(function() {
     createStoryJS({
       type: 'timeline',
       width: '100%',
-      height: '600',
+      height: '80%',
       hash_bookmark: 'true',
       source: source,
       embed_id: 'time_line',
