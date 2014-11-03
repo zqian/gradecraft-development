@@ -7,7 +7,7 @@
     %h3.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
 
   - if current_user_is_staff?
-    .small-12.medium-7.right.columns.columns-no-padding
+    .small-12.medium-12.large-7.right.columns.columns-no-padding_right
       .button-bar.right
         %ul.button-group.context_menu
           - if @assignment.description.present?

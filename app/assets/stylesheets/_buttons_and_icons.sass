@@ -66,7 +66,7 @@ ul.button-group.context_menu
     background-color: darken($primary-color-3, 30%)
 
 /* Responsive outer container */ 
-@media (max-width: 1100px) 
+@media (max-width: 1270px) 
   .button 
     border-radius: $global-radius
     width: 100% !important
@@ -74,3 +74,17 @@ ul.button-group.context_menu
     clear: both
     display: block
     white-space: wrap
+
+  .button-bar.right li
+    font-size: 80%
+
+  .button-bar.right li a:hover
+    border-radius: $global-radius
+
+@media (max-width: 550px)
+  .button-bar.right li
+    border-radius: $global-radius
+    font-size: 80%
+    margin-right: 0.5rem !important
+    margin-bottom: 0.5rem !important
+

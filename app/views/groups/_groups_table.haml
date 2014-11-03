@@ -2,11 +2,11 @@
   %table.responsive.nofeatures_dynatable
     %thead
       %tr
-        %th #{term_for :group} Name
-        %th= "#{current_course.user_term}s"
-        %th Status
-        %th #{term_for :assignments} 
-        %th.button-column
+        %th{:width => "20%"} #{term_for :group} Name
+        %th{:width => "20%"}= "#{current_course.user_term}s"
+        %th{:width => "20%"} Status
+        %th{:width => "20%"} #{term_for :assignments} 
+        %th{:width => "20%"}
     %tbody
       - groups.each do |group|
         %tr

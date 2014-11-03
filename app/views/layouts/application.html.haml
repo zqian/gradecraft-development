@@ -20,7 +20,7 @@
                 - if current_course
                   #{current_course.name}
         - if current_course && current_course.tagline?
-          %section.top-bar-section
+          %section.top-bar-section.show-for-large
             %ul.left.tagline
               %li
                 %a= current_course.try(:tagline)

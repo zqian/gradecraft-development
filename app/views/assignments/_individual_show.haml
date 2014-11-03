@@ -1,5 +1,5 @@
 - if current_course.has_teams? && @assignment.is_individual?
-  .small-12.medium-4.right.columns
+  .small-12.medium-6.large-4.right.columns.form_buttons
     = form_tag assignment_path(@assignment), :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
       = hidden_field_tag :assignment_id, @assignment.id
       %label.sr-only{:for => "team_id"}
@@ -192,5 +192,5 @@
 
     - if @assignment.release_necessary? && @assignment.grades.present?
       .small-12.columns
-        .right
+        .right.form_buttons
           = submit_tag "Update Selected Grade Statuses", :class => "button radius"
