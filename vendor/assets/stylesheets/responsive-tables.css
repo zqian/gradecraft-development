@@ -23,8 +23,8 @@ table td, table th { padding: 9px 10px; text-align: left; }
 	table.responsive { margin-bottom: 0; border: 0; border-radius: 0.5rem;}
 	
 	.pinned { border-spacing: 0; position: absolute; left: 0; top: 0; background: #fff; width: 35%; overflow: hidden; overflow-x: scroll; border-right: 0; border-left: 0; }
-	.pinned table { border-spacing: 0; cellpadding: 0; border-right: 0; border-left: 1px solid $light-grey; width: 100%; }
-	.pinned table th { border-spacing: 0; border: 0; padding: .4rem; background-color: $medium-grey !important;}
+	.pinned table { border-spacing: 0; cellpadding: 0; border-right: 0; border-left: 1px solid #eee; width: 100%; }
+	.pinned table th { border-spacing: 0; border: 0; padding: .4rem; background-color: #666 !important;}
 	.pinned table th, .pinned table td { white-space: nowrap; }
 	.pinned td:last-child { border-bottom: 0; }
 	
