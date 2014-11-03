@@ -7,11 +7,11 @@
       - if current_student.won(current_course)
         = "Congratulations! You beat #{current_course.name}."
       - elsif current_course.grade_level_for_score(current_student.cached_score_for_course(current_course)).present?
-        = current_course.grade_level_for_score(current_student.cached_score_for_course(current_course))
+        .italic= "You are a #{current_course.grade_level_for_score(current_student.cached_score_for_course(current_course))}"
       - else
         You're just getting started!
       %span= points current_student.points_to_next_level(current_course)
-      %span points until next rank:
+      %span points until your next rank:
       %span.bold= current_student.next_element_level(current_course).level      
       / Else tally all of the points for all of the assignments in the course
     - else
