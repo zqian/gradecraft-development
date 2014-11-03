@@ -18,8 +18,8 @@
     %table.responsive.nofeatures_default_name_dynatable
       %thead
         %tr
-          %th.center{"data-dynatable-no-sort" => "true" } Icon
-          %th Name
+          %th.center{"data-dynatable-no-sort" => "true", :width => "15%" } Icon
+          %th{:width => "35%" } Name
           - if current_course.valuable_badges?
             %th{"data-sort" => "int"} Value
           %th Awarded
