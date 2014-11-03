@@ -25,8 +25,7 @@ $(document).ready(function() {
     return {
     chart: {
       type: 'bar',
-      backgroundColor:null,
-      paddingTop: 100
+      backgroundColor:null
     },
     colors: [
      '#1A1EB2',
@@ -61,9 +60,8 @@ $(document).ready(function() {
       }
     },
     yAxis: {
-      gridLineWidth: 0,
+      gridLineWidth: 1,
       lineColor: '#FFFFFF',
-      offset: -30,
       min: 0,
       title: {
         text: ' '

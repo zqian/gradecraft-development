@@ -453,10 +453,10 @@ class User < ActiveRecord::Base
       scores << { :data => [earned_badge_score], :name => "#{course.badge_term.pluralize}" }
     end
 
-    grade_levels = []
-    course.grade_scheme_elements.each do |gse|
-      grade_levels << { :from => [gse.low_range], :to => [gse.high_range], :borderColor => '#DDD', :borderWidth => 1, :label => { :text => "#{ gse.level} / #{gse.letter}" , textAlign: 'left', y: 95, :rotation => -45 } }
-    end
+    # grade_levels = []
+    # course.grade_scheme_elements.each do |gse|
+    #   grade_levels << { :from => [gse.low_range], :to => [gse.high_range], :borderColor => '#DDD', :borderWidth => 1, :label => { :text => "#{ gse.level} / #{gse.letter}" , textAlign: 'left', y: 95, :rotation => -45 } }
+    # end
 
       
     return {
@@ -464,7 +464,7 @@ class User < ActiveRecord::Base
       :scores => scores,
       :course_total => course.total_points + earned_badge_score,
       :in_progress => in_progress.point_total + earned_badge_score,
-      :grade_levels => grade_levels
+      # :grade_levels => grade_levels
       }
   end
 
