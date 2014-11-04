@@ -242,6 +242,7 @@ GradeCraft::Application.routes.draw do
       get :edit_profile
       get :all
       put :update_profile
+      put :update_ui
       get :test
       get :import
       post :upload

@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
     :remember_me_token, :major, :gpa, :current_term_credits, :accumulated_credits,
     :year_in_school, :state_of_residence, :high_school, :athlete, :act_score, :sat_score,
     :student_academic_history_attributes, :team_role, :course_memberships_attributes,
-    :character_profile, :team_id, :lti_uid, :course_team_ids
+    :character_profile, :team_id, :lti_uid, :course_team_ids, :collapse_rubric_overview
 
   scope :order_by_high_score, -> { includes(:course_memberships).order 'course_memberships.score DESC' }
   scope :order_by_low_score, -> { includes(:course_memberships).order 'course_memberships.score ASC' }
@@ -139,6 +139,18 @@ class User < ActiveRecord::Base
 
   def default_course
     courses.where(id: default_course_id) || courses.first
+  end
+
+  # update user record with default ui settings
+  def set_default_ui_settings
+    update_attributes default_ui_settings
+  end
+
+  # default UI settings for all users
+  def default_ui_settings
+    {
+      collapse_rubric_overview: false
+    }
   end
 
   def name
