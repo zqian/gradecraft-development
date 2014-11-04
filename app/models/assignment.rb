@@ -14,7 +14,7 @@ class Assignment < ActiveRecord::Base
   has_many :score_levels, :through => :assignment_type
 
   #for instances where the assignment needs its own unique score levels
-  has_many :assignment_score_levels
+  has_many :assignment_score_levels, -> { order "value" }
   accepts_nested_attributes_for :assignment_score_levels, allow_destroy: true, :reject_if => proc { |a| a['value'].blank? || a['name'].blank? }
   
   #This is the assignment weighting system (students decide how much assignments will be worth for them)
@@ -129,7 +129,7 @@ class Assignment < ActiveRecord::Base
 
   #average of all grades for an assignment
   def average
-    grades.graded_or_released.average('grades.raw_score').to_i if grades.graded.present?
+    grades.graded_or_released.average('grades.raw_score').to_i if grades.graded_or_released.present?
   end
 
   def has_rubric?

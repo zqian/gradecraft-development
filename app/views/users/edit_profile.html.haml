@@ -16,11 +16,22 @@
         .panel
           .small-12.large-4.columns
             = f.input :first_name
+
           .small-12.large-4.columns
             = f.input :last_name
 
           .small-12.large-4.columns
             = f.input :email
+
+          - if @user.crypted_password.present?
+            .small-12.large-4.columns
+              = f.label :password
+              = f.password_field :password, :as => :password
+
+            .small-12.large-4.columns
+              = f.label :password_confirmation
+              = f.password_field :password_confirmation, :as => :password
+
           - if @user.is_student?(current_course)
             - if current_course.teams_visible? && (current_course.in_team_leaderboard? || (current_student.team_for_course(current_course).present? && current_student.team_for_course(current_course).in_team_leaderboard?))
               .small-12.large-4.columns
@@ -33,7 +44,7 @@
                 = f.text_field :team_role
                 .form_label What will you contribute to your #{term_for :team}?"
 
-          .small-12.medium-4
+          .small-12.medium-4.columns
             = f.input :default_course_id, :collection => (@default_course_options)
             .form_label This course will be automatically loaded when you log in to GradeCraft
 

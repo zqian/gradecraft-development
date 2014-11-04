@@ -76,7 +76,7 @@ class AssignmentsController < ApplicationController
     @assignment.assignment_type = current_course.assignment_types.find_by_id(params[:assignment_type_id])
     respond_to do |format|
       self.check_uploads
-      @assignment.assign_attributes(params[:assignment])
+      @assignment.save
       if @assignment.save
         set_assignment_weights
         format.html { respond_with @assignment, notice: "#{(term_for :assignment).titleize}  #{@assignment.name} successfully created" }
