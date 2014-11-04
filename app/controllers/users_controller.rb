@@ -104,6 +104,13 @@ class UsersController < ApplicationController
     redirect_to dashboard_path
   end
 
+  def update_ui
+    @user = current_user
+    @user.update_attributes collapse_rubric_overview: params[:collapse]
+    session[:collapse_rubric_overview] = params[:collapse]
+    respond_with @user
+  end
+
   def import
     @title = "Import Users"
   end
