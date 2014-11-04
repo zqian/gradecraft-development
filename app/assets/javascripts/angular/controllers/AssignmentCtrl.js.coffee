@@ -1,7 +1,5 @@
 @gradecraft.controller 'AssignmentCtrl', ['$scope', '$http', ($scope, $http) -> 
 
-  # hide Rubric Overview by default
-  $scope.collapseOverview = true
  
   $scope.toggleOverview = () ->
     $scope.collapseOverview = !$scope.collapseOverview
@@ -32,6 +30,11 @@
       return false
     )
 
-  $scope.init = (collapseOverview) ->
+  $scope.init = (sessionValue) ->
+    if sessionValue != null
+      $scope.collapseOverview = sessionValue
+    else
+      # hide Rubric Overview by default
+      $scope.collapseOverview = true
 
 ]

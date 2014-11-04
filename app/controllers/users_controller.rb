@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   respond_to :html, :json
 
-  before_filter :ensure_staff?, :except => [:edit_profile, :update_profile]
+  before_filter :ensure_staff?, :except => [:edit_profile, :update_profile, :update_ui]
   before_filter :ensure_admin?, :only => [:all]
 
   def index
@@ -106,7 +106,7 @@ class UsersController < ApplicationController
   end
 
   def update_ui
-    @user = current_user
+    @user = User.find session[:current_user_id]
     @user.update_attributes collapse_rubric_overview: params[:collapse]
     session[:collapse_rubric_overview] = params[:collapse]
     respond_with @user
