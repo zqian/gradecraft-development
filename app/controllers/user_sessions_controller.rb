@@ -12,6 +12,7 @@ class UserSessionsController < ApplicationController
       if @user = login(params[:user][:email], params[:user][:password], params[:user][:remember_me])
         User.increment_counter(:visit_count, @user.id)
         log_course_login_event
+        load_user_ui_settings
         format.html { redirect_back_or_to dashboard_path }
         format.xml { render :xml => @user, :status => :created, :location => @user }
       else
@@ -34,6 +35,7 @@ class UserSessionsController < ApplicationController
     @user.courses << @course unless @user.courses.include?(@course)
     @course_membership = @user.course_memberships.where(course_id: @course).first
     @course_membership.assign_role_from_lti(auth_hash) if @course_membership
+    load_user_ui_settings
     save_lti_context
     session[:course_id] = @course.id
     auto_login @user
@@ -49,6 +51,7 @@ class UserSessionsController < ApplicationController
       redirect_to auth_failure_path and return
     end
     auto_login @user
+    load_user_ui_settings
     User.increment_counter(:visit_count, @user.id)
     respond_with @user, notice: t('sessions.create.success'), location: dashboard_path
   end
@@ -62,6 +65,13 @@ class UserSessionsController < ApplicationController
 
   def auth_hash
     request.env['omniauth.auth']
+  end
+
+  # set user ui settings variables for session
+  def load_user_ui_settings
+    @user.set_default_ui_settings if @user[:collapse_rubric_overview].nil?
+    session[:collapse_rubric_overview] = @user[:collapse_rubric_overview]
+    session[:current_user_id] = @user[:id]
   end
 
   def lti_error_notification

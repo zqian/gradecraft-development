@@ -6,7 +6,7 @@
     %h4#ungraded-subtitle= "#{@ungraded_percentage}% ungraded"
   - else
     %h3#rubric-preview-headline Grading Rubric
-  #collapse-rubric-box(ng-app="gradecraft" ng-controller="AssignmentCtrl")
+  #collapse-rubric-box(ng-app="gradecraft" ng-controller="AssignmentCtrl" ng-init="init(#{session[:collapse_rubric_overview]})")
     %button(ng-click="hideOverview()") Hide Overview
     %button(ng-click="expandOverview()") Show Overview
     = hidden_field_tag session[:current_user_id], "user_id"
