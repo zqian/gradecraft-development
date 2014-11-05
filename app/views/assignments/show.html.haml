@@ -14,8 +14,11 @@
 
   
   - if current_user_is_staff?
-    #rubric-stuff
+    #rubric-stuff(ng-app="gradecraft" ng-controller="AssignmentCtrl" ng-init="init(#{session[:collapse_rubric_overview]})" ng-cloak)
       = render "view_rubric"
+
+      - if @assignment.rubric.present? && @assignment.rubric.designed?    
+        = render "rubric_overview"
 
     .small-12.columns.assignment-submissions
       - if @assignment.has_groups?
