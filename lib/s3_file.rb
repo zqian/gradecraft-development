@@ -21,7 +21,7 @@ module S3File
       # name = File.basename(filepath)
       # extension = File.extname(filepath)
       name = filepath.clone
-      name.slice!(/.*\d\d.\d\d[%2F]*/).gsub(/[^0-9A-Za-z]/, '')
+      name.slice!(/.*\d\d.\d\d[%2F]*/)
       write_attribute(:filename, name)
 
     end
