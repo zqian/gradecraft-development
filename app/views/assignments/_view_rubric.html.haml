@@ -1,6 +1,4 @@
-#rubric-preview
-
-#collapse-rubric-box(ng-app="gradecraft" ng-controller="AssignmentCtrl" ng-init="init(#{session[:collapse_rubric_overview]})" ng-cloak)
+#rubric-overview-controls
   .rubric-overview-header
     %h2
       = image_tag "rubric_grid_icon.gif", class: "rubric-icon", style: "height: 36px;"
@@ -11,7 +9,6 @@
       %h3!= link_to "Edit Rubric", design_assignment_rubric_path(@assignment), class: "fancy-link"
       %button.fancy-button(ng-click="hideOverview()" ng-show="!collapseOverview") Hide Overview
       %button.fancy-button(ng-click="expandOverview()" ng-show="collapseOverview") Show Overview
-    = render "rubric_overview"
   - else
     #rubric-overview-buttons
       %h3!= link_to "Design Rubric", design_assignment_rubric_path(@assignment), class: "fancy-link"
