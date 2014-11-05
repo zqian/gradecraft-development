@@ -71,6 +71,10 @@ GEM
       mini_magick (~> 3.6.0)
       remotipart (~> 1.2.1)
     builder (3.1.4)
+    byebug (3.5.1)
+      columnize (~> 0.8)
+      debugger-linecache (~> 1.2)
+      slop (~> 3.6)
     canable (0.3.0)
     capybara (2.1.0)
       mime-types (>= 1.16)
@@ -105,12 +109,7 @@ GEM
     connection_pool (1.1.0)
     dalli (2.6.4)
     database_cleaner (1.0.1)
-    debugger (1.6.6)
-      columnize (>= 0.3.1)
-      debugger-linecache (~> 1.2.0)
-      debugger-ruby_core_source (~> 1.3.2)
     debugger-linecache (1.2.0)
-    debugger-ruby_core_source (1.3.4)
     diff-lcs (1.2.5)
     dotenv (0.8.0)
     dotenv-rails (0.8.0)
@@ -321,6 +320,7 @@ GEM
       rack (~> 1.4)
       rack-protection (~> 1.4)
       tilt (~> 1.3, >= 1.3.4)
+    slop (3.6.0)
     sorcery (0.8.2)
       bcrypt-ruby (~> 3.0.0)
       oauth (~> 0.4.4)
@@ -377,6 +377,7 @@ DEPENDENCIES
   autonumeric-rails
   aws-sdk
   bootsy
+  byebug
   canable
   capybara (~> 2.1.0)
   carrierwave
@@ -384,7 +385,6 @@ DEPENDENCIES
   compass-rails (~> 1.1.3)
   dalli
   database_cleaner (~> 1.0.1)
-  debugger
   dotenv-rails
   factory_girl_rails (~> 4.2.1)
   faker
