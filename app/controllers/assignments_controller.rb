@@ -52,6 +52,11 @@ class AssignmentsController < ApplicationController
     render :detailed_grades if params[:detailed]
   end
 
+  def rules
+    @assignment = current_course.assignments.find(params[:id])
+    @title = @assignment.name
+  end
+
   def new
     @title = "Create a New #{term_for :assignment}"
     @assignment = current_course.assignments.new
