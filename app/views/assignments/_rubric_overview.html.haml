@@ -36,6 +36,7 @@
               %label.tier-description= tier.wrapped_description(38).html_safe
 
               .row.badge-row
+                = tier.tier_badges.count
                 - tier.tier_badges.each_with_index do |badge, index|
                   - if index < 2
                     .tier-badge-image
