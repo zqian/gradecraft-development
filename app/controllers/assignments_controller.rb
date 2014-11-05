@@ -52,6 +52,11 @@ class AssignmentsController < ApplicationController
     render :detailed_grades if params[:detailed]
   end
 
+  def rules
+    @assignment = current_course.assignments.find(params[:id])
+    @title = @assignment.name
+  end
+
   def new
     @title = "Create a New #{term_for :assignment}"
     @assignment = current_course.assignments.new
@@ -76,7 +81,7 @@ class AssignmentsController < ApplicationController
     @assignment.assignment_type = current_course.assignment_types.find_by_id(params[:assignment_type_id])
     respond_to do |format|
       self.check_uploads
-      @assignment.assign_attributes(params[:assignment])
+      @assignment.save
       if @assignment.save
         set_assignment_weights
         format.html { respond_with @assignment, notice: "#{(term_for :assignment).titleize}  #{@assignment.name} successfully created" }

@@ -34,6 +34,6 @@
                     Edit
                     %span.sr-only= team.name
                 %li
-                  = link_to edit_team_path(team), :class => 'button', :data => { confirm: 'Are you sure?' }, :method => :delete do
+                  = link_to team_path(team), :class => 'button', :data => { confirm: 'Are you sure?' }, :method => :delete do
                     Delete
                     %span.sr-only= team.name

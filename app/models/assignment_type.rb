@@ -134,7 +134,7 @@ class AssignmentType < ActiveRecord::Base
 
   #Checking to make sure there are score levels and warning if not
   def ensure_score_levels
-    if score_levels.count <= 1
+    if score_levels.count <= 2
       errors.add :base, "To use the selected method of quick grading you must create at least 2 score levels."
     end
   end

@@ -8,7 +8,8 @@
     Rules
 #assignment_description.reveal-modal{:data => {:reveal => "true" }}
   %h3.bold= @assignment.name
-  .italic= "Due: #{@assignment.due_at}"    
+  -if @assignment.due_at.present?
+    .italic= "Due: #{@assignment.due_at}"    
   - if @assignment.assignment_files.present?
     %ul
       .bold Attached files

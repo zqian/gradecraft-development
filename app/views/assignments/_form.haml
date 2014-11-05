@@ -155,19 +155,17 @@
 
     .small-12.large-8.columns.panel
       %h4.uppercase Grade Levels
-      .small-12.columns
-        .assignment-score-levels
-          %p.hint Example: You could create three levels to produce a quick grading scheme for just this #{term_for :assignment} - Complete (5000 points), Finalist (7000 points), and Winner (10,000 points). These levels will then show in the quick grade, and when students are setting goals in the grade predictor.
-          %script(id="assignment-score-level-template" type="text/x-template")
-            %fieldset.assignment-score-level
-              = f.simple_fields_for :assignment_score_levels, AssignmentScoreLevel.new, class: 'form-inline', child_index: 'child_index' do |slf|
-                = render 'assignment_score_level_fields', f: slf
-          - @assignment.assignment_score_levels.each do |assignment_score_level|
-            %fieldset.assignment-score-level
-              = f.simple_fields_for :assignment_score_levels, assignment_score_level, class: 'form-inline' do |slf|
-                = render 'assignment_score_level_fields', f: slf
-        = link_to 'Add a Level', '#', class: 'add-assignment-score-level button radius'
-
+      .assignment-score-levels
+        %p.hint Example: You could create three levels to produce a quick grading scheme for just this #{term_for :assignment} - Complete (5000 points), Finalist (7000 points), and Winner (10,000 points). These levels will then show in the quick grade, and when students are setting goals in the grade predictor.
+        %script(id="assignment-score-level-template" type="text/x-template")
+          %fieldset.assignment-score-level
+            = f.simple_fields_for :assignment_score_levels, AssignmentScoreLevel.new, class: 'form-inline', child_index: 'child_index' do |slf|
+              = render 'assignment_score_level_fields', f: slf
+        - @assignment.assignment_score_levels.order_by_value.each do |assignment_score_level|
+          %fieldset.assignment-score-level
+            = f.simple_fields_for :assignment_score_levels, assignment_score_level, class: 'form-inline' do |slf|
+              = render 'assignment_score_level_fields', f: slf
+      = link_to 'Add a Level', '#', class: 'add-assignment-score-level button radius'
     
 
     .clearfix

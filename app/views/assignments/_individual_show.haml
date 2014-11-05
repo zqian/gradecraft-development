@@ -95,15 +95,6 @@
                         %a{:href => edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'}
                           Grade
                           %span.sr-only #{student.first_name} #{student.last_name}
-                    %ul.button-group.round.right
-                      %li
-                        %a{:href => assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'}
-                          See Grade
-                          %span.sr-only for #{student.first_name} #{student.last_name}
-                      %li
-                        %a{:href => edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'}
-                          Edit Grade
-                          %span.sr-only for #{student.first_name} #{student.last_name}
             - if @assignment.release_necessary?
               %td
                 - if grade.is_graded?
