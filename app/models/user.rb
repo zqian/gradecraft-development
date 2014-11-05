@@ -479,7 +479,7 @@ class User < ActiveRecord::Base
   def cache_scores
     course_memberships.each do |membership|
       if membership.course.add_team_score_to_student?
-        membership.update_attribute :score, (grades.released.where(course_id: membership.course_id).score || 0) + (earned_badge_score_for_course(membership.course_id) || 0 ) + self.team_for_course(membership.course_id).try(:score)
+        membership.update_attribute :score, (grades.released.where(course_id: membership.course_id).score || 0) + (earned_badge_score_for_course(membership.course_id) || 0 ) + ( self.team_for_course(membership.course_id).try(:score) || 0 )
         #self.team_for_course(membership.course_id).save! if self.team_for_course(membership.course_id).present?
       else
         membership.update_attribute :score, (grades.released.where(course_id: membership.course_id).score || 0) + (earned_badge_score_for_course(membership.course_id) || 0 )
