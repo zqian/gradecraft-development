@@ -19,11 +19,10 @@ module S3File
       filepath.slice! "/gradecraft-#{Rails.env}/"
       write_attribute(:filepath, filepath)
       # name = File.basename(filepath)
-      # name = name.gsub(/[^0-9A-Za-z]/, '')
       # extension = File.extname(filepath)
       name = filepath.clone
+      name = name.slice!(/.*\d\d.\d\d[%2F]*/)
       name = name.gsub(/[^0-9A-Za-z]/, '')
-      #name.slice!(/.*\d\d.\d\d[%2F]*/)
       write_attribute(:filename, name)
 
     end
