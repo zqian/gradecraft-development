@@ -99,10 +99,14 @@
       metric_id: this.metric.id,
       badge_id: this.badge.id
 
-  TierBadgePrototype = (tier, badge, attrs={})->
+  TierBadgePrototype = (tier, badge, existingTierBadge=null, attrs={})->
     this.tier = tier
     this.badge = badge
-    this.create()
+    this.existingTierBadge = existingTierBadge
+    if this.tier.tierBadgesLoaded
+      this.create() 
+    else if existingTierBadge
+      this.load()
     this.name = badge.name
     this.description = badge.description
     this.point_total = badge.point_total
@@ -121,6 +125,10 @@
         alert("create failed!")
         return false
       )
+
+    load: ()->
+      self = this
+      self.id = self.existingTierBadge.id
 
     createParams: ()->
       tier_id: this.tier.id,
@@ -311,7 +319,7 @@
     this.availableBadges = angular.copy($scope.courseBadges)
     this.selectedBadge = ""
     this.id = if attrs.id then attrs.id else null
-
+    this.tierBadgesLoaded = false
     this.loadTierBadges(attrs["tier_badges"]) if attrs["tier_badges"] #add badges if passed on init
     this.metric_id = metric.id
     this.name = attrs.name or ""
@@ -322,6 +330,7 @@
     this.durable = attrs.durable or false
     this.description = attrs.description or ""
     this.resetChanges()
+
   TierPrototype.prototype =
     isNew: ()->
       this.id is null
@@ -348,7 +357,7 @@
     loadTierBadge: (tierBadge)->
       self = this
       courseBadge = self.availableBadges[tierBadge.badge_id]
-      loadedBadge = new TierBadgePrototype(self, angular.copy(courseBadge))
+      loadedBadge = new TierBadgePrototype(self, angular.copy(courseBadge), tierBadge)
       self.badges[courseBadge.id] = loadedBadge # add tier badge to tier
       delete self.availableBadges[courseBadge.id] # remove badge from available badges on tier
      
@@ -359,6 +368,7 @@
         if (self.availableBadges[tierBadge.badge_id])
           self.loadTierBadge(tierBadge)
       )
+      self.tierBadgesLoaded = true
 
     selectBadge: ()->
       self = this
