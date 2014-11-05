@@ -1,5 +1,6 @@
 .small-12.panel.mainContent
 
+  
   - if current_user_is_staff?
     = content_nav_for @assignment
   
@@ -55,8 +56,8 @@
     .small-12
       %h3.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
 
-    = render "view_rubric"
-    .small-12.columns
+    #rubric-stuff= render "view_rubric"
+    .small-12.columns.assignment-submissions
       - if @assignment.has_groups?
         = render "grades/group_show"
       - else

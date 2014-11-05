@@ -6,13 +6,15 @@
  
   # expand/show the overview on the show assignment page
   $scope.expandOverview = () ->
-    $scope.collapseOverview = false
-    $scope.updateCollapsedRubric()
+    if $scope.collapseOverview == true
+      $scope.collapseOverview = false
+      $scope.updateCollapsedRubric()
  
   # hide the overview on the show assignment page
   $scope.hideOverview = () ->
-    $scope.collapseOverview = true
-    $scope.updateCollapsedRubric()
+    if $scope.collapseOverview == false
+      $scope.collapseOverview = true
+      $scope.updateCollapsedRubric()
  
   $scope.overviewCollapsed = () ->
     $scope.collapseOverview
