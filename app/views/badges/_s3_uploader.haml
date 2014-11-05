@@ -15,5 +15,5 @@
       %ul#uploaded_files
         - @badge.badge_files.each do |bf|
           %li
-            = link_to bf.try(:filename), bf.try(:url)
+            = link_to bf.try(:filename), bf.try(:url), :target => "_blank"
             = link_to "[Remove]", remove_uploads_path({ :model => "BadgeFile", :badge_id => @badge.id, :upload_id => bf.id } )

@@ -17,7 +17,7 @@
           %hr
           - current_student.submission_for_assignment(@assignment).submission_files.each do |sf|
             %li
-              = link_to sf.filename, sf.url
+              = link_to sf.filename, sf.url, :target => "_blank"
               = link_to "(Remove)", remove_uploads_path({ :model => "SubmissionFile", :assignment_id => @assignment.id, :upload_id => sf.id } )
 
 

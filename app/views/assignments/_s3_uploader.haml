@@ -15,6 +15,7 @@
       %ul#uploaded_files
         - @assignment.assignment_files.each do |af|
           %li
-            = link_to af.try(:filename), af.try(:url)
+            = af.filepath
+            = link_to af.try(:filename), af.try(:url), :target => "_blank"
             = link_to "[Remove]", remove_uploads_path({ :model => "AssignmentFile", :assignment_id => @assignment.id, :upload_id => af.id } )
 

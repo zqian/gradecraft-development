@@ -15,5 +15,5 @@
       %ul#uploaded_files
         - @grade.grade_files.each do |gf|
           %li
-            = link_to gf.try(:filename), gf.try(:url)
+            = link_to gf.try(:filename), gf.try(:url), :target => "_blank"
             = link_to "[Remove]", remove_uploads_path({ :model => "GradeFile", :grade_id => @grade.id, :upload_id => gf.id } )
