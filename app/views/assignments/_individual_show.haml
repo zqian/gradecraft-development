@@ -22,8 +22,6 @@
             %th{:scope => "col"} Level
           - if @assignment.release_necessary?
             %th{:scope => "col"} Status
-          %th{:scope => "col"}
-          - if @assignment.release_necessary?
             %th.center{"data-dynatable-no-sort" => "true"}
               %button.button.select-all.tiny= "Check All"
               %button.button.select-none.tiny= "Uncheck All"
