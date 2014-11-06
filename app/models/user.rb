@@ -48,6 +48,7 @@ class User < ActiveRecord::Base
 
   scope :order_by_high_score, -> { includes(:course_memberships).order 'course_memberships.score DESC' }
   scope :order_by_low_score, -> { includes(:course_memberships).order 'course_memberships.score ASC' }
+  scope :alphabetical , -> { order 'last_name ASC'}
 
   has_many :course_memberships, :dependent => :destroy
   has_one :student_academic_history, :foreign_key => :student_id, :dependent => :destroy, :class_name => 'StudentAcademicHistory'

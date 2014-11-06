@@ -8,7 +8,7 @@ class AssignmentScoreLevel < ActiveRecord::Base
 
   #Displaying the name and the point value together in grading lists
   def formatted_name
-    "#{name} - #{value} points"
+    "#{name} (#{value} points)"
   end
 
 end
