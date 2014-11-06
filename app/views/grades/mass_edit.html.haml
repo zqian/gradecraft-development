@@ -50,11 +50,11 @@
                       %ul.inline-list
                         - @score_levels.each do |score_level|
                           %li
-                            = gf.label :raw_score, score_level.name, value: score_level.value
+                            = gf.label :raw_score, "#{score_level.formatted_name}", value: score_level.value
                             = gf.radio_button :raw_score, score_level.value, :class => "radio_inline"
                     - elsif @assignment.grade_radio? && @assignment.has_levels?
                       - @assignment_score_levels.each do |assignment_score_level|
-                        = gf.label :raw_score, assignment_score_level.name, value: assignment_score_level.value
+                        = gf.label :raw_score, "#{assignment_score_level.formatted_name}", value: assignment_score_level.value
                         = gf.radio_button :raw_score, assignment_score_level.value, :class => "radio_inline"
                     - elsif @assignment.grade_checkboxes?
                       = gf.check_box :raw_score, {}, @assignment.point_total, nil

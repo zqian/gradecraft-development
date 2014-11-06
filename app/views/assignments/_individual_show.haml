@@ -20,7 +20,7 @@
             %th{:scope => "col"} Multiplied Score
           - if @assignment.release_necessary?
             %th{:scope => "col"} Status
-          %th.center Button Bar
+          %th.center
           - if @assignment.release_necessary?
             %th.center{"data-dynatable-no-sort" => "true"}
               %button.button.select-all.tiny= "Check All"
