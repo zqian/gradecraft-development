@@ -83,8 +83,8 @@
 - else
 
   .small-12.columns
-    .small-12.panel.columns
-      = render 's3_uploader'
+    //.small-12.panel.columns
+    //= render 's3_uploader'
 
     = simple_form_for @grade, url: assignment_grade_path(@assignment), method: :patch do |f|
       = hidden_field_tag :student_id, current_student.id
@@ -92,9 +92,9 @@
         .small-12.large-4.columns
           = f.label :raw_score, "Raw Score (#{@assignment.point_total} points Possible)"
           - if @assignment.assignment_type.has_levels?
-            = f.select :raw_score, @score_levels.map { |l| [l.name,l.value] }, :include_blank => true
+            = f.select :raw_score, @score_levels.map { |l| [l.formatted_name,l.value] }, :include_blank => true
           - elsif @assignment.has_levels?
-            = f.select :raw_score, @assignment_score_levels.map { |l| [l.name,l.value] }, :include_blank => true
+            = f.select :raw_score, @assignment_score_levels.map { |l| [l.formatted_name,l.value] }, :include_blank => true
           - else
             = f.text_field :raw_score, :default => @assignment.point_total, :label => "Score", :hint => "Total Assignment Points: #{ points @assignment.point_total }", data: {autonumeric: true, "m-dec" => "0"}
           = f.simple_fields_for :grade_files, @grade.grade_files.new do |gff|
