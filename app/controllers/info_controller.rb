@@ -101,6 +101,7 @@ class InfoController < ApplicationController
 
   #Course wide leaderboard - excludes auditors from view
   def leaderboard
+    # before_filter :ensure_staff?
     @title = "Leaderboard"
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
     user_search_options = {}
@@ -111,9 +112,30 @@ class InfoController < ApplicationController
     else
       students = current_course.students_being_graded
     end
-    students.each do |s|
-      s.score = s.cached_score_for_course(current_course)
-    end
+
+    # need to replace all of this
+#    def students_being_graded(course, team=nil)
+#      user_ids = CourseMembership.where(course: course, role: "student", auditing: false).pluck(:user_id)
+#      if team
+#        User.where(id: user_ids).select { |student| team.student_ids.include? student.id }
+#      else
+#        User.where(id: user_ids)
+#      end
+#    end
+#
+#    what needs to be included:
+#    students with a course membership for the course, with a role for student, that are not auditing
+#
+#
+#    students.each do |s|
+#      s.score = s.cached_score_for_course(current_course)
+#    end
+
+    CourseMembership.where(course_id: course, role: "student", auditing: false).includes(:users).pluck(:user_id) #.first.score || 0
+
     @students = students.to_a.sort_by {|student| student.score}.reverse
   end
+
+  def protected
+
 end
