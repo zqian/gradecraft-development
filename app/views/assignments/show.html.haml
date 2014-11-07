@@ -1,10 +1,6 @@
 .small-12.panel.mainContent
 
-  - if current_user_is_student?
-    .small-12
-      %h3.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
-
-  - elsif current_user_is_staff?
+  - if current_user_is_staff?
     = content_nav_for @assignment
   
     .small-12.medium-5
@@ -51,7 +47,12 @@
       = render "group_show"
     - else
       = render "individual_show"
+  
   - else
+
+    .small-12
+      %h3.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
+
     .small-12.columns
       - if @assignment.has_groups?
         = render "grades/group_show"
