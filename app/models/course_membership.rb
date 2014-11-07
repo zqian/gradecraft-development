@@ -10,8 +10,8 @@ class CourseMembership < ActiveRecord::Base
     scope role.pluralize, ->(course) { where role: role }
   end
 
-  scope :auditing, -> { where('auditing = ?', true) }
-  scope :being_graded, -> { where('auditing = ?', false) }
+  scope :auditing, -> { where( :auditing => true ) }
+  scope :being_graded, -> { where( :auditing => false) }
 
   def assign_role_from_lti(auth_hash)
     return unless auth_hash['extra'] && auth_hash['extra']['raw_info'] && auth_hash['extra']['raw_info']['roles']

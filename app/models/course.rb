@@ -210,7 +210,7 @@ class Course < ActiveRecord::Base
 
   #Descriptive stats of the grades
   def minimum_course_score
-    course_memberships.minimum('course_memberships.score')
+    CourseMembership.where(:course => self, :auditing => false, :role => "student").minimum('score')
   end
 
   def maximum_course_score
