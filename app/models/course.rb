@@ -214,15 +214,11 @@ class Course < ActiveRecord::Base
   end
 
   def maximum_course_score
-    course_memberships.maximum('course_memberships.score')
+    CourseMembership.where(:course => self, :auditing => false, :role => "student").maximum('score')
   end
 
   def average_course_score
-    course_memberships.average('course_memberships.score').to_i
-  end
-
-  def median_course_score
-    course_memberships.median('course_memberships.score').to_i
+    CourseMembership.where(:course => self, :auditing => false, :role => "student").average('score').to_i
   end
   
   def student_count
