@@ -210,19 +210,15 @@ class Course < ActiveRecord::Base
 
   #Descriptive stats of the grades
   def minimum_course_score
-    course_memberships.minimum('course_memberships.score')
+    CourseMembership.where(:course => self, :auditing => false, :role => "student").minimum('score')
   end
 
   def maximum_course_score
-    course_memberships.maximum('course_memberships.score')
+    CourseMembership.where(:course => self, :auditing => false, :role => "student").maximum('score')
   end
 
   def average_course_score
-    course_memberships.average('course_memberships.score').to_i
-  end
-
-  def median_course_score
-    course_memberships.median('course_memberships.score').to_i
+    CourseMembership.where(:course => self, :auditing => false, :role => "student").average('score').to_i
   end
   
   def student_count

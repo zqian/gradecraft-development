@@ -23,7 +23,7 @@
           .small-12.large-4.columns
             = f.input :email
 
-          - if @user.crypted_password.present?
+          - if ! @user.kerberos_uid.present?
             .small-12.large-4.columns
               = f.label :password
               = f.password_field :password, :as => :password

@@ -43,7 +43,7 @@
             %td
               - if @assignment.accepts_submissions?
                 - student.submissions.where(:assignment_id => @assignment).each do |submission|
-                  - if submission && grade
+                  - if submission && (grade.status == "Graded" || grade.status == "Released")
                     .button-bar
                       - if submission.submission_files.present?
                         %i.fi-paperclip.right
