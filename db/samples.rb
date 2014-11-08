@@ -718,11 +718,6 @@ assignments << Assignment.create! do |a|
   a.open_at = 3.weeks.ago
   a.grade_scope = "Individual"
   a.save
-  a.tasks.create! do |t|
-    t.name = "Task 1"
-    t.due_at = rand.weeks.from_now
-    t.accepts_submissions = true
-  end
   students.each do |student|
     a.tasks.each do |task|
       submission = student.submissions.create! do |s|

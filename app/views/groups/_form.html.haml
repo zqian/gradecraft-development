@@ -12,12 +12,6 @@
       %h4.uppercase= "#{term_for :group} Name"
       = f.text_field :name
 
-    - if current_user_is_staff? && @group.persisted?
-      .small-12.medium-4
-        = f.label :approved, "Status"
-        = f.select :approved, [["Pending"], ["Approved"], ["Rejected"]]
-        .form_label If rejected, this #{term_for :group} will be unable to submit any further work for these assignments
-
     .small-12.panel
       %h4.uppercase= "#{term_for :assignments}"
       = f.association :assignments, :collection => @assignments, :as => :check_boxes, :label => false
@@ -54,11 +48,6 @@
           = f.simple_fields_for :proposals, Proposal.new, class: 'form-inline', child_index: 'child_index' do |f|
             .small-12.columns.panel
 
-              %span.large-3.columns
-              - if current_user_is_staff?
-                %span.large-3.columns
-                  = f.label :approved, "Approved?"
-                  = f.input :approved, :label => false
               .small-12.columns.textarea
                 %h4 
                   %span.uppercase Proposal
