@@ -5,16 +5,17 @@ class GradesController < ApplicationController
   before_filter :ensure_student?, only: [:predict_score]
 
   def show
-    @assignment = current_course.assignments.find(params[:assignment_id])
-    @title = "#{current_student.name}'s Grade for #{ @assignment.name }"
+    @assignment = current_course.assignments.find(params[:assignment_id])   
     if current_user_is_student?
       redirect_to @assignment
     end
-    @grades_for_assignment = @assignment.grades_for_assignment(current_student)
-    if @assignment.has_groups? && current_user_is_staff?
+    if @assignment.has_groups?
       @group = @assignment.groups.find(params[:group_id])
-    elsif @assignment.has_groups? && current_user_is_student?
-      @grade = current_student_data.grade_for_assignment(@assignment)
+      @title = "#{@group.name}'s Grade for #{ @assignment.name }"
+      @grades_for_assignment = @assignment.grades.graded_or_released
+    else
+      @title = "#{current_student.name}'s Grade for #{ @assignment.name }"
+      @grades_for_assignment = @assignment.grades_for_assignment(current_student)
     end
   end
 
