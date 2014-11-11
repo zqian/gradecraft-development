@@ -56,6 +56,7 @@
             %label.checkbox{ :for => "notify_released" }
               = f.label :notify_released, "Notify by email?"
               %i.fi-mail
+              = f.check_box :notify_released
               .form_label Do you want to notify students by email when a grade is awarded? If grade release is necessary, this email will not be sent out until the grade is officially released.
         .small-12
           %label.checkbox{ :for => "include_in_timeline" }
