@@ -26,7 +26,6 @@ gem 'foundation-rails'
 gem 'foundation-icons-sass-rails'
 gem 'gravatar_image_tag'
 gem 'haml'
-#gem 'html5_validators'
 gem 'ims-lti'
 gem 'jbuilder'
 gem 'jquery-rails', '~> 2.0'
@@ -34,7 +33,6 @@ gem 'json'
 gem 'kiqstand', :git => 'https://github.com/mongoid/kiqstand.git'
 gem 'markerb'
 gem 'mini_magick'
-gem 'minitest-rails'
 gem 'mongoid', :git => 'https://github.com/mongoid/mongoid.git'
 gem 'ng-rails-csrf'
 gem 'nokogiri', '1.6.0'
@@ -66,7 +64,6 @@ gem 'sinatra', '>= 1.3.0', :require => nil
 
 group :development do
   gem 'haml-rails'
-  gem 'valid_attribute'
   gem 'quiet_assets'
   gem 'foreman'
   gem 'rack-mini-profiler', require: false
@@ -87,5 +84,5 @@ end
 group :test, :development do
   gem 'rspec-rails', '~> 2.14.0'
   gem 'factory_girl_rails', '~> 4.2.1'
+  gem 'valid_attribute'
 end
-

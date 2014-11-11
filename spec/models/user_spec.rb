@@ -22,7 +22,7 @@ describe User do
   end
 
   it "is invalid without an email address" do
-    expect(User.new(email: nil)).to have(3).errors_on(:email)
+    expect(User.new(email: nil)).to have(2).errors_on(:email)
   end
 
   it "returns a user's full name as a string" do

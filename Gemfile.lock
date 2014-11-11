@@ -193,9 +193,6 @@ GEM
       subexec (~> 0.2.1)
     mini_portile (0.5.2)
     minitest (4.7.5)
-    minitest-rails (0.9.2)
-      minitest (~> 4.7)
-      rails (>= 3.0)
     moped (1.5.1)
     multi_json (1.10.1)
     multipart-post (1.2.0)
@@ -403,7 +400,6 @@ DEPENDENCIES
   launchy
   markerb
   mini_magick
-  minitest-rails
   mongoid!
   newrelic_rpm
   ng-rails-csrf

@@ -81,7 +81,7 @@ class GradesController < ApplicationController
       @grade.status = "Graded"
       respond_to do |format|
         if @grade.save
-          format.html { redirect_to syllabus_path, notice: 'Nice job! Thanks for logging your grade!' }
+          format.html { redirect_to syllabus_path, notice: 'Nice job, thanks for logging your grade!' }
         else
           format.html { redirect_to syllabus_path, notice: "We're sorry, this grade could not be added." }
         end
