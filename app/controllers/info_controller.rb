@@ -90,6 +90,7 @@ class InfoController < ApplicationController
     else
       students = current_course.students_being_graded
     end
+
     @students = students
     @auditing = current_course.students_auditing
   end
@@ -103,9 +104,21 @@ class InfoController < ApplicationController
   def leaderboard
     # before_filter :ensure_staff?
     @title = "Leaderboard"
-    @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
-    user_search_options = {}
-    user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
+
+    if team_leaderboard_active?
+      fetch_active_team
+    else
+    end
+    user_search_options['team_memberships.team_id'] = params[:team_id] if team_leaderboard_active?
+
+    def students_being_graded(course, team=nil)
+      user_ids = user_ids_for_non_auditing_students_in_course
+      if team
+        User.where(id: user_ids).select { |student| team.student_ids.include? student.id }
+      else
+        User.where(id: user_ids)
+      end
+    end
 
     if @team
       students = current_course.students_being_graded_by_team(@team)
@@ -113,15 +126,8 @@ class InfoController < ApplicationController
       students = current_course.students_being_graded
     end
 
+    # was on the User model
     # need to replace all of this
-#    def students_being_graded(course, team=nil)
-#      user_ids = CourseMembership.where(course: course, role: "student", auditing: false).pluck(:user_id)
-#      if team
-#        User.where(id: user_ids).select { |student| team.student_ids.include? student.id }
-#      else
-#        User.where(id: user_ids)
-#      end
-#    end
 #
 #    what needs to be included:
 #    students with a course membership for the course, with a role for student, that are not auditing
@@ -131,11 +137,27 @@ class InfoController < ApplicationController
 #      s.score = s.cached_score_for_course(current_course)
 #    end
 
-    CourseMembership.where(course_id: course, role: "student", auditing: false).includes(:users).pluck(:user_id) #.first.score || 0
+    CourseMembership.where(course_id: current_course, role: "student", auditing: false).includes(:user).pluck(:user_id) #.first.score || 0
 
     @students = students.to_a.sort_by {|student| student.score}.reverse
   end
 
-  def protected
+  protected
+
+  def detault_user_search_options
+    user_search_options = {}
+  end
+
+  def fetch_active_team
+    @team ||= Team.find params[:team_id]
+  end
+
+  def team_leaderboard_active?
+    params[:team_id].present?
+  end
+
+  def user_ids_for_non_auditing_students_in_course
+    CourseMembership.where(course: course, role: "student", auditing: false).pluck(:user_id)
+  end
 
 end
