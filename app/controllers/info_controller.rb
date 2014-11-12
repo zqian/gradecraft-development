@@ -106,33 +106,14 @@ class InfoController < ApplicationController
     @title = "Leaderboard"
 
     if team_leaderboard_active?
+      # fetch user ids for all students in the active team
       fetch_active_team
+      user_ids_for_graded_students_in_team(@team)
     else
-    end
-    user_search_options['team_memberships.team_id'] = params[:team_id] if team_leaderboard_active?
-
-    def students_being_graded(course, team=nil)
-      user_ids = user_ids_for_non_auditing_students_in_course
-      if team
-        User.where(id: user_ids).select { |student| team.student_ids.include? student.id }
-      else
-        User.where(id: user_ids)
-      end
+      # fetch user ids for all students in the course, regardless of team
+      user_ids_for_graded_students_in_course(current_course)
     end
 
-    if @team
-      students = current_course.students_being_graded_by_team(@team)
-    else
-      students = current_course.students_being_graded
-    end
-
-    # was on the User model
-    # need to replace all of this
-#
-#    what needs to be included:
-#    students with a course membership for the course, with a role for student, that are not auditing
-#
-#
 #    students.each do |s|
 #      s.score = s.cached_score_for_course(current_course)
 #    end
@@ -144,10 +125,6 @@ class InfoController < ApplicationController
 
   protected
 
-  def detault_user_search_options
-    user_search_options = {}
-  end
-
   def fetch_active_team
     @team ||= Team.find params[:team_id]
   end
@@ -156,8 +133,16 @@ class InfoController < ApplicationController
     params[:team_id].present?
   end
 
-  def user_ids_for_non_auditing_students_in_course
+  def user_ids_for_graded_students_in_course(course)
     CourseMembership.where(course: course, role: "student", auditing: false).pluck(:user_id)
+  end
+
+  def user_ids_for_graded_students_in_team(team)
+    CourseMembership.where(course: course, role: "student", auditing: false, team_id: params[:team_id])
+      .joins(:users)
+      .joins("INNER JOIN team_memberships ON course_memberships.user_id = team_memberships.student_id")
+      .pluck(:user_id)
+      # .joins("INNER JOIN users on course_memberships.user_id = users.id INNER JOIN team_memberships ON course_memberships.user_id = team_memberships.student_id where course_id = 1 and team_id = 5;
   end
 
 end
