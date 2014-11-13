@@ -83,6 +83,7 @@ end
 
 group :test, :development do
   gem 'rspec-rails', '~> 2.14.0'
+  gem 'cucumber'
   gem 'factory_girl_rails', '~> 4.2.1'
   gem 'valid_attribute'
 end

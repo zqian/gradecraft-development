@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
     redirect_to request.protocol + "www." + request.host_with_port + request.fullpath if !/^www/.match(request.host)
   end
 
-  before_filter :require_login, :except => [:not_authenticated]
+  #before_filter :require_login, :except => [:not_authenticated]
 
   before_filter :increment_page_views
 
