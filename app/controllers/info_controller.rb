@@ -107,26 +107,45 @@ class InfoController < ApplicationController
 
     if team_leaderboard_active?
       # fetch user ids for all students in the active team
-      fetch_active_team
-      user_ids_for_graded_students_in_team(@team)
+      @user_ids_with_scores = cached_scores_for_graded_students_for_course_in_team(current_course, params[:team_id])
     else
       # fetch user ids for all students in the course, regardless of team
-      user_ids_for_graded_students_in_course(current_course)
+      @user_ids_with_scores = user_ids_for_graded_students_in_course(current_course)
     end
+
+    @user_ids_with_scores.sort_by! {|array| array[1]}.reverse
+    @user_ids = @user_ids_with_scores.collect {|array| array[0]}
 
     students.each do |s|
       s.score = s.cached_score_for_course(current_course)
     end
 
-    def cached_score_for_course(course)
-      course_memberships.where(:course_id => course).first.score || 0
+    @students = User.find(@user_ids)
+    @students.each do |student|
+
     end
-
-
-    CourseMembership.where(course_id: current_course, role: "student", auditing: false).includes(:user).pluck(:user_id) #.first.score || 0
-
-    @students = students.to_a.sort_by {|student| student.score}.reverse
+    @sorted_students = @students.to_a.sort_by {|student| student.score}.reverse
   end
+
+  # LEGACY LEADERBOARD METHOD
+  #  #Course wide leaderboard - excludes auditors from view
+  #  def leaderboard
+  #    @title = "Leaderboard"
+  #    @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
+  #    user_search_options = {}
+  #    user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
+  #
+  #    if @team
+  #      students = current_course.students_being_graded_by_team(@team)
+  #    else
+  #      students = current_course.students_being_graded
+  #    end
+  #    students.each do |s|
+  #      s.score = s.cached_score_for_course(current_course)
+  #    end
+  #    @students = students.to_a.sort_by {|student| student.score}.reverse
+  #  end
+
 
   protected
 
@@ -139,14 +158,19 @@ class InfoController < ApplicationController
   end
 
   def user_ids_for_graded_students_in_course(course)
-    CourseMembership.where(course: course, role: "student", auditing: false).pluck(:user_id)
+    CourseMembership.where(course: course, role: "student", auditing: false).pluck(:user_id, :score)
   end
 
-  def user_ids_for_graded_students_in_team(team)
-    CourseMembership.where(course: course, role: "student", auditing: false, team_id: params[:team_id])
+  def cached_scores_for_graded_students_for_course_in_team(course, team_id)
+    # Need to reverse these course membership calls so that we're getting users rather than course memberships
+    # also need to pluck the score out of the course membership for display and sorting
+    # User.joins(:course_memberships).where("course_memberships.course_id = :course_id and role = :role and auditing = :auditing", {course_id: 1, role: "student", auditing: false})
+  
+    CourseMembership.where(course: course, role: "student", auditing: false, team_id: team_id)
       .joins(:users)
+      .select("first_name", "last_name")
       .joins("INNER JOIN team_memberships ON course_memberships.user_id = team_memberships.student_id")
-      .pluck(:user_id)
+      .pluck(:user_id, :score)
       # .joins("INNER JOIN users on course_memberships.user_id = users.id INNER JOIN team_memberships ON course_memberships.user_id = team_memberships.student_id where course_id = 1 and team_id = 5;
   end
 
