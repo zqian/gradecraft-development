@@ -114,9 +114,14 @@ class InfoController < ApplicationController
       user_ids_for_graded_students_in_course(current_course)
     end
 
-#    students.each do |s|
-#      s.score = s.cached_score_for_course(current_course)
-#    end
+    students.each do |s|
+      s.score = s.cached_score_for_course(current_course)
+    end
+
+    def cached_score_for_course(course)
+      course_memberships.where(:course_id => course).first.score || 0
+    end
+
 
     CourseMembership.where(course_id: current_course, role: "student", auditing: false).includes(:user).pluck(:user_id) #.first.score || 0
 
