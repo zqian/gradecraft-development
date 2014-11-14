@@ -2,12 +2,12 @@
   - if current_user_is_staff?
     = content_nav_for @challenge
 
-  .small-12.medium-5
+  .small-12
     %h3.pagetitle= @title
 
   - if current_user_is_staff?
-    .small-12.medium-7.right.columns.columns-no-padding
-      .button-bar.right
+    .small-12.columns
+      .button-bar
         %ul.button-group.context_menu
           %li
             %a{:href => edit_challenge_path(@challenge) }
@@ -17,6 +17,7 @@
             %a{:href => mass_edit_challenge_challenge_grades_path(@challenge) }
               %i.fi-results-demographics
               Quick Grade
+      %br
 
   .small-12.columns
     - if @challenge.challenge_files.present?

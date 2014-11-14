@@ -38,7 +38,7 @@
           - assignments.each do |assignment|
             - if assignment.visible? || current_student_data.grade_released_for_assignment?(assignment)
               %tr
-                %td{:width => "25%"}
+                %td{:width => "20%"}
                   // For the attendance assignment, add visualization in first column to display
                   // whether or not the student attended the class.
                   - if assignment.assignment_type.name == "Attendance"
@@ -85,7 +85,7 @@
                         = f.submit (assignment_type.student_logged_button_text), :class => "button #{present ? 'alert' : 'success'} tiny radius"
                       - else
                         = assignment_type.student_logged_revert_button_text
-                %td
+                %td{:width => "35%"}
                   .button-bar
                     %ul.button-group.center.radius
                       - if assignment.has_groups?

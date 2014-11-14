@@ -2,16 +2,17 @@
   
   = content_nav_for Team
 
-  .small-12.medium-9
+  .small-12
     %h3.pagetitle= @title
 
-  .small-12.medium-3.right.columns.columns-no-padding
-    .button-bar.right
+  .small-12.columns
+    .button-bar
       %ul.button-group.context_menu
         %li
           %a{:href => new_team_path }
             %i.fi-plus
             New #{term_for :team}
+    %br
 
   .small-12.columns
     %dl.tabs{:data => {'tab' => true}}

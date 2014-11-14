@@ -1,16 +1,5 @@
 %section.top-bar-section
   %ul.right
-    - if current_user_is_staff?
-      %li.has-form.hide-for-small.hide-for-medium{:role => "search"}
-        .row.collapse
-          .large-8.small-9.columns
-            :javascript
-              window.autocompleteUsers = #{autocomplete_items.to_json};
-            %label.sr-only{:for => "search-input"}
-              Search #{term_for :students}
-            %input.search-query#search-input{ :type => "text", :placeholder => "Search #{term_for :students}", :label => false }
-          .large-4.small-3.columns
-            %a.alert.button.expand{ :href => "#" } Search
     %li.sr-only#my-courses-navigation Navigation for my courses
     %li.has-dropdown.course_switch.show-for-medium-up{:role => "navigation", "aria-labeledby" => "my-courses-navigation", "title" => "Navigation for my courses"}
       %a My Courses

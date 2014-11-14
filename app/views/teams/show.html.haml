@@ -3,8 +3,8 @@
 
   %h3.pagetitle= @team.name
 
-  .small-12.medium-3.right.columns.columns-no-padding
-    .button-bar.right
+  .small-12.columns
+    .button-bar
       %ul.button-group.context_menu
         %li
           %a{:href => edit_team_path(@team) }
@@ -24,9 +24,9 @@
           %th Score
           %th Level
           - if current_course.has_badges?
-            %th{:scope => "col", "data-dynatable-sorts" => "badgeCount" }= "#{term_for :badges} Earned"
+            %th{:scope => "col", "data-dynatable-sorts" => "badgeCount", :width => "20%" }= "#{term_for :badges} Earned"
             %th{:style => "display: none"} Badge Count
-          %th
+          %th{:width => "20%"}
       %tbody
         - @team.students.each do |student|
           - if student.is_student?(current_course)

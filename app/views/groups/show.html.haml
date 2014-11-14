@@ -4,13 +4,14 @@
 
   %h3.pagetitle= @title
 
-  .small-12.medium-3.right.columns.columns-no-padding
+  .small-12.columns
     .button-bar.right
       %ul.button-group.context_menu
         %li
           %a{:href => review_groups_path(:id => @group) }
             %i.fi-pencil
-            Review #{term_for :group} 
+            Review #{term_for :group}
+    %br 
 
   .small-12.columns
     %h4

@@ -1,9 +1,13 @@
 .columns.columns-no-padding.sideBar
-  .gravatar.panel.radius.center
-    %h4
-      %a{:href => "mailto:#{current_student.email}" }
-        %i.fi-mail
-        = current_student.name
+  .gravatar.panel.radius
+    .button-group.right.radius{:style => "margin-top: 2px" }
+      %li
+        %a{:href => edit_user_path(current_student), :class => "button transparent" }
+          Edit
+      %li
+        %a{:href => "mailto:#{current_student.email}", :class => "button transparent" }
+          Email
+    %span.large= current_student.name
     = gravatar_for current_student
     %p
     %h5
@@ -14,8 +18,6 @@
 
   - if current_course.student_weighted?
     .panel.radius= render 'students/sidebar/sidebar_assignment_weights'
-
-  .panel.radius= render "students/sidebar/sidebar_to_do_list"
 
   .panel.radius= render 'students/sidebar/sidebar_grade_distribution'
 
