@@ -24,6 +24,33 @@
 
 }
 
+.has-form input {
+  border-top-left-radius: $global-radius;
+  border-bottom-left-radius: $global-radius;
+}
+
+.has-form .alert.button {
+  border-top-right-radius: $global-radius;
+  border-bottom-right-radius: $global-radius;
+  padding: .67rem .5rem;
+}
+
+
+.has-form ul.dropdown-menu {
+  top: 2rem;
+}
+
+/* Styling the mobile active link dropdown */ 
+.has-form ul.dropdown-menu li {
+  color: #333;
+  padding: 0 0.5rem;
+}
+
+.has-form ul.dropdown-menu li.active a {
+  background-color: $primary-color-2 !important;
+  color: #FFF !important;
+}
+
 /* Forcing buttons and icons to display inline */ 
 .side-nav li a:not(.button) {
   display: inline !important;

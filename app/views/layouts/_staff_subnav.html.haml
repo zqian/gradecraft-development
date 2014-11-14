@@ -1,5 +1,17 @@
 %h2.sr-only#staff-navigation Staff navigation
 %ul.side-nav{:role => "navigation", "aria-labeledby" => "staff-navigation"}
+  %li.has-form.hide-for-medium{:role => "search"}
+    .row.collapse
+      .large-8.small-9.columns
+        :javascript
+          window.autocompleteUsers = #{autocomplete_items.to_json};
+        %label.sr-only{:for => "search-input"}
+          Search #{term_for :students}
+        %input.search-query#search-input{ :type => "text", :placeholder => "Search #{term_for :students}", :label => false }
+      .large-4.small-3.columns
+        %a.alert.button{ :href => "#" } Go
+  %hr
+  
   %li
     %label Overview
   - if current_course.use_timeline?
