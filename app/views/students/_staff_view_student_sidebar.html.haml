@@ -1,6 +1,5 @@
 .columns.columns-no-padding.sideBar
   .gravatar.panel.radius
-    %span.large= current_student.name
     .button-group.right.radius{:style => "margin-top: 2px" }
       %li
         %a{:href => edit_user_path(current_student), :class => "button transparent" }
@@ -8,6 +7,7 @@
       %li
         %a{:href => "mailto:#{current_student.email}", :class => "button transparent" }
           Email
+    %span.large= current_student.name
     = gravatar_for current_student
     %p
     %h5

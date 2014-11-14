@@ -8,10 +8,6 @@
   .small-12.medium-7.right.columns.columns-no-padding
     .button-bar.right
       %ul.button-group.context_menu
-        %li{class: ("active" if current_page?(analytics_root_path)) }
-          %a{:href => analytics_root_path }
-            %i.fi-torso
-            User Analytics
         %li{class: ("active" if current_page?(analytics_students_path)) }
           %a{:href => analytics_students_path }
             %i.fi-torsos-all

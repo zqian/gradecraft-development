@@ -10,7 +10,6 @@
         %input.search-query#search-input{ :type => "text", :placeholder => "Search #{term_for :students}", :label => false }
       .large-4.small-3.columns
         %a.alert.button{ :href => "#" } Go
-  %hr
   
   %li
     %label Overview
@@ -59,7 +58,7 @@
     = link_to "Top 10/Bottom 10", analytics_top_10_path
   %li
     %i.fi-graph-trend
-    = link_to "User Analytics", analytics_root_path
+    = link_to "System Analytics", analytics_students_path
   %li
     %i.fi-results-demographics
     = link_to "#{term_for :assignment} Analytics", analytics_per_assign_path
