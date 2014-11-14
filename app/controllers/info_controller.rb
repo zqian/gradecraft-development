@@ -114,9 +114,36 @@ class InfoController < ApplicationController
     end
 
     @student_ids = @students.collect {|s| s[:id] }
+    @teams_by_student_id = teams_by_student_id
+    @earned_badges_by_student_id = earned_badges_by_student_id
   end
 
   protected
+
+  def earned_badges_by_student_id
+    @earned_badges_by_student_id ||= student_earned_badges_for_entire_course.inject({}) do |memo, earned_badge|
+      student_id = earned_badge.student_id
+      if memo[student_id]
+        memo[student_id] << earned_badge
+      else
+        memo[student_id] = [earned_badge]
+      end
+      memo
+    end
+  end
+
+  def teams_by_student_id
+    @teams_by_student_id ||= team_memberships_for_course.inject({}) do |memo, tm|
+      memo.merge tm.student_id => tm.team
+    end
+  end
+
+  def team_memberships_for_course
+    @team_memberships_for_course ||= TeamMembership.joins(:team)
+      .where("teams.course_id = ?", current_course.id)
+      .where(student_id: @student_ids)
+      .includes(:team)
+  end
 
   def course_teams
     @course_teams ||= Team.where(course: current_course)
@@ -124,8 +151,8 @@ class InfoController < ApplicationController
       .where("team_memberships.student_id in (?)", student_ids)
   end
 
-  def student_earned_badges_for_course
-    @student_earned_badges ||= EarnedBadge.where(course: current_course, user: student_ids)
+  def student_earned_badges_for_entire_course
+    @student_earned_badges ||= EarnedBadge.where(course: current_course).where("student_id in (?)", @student_ids).includes(:badge)
   end
 
   def leaderboard_sort_order

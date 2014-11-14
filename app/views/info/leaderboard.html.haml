@@ -36,18 +36,19 @@
               %td= link_to student.last_name, student_path(student)
               %td= points student.page_views # stashing course_memberships.score in users.page_views to improve performance
               - if current_course.has_teams?
+                - student_team = @teams_by_student_id[student.id]
                 %td#team_for_course
-                  = link_to student.team_for_course(current_course).try(:name), student.team_for_course(current_course) if student.team_for_course(current_course).present?
+                  = link_to student_team.try(:name), student_team if student_team
               %td
                 = student.grade_letter_for_course(current_course)
                 - if student.grade_level_for_course(current_course).present?
                   = "#{student.grade_level_for_course(current_course)}"
-              -# if current_course.has_badges?
+              - if current_course.has_badges?
                 %td#earned_badges
-                  - student.earned_badges_for_course(current_course).each do |badge|
-                    -# %img.has-tip{:src => badge[1].icon, :alt => badge[1].name, :width => "20", :title => badge[1].name, :data => {'tooltip' => true}}
+                  - @earned_badges_by_student_id[student.id].each do |badge|
+                    %img.has-tip{:src => badge.icon, :alt => badge.name, :width => "20", :title => badge.name, :data => {'tooltip' => true}}
                 %td{:style => "display: none"}
-                  = student.earned_badges_for_course(current_course).count
+                  = @earned_badges_by_student_id[student.id].size
               %td
                 .button-bar
                   %ul.button-group.radius.right

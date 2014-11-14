@@ -163,6 +163,7 @@ class User < ActiveRecord::Base
       .where("course_memberships.course_id = ?", course_id)
       .joins(:team_memberships)
       .where("course_memberships.user_id = team_memberships.student_id")
+      .includes(:course_memberships)
   end
 
   def self.graded_students_in_course_for_team(course_id, team_id)
@@ -172,6 +173,7 @@ class User < ActiveRecord::Base
       .joins(:team_memberships)
       .where("course_memberships.user_id = team_memberships.student_id")
       .where("team_memberships.team_id = ?", team_id)
+      .includes(:course_memberships)
   end
 
 
