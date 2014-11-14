@@ -4,7 +4,7 @@
       = hidden_field_tag :assignment_id, @assignment.id
       %label.sr-only{:for => "team_id"}
         Select Team
-      = select_tag :team_id, options_for_select(current_course.teams.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
+      = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "– Select #{current_course.team_term} –"
 
 = form_tag edit_status_grades_assignment_path @assignment do
   .columns

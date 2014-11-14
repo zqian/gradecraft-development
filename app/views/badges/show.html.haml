@@ -28,7 +28,7 @@
         = hidden_field_tag :badge_id, @badge.id
         %label.sr-only{:for => "team_id"}
           Select Team
-        = select_tag :team_id, options_for_select(current_course.teams.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
+        = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "– Select #{current_course.team_term} –"
 
   .small-12.columns.columns-no-padding_right
     //badge icon, total awarded, and points
@@ -61,7 +61,7 @@
                 - if current_user_is_staff?
                   = link_to "(Remove)", remove_uploads_path({ :model => "BadgeFile", :upload_id => bf.id } )
     - if current_user_is_staff?
-      .small-12.medium-10.columns.columns-no-padding_right
+      .small-12.medium-10.columns
         //staff individual badge award index
         %table.responsive.nofeatures_default_last_name_dynatable
           %thead
