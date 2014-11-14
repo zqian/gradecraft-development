@@ -18,15 +18,6 @@
       – Current Level:
       %span.bold= current_student.grade_level_for_course(current_course)
 
-  .small-12.medium-3.right.columns.columns-no-padding
-    .button-bar.right
-      %ul.button-group.context_menu
-        %li
-          %a{:href => edit_user_path(current_student) }
-            %i.fi-pencil
-            Edit #{term_for :student}
-  
-
   = render 'students/syllabus'
 
   = render 'students/scoreboard'
