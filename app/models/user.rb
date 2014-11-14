@@ -167,7 +167,6 @@ class User < ActiveRecord::Base
 
   def self.graded_students_in_course_for_team(course_id, team_id)
     User
-      .select("users.*, course_memberships.score as page_views")
       .joins("LEFT OUTER JOIN course_memberships ON course_memberships.user_id = users.id")
       .where("course_memberships.course_id = ?", course_id)
       .joins(:team_memberships)

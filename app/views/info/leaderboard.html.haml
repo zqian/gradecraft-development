@@ -34,7 +34,7 @@
               %td= index + 1
               %td= link_to student.first_name, student_path(student)
               %td= link_to student.last_name, student_path(student)
-              %td= points student.cached_score_for_course(current_course)
+              %td= points student.page_views # stashing course_memberships.score in users.page_views to improve performance
               - if current_course.has_teams?
                 %td#team_for_course
                   = link_to student.team_for_course(current_course).try(:name), student.team_for_course(current_course) if student.team_for_course(current_course).present?
@@ -42,10 +42,10 @@
                 = student.grade_letter_for_course(current_course)
                 - if student.grade_level_for_course(current_course).present?
                   = "#{student.grade_level_for_course(current_course)}"
-              - if current_course.has_badges?
+              -# if current_course.has_badges?
                 %td#earned_badges
                   - student.earned_badges_for_course(current_course).each do |badge|
-                    %img.has-tip{:src => badge[1].icon, :alt => badge[1].name, :width => "20", :title => badge[1].name, :data => {'tooltip' => true}}
+                    -# %img.has-tip{:src => badge[1].icon, :alt => badge[1].name, :width => "20", :title => badge[1].name, :data => {'tooltip' => true}}
                 %td{:style => "display: none"}
                   = student.earned_badges_for_course(current_course).count
               %td

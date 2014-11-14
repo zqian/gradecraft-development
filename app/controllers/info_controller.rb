@@ -107,14 +107,30 @@ class InfoController < ApplicationController
 
     if team_leaderboard_active?
       # fetch user ids for all students in the active team
-      @students = graded_students_in_current_course_for_active_team.order("users.page_views DESC")
+      @students = graded_students_in_current_course_for_active_team.order(leaderboard_sort_order)
     else
       # fetch user ids for all students in the course, regardless of team
-      @students = graded_students_in_current_course.order("users.page_views DESC")
+      @students = graded_students_in_current_course.order(leaderboard_sort_order)
     end
+
+    @student_ids = @students.collect {|s| s[:id] }
   end
 
   protected
+
+  def course_teams
+    @course_teams ||= Team.where(course: current_course)
+      .joins(:team_memberships)
+      .where("team_memberships.student_id in (?)", student_ids)
+  end
+
+  def student_earned_badges_for_course
+    @student_earned_badges ||= EarnedBadge.where(course: current_course, user: student_ids)
+  end
+
+  def leaderboard_sort_order
+    "course_memberships.score DESC, users.last_name ASC, users.first_name ASC"
+  end
 
   def fetch_active_team
     @team ||= Team.find params[:team_id]
