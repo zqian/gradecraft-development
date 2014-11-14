@@ -38,7 +38,7 @@ class UserSessionsController < ApplicationController
     session[:course_id] = @course.id
     auto_login @user
     User.increment_counter(:visit_count, @user.id)
-    respond_with @user, location: redirect_back_or_to dashboard_path
+    respond_with @user, location: dashboard_path
   end
 
   def kerberos_create
@@ -50,7 +50,7 @@ class UserSessionsController < ApplicationController
     end
     auto_login @user
     User.increment_counter(:visit_count, @user.id)
-    respond_with @user, location: redirect_back_or_to dashboard_path
+    respond_with @user, location: dashboard_path
   end
 
   def destroy
