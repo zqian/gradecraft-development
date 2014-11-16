@@ -76,15 +76,14 @@
 
                 %td{:width => "25%"}
                   = "Due: #{assignment.due_at.strftime("%A, %b %d, %l:%M%p")}" if assignment.future?
-                - if assignment.student_logged? && assignment.open? && current_user_is_student?
-                  %td
+                %td
+                  - if assignment.student_logged? && assignment.open? && current_user_is_student?
+                  
                     = simple_form_for current_student_data.grade_for_assignment(assignment), :url => self_log_grades_assignment_path(assignment), :method => :post do |f|
                       - present = current_student.self_reported_done?(assignment)
                       = hidden_field_tag :present, !present
                       - if ! current_student.self_reported_done?(assignment)
                         = f.submit (assignment_type.student_logged_button_text), :class => "button #{present ? 'alert' : 'success'} tiny radius"
-                      - else
-                        = assignment_type.student_logged_revert_button_text
                 %td{:width => "35%"}
                   .button-bar
                     %ul.button-group.center.radius
