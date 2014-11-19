@@ -116,9 +116,28 @@ class InfoController < ApplicationController
     @student_ids = @students.collect {|s| s[:id] }
     @teams_by_student_id = teams_by_student_id
     @earned_badges_by_student_id = earned_badges_by_student_id
+    @student_grade_schemes_by_id = course_grade_scheme_by_student_id
   end
 
   protected
+
+  def course_grade_scheme_by_student_id
+    @students.inject({}) do |memo, student|
+      student_score = student.page_views
+      student_grade_scheme = nil
+      course_grade_scheme_elements.each do |grade_scheme|
+        if student_score >= grade_scheme.low_range and student_score <= grade_scheme.high_range
+          student_grade_scheme = grade_scheme
+          break
+        end
+      end
+      memo.merge student[:id] => student_grade_scheme
+    end
+  end
+
+  def course_grade_scheme_elements
+    @course_grade_scheme_elements ||= current_course.grade_scheme_elements.order("low_range ASC")
+  end
 
   def earned_badges_by_student_id
     @earned_badges_by_student_id ||= student_earned_badges_for_entire_course.inject({}) do |memo, earned_badge|

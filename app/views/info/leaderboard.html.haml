@@ -40,9 +40,9 @@
                 %td#team_for_course
                   = link_to student_team.try(:name), student_team if student_team
               %td
-                = student.grade_letter_for_course(current_course)
-                - if student.grade_level_for_course(current_course).present?
-                  = "#{student.grade_level_for_course(current_course)}"
+                - unless @student_grade_schemes_by_id[student.id].nil?
+                  = "#{@student_grade_schemes_by_id[student.id][:letter]}"
+                  = "#{@student_grade_schemes_by_id[student.id][:level]}"
               - if current_course.has_badges?
                 %td#earned_badges
                   - @earned_badges_by_student_id[student.id].each do |badge|
