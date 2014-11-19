@@ -45,8 +45,9 @@
                   = "#{@student_grade_schemes_by_id[student.id][:level]}"
               - if current_course.has_badges?
                 %td#earned_badges
-                  - @earned_badges_by_student_id[student.id].each do |badge|
-                    %img.has-tip{:src => badge.icon, :alt => badge.name, :width => "20", :title => badge.name, :data => {'tooltip' => true}}
+                  - if @earned_badges_by_student_id[student.id]
+                    - @earned_badges_by_student_id[student.id].each do |badge|
+                      %img.has-tip{:src => badge.icon, :alt => badge.name, :width => "20", :title => badge.name, :data => {'tooltip' => true}}
                 %td{:style => "display: none"}
                   = @earned_badges_by_student_id[student.id].size
               %td
