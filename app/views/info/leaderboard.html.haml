@@ -49,7 +49,8 @@
                     - @earned_badges_by_student_id[student.id].each do |badge|
                       %img.has-tip{:src => badge.icon, :alt => badge.name, :width => "20", :title => badge.name, :data => {'tooltip' => true}}
                 %td{:style => "display: none"}
-                  = @earned_badges_by_student_id[student.id].size
+                  - if @earned_badges_by_student_id[student.id]
+                    = @earned_badges_by_student_id[student.id].size
               %td
                 .button-bar
                   %ul.button-group.radius.right

@@ -161,6 +161,7 @@ class User < ActiveRecord::Base
       .select("users.*, course_memberships.score as page_views")
       .joins("LEFT OUTER JOIN course_memberships ON course_memberships.user_id = users.id")
       .where("course_memberships.course_id = ?", course_id)
+      .where("course_memberships.auditing = ?", false)
       .joins(:team_memberships)
       .where("course_memberships.user_id = team_memberships.student_id")
       .includes(:course_memberships)
@@ -170,8 +171,9 @@ class User < ActiveRecord::Base
     User
       .joins("LEFT OUTER JOIN course_memberships ON course_memberships.user_id = users.id")
       .where("course_memberships.course_id = ?", course_id)
-      .joins(:team_memberships)
       .where("course_memberships.user_id = team_memberships.student_id")
+      .where("course_memberships.auditing = ?", false)
+      .joins(:team_memberships)
       .where("team_memberships.team_id = ?", team_id)
       .includes(:course_memberships)
   end
