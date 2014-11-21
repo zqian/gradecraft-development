@@ -715,7 +715,7 @@ assignments << Assignment.create! do |a|
   a.due_at = 3.weeks.ago
   a.accepts_submissions = true
   a.release_necessary = true
-  a.open_at = 3.weeks.ago
+  a.open_at = 4.weeks.ago
   a.grade_scope = "Individual"
   a.save
   students.each do |student|
@@ -743,7 +743,7 @@ assignments << Assignment.create! do |a|
   a.due_at = 1.week.ago
   a.accepts_submissions = true
   a.release_necessary = false
-  a.open_at = 1.week.ago
+  a.open_at = 2.week.ago
   a.grade_scope = "Individual"
 end
 puts "Game Play Update Paper 1 has been posted!"
@@ -753,7 +753,7 @@ assignments << Assignment.create! do |a|
   a.assignment_type = assignment_types[:lfpg]
   a.name = "Game Play Update Paper 2"
   a.point_total = 120000
-  a.due_at = 2.weeks.from_now
+  a.due_at = 4.weeks.from_now
   a.accepts_submissions = true
   a.release_necessary = false
   a.open_at = 2.weeks.from_now
@@ -766,7 +766,7 @@ assignments << Assignment.create! do |a|
   a.assignment_type = assignment_types[:lfpg]
   a.name = "Game Play Reflection Paper"
   a.point_total = 160000
-  a.due_at = 4.weeks.from_now
+  a.due_at = 5.weeks.from_now
   a.accepts_submissions = true
   a.release_necessary = true
   a.open_at = 4.weeks.from_now
@@ -779,7 +779,7 @@ ip1_assignment = Assignment.create! do |a|
   a.assignment_type = assignment_types[:boss_battle]
   a.name = "Individual Paper/Project 1"
   a.point_total = 200000
-  a.due_at = 4.weeks.from_now
+  a.due_at = 5.weeks.from_now
   a.accepts_submissions = true
   a.release_necessary = false
   a.open_at = 4.weeks.from_now
@@ -802,7 +802,7 @@ ip2_assignment = Assignment.create! do |a|
   a.due_at = 4.weeks.from_now
   a.accepts_submissions = true
   a.release_necessary = false
-  a.open_at = 4.weeks.from_now
+  a.open_at = 3.weeks.from_now
   a.grade_scope = "Individual"
 end
 puts "Individual Project 2 has been posted!"
@@ -824,7 +824,7 @@ ggd_assignment = Assignment.create! do |a|
   a.due_at = 4.weeks.from_now
   a.accepts_submissions = true
   a.release_necessary = false
-  a.open_at = 4.weeks.from_now
+  a.open_at = 3.weeks.from_now
   a.grade_scope = "Group"
 end
 puts "Group Game Design has been posted!"
@@ -854,7 +854,7 @@ polsci_essay_assignments << Assignment.create! do |a|
   a.due_at = 3.weeks.ago
   a.accepts_submissions = true
   a.release_necessary = true
-  a.open_at = 3.weeks.ago
+  a.open_at = 4.weeks.ago
   a.grade_scope = "Individual"
   a.save
   a.tasks.create! do |t|
@@ -884,7 +884,7 @@ polsci_essay_assignments << Assignment.create! do |a|
   a.assignment_type = assignment_types[:polsci_essays]
   a.name = "Second Essay"
   a.point_total = 3000
-  a.due_at = 3.weeks.from_now
+  a.due_at = 4.weeks.from_now
   a.accepts_submissions = true
   a.release_necessary = true
   a.open_at = 3.weeks.from_now
@@ -912,7 +912,7 @@ assignments << Assignment.create! do |a|
   a.due_at = 7.weeks.ago
   a.accepts_submissions = false
   a.release_necessary = true
-  a.open_at = 3.weeks.from_now
+  a.open_at = 8.weeks.ago
   a.grade_scope = "Individual"
 end
 puts "First Boss Battle has been posted!"
@@ -1073,10 +1073,10 @@ challenges << Challenge.create! do |c|
   c.course = educ_course
   c.name = "House Cup"
   c.point_total = 1000000
-  c.due_at = 3.week.ago
+  c.due_at = 3.weeks.from_now
   c.accepts_submissions = true
   c.release_necessary = false
-  c.open_at = rand(6).weeks.from_now
+  c.open_at = rand(6).weeks.ago
   c.visible = true
   c.save
   teams.each do |team|
@@ -1093,10 +1093,10 @@ challenges << Challenge.create! do |c|
   c.course = educ_course
   c.name = "Tri-Wizard Tournament"
   c.point_total = 10000000
-  c.due_at = 2.weeks.ago
+  c.due_at = 2.weeks.from_now
   c.accepts_submissions = true
   c.release_necessary = false
-  c.open_at = rand(8).weeks.from_now
+  c.open_at = rand(8).weeks.ago
   c.visible = true
 end
 puts "Are you willing to brave the Tri-Wizard Tournament?"
@@ -1108,5 +1108,3 @@ LTIProvider.create! do |p|
   p.consumer_key = 'piazza.sandbox'
   p.consumer_secret = 'test_only_secret'
 end
-
-
