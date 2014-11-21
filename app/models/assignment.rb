@@ -46,9 +46,6 @@ class Assignment < ActiveRecord::Base
 
   #Saving the course and the point total if possible 
   before_validation :cache_point_total
-  
-  # Longterm we may want to do more to resave grades if an assignment score total changed
-  after_save :save_weights
 
   # Check to make sure the assignment has a name before saving 
   validates_presence_of :name, :assignment_type_id

@@ -4,7 +4,8 @@ class User < ActiveRecord::Base
   include Canable::Cans
 
   before_validation :set_default_course
-  after_validation :cache_scores
+  #TODO: is this necessory  we can remove test
+  #after_validation :cache_scores
 
   ROLES = %w(student professor gsi admin)
 
@@ -506,18 +507,29 @@ class User < ActiveRecord::Base
   def archived_courses
     courses.where(:status => false)
   end
-
-  def cache_scores
-    course_memberships.each do |membership|
+  #TODO: grade worker
+  def cache_course_score(course_id)
+    membership = course_memberships.where(course_id: course_id).first
+    unless membership.nil?
       if membership.course.add_team_score_to_student?
-        membership.update_attribute :score, (grades.released.where(course_id: membership.course_id).score || 0) + (earned_badge_score_for_course(membership.course_id) || 0 ) + ( self.team_for_course(membership.course_id).try(:score) || 0 )
-        #self.team_for_course(membership.course_id).save! if self.team_for_course(membership.course_id).present?
+        membership.update_attribute :score, (grades.released.where(course_id: course_id).score || 0) + (earned_badge_score_for_course(course_id) || 0 ) + ( self.team_for_course(course_id).try(:score) || 0 )
       else
-        membership.update_attribute :score, (grades.released.where(course_id: membership.course_id).score || 0) + (earned_badge_score_for_course(membership.course_id) || 0 )
-        #team_for_course(membership.course_id).save! if team_for_course(membership.course_id).present?
+        membership.update_attribute :score, (grades.released.where(course_id: course_id).score || 0) + (earned_badge_score_for_course(course_id) || 0 )
       end
     end
   end
+
+  #def cache_scores
+    #course_memberships.each do |membership|
+      #if membership.course.add_team_score_to_student?
+        #membership.update_attribute :score, (grades.released.where(course_id: membership.course_id).score || 0) + (earned_badge_score_for_course(membership.course_id) || 0 ) + ( self.team_for_course(membership.course_id).try(:score) || 0 )
+        ##self.team_for_course(membership.course_id).save! if self.team_for_course(membership.course_id).present?
+      #else
+        #membership.update_attribute :score, (grades.released.where(course_id: membership.course_id).score || 0) + (earned_badge_score_for_course(membership.course_id) || 0 )
+        ##team_for_course(membership.course_id).save! if team_for_course(membership.course_id).present?
+      #end
+    #end
+  #end
 
   private
 
@@ -529,5 +541,4 @@ class User < ActiveRecord::Base
     self.cached_last_login_at = self.last_login_at
   end
 
-  
 end

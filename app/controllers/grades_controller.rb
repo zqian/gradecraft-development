@@ -120,40 +120,45 @@ class GradesController < ApplicationController
     user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
     @students = current_course.students_being_graded.alphabetical.includes(:teams).where(user_search_options)
     @auditors = current_course.students_auditing.alphabetical.includes(:teams).where(user_search_options)
-    @grades = @students.map do |s|
-      @assignment.grades.where(:student_id => s).first || @assignment.grades.new(:student => s, :assignment => @assignment, :graded_by_id => current_user)
+    student_ids = @students.pluck(:id)
+    auditor_ids = @auditors.pluck(:id)
+
+    @grades = Grade.where(:student_id => student_ids,:assignment_id=> @assignment.id ).includes(:student,:assignment)
+    @auditor_grades = Grade.where(:student_id => auditor_ids,:assignment_id=> @assignment.id ).includes(:student,:assignment)
+
+    no_grade_students = @students.where(id: student_ids - @grades.pluck(:student_id))
+    no_grade_auditors =  @students.where(id:auditor_ids - @grades.pluck(:student_id))
+    if no_grade_students.present?
+      no_grade_students.each do |student|
+        @grades << @assignment.grades.new(:student => student_id, :assignment => @assignment, :graded_by_id => current_user)
+      end
     end
-    @auditor_grades = @auditors.map do |s|
-      @assignment.grades.where(:student_id => s).first || @assignment.grades.new(:student => s, :assignment => @assignment, :graded_by_id => current_user)
+    if no_grade_auditors.present?
+      no_grade_auditors.each do |student|
+        @auditor_grades << @assignment.grades.new(:student => student_id, :assignment => @assignment, :graded_by_id => current_user)
+      end
     end
+
   end
 
   def mass_update
+
     @assignment = current_course.assignments.find(params[:id])
+    
     if @assignment.update_attributes(params[:assignment])
+
+      GradeUpdater.perform_async(params[:assignment].find_all_values_for(:id))
+
       if !params[:team_id].blank?
         redirect_to assignment_path(@assignment, :team_id => params[:team_id])
       else
         respond_with @assignment
       end
+
     else
-      @title = "Quick Grade #{@assignment.name}"
-      @assignment_type = @assignment.assignment_type
-      @score_levels = @assignment_type.score_levels
-      @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
-      @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
-      user_search_options = {}
-      user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
-      @students = current_course.students_being_graded.alphabetical.includes(:teams).where(user_search_options)
-      @auditors = current_course.students_auditing.alphabetical.includes(:teams).where(user_search_options)
-      @grades = @grades = @students.map do |s|
-        @assignment.grades.where(:student_id => s).first || @assignment.grades.new(:student => s, :assignment => @assignment, :graded_by_id => current_user)
-      end
-      @auditor_grades = @auditors.map do |s|
-        @assignment.grades.where(:student_id => s).first || @assignment.grades.new(:student => s, :assignment => @assignment, :graded_by_id => current_user)
-      end
-      respond_with @assignment, :template => "grades/mass_edit"
+      redirect_to mass_grade_assignment_path(id: @assignment.id,team_id:params[:team_id]),  notice: "Oops! There was an error while saving the grades!"
     end
+
   end
 
   # Grading an assignment for a whole group
@@ -389,4 +394,5 @@ class GradesController < ApplicationController
   def set_assignment
     @assignment = current_course.assignments.find(params[:assignment_id]) if params[:assignment_id]
   end
+
 end

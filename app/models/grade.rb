@@ -35,8 +35,11 @@ class Grade < ActiveRecord::Base
   delegate :name, :description, :due_at, :assignment_type, :to => :assignment
 
   before_save :clean_html
-  after_save :save_student, :save_team
-  after_destroy :save_student, :save_team
+  #TODO: removed these callback check with cait
+  #after_save :save_student, :save_team
+  #after_destroy :save_student, :save_team
+  #TODO: called only destroy callback since worker is executing cache_student_and_team_scores
+  after_destroy :cache_student_and_team_scores
 
   scope :completion, -> { where(order: "assignments.due_at ASC", :joins => :assignment) }
   scope :graded, -> { where('status = ?', 'Graded') }
@@ -136,6 +139,13 @@ class Grade < ActiveRecord::Base
     #end
   end
 
+  def cache_student_and_team_scores
+    self.student.cache_course_score(self.course.id)
+    if self.course.has_teams? && self.student.team_for_course(self.course).present?
+      self.student.team_for_course(self.course).cache_score
+    end
+  end
+
 
   private
 
@@ -168,4 +178,5 @@ class Grade < ActiveRecord::Base
     self.course_id ||= assignment.try(:course_id)
     self.team_id ||= student.team_for_course(course).try(:id)
   end
+
 end
