@@ -130,12 +130,12 @@ class GradesController < ApplicationController
     no_grade_auditors =  @students.where(id:auditor_ids - @grades.pluck(:student_id))
     if no_grade_students.present?
       no_grade_students.each do |student|
-        @grades << @assignment.grades.new(:student => student_id, :assignment => @assignment, :graded_by_id => current_user)
+        @grades << @assignment.grades.new(:student => student, :assignment => @assignment, :graded_by_id => current_user)
       end
     end
     if no_grade_auditors.present?
       no_grade_auditors.each do |student|
-        @auditor_grades << @assignment.grades.new(:student => student_id, :assignment => @assignment, :graded_by_id => current_user)
+        @auditor_grades << @assignment.grades.new(:student => student, :assignment => @assignment, :graded_by_id => current_user)
       end
     end
 
