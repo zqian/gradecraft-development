@@ -3,11 +3,12 @@
     %tr
       %th Rank
       %th Name
-      %th Mean Score
       - if current_course.team_score_average?
-        %th Challenge Score
+        %th Score
       - else
-        %th Challenge Score
+        %th Mean Score
+      - if current_course.team_challenges?
+        %th #{term_for :challenge} Score
       %th{ "data-dynatable-column" => "students"} #{term_for :students}
       - if current_user_is_staff?
         %th{ "data-dynatable-column" => "badges"} #{term_for :badges} Earned
@@ -17,8 +18,9 @@
       %tr
         %td= index + 1
         %td= link_to team.name, team
-        %td= points team.try(:average_points)
-        %td= points team.try(:score)
+        %td= points team.average_points
+        - if current_course.team_challenges?
+          %td= points team.try(:score)
         %td= team.member_count
         - if current_user_is_staff?
           %td= points team.badge_count
