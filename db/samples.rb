@@ -448,13 +448,13 @@ You can blog as much as you want, but only one post/week can earn points."
   at.order_placement = 3
   at.mass_grade = true
   at.mass_grade_type = "Radio Buttons"
-  at.student_weightable = true
+  at.student_weightable = false
 end
 puts "Blogging is great for filling in missed points in other areas"
 
 assignment_types[:lfpg] = AssignmentType.create! do |at|
   at.course = educ_course
-  at.name = "20% Time"
+  at.name = "Learning From Playing a Game"
   at.point_setting = "By Assignment"
   at.points_predictor_display = "Slider"
   at.predictor_description = "At Google, all employs were (historically) given 20% of their work time to devote to any project they choose. Often, these projects fold the personal interest or ambitions of the employee into the larger opportunities represented by the context of Google (e.g., high-tech resources and lots of smart folks). In this course, I am requiring that you devote 20% of your time to pursuing a project of interest to you, that benefits you, and that will help you maximize the value of this course for you. You will determine the scope of the project, the requirements of the project, and the final grade for the project. You may work alone or with others. Whether or not there is a “product” is up to you, as is the form of that product. There is only one requirement for this project: You must share or present the project (in some way of your choosing) with your classmates and with me at the final class meeting.
@@ -468,7 +468,7 @@ I look forward to being surprised, elated, and informed by your interests and se
   at.due_date_present = true
   at.order_placement = 4
   at.mass_grade = false
-  at.student_weightable = true
+  at.student_weightable = false
 end
 puts "This is the good stuff :)"
 
@@ -480,7 +480,7 @@ assignment_types[:boss_battle] = AssignmentType.create! do |at|
   at.resubmission = true
   at.due_date_present = true
   at.order_placement = 5
-  at.mass_grade = false
+  at.student_weightable = false
 end
 puts "Challenges!"
 
@@ -610,31 +610,15 @@ end
   end
 end
 
-grinding_assignments.each do |a|
-  a.tasks.create! do |t|
-    t.assignment = a
-    t.name = "Task 1"
-    t.due_at = a.due_at
-    t.accepts_submissions = true
-  end
-end
-
 puts "Attendance and Reading Reaction classes have been posted!"
 
 grinding_assignments.each do |assignment|
   next unless assignment.due_at.past?
   students.each do |student|
-    assignment.tasks.each do |task|
-      submission = student.submissions.create! do |s|
-        s.task = task
-        s.text_comment = "Wingardium Leviosa"
-        s.link = "http://www.twitter.com"
-      end
-      student.grades.create! do |g|
-        g.submission = submission
-        g.raw_score = assignment.point_total * [0, 1].sample
-        g.status = "Graded"
-      end
+    student.grades.create! do |g|
+      g.assignment = assignment
+      g.raw_score = assignment.point_total * [0, 1].sample
+      g.status = "Graded"
     end
   end
 end
@@ -685,25 +669,6 @@ blog_assignments.each do |a|
 end
 
 puts "Blogging assignments have been posted!"
-
-blog_assignments.each_with_index do |assignment, i|
-  next if i % 2 == 0
-  students.each do |student|
-    assignment.tasks.each do |task|
-      submission = student.submissions.create! do |s|
-        s.task = task
-        s.text_comment = "Wingardium Leviosa"
-        s.link = "http://www.twitter.com"
-      end
-      student.grades.create! do |g|
-        g.submission = submission
-        g.raw_score = assignment.point_total * [0, 1].sample
-        g.status = "Graded"
-      end
-    end
-  end
-end
-puts "Blogging scores have been posted!"
 
 assignments = []
 

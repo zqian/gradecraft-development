@@ -33,6 +33,12 @@
           = f.label :team_setting, "Sections"
           = f.check_box :team_setting, {"aria-describedby" => "txtSections"}
           .form_label{:id => "txtSections"}  Will you have semester-long sections in your course?
+
+      .small-12
+        %label.checkbox{ :for => "team_challenges" }
+          = f.label :team_challenges, "Section Assignments"
+          = f.check_box :team_challenges, {"aria-describedby" => "txtSections"}
+          .form_label{:id => "txtSections"}  Will you have section assignments in your course?
       
       .small-12
         %label.checkbox{ :for => "badge_setting" }
