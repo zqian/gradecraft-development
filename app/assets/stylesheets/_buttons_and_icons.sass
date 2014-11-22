@@ -40,18 +40,8 @@
   margin-top: .5rem
   padding-right: .5rem
 
-  li:hover
-    background-color: darken($primary-color-3, 30%)
-
   .button
-    background-color: darken($primary-color-3, 20%)
     padding: .5rem
-
-.button:hover, .button:focus
-  background-color: darken($primary-color-3, 30%)
-
-a.btn.btn-primary
-  background-color: $primary-color-2
 
 .button-bar ul
   white-space: nowrap 
@@ -63,20 +53,22 @@ th.center button.button
 .sideBar .button, .panel a.button.radius
   font-size: .7rem
   padding: .4rem
-  background-color: darken($secondary-color-2, 15%)
-
-.sideBar .button:hover 
-  background-color: darken($secondary-color-2, 30%)
 
 ul.button-group.context_menu 
   padding-right: .5rem
 
   li
+    background-color: #64b3c1
+    @include linear-gradient(#64b3c1, #53a2b0)
     margin: 0
 
   li a
     display: block
     padding: .5rem
+
+  li a:hover
+    @include linear-gradient(#385b83, #264971)
+
 
   li:first-child, li:first-child a
     border-bottom-left-radius: $global-radius
