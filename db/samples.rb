@@ -2,6 +2,10 @@ user_names = ['Ron Weasley','Fred Weasley','Harry Potter','Hermione Granger','Co
 
 educ_team_names = ['Harm & Hammer', 'Abusement Park','Silver Woogidy Woogidy Woogidy Snakes','Carpe Ludus','Eduception','Operation Unthinkable','Team Wang','The Carpal Tunnel Crusaders','Pwn Depot']
 
+polsci_team_names = ['Section 1', 'Section 2', 'Section 3', 'Section 4', 'Section 5', 'Section 6', 'Section 7', 'Section 8', 'Section 9', 'Section 10', 'Section 11', 'Section 12', 'Section 13', 'Section 14', 'Section 15', 'Section 16']
+
+info_team_names = ['Late Night Information Nation', 'Heisenberg', 'Big Red Dogs', 'Liu Man Group', 'The House that Cliff Built', 'TMI']
+
 educ_badge_names = ['Creative', 'Inner Eye', 'Patronus Producer','Cheerful Charmer','Invisiblity Cloak','Marauders Map','Lumos','Rune Reader','Tea Leaf Guru','Wizard Chess Grand Master','Green Thumb','Gamekeeper','Seeker','Alchemist','Healer','Parseltongue','House Cup']
 
 polsci_badge_names = ['MINOR: Learning from Mistakes', 'MINOR: Learning from Mistakes', 'MINOR: Halloween Special', 'MINOR: Thanksgiving Special', 'MINOR: Now It is Personal', 'MAJOR: Makeup Much', 'MAJOR: Practice Makes Perfect', 'MAJOR: Combo Platter', 'MINOR: Makeup Some', 'MINOR: Participatory Democrat', 'MINOR: Number One', 'MINOR: Rockstar', 'MINOR: Over-achiever', 'MINOR: Avid Reader', 'MINOR: Nice Save!', 'MINOR: The Nightstalker', 'MINOR: Paragon of Virtue', 'MAJOR: Bad Investment', 'MINOR: Leader of the pack', 'MINOR: Thoughtful Contribution']
@@ -68,6 +72,7 @@ courses << polsci_course = Course.create! do |c|
   c.max_group_size = 5
   c.min_group_size = 3
   c.team_setting = true
+  c.team_term = "Section"
   c.teams_visible = false
   c.group_setting = true
   c.badge_setting = true
@@ -88,6 +93,7 @@ courses << polsci_course = Course.create! do |c|
   c.meeting_times = "MW 11:30-1"
   c.badge_term = "Power Up"
   c.team_challenges = false
+  c.team_score_average = true
   c.total_assignment_weight = 6
   c.default_assignment_weight = 0.5
   c.grading_philosophy = "Think of how video games work. This course works along the same logic. There are some things everyone will have to do to make progress. In this course, the readings, reading-related homework, lectures and discussion sections are those things.
@@ -124,6 +130,8 @@ courses << information_course = Course.create! do |c|
   c.office_hours = "email me"
   c.meeting_times = "TTh 12:00-1:30"
   c.team_challenges = true
+  c.team_score_average = true
+  c.add_team_score_to_student = true
   c.grading_philosophy = "In this course, we accrue 'XP' which are points that you gain to get to different grade levels. If you can gather 950,000 XP, you will receive an A, not to mention the admiration of those around you. Because you’re in charge of figuring out how many XP you need to get the grade you want, there’s not really such a thing as a required assignment in this course. There are opportunities to gain XP, some of which are scheduled. Of course, you’ll need to do several Quests in order to get higher grade levels, and some Quests count for a ton of XP. Each of these quests is managed in GradeCraft, where you can see your progress, as well as check the forecasting tool to see what you need to do on future assignments to get your desired grade level. A quick note on our assessment philosophy. Most Quests will have rubrics attached, which will spell out our expectations. However, just meeting the details of the assignment is by definition average work, which would receive something around the B category. If your goal is to get an A, you will have to go above and beyond on some of these Quests."
   c.media_file = "http://upload.wikimedia.org/wikipedia/commons/3/36/Michigan_Wolverines_Block_M.png"
 end
@@ -162,12 +170,26 @@ end
 puts "Installed the Polsci grading scheme. Debate that!"
 
 
-teams = educ_team_names.map do |team_name|
+educ_teams = educ_team_names.map do |team_name|
   educ_course.teams.create! do |t|
     t.name = team_name
   end
 end
 puts "The Team Competition has begun!"
+
+polsci_teams = polsci_team_names.map do |team_name|
+  polsci_course.teams.create! do |t|
+    t.name = team_name
+  end
+end
+puts "PolSci Teams come to life"
+
+info_teams = info_team_names.map do |team_name|
+  information_course.teams.create! do |t|
+    t.name = team_name
+  end
+end
+puts "LARP Day is going to happen. Watch out for the Dungeon Master's sword!"
 
 # Generate sample students
 students = user_names.map do |name|
@@ -180,7 +202,7 @@ students = user_names.map do |name|
     u.email = "#{username}@hogwarts.edu"
     u.password = 'uptonogood'
     u.courses << [ educ_course, polsci_course, information_course ]
-    u.teams << teams.sample
+    u.teams << [ educ_teams.sample, polsci_teams.sample, info_teams.sample ]
   end
 end
 puts "Generated #{students.count} unruly students"
@@ -1044,7 +1066,7 @@ challenges << Challenge.create! do |c|
   c.open_at = rand(6).weeks.ago
   c.visible = true
   c.save
-  teams.each do |team|
+  educ_teams.each do |team|
     c.challenge_grades.create! do |cg|
       cg.team = team
       cg.score = 1000000 * [0,1].sample
