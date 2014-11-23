@@ -23,8 +23,8 @@
               %td= user.role(current_course).capitalize
               %td
                 %ul
-                  - user.teams.each do |team|
-                    %li= link_to team.try(:name), team
+                  - user.team_leaderships.each do |leadership|
+                    %li= link_to leadership.team.try(:name), leadership.team
               %td
                 .button-bar
                   %ul.button-group.right.radius

@@ -179,7 +179,7 @@
                   - if grade.is_graded?
                     .center= check_box_tag "grade_ids[]", grade.id
 
-    - if @assignment.release_necessary? && @assignment.grades.present?
-      .small-12.columns
-        .right.form_buttons
-          = submit_tag "Update Selected Grade Statuses", :class => "button radius"
+  - if @assignment.release_necessary? && @assignment.grades.present?
+    .small-12.columns
+      .right.form_buttons
+        = submit_tag "Update Selected Grade Statuses", :class => "button radius"
