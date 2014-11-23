@@ -235,3 +235,20 @@ $('table.nofeatures_default_rank_dynatable').dynatable({
       }
     }
 });
+
+$('table.paginate_default_last_name_dynatable').dynatable({
+  
+ features: {
+        sort: true
+      },
+  dataset: {
+      sorts: { 'lastName': 1 },
+      perPageDefault: 25,
+      perPageOptions: [25, 50, 100]
+  },
+  readers: {
+      points: function(el, record) {
+        return Number(el.innerHTML.replace(",","")) || 0;
+      }
+    }
+});

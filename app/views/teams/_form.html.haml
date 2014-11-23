@@ -12,8 +12,14 @@
 
     .clearfix
 
-    .small-12.medium-8.columns
-      = f.association :students, :collection => current_course.students, as: :select
+    .row
+      .small-12.columns
+        = f.association :students, :collection => current_course.students, as: :select
+
+
+    .row
+      .small-12.columns
+        = f.association :leaders, :as => :check_boxes, :collection => current_course.gsis
 
   .small-12.medium-4.columns.columns-no-padding_right
     .panel
