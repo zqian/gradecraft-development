@@ -47,6 +47,7 @@ class Course < ActiveRecord::Base
   with_options :dependent => :destroy do |c|
     c.has_many :assignment_types
     c.has_many :assignments
+    c.has_many :assignment_weights
     c.has_many :badges
     c.has_many :challenges
     c.has_many :challenge_grades, :through => :challenges
@@ -281,6 +282,25 @@ class Course < ActiveRecord::Base
       end
     end
   end
+
+  def assignments_for_course
+    CSV.generate do |csv|
+      csv << ["Course Id", "Assignment ID", "Assignment Name", "Assignment Type ID", "Assignment Type Name", "Point Total", "Description", "Due at", "Open At", "Accepted Until", "Student Logged", "Submissions", "Predictor Display"]
+      self.assignments.each do |assignment|
+        csv << [assignment.course_id, assignment.id, assignment.name, assignment.assignment_type_id, assignment.assignment_type.name, assignment.point_total, assignment.description, assignment.due_at, assignment.open_at, assignment.accepts_submissions_until, assignment.student_logged, assignment.accepts_submissions, assignment.points_predictor_display]
+      end
+    end
+  end
+
+  def assignment_weighting_choices_for_course
+    CSV.generate do |csv|
+      csv << ["ID", "Course Id", "Assignment ID", "Assignment Name", "Assignment Type ID", "Assignment Type Name", "Student ID", "Student First Name", "Student Last Name", "Username", "Assignment Weight", "Created At", "Updated At"]
+      self.assignment_weights.each do |aw|
+        csv << [aw.id, aw.course_id, aw.assignment_id, aw.assignment.name, aw.assignment_type_id, aw.assignment_type.name, aw.student_id, aw.student.first_name, aw.student.last_name, aw.student.username, aw.weight, aw.created_at, aw.updated_at ]
+      end
+    end
+  end
+
 
   #badges
   def course_badge_count

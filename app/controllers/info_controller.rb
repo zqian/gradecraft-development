@@ -77,6 +77,20 @@ class InfoController < ApplicationController
     redirect_to courses_path
   end
 
+  #downloadable assignments for course with export
+  def assignments_for_course
+    respond_to do |format|
+      format.csv { send_data current_course.assignments_for_course}
+    end
+  end
+
+  #downloadable assignments for course with export
+  def assignment_weighting_choices_for_course
+    respond_to do |format|
+      format.csv { send_data current_course.assignment_weighting_choices_for_course }
+    end
+  end
+
   # Chart displaying all of the student weighting choices thus far
   def choices
     @title = "#{current_course.weight_term} Choices"

@@ -38,7 +38,11 @@
             - if current_user_is_admin?
               %td
                 - if course == current_course
-                  = link_to_unless_current "Export Grades for Research", research_gradebook_path, :class=>"data-clearing"
+                  %ul
+                    %li= link_to "Export Grades for Research", research_gradebook_path, :class=>"data-clearing"
+                    %li= link_to "Export Assignments", assignments_for_course_path(format: 'csv')
+                    - if current_course.student_weighted?
+                      %li= link_to "Export #{(term_for :weight).titleize} Choices", assignment_weighting_choices_for_course_path(format: 'csv')
 
             %td
               .button-bar

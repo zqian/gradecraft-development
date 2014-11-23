@@ -180,6 +180,8 @@ GradeCraft::Application.routes.draw do
   get 'raw_points_gradebook' => 'info#raw_points_gradebook'
   get 'final_grades' => 'info#final_grades'
   get 'research_gradebook' => 'info#research_gradebook'
+  get 'assignments_for_course' => 'info#assignments_for_course'
+  get 'assignment_weighting_choices_for_course' => 'info#assignment_weighting_choices_for_course'
 
   #8. Groups
   resources :groups do 
