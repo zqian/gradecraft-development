@@ -72,7 +72,7 @@ group :development do
   gem 'rack-mini-profiler', require: false
   gem 'rubystats'
   gem 'spring'
-  gem 'debugger'
+  gem 'byebug'
   # gem 'guard-spring'
 end
 

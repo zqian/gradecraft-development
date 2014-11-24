@@ -19,7 +19,7 @@
           %th{:scope => "col", "data-dynatable-sorts" => "rank"} Rank
           %th{:scope => "col"} First Name
           %th{:scope => "col"} Last Name
-          %th{:scope => "col"} Score
+          %th{:scope => "col", "data-dynatable-sorts" => "score"} Score
           - if current_course.has_teams?
             %th{:scope => "col"} #{current_course.team_term}
           %th{:scope => "col"} Grade
@@ -34,20 +34,23 @@
               %td= index + 1
               %td= link_to student.first_name, student_path(student)
               %td= link_to student.last_name, student_path(student)
-              %td= points student.cached_score_for_course(current_course)
+              %td= points student.cached_score
               - if current_course.has_teams?
+                - student_team = @teams_by_student_id[student.id]
                 %td#team_for_course
-                  = link_to student.team_for_course(current_course).try(:name), student.team_for_course(current_course) if student.team_for_course(current_course).present?
+                  = link_to student_team.try(:name), student_team if student_team
               %td
-                = student.grade_letter_for_course(current_course)
-                - if student.grade_level_for_course(current_course).present?
-                  = "#{student.grade_level_for_course(current_course)}"
+                - unless @student_grade_schemes_by_id[student.id].nil?
+                  = "#{@student_grade_schemes_by_id[student.id][:letter]}"
+                  = "#{@student_grade_schemes_by_id[student.id][:level]}"
               - if current_course.has_badges?
                 %td#earned_badges
-                  - student.earned_badges_for_course(current_course).each do |badge|
-                    %img.has-tip{:src => badge[1].icon, :alt => badge[1].name, :width => "20", :title => badge[1].name, :data => {'tooltip' => true}}
+                  - if @earned_badges_by_student_id[student.id]
+                    - @earned_badges_by_student_id[student.id].each do |badge|
+                      %img.has-tip{:src => badge.icon, :alt => badge.name, :width => "20", :title => badge.name, :data => {'tooltip' => true}}
                 %td{:style => "display: none"}
-                  = student.earned_badges_for_course(current_course).count
+                  - if @earned_badges_by_student_id[student.id]
+                    = @earned_badges_by_student_id[student.id].size
               %td
                 .button-bar
                   %ul.button-group.radius.right

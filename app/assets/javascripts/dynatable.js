@@ -7,7 +7,7 @@ $('table.dynatable').dynatable({
       }
       ,
       score: function(el, record) {
-        return Number(el.innerHTML.replace(",","")) || 0;
+        return Number(el.innerHTML.replace(/,/g,"")) || 0;
       }
     }
 });
@@ -23,31 +23,31 @@ $('table.nopage_dynatable').dynatable({
       return Number(el.innerHTML) || 0;
     },
     score: function(el, record) {
-      return Number(el.innerHTML.replace(",","")) || 0;
+      return Number(el.innerHTML.replace(/,/g,"")) || 0;
     },
     totalScore: function(el, record) {
-      return Number(el.innerHTML.replace(",","")) || 0;
+      return Number(el.innerHTML.replace(/,/g,"")) || 0;
     },
     badgeScore: function(el, record) {
-      return Number(el.innerHTML.replace(",","")) || 0;
+      return Number(el.innerHTML.replace(/,/g,"")) || 0;
     },
     rawScore: function(el, record) {
-      return Number(el.innerHTML.replace(",","")) || 0;
+      return Number(el.innerHTML.replace(/,/g,"")) || 0;
     },
     multipliedScore: function(el, record) {
-      return Number(el.innerHTML.replace(",","")) || 0;
+      return Number(el.innerHTML.replace(/,/g,"")) || 0;
     },
     meanScore: function(el, record) {
-      return Number(el.innerHTML.replace(",","")) || 0;
+      return Number(el.innerHTML.replace(/,/g,"")) || 0;
     },
     challengeScore: function(el, record) {
-      return Number(el.innerHTML.replace(",","")) || 0;
+      return Number(el.innerHTML.replace(/,/g,"")) || 0;
     },
     students: function(el, record) {
-      return Number(el.innerHTML.replace(",","")) || 0;
+      return Number(el.innerHTML.replace(/,/g,"")) || 0;
     },
     badges: function(el, record) {
-      return Number(el.innerHTML.replace(",","")) || 0;
+      return Number(el.innerHTML.replace(/,/g,"")) || 0;
     }
   }
 });
@@ -64,7 +64,7 @@ $('table.nosearch_dynatable').dynatable({
       }
       ,
       score: function(el, record) {
-        return Number(el.innerHTML.replace(",","")) || 0;
+        return Number(el.innerHTML.replace(/,/g,"")) || 0;
       }
     }
 });
@@ -95,10 +95,10 @@ $('table.nofeatures_default_last_name_dynatable').dynatable({
         return el.innerHTML;
       },
       points: function(el, record) {
-        return Number(el.innerHTML.replace(",","")) || 0;
+        return Number(el.innerHTML.replace(/,/g,"")) || 0;
       },
       maxValue: function(el, record) {
-        return Number(el.innerHTML.replace(",","")) || 0;
+        return Number(el.innerHTML.replace(/,/g,"")) || 0;
       }
     }
 });
@@ -120,10 +120,10 @@ $('table.nofeatures_default_name_dynatable').dynatable({
         return el.innerHTML;
       },
       points: function(el, record) {
-        return Number(el.innerHTML.replace(",","")) || 0;
+        return Number(el.innerHTML.replace(/,/g,"")) || 0;
       },
       maxValue: function(el, record) {
-        return Number(el.innerHTML.replace(",","")) || 0;
+        return Number(el.innerHTML.replace(/,/g,"")) || 0;
       }
     }
 });
@@ -145,10 +145,10 @@ $('table.nofeatures_default_score_dynatable').dynatable({
         return el.innerHTML;
       },
       points: function(el, record) {
-        return Number(el.innerHTML.replace(",","")) || 0;
+        return Number(el.innerHTML.replace(/,/g,"")) || 0;
       },
       maxValue: function(el, record) {
-        return Number(el.innerHTML.replace(",","")) || 0;
+        return Number(el.innerHTML.replace(/,/g,"")) || 0;
       }
     }
 });
@@ -180,10 +180,10 @@ $('table.nofeatures_dynatable').dynatable({
         return el.innerHTML;
       },
       points: function(el, record) {
-        return Number(el.innerHTML.replace(",","")) || 0;
+        return Number(el.innerHTML.replace(/,/g,"")) || 0;
       },
       maxValue: function(el, record) {
-        return Number(el.innerHTML.replace(",","")) || 0;
+        return Number(el.innerHTML.replace(/,/g,"")) || 0;
       }
     }
 });
@@ -206,10 +206,10 @@ $('table.nofeatures_default_due_date_dynatable').dynatable({
         return el.innerHTML;
       },
       points: function(el, record) {
-        return Number(el.innerHTML.replace(",","")) || 0;
+        return Number(el.innerHTML.replace(/,/g,"")) || 0;
       },
       maxValue: function(el, record) {
-        return Number(el.innerHTML.replace(",","")) || 0;
+        return Number(el.innerHTML.replace(/,/g,"")) || 0;
       }
     }
 });
@@ -231,7 +231,7 @@ $('table.nofeatures_default_rank_dynatable').dynatable({
       }
       ,
       score: function(el, record) {
-        return Number(el.innerHTML.replace(",","")) || 0;
+        return Number(el.innerHTML.replace(/,/g,"")) || 0;
       }
     }
 });
