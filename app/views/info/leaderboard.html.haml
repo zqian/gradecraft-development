@@ -19,7 +19,7 @@
           %th{:scope => "col", "data-dynatable-sorts" => "rank"} Rank
           %th{:scope => "col"} First Name
           %th{:scope => "col"} Last Name
-          %th{:scope => "col"} Score
+          %th{:scope => "col", "data-dynatable-sorts" => "score"} Score
           - if current_course.has_teams?
             %th{:scope => "col"} #{current_course.team_term}
           %th{:scope => "col"} Grade
