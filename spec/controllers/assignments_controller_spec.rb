@@ -1,17 +1,19 @@
 require 'spec_helper'
 
 describe AssignmentsController do
-  
+  render_views
+
   before(:each) do
-    current_course = mock(Course) 
+    @course = mock(Course)
+    Course.stub! :new => @course
+    @course.stub! :assignment_term => "Assignment"
   end
 
-  describe "GET 'index'" do
-
-    it "should get all assignments for a course" do
-      current_course.assignment_term = "Assignment"
-      Assignment.should_receive(:all) {}
-      get "index"
+  describe "index" do  
+    
+    it "renders the index template" do
+      get :index
+      response should contain("Assignments")
     end
 
   end

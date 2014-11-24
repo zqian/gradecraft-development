@@ -19,7 +19,6 @@ $(document).ready(function(){
     var target_date = new Date(); 
     for(x in timeline_dates) {
       var slide_date = new Date( timeline_dates[x].startDate );
-      console.log(slide_date);
       if( slide_date < target_date) start_index++;
     }
 
