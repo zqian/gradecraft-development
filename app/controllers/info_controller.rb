@@ -123,7 +123,7 @@ class InfoController < ApplicationController
 
   def course_grade_scheme_by_student_id
     @students.inject({}) do |memo, student|
-      student_score = student.page_views
+      student_score = student.cached_score
       student_grade_scheme = nil
       course_grade_scheme_elements.each do |grade_scheme|
         if student_score >= grade_scheme.low_range and student_score <= grade_scheme.high_range
