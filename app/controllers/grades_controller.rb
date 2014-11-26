@@ -35,11 +35,11 @@ class GradesController < ApplicationController
     redirect_to @assignment and return unless current_student.present?
     @grade = current_student_data.grade_for_assignment(@assignment)
     self.check_uploads
+
     @grade.update_attributes params[:grade]
 
-    if @assignment.notify_released? && @grade.is_released?
-      NotificationMailer.grade_released(@grade.id).deliver
-    end
+    GradeUpdater.perform_async([@grade.id])
+
     if session[:return_to].present?
       redirect_to session[:return_to]
     else
@@ -57,9 +57,7 @@ class GradesController < ApplicationController
     # create_earned_metric_badges # create an individual record for each rubric grade
     create_earned_tier_badges # create an individual record for each rubric grade
 
-    if @assignment.notify_released? && @grade.is_released?
-      NotificationMailer.grade_released(@grade.id).deliver
-    end
+    GradeUpdater.perform_async([@grade.id])
 
     render status: 200, json: {}
   end
@@ -120,6 +118,7 @@ class GradesController < ApplicationController
     user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
     @students = current_course.students_being_graded.alphabetical.includes(:teams).where(user_search_options)
     @auditors = current_course.students_auditing.alphabetical.includes(:teams).where(user_search_options)
+    
     student_ids = @students.pluck(:id)
     auditor_ids = @auditors.pluck(:id)
 
@@ -184,10 +183,10 @@ class GradesController < ApplicationController
     end
     @grades = @grades.each do |grade|
       grade.update_attributes(params[:grade])
-      if @assignment.notify_released? && grade.released
-        NotificationMailer.grade_released(grade.id).deliver
-      end
     end
+
+    GradeUpdater.perform_async(@grades.pluck(:id))
+
     respond_with @assignment
   end
 
@@ -203,10 +202,10 @@ class GradesController < ApplicationController
     @grades = @assignment.grades.find(params[:grade_ids])
     @grades.each do |grade|
       grade.update_attributes!(params[:grade].reject { |k,v| v.blank? })
-      if @assignment.notify_released? && grade.released
-        NotificationMailer.grade_released(grade.id).deliver
-      end
     end
+
+    GradeUpdater.perform_async(@grades.pluck(:id))
+
     flash[:notice] = "Updated Grades!"
     redirect_to assignment_path(@assignment)
   end
@@ -221,7 +220,7 @@ class GradesController < ApplicationController
   def username_import
     @assignment = current_course.assignments.find(params[:id])
     @students = current_course.students
-
+    grade_ids = []
     require 'csv'
 
     if params[:file].blank?
@@ -237,6 +236,7 @@ class GradesController < ApplicationController
                 grade.feedback = row[4]
                 grade.status = "Graded"
                 grade.save!
+                grade_ids << grade.id
               end
             else
               @assignment.grades.create! do |g|
@@ -245,11 +245,15 @@ class GradesController < ApplicationController
                 g.raw_score = row[3].to_i
                 g.feedback = row[4]
                 g.status = "Graded"
+                grade_ids << grade.id
               end
             end
           end
         end
       end
+
+    GradeUpdater.perform_async(grade_ids)
+
     redirect_to assignment_path(@assignment), :notice => "Upload successful"
     end
   end
@@ -258,6 +262,7 @@ class GradesController < ApplicationController
   def email_import
     @assignment = current_course.assignments.find(params[:id])
     @students = current_course.students
+    grade_ids = []
 
     require 'csv'
 
@@ -274,6 +279,7 @@ class GradesController < ApplicationController
                 #grade.feedback = row[4]
                 grade.status = "Graded"
                 grade.save!
+                grade_ids << grade.id
               end
             else
               @assignment.grades.create! do |g|
@@ -282,12 +288,16 @@ class GradesController < ApplicationController
                 g.raw_score = row[3].to_i
                 #g.feedback = row[4]
                 g.status = "Graded"
+                grade_ids << grade.id
               end
             end
           end
         end
       end
-    redirect_to assignment_path(@assignment), :notice => "Upload successful"
+    
+      GradeUpdater.perform_async(grade_ids)
+
+      redirect_to assignment_path(@assignment), :notice => "Upload successful"
     end
   end
 
@@ -295,6 +305,7 @@ class GradesController < ApplicationController
   def name_import
     @assignment = current_course.assignments.find(params[:id])
     @students = current_course.students
+    grade_ids = []
 
     require 'csv'
 
@@ -311,6 +322,7 @@ class GradesController < ApplicationController
                 #grade.feedback = row[4]
                 grade.status = "Graded"
                 grade.save!
+                grade_ids << grade.id
               end
             else
               @assignment.grades.create! do |g|
@@ -319,12 +331,16 @@ class GradesController < ApplicationController
                 g.raw_score = row[5].to_i
                 #g.feedback = row[4]
                 g.status = "Graded"
+                grade_ids << grade.id
               end
             end
           end
         end
       end
-    redirect_to assignment_path(@assignment), :notice => "Upload successful"
+      
+      GradeUpdater.perform_async(grade_ids)
+
+      redirect_to assignment_path(@assignment), :notice => "Upload successful"
     end
   end
 
