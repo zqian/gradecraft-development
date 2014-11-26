@@ -4,6 +4,8 @@ describe AssignmentsController do
   render_views
 
   before(:each) do
+    user = create(:admin)
+    session[:user_id] = user.id  
     @course = mock(Course)
     Course.stub! :new => @course
     @course.stub! :assignment_term => "Assignment"
