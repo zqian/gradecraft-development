@@ -22,7 +22,7 @@ class ChallengeGrade < ActiveRecord::Base
 
   def save_team
     if self.score_changed?
-      team.save
+      team.cache_score
     end
   end
 
