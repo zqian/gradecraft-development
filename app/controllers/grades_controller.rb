@@ -50,7 +50,9 @@ class GradesController < ApplicationController
   def submit_rubric
     @grade = current_student_data.grade_for_assignment(@assignment)
     @submission = Submission.where(assignment_id: @assignment[:id], student_id: params[:student_id]).first
-    @submission.update_attributes(graded: true)
+    
+    @submission.update_attributes(graded: true) if @submission.present?
+
     @grade.update_attributes(raw_score: params[:points_given], submission_id: @submission[:id], point_total: params[:points_possible], status: "Graded")
 
     create_rubric_grades # create an individual record for each rubric grade
@@ -181,11 +183,13 @@ class GradesController < ApplicationController
     @grades = @group.students.map do |student|
       @assignment.grades.where(:student_id => student).first || @assignment.grades.new(:student => student, :assignment => @assignment, :graded_by_id => current_user, :status => "Graded", :group_id => @group.id)
     end
+    grade_ids = []
     @grades = @grades.each do |grade|
       grade.update_attributes(params[:grade])
+      grade_ids << grade.id
     end
 
-    GradeUpdater.perform_async(@grades.pluck(:id))
+    GradeUpdater.perform_async(grade_ids)
 
     respond_with @assignment
   end
@@ -200,11 +204,13 @@ class GradesController < ApplicationController
   def update_status
     @assignment = current_course.assignments.find(params[:id])
     @grades = @assignment.grades.find(params[:grade_ids])
+    grade_ids = []
     @grades.each do |grade|
       grade.update_attributes!(params[:grade].reject { |k,v| v.blank? })
+      grade_ids << grade.id
     end
 
-    GradeUpdater.perform_async(@grades.pluck(:id))
+    GradeUpdater.perform_async(grade_ids)
 
     flash[:notice] = "Updated Grades!"
     redirect_to assignment_path(@assignment)
