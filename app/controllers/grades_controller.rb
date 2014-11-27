@@ -245,12 +245,12 @@ class GradesController < ApplicationController
                 grade_ids << grade.id
               end
             else
-              @assignment.grades.create! do |g|
-                g.assignment_id = @assignment.id
-                g.student_id = student.id
-                g.raw_score = row[3].to_i
-                g.feedback = row[4]
-                g.status = "Graded"
+              @assignment.grades.create! do |grade|
+                grade.assignment_id = @assignment.id
+                grade.student_id = student.id
+                grade.raw_score = row[3].to_i
+                grade.feedback = row[4]
+                grade.status = "Graded"
                 grade_ids << grade.id
               end
             end
@@ -288,12 +288,12 @@ class GradesController < ApplicationController
                 grade_ids << grade.id
               end
             else
-              @assignment.grades.create! do |g|
-                g.assignment_id = @assignment.id
-                g.student_id = student.id
-                g.raw_score = row[3].to_i
-                #g.feedback = row[4]
-                g.status = "Graded"
+              @assignment.grades.create! do |grade|
+                grade.assignment_id = @assignment.id
+                grade.student_id = student.id
+                grade.raw_score = row[3].to_i
+                grade.feedback = row[4]
+                grade.status = "Graded"
                 grade_ids << grade.id
               end
             end
@@ -331,12 +331,12 @@ class GradesController < ApplicationController
                 grade_ids << grade.id
               end
             else
-              @assignment.grades.create! do |g|
-                g.assignment_id = @assignment.id
-                g.student_id = student.id
-                g.raw_score = row[5].to_i
-                #g.feedback = row[4]
-                g.status = "Graded"
+              @assignment.grades.create! do |grade|
+                grade.assignment_id = @assignment.id
+                grade.student_id = student.id
+                grade.raw_score = row[5].to_i
+                #grade.feedback = row[4]
+                grade.status = "Graded"
                 grade_ids << grade.id
               end
             end

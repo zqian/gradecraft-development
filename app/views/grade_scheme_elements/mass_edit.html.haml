@@ -20,6 +20,7 @@
 
         = link_to 'Add a Level', '#', class: 'add-element button alert radius'
 
-      .right
-        = f.button :submit, :class => "button radius"
-        = link_to 'Cancel', grade_scheme_elements_path, :class => 'button radius transparent'
+      .button-bar
+        %ul.button-group.radius.right
+          %li= f.button :submit
+          %li= link_to 'Cancel', grade_scheme_elements_path, :class => 'button'

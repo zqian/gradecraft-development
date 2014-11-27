@@ -50,6 +50,7 @@
 
     .clearfix
 
-    .right
-      = submit_tag "#{@badge.persisted? ? 'Update' : 'Create'} #{term_for :badge}", :class => "button radius"
-      = link_to 'Cancel', badges_path, :class => 'button radius transparent' 
+    .button-bar
+      %ul.button-group.radius.right
+        %li= submit_tag "#{@badge.persisted? ? 'Update' : 'Create'} #{term_for :badge}", :class => 'button' 
+        %li= link_to 'Cancel', badges_path, :class => 'button' 

@@ -9,7 +9,7 @@
         %li
           %a{:href => edit_team_path(@team) }
             %i.fi-pencil
-            Edit #{term_for :team}
+            Edit #{(term_for :team).titleize}
 
   %h4.subtitle= "#{term_for :student} Roster"
   .small-12.columns

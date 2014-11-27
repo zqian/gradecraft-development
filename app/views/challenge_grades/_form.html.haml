@@ -17,6 +17,8 @@
     .small-12.columns.panel.callout
       = f.bootsy_area :text_feedback
 
-  .right
-    = f.button :submit, "#{ @challenge_grade.persisted? ? 'Update Grade for' : 'Grade'} #{ term_for :challenge }",  :class => "button radius"
-    = link_to 'Cancel', challenges_path, :class => 'button radius transparent'
+
+  .button-bar
+    %ul.button-group.radius.right
+      %li= f.button :submit, "#{ @challenge_grade.persisted? ? 'Update Grade' : 'Submit Grade'}"
+      %li= link_to 'Cancel', challenges_path, :class => 'button'

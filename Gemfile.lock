@@ -395,7 +395,6 @@ DEPENDENCIES
   gravatar_image_tag
   haml
   haml-rails
-  ims-lti
   jbuilder
   jquery-rails (~> 2.0)
   json
