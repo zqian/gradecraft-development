@@ -170,6 +170,10 @@ class InfoController < ApplicationController
       .where("team_memberships.student_id in (?)", student_ids)
   end
 
+  def course_team_membership_count
+    TeamMembership.joins(:team).where("teams.course_id = ?", current_course[:id]).count
+  end
+
   def student_earned_badges_for_entire_course
     @student_earned_badges ||= EarnedBadge.where(course: current_course).where("student_id in (?)", @student_ids).includes(:badge)
   end
@@ -187,10 +191,19 @@ class InfoController < ApplicationController
   end
 
   def graded_students_in_current_course
-    User.graded_students_in_course(current_course.id)
+    if course_team_membership_count > 0
+      User.graded_students_in_course_include_and_join_team(current_course.id)
+    else
+      User.graded_students_in_course(current_course.id)
+    end
   end
 
   def graded_students_in_current_course_for_active_team
-    User.graded_students_in_course_for_team(current_course.id, params[:team_id])
+    if course_team_membership_count > 0
+      User.graded_students_in_course_include_and_join_team(current_course.id)
+        .where("team_memberships.team_id = ?", params[:team_id])
+    else
+      []
+    end
   end
 end
