@@ -29,9 +29,10 @@
                 %h4.bold= atwf.object.assignment_type.name
                 .italic= "Raw Points: #{points atwf.object.assignment_type.raw_score_for_student(current_student)}"
                 = atwf.input :weight, :label => "#{term_for :weight}", :as => :integer
-        .right
-          = f.button :submit, "Update #{term_for :weights}", :class => "button radius"
-          = link_to 'Cancel', current_user_is_student? ? dashboard_path : choices_students_path, class: 'button radius transparent'
+        .button-bar
+          %ul.button-group.radius.right
+            %li= f.button :submit, "Update #{term_for :weights}"
+            %li= link_to 'Cancel', current_user_is_student? ? dashboard_path : choices_students_path, class: 'button'
 
 
     - else

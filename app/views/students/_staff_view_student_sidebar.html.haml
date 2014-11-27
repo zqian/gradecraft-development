@@ -2,10 +2,10 @@
   .gravatar.panel.radius
     .button-group.right.radius{:style => "margin-top: 2px" }
       %li
-        %a{:href => edit_user_path(current_student), :class => "button transparent" }
+        %a{:href => edit_user_path(current_student), :class => "button" }
           Edit
       %li
-        %a{:href => "mailto:#{current_student.email}", :class => "button transparent" }
+        %a{:href => "mailto:#{current_student.email}", :class => "button" }
           Email
     %span.large= current_student.name
     = gravatar_for current_student

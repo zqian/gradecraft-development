@@ -8,7 +8,6 @@
  *= require select2
  *= require foundation-icons
  *= require bootstrap
- *= require collapse
  *= require rubrics
  *= require grades
  *= require assignments
@@ -55,3 +54,4 @@ $dark-grey: #444444;
 @import 'buttons_and_icons';
 @import 'typography';
 @import 'homepage';
+@import 'collapse';

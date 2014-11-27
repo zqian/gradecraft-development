@@ -168,12 +168,12 @@
             = f.simple_fields_for :assignment_score_levels, assignment_score_level, class: 'form-inline' do |slf|
               = render 'assignment_score_level_fields', f: slf
       = link_to 'Add a Level', '#', class: 'add-assignment-score-level button radius'
-    
 
     .clearfix
 
-    .right.columns-no-padding
-      = f.button :submit, "#{@assignment.persisted? ? 'Update' : 'Create'} #{term_for :assignment}", :class => "button radius"
-      = link_to 'Cancel', assignments_path, :class => "button radius transparent"
+    .button-bar
+      %ul.button-group.radius.right
+        %li= f.button :submit, "#{@assignment.persisted? ? 'Update' : 'Create'} #{term_for :assignment}"
+        %li= link_to 'Cancel', assignments_path, :class => "button"
 
     
