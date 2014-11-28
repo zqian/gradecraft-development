@@ -20,26 +20,25 @@ describe AssignmentsController do
 
   end
 
-  describe "GET 'settings'"
+  describe "GET settings"
 
-  describe "GET 'show'"
+  describe "GET show"
 
-  describe "GET 'feed'"
+  describe "GET feed"
 
-  describe "GET 'new'"
+  describe "GET new"
 
-  describe "POST 'create'"
+  describe "POST create"
 
-  describe "POST 'copy'"
+  describe "POST copy"
 
-  describe "DELETE 'destroy'"
+  describe "DELETE destroy"
 
-  describe "GET 'rules'"
+  describe "GET rules"
 
-  describe "GET 'edit'"
+  describe "GET edit"
 
-  describe "PUT 'update'"
-
+  describe "PUT update"
 
 
 end

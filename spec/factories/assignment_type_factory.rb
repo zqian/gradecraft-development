@@ -11,5 +11,6 @@ FactoryGirl.define do
     factory :unpredictable_assignment do
       include_in_predictor :false
     end
+    
   end
 end
