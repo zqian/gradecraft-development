@@ -1,0 +1,23 @@
+- @students.each do |student|
+  - grade = current_course_data.grade_for_student_and_assignment(student, @assignment)
+  %tr
+    %td= link_to student.first_name, student_path(student)
+    %td= link_to student.last_name, student_path(student)
+    %td{:data => { :"sort-value" => "#{grade.raw_score}"} }= points grade.raw_score if grade.status?
+    - if @assignment.assignment_type.student_weightable?
+      %td
+        - if student.weighted_assignments?
+          = points grade.score if grade.status?
+        - else
+          = "(not yet assigned)"
+    - if @assignment.release_necessary?
+      %td= grade.status
+    %td
+      - if @assignment.accepts_submissions?
+        = render "assignments/individual/graded/accepts_submissions", student: student, grade: grade
+      - else
+        = render "assignments/individual/graded/no_submissions", student: student, grade: grade
+    - if @assignment.release_necessary?
+      %td
+        - if grade.is_graded?
+          .center= check_box_tag "grade_ids[]", grade.id
