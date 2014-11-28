@@ -1,0 +1,9 @@
+.small-12
+  %h3.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
+
+.small-12.columns
+  - if @assignment.has_groups?
+    = render "grades/group_show"
+  - else
+    = render "grades/individual_show"
+  .clearfix

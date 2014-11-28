@@ -1,0 +1,35 @@
+.button-bar
+  %ul.button-group.context_menu
+    - if @assignment.description.present?
+      %li
+        = render "assignments/description"
+    %li
+      %a{:href => edit_assignment_path(@assignment) }
+        %i.fi-pencil
+        Edit
+    - if @team.present?
+      %li
+        %a{:href => mass_grade_assignment_path(@assignment, :team_id => @team) }
+          %i.fi-list-thumbnails
+          Quick Grade
+    - else
+      %li
+        %a{:href => mass_grade_assignment_path(@assignment) }
+          %i.fi-check
+          Quick Grade
+
+    %li
+      %a{:href => design_assignment_rubric_path(@assignment) }
+        %i.fi-list-thumbnails
+        - if @assignment.rubric and @assignment.rubric.designed?
+          Edit Rubric
+        - else
+          Create Rubric 
+    %li
+      %a{:href => import_grades_assignment_path(@assignment) }
+        %i.fi-upload
+        Import Grades
+    %li
+      %a{:href => export_grades_assignment_path(format: 'csv') }
+        %i.fi-page-export-csv
+        Download Grades

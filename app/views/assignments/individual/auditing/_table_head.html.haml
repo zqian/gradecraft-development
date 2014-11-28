@@ -1,0 +1,15 @@
+%tr
+  %th{:scope => "col", :width => "8%"} First Name
+  %th{:scope => "col", :width => "8%"} Last Name
+  - if ! @assignment.assignment_type.student_weightable?
+    %th{:scope => "col", :width => "8%"} Score
+  - else
+    %th{:scope => "col"} Raw Score
+    %th{:scope => "col"} Multiplied Score
+  - if @assignment.release_necessary?
+    %th{:scope => "col"} Status
+  %th{"data-dynatable-no-sort" => "true"} 
+  - if @assignment.release_necessary?
+    %th.center{"data-dynatable-no-sort" => "true", :width => "15%"}
+      %button.button.select-all.tiny= "Check All"
+      %button.button.select-none.tiny= "Uncheck All"
