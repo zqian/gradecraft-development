@@ -1,4 +1,4 @@
-FactoryGirl do 
+FactoryGirl.define do 
   factory :challenge do 
     association :course
     name 'Epic Battle'

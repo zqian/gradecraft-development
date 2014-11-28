@@ -4,3 +4,4 @@ FactoryGirl.define do
     association :assignment
     weight 5
   end
+end

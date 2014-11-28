@@ -1,4 +1,4 @@
-FactoryGirl do 
+FactoryGirl.define do 
   factory :grade_scheme_element do 
     association :course
     letter 'F'

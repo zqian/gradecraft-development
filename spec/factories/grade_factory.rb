@@ -1,4 +1,4 @@
-FactoryGirl do 
+FactoryGirl.define do 
   factory :grade do 
     association :assignment
     association :course

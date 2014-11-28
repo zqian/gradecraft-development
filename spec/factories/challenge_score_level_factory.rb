@@ -1,4 +1,4 @@
-FactoryGirl do 
+FactoryGirl.define do 
   factory :challenge_score_level do 
     association :challenge 
     name 'Unbeleivable'
