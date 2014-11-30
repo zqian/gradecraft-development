@@ -45,6 +45,7 @@
                     %th{"data-dynatable-sorts" => "dueDate", :scope => "col", :width => "20%"} Due
                     %th{:style => "display: none"} Due Date
                     %th{:scope => "col", :width => "10%"}  Max Value
+                    %th Rubric?
                     %th
                 %tbody
                   - assignments.each do |assignment|
@@ -68,6 +69,7 @@
                         - if assignment.due_at.present?
                           = assignment.try(:due_at).to_formatted_s(:db)
                       %td= assignment.point_total
+                      %td= "Yes" if assignment.has_rubric?
                       %td
                         .button-bar
                           %ul.button-group.right.radius

@@ -5,7 +5,7 @@ class AssignmentsController < ApplicationController
   def index
     redirect_to syllabus_path if current_user_is_student?
     @title = "#{term_for :assignments}"
-    @assignments = current_course.assignments.chronological.alphabetical
+    @assignments = current_course.assignments.includes(:rubric).chronological.alphabetical
   end
 
   #Gives the instructor the chance to quickly check all assignment settings for the whole course
@@ -16,8 +16,12 @@ class AssignmentsController < ApplicationController
 
   def show
     @assignment = current_course.assignments.find(params[:id])
+    @assignment_type = @assignment.assignment_type
     @title = @assignment.name
     @groups = @assignment.groups
+
+    # Returns a hash of grades given for the assignment in format of {student_id: grade}
+    @assignment_grades_by_student_id = current_course_data.assignment_grades(@assignment)
     
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
     if @team
