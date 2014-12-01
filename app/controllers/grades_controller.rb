@@ -48,16 +48,18 @@ class GradesController < ApplicationController
   end
 
   def submit_rubric
-    @grade = current_student_data.grade_for_assignment(@assignment)
-    @submission = Submission.where(assignment_id: @assignment[:id], student_id: params[:student_id]).first
-    
-    @submission.update_attributes(graded: true) if @submission.present?
+    if @submission = Submission.where(current_assignment_and_student_ids).first
+      @submission.update_attributes(graded: true)
+    end
 
-    @grade.update_attributes(raw_score: params[:points_given], submission_id: @submission[:id], point_total: params[:points_possible], status: "Graded")
+    if @grade = Grade.where(assignment_id: @assignment[:id], student_id: params[:student_id]).first
+      @grade.update_attributes grade_attributes_from_rubric
+    else
+      Grade.create new_grade_from_rubric_grades_attributes
+    end
 
     create_rubric_grades # create an individual record for each rubric grade
-    # create_earned_metric_badges # create an individual record for each rubric grade
-    create_earned_tier_badges # create an individual record for each rubric grade
+    create_earned_tier_badges # create_earned_tier_badges 
 
     GradeUpdater.perform_async([@grade.id])
 
@@ -359,6 +361,31 @@ class GradesController < ApplicationController
 
   private
 
+  def new_grade_from_rubric_grades_attributes
+    { 
+      course_id: current_course[:id],
+      assignment_type_id: @assignment.assignment_type_id
+    }
+      .merge!(current_assignment_and_student_ids)
+      .merge!(grade_attributes_from_rubric)
+  end
+
+  def current_assignment_and_student_ids
+    {
+      assignment_id: @assignment[:id],
+      student_id: params[:student_id]
+    }
+  end
+
+  def grade_attributes_from_rubric
+    {
+      raw_score: params[:points_given],
+      submission_id: submission_id,
+      point_total: params[:points_possible],
+      status: "Graded"
+    }
+  end
+
   def create_rubric_grades
     params[:rubric_grades].each do |rubric_grade|
       RubricGrade.create({
@@ -369,9 +396,11 @@ class GradesController < ApplicationController
         tier_description: rubric_grade["tier_description"],
         points: rubric_grade["points"],
         order: rubric_grade["order"],
-        submission_id: @submission[:id],
+        submission_id: submission_id,
         metric_id: rubric_grade["metric_id"],
-        tier_id: rubric_grade["tier_id"]
+        tier_id: rubric_grade["tier_id"],
+        assignment_id: @assignment[:id],
+        student_id: params[:student_id]
       })
     end
   end
@@ -380,9 +409,10 @@ class GradesController < ApplicationController
     params[:metric_badges].each do |metric_badge|
       EarnedBadge.create({
         badge_id: metric_badge["badge_id"],
-        submission_id: @submission[:id],
+        submission_id: submission_id,
         course_id: current_course[:id],
-        student_id: current_student[:id]
+        student_id: current_student[:id],
+        assignment_id: @assignment[:id]
       })
     end
   end
@@ -391,11 +421,16 @@ class GradesController < ApplicationController
     params[:tier_badges].each do |tier_badge|
       EarnedBadge.create({
         badge_id: tier_badge["badge_id"],
-        submission_id: @submission[:id],
+        submission_id: submission_id,
         course_id: current_course[:id],
-        student_id: current_student[:id]
+        student_id: current_student[:id],
+        assignment_id: @assignment[:id]
       })
     end
+  end
+
+  def submission_id
+    @submission[:id] rescue nil
   end
 
   def serialized_course_badges
