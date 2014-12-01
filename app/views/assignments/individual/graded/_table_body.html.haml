@@ -1,5 +1,5 @@
 - @students.each do |student|
-  - grade = @assignment_grades_by_student_id[student.id] || 
+  - grade = @assignment_grades_by_student_id[student.id] || Grade.new
 
   %tr
     %td= link_to student.first_name, student_path(student)
