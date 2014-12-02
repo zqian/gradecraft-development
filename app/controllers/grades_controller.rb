@@ -81,6 +81,7 @@ class GradesController < ApplicationController
       @grade.status = "Graded"
       respond_to do |format|
         if @grade.save
+          GradeUpdater.perform_async([@grade.id])
           format.html { redirect_to syllabus_path, notice: 'Nice job! Thanks for logging your grade!' }
         else
           format.html { redirect_to syllabus_path, notice: "We're sorry, this grade could not be added." }
@@ -118,8 +119,8 @@ class GradesController < ApplicationController
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
     user_search_options = {}
     user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
-    @students = current_course.students_being_graded.alphabetical.includes(:teams).where(user_search_options)
-    @auditors = current_course.students_auditing.alphabetical.includes(:teams).where(user_search_options)
+    @students = current_course.students_being_graded.includes(:teams).where(user_search_options)
+    @auditors = current_course.students_auditing.includes(:teams).where(user_search_options)
     
     student_ids = @students.pluck(:id)
     auditor_ids = @auditors.pluck(:id)
@@ -140,6 +141,9 @@ class GradesController < ApplicationController
         @auditor_grades << Grade.create(:student => student, :assignment => @assignment, :graded_by_id => current_user)
       end
     end
+
+    @grades.sort_by! { |grade| grade.student.last_name }
+    @auditor_grades.sort_by! { |grade| grade.student.last_name }
 
   end
 
@@ -251,6 +255,7 @@ class GradesController < ApplicationController
                 grade.raw_score = row[3].to_i
                 grade.feedback = row[4]
                 grade.status = "Graded"
+                grade.save!
                 grade_ids << grade.id
               end
             end
@@ -294,6 +299,7 @@ class GradesController < ApplicationController
                 grade.raw_score = row[3].to_i
                 grade.feedback = row[4]
                 grade.status = "Graded"
+                grade.save!
                 grade_ids << grade.id
               end
             end
@@ -337,6 +343,7 @@ class GradesController < ApplicationController
                 grade.raw_score = row[5].to_i
                 #grade.feedback = row[4]
                 grade.status = "Graded"
+                grade.save!
                 grade_ids << grade.id
               end
             end
