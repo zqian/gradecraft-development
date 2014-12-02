@@ -1,5 +1,5 @@
 class EarnedBadge < ActiveRecord::Base
-  attr_accessible :score, :feedback, :student, :badge, :student_id, :badge_id, :submission_id, :course_id
+  attr_accessible :score, :feedback, :student, :badge, :student_id, :badge_id, :submission_id, :course_id, :assignment_id
 
   belongs_to :course
   belongs_to :badge
