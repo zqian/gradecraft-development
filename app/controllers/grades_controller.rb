@@ -251,6 +251,7 @@ class GradesController < ApplicationController
                 grade.raw_score = row[3].to_i
                 grade.feedback = row[4]
                 grade.status = "Graded"
+                grade.reload
                 grade_ids << grade.id
               end
             end
