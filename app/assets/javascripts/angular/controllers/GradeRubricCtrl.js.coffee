@@ -208,7 +208,6 @@
   TierBadgePrototype = (tier, badge, attrs={})->
     this.tier = tier
     this.badge = badge
-    this.create()
     this.name = badge.name
     this.tier_id = tier.id
     this.badge_id = badge.id
@@ -216,25 +215,6 @@
     this.point_total = badge.point_total
     this.icon = badge.icon
     this.multiple = badge.multiple
-
-  TierBadgePrototype.prototype =
-    create: ()->
-      self = this
-
-      $http.post("/tier_badges", self.createParams()).success(
-        (data,status)->
-          self.id = data.existing_tier_badge.id
-      )
-      .error((err)->
-        alert("create failed!")
-        return false
-      )
-
-    createParams: ()->
-      tier_id: this.tier.id,
-      badge_id: this.badge.id
-
-
 
   MetricPrototype = (attrs={})->
     this.tiers = []
