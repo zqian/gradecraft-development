@@ -295,6 +295,7 @@ class GradesController < ApplicationController
                 grade.raw_score = row[3].to_i
                 grade.feedback = row[4]
                 grade.status = "Graded"
+                grade.save!
                 grade_ids << grade.id
               end
             end
@@ -338,6 +339,7 @@ class GradesController < ApplicationController
                 grade.raw_score = row[5].to_i
                 #grade.feedback = row[4]
                 grade.status = "Graded"
+                grade.save!
                 grade_ids << grade.id
               end
             end
