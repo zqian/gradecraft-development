@@ -119,8 +119,8 @@ class GradesController < ApplicationController
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
     user_search_options = {}
     user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
-    @students = current_course.students_being_graded.alphabetical.includes(:teams).where(user_search_options)
-    @auditors = current_course.students_auditing.alphabetical.includes(:teams).where(user_search_options)
+    @students = current_course.students_being_graded.includes(:teams).where(user_search_options)
+    @auditors = current_course.students_auditing.includes(:teams).where(user_search_options)
     
     student_ids = @students.pluck(:id)
     auditor_ids = @auditors.pluck(:id)
@@ -128,8 +128,8 @@ class GradesController < ApplicationController
     @grades = Grade.where(:student_id => student_ids,:assignment_id=> @assignment.id ).includes(:student,:assignment)
     @auditor_grades = Grade.where(:student_id => auditor_ids,:assignment_id=> @assignment.id ).includes(:student,:assignment)
 
-    no_grade_students = @students.where(id: student_ids - @grades.pluck(:student_id)).sort_by! {|student| student.last_name }
-    no_grade_auditors =  @students.where(id:auditor_ids - @grades.pluck(:student_id)).sort_by! {|student| student.last_name }
+    no_grade_students = @students.where(id: student_ids - @grades.pluck(:student_id))
+    no_grade_auditors =  @students.where(id:auditor_ids - @grades.pluck(:student_id))
 
     if no_grade_students.present?
       no_grade_students.each do |student|
@@ -141,6 +141,9 @@ class GradesController < ApplicationController
         @auditor_grades << Grade.create(:student => student, :assignment => @assignment, :graded_by_id => current_user)
       end
     end
+
+    @grades.sort_by! { |grade| grade.student.last_name }
+    @auditor_grades.sort_by! { |grade| student.last_name }
 
   end
 
