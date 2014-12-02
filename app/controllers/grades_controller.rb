@@ -57,8 +57,16 @@ class GradesController < ApplicationController
       Grade.create new_grade_from_rubric_grades_attributes
     end
 
+    # need to destroy existing rubric grades?
     create_rubric_grades # create an individual record for each rubric grade
+    # need to destroy existing tier badges?
     create_earned_tier_badges # create_earned_tier_badges 
+
+    # need to create an array of tier_ids
+    # get tier_badges for those ids
+    # delete previous earned badges associated with the grade
+    # (need to create grade_id on EarnedBadge)
+    # create new rubric_grades for that
 
     GradeUpdater.perform_async([@grade.id])
 

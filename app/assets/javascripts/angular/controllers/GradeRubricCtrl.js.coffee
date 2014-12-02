@@ -53,6 +53,18 @@
     $scope.tiersSelected = tiers
     tiers
 
+
+  $scope.selectedTierIds = []
+  # count how many tiers have been selected in the UI
+  $scope.selectedTierIds = ()->
+    tierIds = []
+    angular.forEach($scope.metrics, (metric, index)->
+      if metric.selectedTier
+        tierIds.push metric.selectedTier.id
+    )
+    $scope.selectedTierIds = tierIds
+    tierIds
+
   # count how many points have been given from those tiers
   $scope.pointsGiven = ()->
     points = 0
@@ -134,7 +146,8 @@
       points_possible: $scope.pointsPossible,
       rubric_grades: $scope.gradedMetricsParams(),
       metric_badges: $scope.metricBadgesParams(),
-      tier_badges: $scope.tierBadgesParams()
+      tier_badges: $scope.tierBadgesParams(),
+      tier_ids: $scope.selectedTierIds()
     }
 
   $scope.submitGrade = ()->
