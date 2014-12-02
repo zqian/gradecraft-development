@@ -143,7 +143,7 @@ class GradesController < ApplicationController
     end
 
     @grades.sort_by! { |grade| grade.student.last_name }
-    @auditor_grades.sort_by! { |grade| student.last_name }
+    @auditor_grades.sort_by! { |grade| grade.student.last_name }
 
   end
 
