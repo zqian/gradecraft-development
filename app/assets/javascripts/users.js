@@ -1,8 +1,20 @@
 !function(app, $) {
   $(document).ready(function() {
     var users = window.autocompleteUsers;
-    $('.search-query').omniselect({
-      source: users,
+    var searchQuery = $('.search-query');
+    searchQuery.omniselect({
+      source: function(request, response) {
+        return $.ajax({
+          url: $('.search-query').data('autocompleteurl'),
+          dataType: "json",
+          data: {
+            name: request
+          },
+          success: function(data) {
+            return response(data);
+          }
+        });
+      },
       resultsClass: 'typeahead dropdown-menu',
       activeClass: 'active',
       itemLabel: function(user) {

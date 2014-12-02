@@ -63,6 +63,17 @@ class StudentsController < ApplicationController
     end
   end
 
+  # AJAX endpoint for student name search
+  def autocomplete_student_name
+    return [] unless current_user_is_staff?
+    search_params = params[:name] || ""
+    students = current_course.students_being_graded.where("username like ?", "%#{search_params.downcase}%")        
+    students.map! do |u|
+      { :name => [u.first_name, u.last_name].join(' '), :id => u.id }
+    end
+    render json: students
+  end
+
   # Displaying the course grading scheme and professor's grading philosophy
   def course_progress
     @grade_scheme_elements = current_course.grade_scheme_elements
