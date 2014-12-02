@@ -127,8 +127,8 @@ class GradesController < ApplicationController
     @grades = Grade.where(:student_id => student_ids,:assignment_id=> @assignment.id ).includes(:student,:assignment)
     @auditor_grades = Grade.where(:student_id => auditor_ids,:assignment_id=> @assignment.id ).includes(:student,:assignment)
 
-    no_grade_students = @students.where(id: student_ids - @grades.pluck(:student_id))
-    no_grade_auditors =  @students.where(id:auditor_ids - @grades.pluck(:student_id))
+    no_grade_students = @students.where(id: student_ids - @grades.pluck(:student_id)).sort_by! {|student| student.last_name }
+    no_grade_auditors =  @students.where(id:auditor_ids - @grades.pluck(:student_id)).sort_by! {|student| student.last_name }
 
     if no_grade_students.present?
       no_grade_students.each do |student|
