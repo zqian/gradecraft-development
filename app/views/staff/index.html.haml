@@ -15,19 +15,18 @@
           %th #{term_for :team}
           %th.button-column
       %tbody
-        - current_course.users.each do |user|
-          - if user.is_staff?(current_course)
-            %tr
-              %td= link_to user.first_name, staff_path(user)
-              %td= link_to user.last_name, staff_path(user)
-              %td= user.role(current_course).capitalize
-              %td
-                %ul
-                  - user.team_leaderships.each do |leadership|
-                    %li= link_to leadership.team.try(:name), leadership.team
-              %td
-                .button-bar
-                  %ul.button-group.right.radius
-                    %li= link_to 'Dashboard', staff_path(user), {:class => 'button'}
-                    %li= link_to 'Edit', edit_user_path(user), {:class => 'button'}
-                    %li= link_to 'Delete', user, :class => 'button', :data => { confirm: 'Are you sure?'}, :method => :delete
+        - @staff.each do |user|
+          %tr
+            %td= link_to user.first_name, staff_path(user)
+            %td= link_to user.last_name, staff_path(user)
+            %td= user.role(current_course).capitalize
+            %td
+              %ul
+                - user.team_leaderships.each do |leadership|
+                  %li= link_to leadership.team.try(:name), leadership.team
+            %td
+              .button-bar
+                %ul.button-group.right.radius
+                  %li= link_to 'Dashboard', staff_path(user), {:class => 'button'}
+                  %li= link_to 'Edit', edit_user_path(user), {:class => 'button'}
+                  %li= link_to 'Delete', user, :class => 'button', :data => { confirm: 'Are you sure?'}, :method => :delete
