@@ -3,8 +3,6 @@
   %li.has-form.hide-for-medium{:role => "search"}
     .row.collapse
       .large-8.small-9.columns
-        / :javascript
-        /   window.autocompleteUsers = #{autocomplete_items.to_json};
         %label.sr-only{:for => "search-input"}
           Search #{term_for :students}
         %input.search-query#search-input{ 'data-autocompleteUrl' => autocomplete_student_name_students_path, :type => "text", :placeholder => "Search #{term_for :students}", :label => false }
