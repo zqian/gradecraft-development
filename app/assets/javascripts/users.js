@@ -1,6 +1,5 @@
 !function(app, $) {
   $(document).ready(function() {
-    var users;
     $.ajax({
       url: $('.search-query').data('autocompleteurl'),
       dataType: "json",
