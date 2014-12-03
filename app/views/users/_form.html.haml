@@ -12,7 +12,7 @@
     .small-12.medium-4.columns
       = f.label :username
       = f.text_field :username
-    
+
     .small-12.medium-4.columns
       = f.label :email
       = f.text_field :email, :input_html => { :class => "small-12 medium-4 columns"}
@@ -60,6 +60,10 @@
           .small-12.medium-4.columns
             = p.label :role, "Select Role"
             = p.select :role, [["Student", "student"],["GSI", "gsi"],["Professor", "professor"],["Admin", "admin"]]
+        - elsif current_user_is_professor?
+          .small-12.medium-4.columns
+            = p.label :role, "Select Role"
+            = p.select :role, [["Student", "student"],["GSI", "gsi"],["Professor", "professor"]]
         - if @user.is_student?(current_course)
           .small-12.medium-4.columns
             .small-12

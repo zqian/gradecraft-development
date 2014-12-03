@@ -30,9 +30,9 @@ module CurrentScopes
     current_user.is_student?(current_course)
   end
 
-  def current_user_is_prof?
+  def current_user_is_professor?
     return unless current_user && current_course
-    current_user.is_prof?(current_course)
+    current_user.is_professor?(current_course)
   end
 
   def current_student
