@@ -256,10 +256,11 @@ GradeCraft::Application.routes.draw do
     get :badges
     get :predictor
     get :course_progress
-    get :teams
-    collection do
+    get :teams    
+    collection do      
       get :leaderboard
       get :choices
+      get :autocomplete_student_name
       get :scores_for_current_course
       get :scores_by_assignment
       get :scores_by_team

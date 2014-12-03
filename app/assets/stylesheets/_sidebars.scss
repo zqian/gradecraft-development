@@ -44,9 +44,10 @@
 .has-form ul.dropdown-menu li {
   color: #333;
   padding: 0 0.5rem;
+  min-width: 10rem;
 }
 
-.has-form ul.dropdown-menu li.active a {
+.has-form ul.dropdown-menu li.active a, .has-form ul.dropdown-menu li.active {
   background-color: $primary-color-2 !important;
   color: #FFF !important;
 }
