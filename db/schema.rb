@@ -392,6 +392,9 @@ ActiveRecord::Schema.define(version: 20150105140818) do
     t.datetime "updated_at"
     t.boolean  "shared"
     t.integer  "assignment_id"
+    t.integer  "rubric_grade_id"
+    t.integer  "metric_id"
+    t.integer  "tier_id"
   end
 
   create_table "elements", force: true do |t|

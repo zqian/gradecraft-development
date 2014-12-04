@@ -14,6 +14,13 @@ class RubricGrade < ActiveRecord::Base
   validates :order, presence: true
   validates :tier_name, presence: true
   validates :points, presence: true
-  validates :submission_id, presence: true
-  validates :submission_id, uniqueness: { scope: :metric_id }
+  validates :student_id, presence: true
+  validate :submission_or_assignment_present
+
+  private
+    def submission_or_assignment_present
+      if submission_id.present? or assignment_id.present?
+        errors.add(:base, "Rubric Grade requires either an assignment id or a submission id.")
+      end
+    end
 end

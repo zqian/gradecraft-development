@@ -57,9 +57,10 @@ class GradesController < ApplicationController
       Grade.create new_grade_from_rubric_grades_attributes
     end
 
-    # need to destroy existing rubric grades?
+    destroy_existing_rubric_grades # destroy rubric grades where assignment_id and student_id match
     create_rubric_grades # create an individual record for each rubric grade
-    # need to destroy existing tier badges?
+
+    destroy_existing_earned_badges_for_rubric_grades # destroy earned_badges where assignment_id and student_id match
     create_earned_tier_badges # create_earned_tier_badges 
 
     # need to create an array of tier_ids
@@ -399,34 +400,24 @@ class GradesController < ApplicationController
   end
 
   def create_rubric_grades
-    params[:rubric_grades].each do |rubric_grade|
-      RubricGrade.create({
-        metric_name: rubric_grade["metric_name"],
-        metric_description: rubric_grade["metric_description"],
-        max_points: rubric_grade["max_points"],
-        tier_name: rubric_grade["tier_name"],
-        tier_description: rubric_grade["tier_description"],
-        points: rubric_grade["points"],
-        order: rubric_grade["order"],
-        submission_id: submission_id,
-        metric_id: rubric_grade["metric_id"],
-        tier_id: rubric_grade["tier_id"],
-        assignment_id: @assignment[:id],
-        student_id: params[:student_id]
-      })
-    end
-  end
-
-  def create_earned_metric_badges
-    params[:metric_badges].each do |metric_badge|
-      EarnedBadge.create({
-        badge_id: metric_badge["badge_id"],
-        submission_id: submission_id,
-        course_id: current_course[:id],
-        student_id: current_student[:id],
-        assignment_id: @assignment[:id]
-      })
-    end
+    RubricGrade.create(
+      params[:rubric_grades].collect do |rubric_grade|
+        {
+          metric_name: rubric_grade["metric_name"],
+          metric_description: rubric_grade["metric_description"],
+          max_points: rubric_grade["max_points"],
+          tier_name: rubric_grade["tier_name"],
+          tier_description: rubric_grade["tier_description"],
+          points: rubric_grade["points"],
+          order: rubric_grade["order"],
+          submission_id: submission_id,
+          metric_id: rubric_grade["metric_id"],
+          tier_id: rubric_grade["tier_id"],
+          assignment_id: @assignment[:id],
+          student_id: params[:student_id]
+        }
+      end
+    )
   end
 
   def create_earned_tier_badges
@@ -436,7 +427,9 @@ class GradesController < ApplicationController
         submission_id: submission_id,
         course_id: current_course[:id],
         student_id: current_student[:id],
-        assignment_id: @assignment[:id]
+        assignment_id: @assignment[:id],
+        tier_id: tier_badge[:tier_id],
+        metric_id: tier_badge[:metric_id]
       })
     end
   end
