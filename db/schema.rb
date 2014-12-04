@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141201125314) do
+ActiveRecord::Schema.define(version: 20141204154717) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -384,6 +384,9 @@ ActiveRecord::Schema.define(version: 20141201125314) do
     t.datetime "updated_at"
     t.boolean  "shared"
     t.integer  "assignment_id"
+    t.integer  "rubric_grade_id"
+    t.integer  "metric_id"
+    t.integer  "tier_id"
   end
 
   create_table "elements", force: true do |t|

@@ -127,6 +127,7 @@
           params.push {
             name: badge.name,
             tier_id: tier.id,
+            metric_id: tier.metric_id,
             badge_id: badge.badge.id,
             description: badge.description,
             point_total: badge.point_total,
