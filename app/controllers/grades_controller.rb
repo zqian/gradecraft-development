@@ -60,7 +60,7 @@ class GradesController < ApplicationController
     destroy_existing_rubric_grades # destroy rubric grades where assignment_id and student_id match
     create_rubric_grades # create an individual record for each rubric grade
 
-    destroy_existing_earned_badges_for_rubric_grades # destroy earned_badges where assignment_id and student_id match
+    destroy_existing_earned_badges_for_metrics # destroy earned_badges where assignment_id and student_id match
     create_earned_tier_badges # create_earned_tier_badges 
 
     # need to create an array of tier_ids
@@ -74,6 +74,15 @@ class GradesController < ApplicationController
     render status: 200, json: {}
   end
 
+  private
+  def destroy_existing_rubric_grades
+    RubricGrade.where(assignment_id: params[:assignment_id])
+  end
+
+  def destroy_existing_earned_badges_for_metrics
+  end
+
+  public
   def destroy
     redirect_to @assignment and return unless current_student.present?
     @grade = current_student_data.grade_for_assignment(@assignment)
