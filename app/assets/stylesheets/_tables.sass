@@ -22,7 +22,10 @@ table.responsive
 
   .button
     font-size: .8rem
-    padding: .4rem
+    background-color: $secondary-color-2
+
+  .button:hover, .button:focus
+    background-color: darken($secondary-color-2, 15%)
 
   /* Table Header styles */
   th
@@ -38,6 +41,9 @@ table.responsive
     border-top-left-radius: $global-radius
     border-bottom-left-radius: $global-radius
     padding: .3rem
+  
+  button.select-all.button.tiny:hover, button.select-none.button.tiny:hover,button.select-all.button.tiny:focus, button.select-none.button.tiny:focus
+    background-color: $secondary-color-2
 
   button.select-none.button.tiny
     margin: 0 !important
