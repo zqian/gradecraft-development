@@ -11,6 +11,13 @@ class Course < ActiveRecord::Base
     end
   end
 
+  # Staff returns all professors and GSI for the course.
+  # Note that this is different from is_staff? which currently
+  # includes Admin users
+  def staff
+    User.with_role_in_course("staff", self)
+  end
+
   def students_being_graded
     User.students_being_graded(self)
   end
@@ -220,7 +227,7 @@ class Course < ActiveRecord::Base
   def average_course_score
     CourseMembership.where(:course => self, :auditing => false, :role => "student").average('score').to_i
   end
-  
+
   def student_count
     students.count
   end

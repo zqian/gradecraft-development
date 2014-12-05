@@ -11,7 +11,11 @@ class User < ActiveRecord::Base
 
   class << self
     def with_role_in_course(role, course)
-      user_ids = CourseMembership.where(course: course, role: role).pluck(:user_id)
+      if role == "staff"
+        user_ids = CourseMembership.where('course_id=? AND (role=? OR role=?)', course, 'professor', 'gsi').pluck(:user_id)
+      else
+        user_ids = CourseMembership.where(course: course, role: role).pluck(:user_id)
+      end
       User.where(id: user_ids)
     end
 
@@ -205,6 +209,8 @@ class User < ActiveRecord::Base
     end
   end
 
+  # TODO redefine staff as professors and gsi only.
+  # We want to create admin with comprehensive access.
   def is_staff?(course)
     is_professor?(course) || is_gsi?(course) || is_admin?(course)
   end
@@ -478,7 +484,7 @@ class User < ActiveRecord::Base
     #   grade_levels << { :from => [gse.low_range], :to => [gse.high_range], :borderColor => '#DDD', :borderWidth => 1, :label => { :text => "#{ gse.level} / #{gse.letter}" , textAlign: 'left', y: 95, :rotation => -45 } }
     # end
 
-      
+
     return {
       :student_name => name,
       :scores => scores,
