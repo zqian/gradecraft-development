@@ -69,7 +69,7 @@
   # ids of all the metrics in the rubric
   $scope.allMetricIds = ()->
     metricIds = []
-    angular.forEach($scope.existingMetrics, (metric, index)->
+    angular.forEach($scope.metrics, (metric, index)->
       metricIds.push metric.id
     )
     $scope.allMetricIds = metricIds
