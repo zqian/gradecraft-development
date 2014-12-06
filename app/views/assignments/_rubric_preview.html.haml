@@ -42,6 +42,6 @@
 
               - if tier.rubric_grades.size > 0
                 .students-padding
-                .graded-students= "#{tier.rubric_grades.size} students (#{'%.0f' % ((tier.rubric_grades.size/@graded_count).to_f * 100)}%) at this level"
+                .graded-students= "#{tier.rubric_grades.size} students (#{'%.0f' % tier_percent_of_total_graded(tier) * 100}%) at this level"
           - if metric.tiers.size < @rubric.max_tier_count
             %td.filler(colspan="#{@rubric.max_tier_count - metric.tiers.size}")

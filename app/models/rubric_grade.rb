@@ -22,12 +22,7 @@ class RubricGrade < ActiveRecord::Base
 
   private
 
-    def create_earned_badges
-    end
-
     def submission_or_assignment_present
-      if submission_id.present? or assignment_id.present?
-        errors.add(:base, "Rubric Grade requires either an assignment id or a submission id.")
-      end
+      submission_id.present? or assignment_id.present?
     end
 end

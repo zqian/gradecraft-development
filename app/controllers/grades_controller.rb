@@ -51,16 +51,17 @@ class GradesController < ApplicationController
       @submission.update_attributes(graded: true)
     end
 
-    if @grade = Grade.where(assignment_id: @assignment[:id], student_id: params[:student_id]).first
+    @grade = Grade.where(assignment_id: @assignment[:id], student_id: params[:student_id]).first
+    if @grade
       @grade.update_attributes grade_attributes_from_rubric
     else
-      Grade.create new_grade_from_rubric_grades_attributes
+      @grade = Grade.create(new_grade_from_rubric_grades_attributes)
     end
 
-    destroy_existing_rubric_grades # destroy rubric grades where assignment_id and student_id match
+    destroy_existing_rubric_grades if rubric_grades_exist? # destroy rubric grades where assignment_id and student_id match
     create_rubric_grades # create an individual record for each rubric grade
 
-    destroy_existing_earned_badges_for_metrics # destroy earned_badges where assignment_id and student_id match
+    destroy_existing_earned_badges_for_metrics if earned_badges_exist? # destroy earned_badges where assignment_id and student_id match
     create_earned_tier_badges # create_earned_tier_badges 
 
     # need to create an array of tier_ids
@@ -75,12 +76,75 @@ class GradesController < ApplicationController
   end
 
   private
+  def rubric_grades_exist?
+    RubricGrade.where(assignment_student_metric_params).count > 0
+  end
+
+  def earned_badges_exist?
+    EarnedBadge.where(assignment_student_metric_params).count > 0
+  end
+
   def destroy_existing_rubric_grades
-    RubricGrade.where(assignment_id: params[:assignment_id])
+    RubricGrade.where(assignment_student_metric_params).destroy_all
   end
 
   def destroy_existing_earned_badges_for_metrics
+    EarnedBadge.where(assignment_student_metric_params).destroy_all
   end
+
+  def assignment_student_metric_params
+    { assignment_id: params[:assignment_id], student_id: params[:student_id], metric_id: params[:metric_ids] }
+  end
+
+  def create_rubric_grades
+    RubricGrade.create(
+      params[:rubric_grades].collect do |rubric_grade|
+        {
+          metric_name: rubric_grade["metric_name"],
+          metric_description: rubric_grade["metric_description"],
+          max_points: rubric_grade["max_points"],
+          tier_name: rubric_grade["tier_name"],
+          tier_description: rubric_grade["tier_description"],
+          points: rubric_grade["points"],
+          order: rubric_grade["order"],
+          submission_id: submission_id,
+          metric_id: rubric_grade["metric_id"],
+          tier_id: rubric_grade["tier_id"],
+          assignment_id: @assignment[:id],
+          student_id: params[:student_id]
+        }
+      end
+    )
+  end
+
+  def create_earned_tier_badges
+    EarnedBadge.create(
+      params[:tier_badges].collect do |tier_badge|
+        {
+          badge_id: tier_badge["badge_id"],
+          submission_id: submission_id,
+          course_id: current_course[:id],
+          student_id: current_student[:id],
+          assignment_id: @assignment[:id],
+          tier_id: tier_badge[:tier_id],
+          metric_id: tier_badge[:metric_id]
+        }
+      end
+    )
+  end
+
+  def submission_id
+    @submission[:id] rescue nil
+  end
+
+  def serialized_course_badges
+    ActiveModel::ArraySerializer.new(course_badges, each_serializer: CourseBadgeSerializer).to_json
+  end
+
+  def course_badges
+    @course_badges ||= @assignment.course.badges.visible
+  end
+
 
   public
   def destroy
@@ -408,53 +472,6 @@ class GradesController < ApplicationController
     }
   end
 
-  def create_rubric_grades
-    RubricGrade.create(
-      params[:rubric_grades].collect do |rubric_grade|
-        {
-          metric_name: rubric_grade["metric_name"],
-          metric_description: rubric_grade["metric_description"],
-          max_points: rubric_grade["max_points"],
-          tier_name: rubric_grade["tier_name"],
-          tier_description: rubric_grade["tier_description"],
-          points: rubric_grade["points"],
-          order: rubric_grade["order"],
-          submission_id: submission_id,
-          metric_id: rubric_grade["metric_id"],
-          tier_id: rubric_grade["tier_id"],
-          assignment_id: @assignment[:id],
-          student_id: params[:student_id]
-        }
-      end
-    )
-  end
-
-  def create_earned_tier_badges
-    params[:tier_badges].each do |tier_badge|
-      EarnedBadge.create({
-        badge_id: tier_badge["badge_id"],
-        submission_id: submission_id,
-        course_id: current_course[:id],
-        student_id: current_student[:id],
-        assignment_id: @assignment[:id],
-        tier_id: tier_badge[:tier_id],
-        metric_id: tier_badge[:metric_id]
-      })
-    end
-  end
-
-  def submission_id
-    @submission[:id] rescue nil
-  end
-
-  def serialized_course_badges
-    ActiveModel::ArraySerializer.new(course_badges, each_serializer: CourseBadgeSerializer).to_json
-  end
-
-  def course_badges
-    @course_badges ||= @assignment.course.badges.visible
-  end
-
   def existing_metrics_as_json
     ActiveModel::ArraySerializer.new(rubric_metrics_with_tiers, each_serializer: ExistingMetricSerializer).to_json
   end
@@ -464,7 +481,6 @@ class GradesController < ApplicationController
   end
 
   def set_assignment
-    @assignment = current_course.assignments.find(params[:assignment_id]) if params[:assignment_id]
+    @assignment = Assignment.find(params[:assignment_id]) if params[:assignment_id]
   end
-
 end
