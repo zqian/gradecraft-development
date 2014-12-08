@@ -7,7 +7,6 @@
   }
 
   var addElement = function() {
-    console.log('Add');
     var $elements = $('fieldset.element');
     var template = $('#element-template').html().replace(/child_index/g, $elements.length);
     $('fieldset.elements').append(template);
