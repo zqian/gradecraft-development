@@ -257,25 +257,53 @@ class Course < ActiveRecord::Base
       assignment_names << "First Name"
       assignment_names << "Last Name"
       assignment_names << "Email"
-      course.assignments.chronological.alphabetical.each do |a|
+      assignment_names << "Username"
+      assignment_names << "Team"
+      course.assignments.sort_by { |assignment| assignment.created_at }.each do |a|
         assignment_names << a.name
       end
       csv << assignment_names
       course.students.each do |student|
         student_data = []
-        student_data << [student.first_name, student.last_name, student.email, student.team_for_course(course).try(:name)]
-
+        student_data << student.first_name 
+        student_data << student.last_name
+        student_data << student.email
+        student_data << student.username
+        student_data << student.team_for_course(course).try(:name)
+        course.assignments.sort_by { |assignment| assignment.created_at }.each do |a|
+          student_data << a.grade_for_student(student).try(:raw_score)
+        end 
         csv << student_data
       end
     end
   end
 
-  #raw points gradebook spreadsheet export for course - used in the event of multipliers
-  def raw_points_gradebook_for_course(course, options = {})
-    CSV.generate(options) do |csv|
-      csv << ["First Name", "Last Name", "Email", "Score", "Grade" ]
+  #gradebook spreadsheet export for course
+  def multiplied_gradebook_for_course(course)
+    CSV.generate do |csv|
+      assignment_names = []
+      assignment_names << "First Name"
+      assignment_names << "Last Name"
+      assignment_names << "Email"
+      assignment_names << "Username"
+      assignment_names << "Team"
+      course.assignments.sort_by { |assignment| assignment.created_at }.each do |a|
+        assignment_names << a.name
+        assignment_names << a.name
+      end
+      csv << assignment_names
       course.students.each do |student|
-        csv << [student.first_name, student.last_name, student.email, student.cached_score_for_course(course), student.grade_letter_for_course(course)]
+        student_data = []
+        student_data << student.first_name 
+        student_data << student.last_name
+        student_data << student.email
+        student_data << student.username
+        student_data << student.team_for_course(course).try(:name)
+        course.assignments.sort_by { |assignment| assignment.created_at }.each do |a|
+          student_data << a.grade_for_student(student).try(:raw_score)
+          student_data << a.grade_for_student(student).try(:score)
+        end 
+        csv << student_data
       end
     end
   end

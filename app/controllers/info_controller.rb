@@ -55,11 +55,11 @@ class InfoController < ApplicationController
   end
 
   #grade index export
-  def raw_points_gradebook
+  def multiplied_gradebook
     @title = "Gradebook"
     respond_to do |format|
-      format.csv { send_data current_course.raw_points_gradebook_for_course(current_course) }
-      format.xls { send_data current_course.raw_points_gradebook_for_course(current_course).to_csv(col_sep: "\t") }
+      format.csv { send_data current_course.multiplied_gradebook_for_course(current_course) }
+      format.xls { send_data current_course.multiplied_gradebook_for_course(current_course).to_csv(col_sep: "\t") }
     end
   end
 
