@@ -11,7 +11,7 @@
           = f.simple_fields_for :grade_scheme_elements, GradeSchemeElement.new, child_index: 'child_index' do |ef|
             = render 'element_fields', f: ef
 
-      .elements.panel
+      %fieldset.elements.panel
         - @grade_scheme_elements.order_by_high_range.each do |element|
           %fieldset.element
             %legend.sr-only #{element.letter} #{element.level}
