@@ -71,10 +71,7 @@
       = link_to "Final Grades", final_grades_path(format: 'csv')
     %li
       %i.fi-book
-      - if current_course.student_weighted?
-        %a{:href => multiplied_gradebook_path(format: 'csv') } Full Gradebook
-      - else
-        %a{:href => gradebook_path(format: 'csv') } Full Gradebook
+      %a{:href => gradebook_path(format: 'csv') } Full Gradebook
 
   %hr
 

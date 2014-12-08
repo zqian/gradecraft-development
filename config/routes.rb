@@ -177,7 +177,6 @@ GradeCraft::Application.routes.draw do
   get 'earned_badges' => 'info#class_badges'
   get 'grading_status' => 'info#grading_status'
   get 'gradebook' => 'info#gradebook'
-  get 'multiplied_gradebook' => 'info#multiplied_gradebook'
   get 'final_grades' => 'info#final_grades'
   get 'research_gradebook' => 'info#research_gradebook'
 
