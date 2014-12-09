@@ -45,22 +45,9 @@ class InfoController < ApplicationController
 
   #grade index export
   def gradebook
-    @title = "Gradebook"
-    respond_to do |format|
-      format.html
-      format.json { render json: current_course.assignments }
-      format.csv { send_data current_course.gradebook_for_course(current_course) }
-      format.xls { send_data current_course.gradebook_for_course(current_course).to_csv(col_sep: "\t") }
-    end
-  end
-
-  #grade index export
-  def raw_points_gradebook
-    @title = "Gradebook"
-    respond_to do |format|
-      format.csv { send_data current_course.raw_points_gradebook_for_course(current_course) }
-      format.xls { send_data current_course.raw_points_gradebook_for_course(current_course).to_csv(col_sep: "\t") }
-    end
+    GradebookExporter.perform_async(current_user.id, current_course.id)
+    flash[:notice]="Your request to export the gradebook for \"#{current_course.name}\" is currently being processed. We will email you the data shortly."
+    redirect_to courses_path
   end
 
   def final_grades
