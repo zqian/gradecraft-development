@@ -3,7 +3,8 @@
   $scope.metrics = []
   $scope.gradedMetrics = []
   $scope.courseBadges = {}
-  $scope.rubricGrades = {} # index in hash with metric_id as key
+  # index in hash with metric_id as key
+  $scope.rubricGrades = {}
 
   $scope.pointsPossible = 0
   $scope.pointsGiven = 0
@@ -251,7 +252,10 @@
     this.comments = ""
     this.id = if attrs.id then attrs.id else null
     this.rubricGrade = $scope.rubricGrades[this.id]
-    this.rubricGradeTierId = this.rubricGrade ? this.rubricGrade.tier_id : null
+    if this.rubricGrade is not null
+      this.rubricGradeTierId = this.rubricGrade.tier_id
+    else
+      this.rubricGradeTierId = null
     this.addTiers(attrs["tiers"]) if attrs["tiers"] #add tiers if passed on init
     this.name = if attrs.name then attrs.name else ""
     this.rubricId = if attrs.rubric_id then attrs.rubric_id else $scope.rubricId
@@ -262,7 +266,7 @@
       self = this
       newTier = new TierPrototype(self, attrs)
       self.tiers.push newTier
-      if rubricGrade and self.rubricGradeTierId == newTier.id
+      if self.rubricGrade and self.rubricGradeTierId == newTier.id
         self.selectedTier = newTier
     addTiers: (tiers)->
       self = this
