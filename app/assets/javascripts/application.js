@@ -31,7 +31,6 @@
 //= require_tree ./angular
 
 //= require bootstrap-datetimepicker
-//= require jquery.dynatable
 //= require gradecraft
 //= require preload_store
 //= require users

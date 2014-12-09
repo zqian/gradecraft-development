@@ -7,18 +7,18 @@
 
     = simple_form_for @course, method: :put, :url => mass_edit_grade_scheme_elements_path(:course_id => @course) do |f|
       %script(id="element-template" type="text/x-template")
-        %fieldset.element
+        %fieldset.elements
           = f.simple_fields_for :grade_scheme_elements, GradeSchemeElement.new, child_index: 'child_index' do |ef|
             = render 'element_fields', f: ef
 
-      .elements.panel
+      %fieldset.elements.panel
         - @grade_scheme_elements.order_by_high_range.each do |element|
           %fieldset.element
             %legend.sr-only #{element.letter} #{element.level}
             = f.simple_fields_for :grade_scheme_elements, element do |ef|
               = render 'element_fields', f: ef
 
-        = link_to 'Add a Level', '#', class: 'add-element button alert radius'
+        = link_to 'Add a Level', '#', class: 'add-element button radius'
 
       .button-bar
         %ul.button-group.radius.right
