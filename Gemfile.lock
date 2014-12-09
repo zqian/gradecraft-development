@@ -43,6 +43,8 @@ GEM
       activesupport (= 4.0.3)
       arel (~> 4.0.0)
     activerecord-deprecated_finders (1.0.3)
+    activerecord-import (0.6.0)
+      activerecord (>= 3.0)
     activerecord-session_store (0.1.0)
       actionpack (>= 4.0.0, < 5)
       activerecord (>= 4.0.0, < 5)
@@ -360,6 +362,7 @@ DEPENDENCIES
   actionpack-action_caching
   actionpack-page_caching
   active_model_serializers
+  activerecord-import
   activerecord-session_store
   acts_as_list
   addressable
