@@ -7,11 +7,12 @@
   $scope.pointsPossible = 0
   $scope.pointsGiven = 0
 
-  $scope.init = (rubricId, metrics, assignmentId, studentId, courseBadges)->
+  $scope.init = (rubricId, metrics, assignmentId, studentId, rubricGrades, courseBadges)->
     $scope.rubricId = rubricId
     $scope.assignmentId = assignmentId
     $scope.studentId = studentId
     $scope.addCourseBadges(courseBadges)
+    $scope.addRubricGrades(rubric_grades)
     $scope.addMetrics(metrics)
 
   # distill key/value pairs for metric ids and relative order
@@ -170,6 +171,20 @@
       )
       .error(
       )
+
+  # Rubric Grades
+  RubricGradePrototype = (attrs={})->
+    this.id = attrs.id
+    this.metric_id = attrs.metric_id
+    this.tier_id = attrs.tier_id
+
+  RubricGradePrototype.prototype = {}
+
+  $scope.addRubricGrades = (rubricGrades)->
+    angular.forEach(rubricGrades, (rg, index)->
+      rubricGrade = new RubricGradePrototype(rg)
+      $scope.rubricGrades[rg.id] = rubricGrade
+    )
 
   # Badge Section
   CourseBadgePrototype = (attrs={})->

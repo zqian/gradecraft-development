@@ -25,10 +25,31 @@ class GradesController < ApplicationController
     @grade = current_student_data.grade_for_assignment(@assignment)
     @title = "Editing #{current_student.name}'s Grade for #{@assignment.name}"
     @rubric = @assignment.rubric
+    @rubric_grades = serialized_rubric_grades
     @metrics = existing_metrics_as_json if @rubric
     @course_badges = serialized_course_badges
     @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
   end
+
+  private
+
+  def serialized_rubric_grades
+    ActiveModel::ArraySerializer.new(fetch_rubric_grades, each_serializer: ExistingRubricGradesSerializer).to_json
+  end
+
+  def fetch_rubric_grades
+    RubricGrade.where(fetch_rubric_grades_params)
+  end
+
+  def fetch_rubric_grades_params
+    { student_id: params[:student_id], assignment_id: params[:assignment_id], metric_id: existing_metric_ids }
+  end
+
+  def existing_metric_ids
+    rubric_metrics_with_tiers.collect {|metric| metric[:id] }
+  end
+
+  public
 
   def update
     redirect_to @assignment and return unless current_student.present?
@@ -145,7 +166,6 @@ class GradesController < ApplicationController
     @course_badges ||= @assignment.course.badges.visible
   end
 
-
   public
   def destroy
     redirect_to @assignment and return unless current_student.present?
@@ -230,11 +250,8 @@ class GradesController < ApplicationController
   end
 
   def mass_update
-
     @assignment = current_course.assignments.find(params[:id])
-    
     if @assignment.update_attributes(params[:assignment])
-
       GradeUpdater.perform_async(params[:assignment].find_all_values_for(:id))
 
       if !params[:team_id].blank?
@@ -242,11 +259,9 @@ class GradesController < ApplicationController
       else
         respond_with @assignment
       end
-
     else
       redirect_to mass_grade_assignment_path(id: @assignment.id,team_id:params[:team_id]),  notice: "Oops! There was an error while saving the grades!"
     end
-
   end
 
   # Grading an assignment for a whole group
@@ -477,7 +492,7 @@ class GradesController < ApplicationController
   end
 
   def rubric_metrics_with_tiers
-    @rubric.metrics.order(:order).includes(:tiers)
+    @rubric_metrics_with_tiers ||= @rubric.metrics.order(:order).includes(:tiers)
   end
 
   def set_assignment
