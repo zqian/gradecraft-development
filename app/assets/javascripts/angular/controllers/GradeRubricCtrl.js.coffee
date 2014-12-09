@@ -3,8 +3,7 @@
   $scope.metrics = []
   $scope.gradedMetrics = []
   $scope.courseBadges = {}
-  # index in hash with metric_id as key
-  $scope.rubricGrades = {}
+  $scope.rubricGrades = {} # index in hash with metric_id as key
 
   $scope.pointsPossible = 0
   $scope.pointsGiven = 0
@@ -185,7 +184,7 @@
   $scope.addRubricGrades = (rubricGrades)->
     angular.forEach(rubricGrades, (rg, index)->
       rubricGrade = new RubricGradePrototype(rg)
-      $scope.rubricGrades[metric.id] = rubricGrade
+      $scope.rubricGrades[rg.metric_id] = rubricGrade
     )
 
   # Badge Section
@@ -252,7 +251,7 @@
     this.comments = ""
     this.id = if attrs.id then attrs.id else null
     this.rubricGrade = $scope.rubricGrades[this.id]
-    if this.rubricGrade is not null
+    if this.rubricGrade
       this.rubricGradeTierId = this.rubricGrade.tier_id
     else
       this.rubricGradeTierId = null
@@ -266,7 +265,7 @@
       self = this
       newTier = new TierPrototype(self, attrs)
       self.tiers.push newTier
-      if self.rubricGrade and self.rubricGradeTierId == newTier.id
+      if self.rubricGradeTierId == newTier.id
         self.selectedTier = newTier
     addTiers: (tiers)->
       self = this
