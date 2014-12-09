@@ -3,6 +3,7 @@
   $scope.metrics = []
   $scope.gradedMetrics = []
   $scope.courseBadges = {}
+  $scope.rubricGrades = {} # index in hash with metric_id as key
 
   $scope.pointsPossible = 0
   $scope.pointsGiven = 0
@@ -11,8 +12,8 @@
     $scope.rubricId = rubricId
     $scope.assignmentId = assignmentId
     $scope.studentId = studentId
+    $scope.addRubricGrades(rubricGrades)
     $scope.addCourseBadges(courseBadges)
-    $scope.addRubricGrades(rubric_grades)
     $scope.addMetrics(metrics)
 
   # distill key/value pairs for metric ids and relative order
@@ -183,7 +184,7 @@
   $scope.addRubricGrades = (rubricGrades)->
     angular.forEach(rubricGrades, (rg, index)->
       rubricGrade = new RubricGradePrototype(rg)
-      $scope.rubricGrades[rg.id] = rubricGrade
+      $scope.rubricGrades[metric.id] = rubricGrade
     )
 
   # Badge Section
@@ -245,23 +246,24 @@
 
   MetricPrototype = (attrs={})->
     this.tiers = []
+    this.selectedTier = null
+    this.hasChanges = false
+    this.comments = ""
     this.id = if attrs.id then attrs.id else null
+    this.rubricGrade = $scope.rubricGrades[this.id]
+    this.rubricGradeTierId = this.rubricGrade ? this.rubricGrade.tier_id : null
     this.addTiers(attrs["tiers"]) if attrs["tiers"] #add tiers if passed on init
-    # this.badges = {}
-    # this.availableBadges = angular.copy($scope.courseBadges)
-    # this.loadMetricBadges(attrs["metric_badges"]) if attrs["metric_badges"] #add badges if passed on init
     this.name = if attrs.name then attrs.name else ""
     this.rubricId = if attrs.rubric_id then attrs.rubric_id else $scope.rubricId
     this.max_points = if attrs.max_points then attrs.max_points else null
     this.description = if attrs.description then attrs.description else ""
-    this.hasChanges = false
-    this.selectedTier = null
-    this.comments = ""
   MetricPrototype.prototype =
     addTier: (attrs={})->
       self = this
       newTier = new TierPrototype(self, attrs)
-      this.tiers.push newTier
+      self.tiers.push newTier
+      if rubricGrade and self.rubricGradeTierId == newTier.id
+        self.selectedTier = newTier
     addTiers: (tiers)->
       self = this
       angular.forEach(tiers, (tier,index)->
