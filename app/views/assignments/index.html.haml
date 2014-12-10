@@ -16,7 +16,7 @@
   .small-12.columns
     
     .assignments
-      = @assignment_type.each do |assignment_type|
+      - @assignment_type.each do |assignment_type|
         .assignment_type{:id => "assignment-type-#{assignment_type.id}" }
           %h3.collapse.medium-8
             #{assignment_type.name} – [#{assignment_type.position}] #{points assignment_type.max_value} points
@@ -40,7 +40,8 @@
                     %th{:scope => "col", :width => "10%"}  Max Value
                     %th
                 %tbody
-                  - assignments.each do |assignment|
+                  - @assignments.each do |assignment|
+                    - next unless assignment.assignment_type == assignment_type
                     %tr
                       %td= link_to assignment.name, assignment
                       // If an attendance assignment has past and students could earn points for the class,
