@@ -28,22 +28,6 @@ $(".select-none").click(function(e){
 
 });
 
-// Initializing collapse plugin
-// with custom show/hide methods,
-// persistence plugin and accordion behaviour
-$(".assignment_type").collapse({
-  show: function() {
-    // The context of 'this' is applied to
-    // the collapsed details in a jQuery wrapper 
-    this.slideDown(100);
-  },
-  hide: function() {
-    this.slideUp(100);
-  },
-  accordion: true,
-  persist: true
-});
-
 $(".assignmentType").collapse({
   show: function() {
     // The context of 'this' is applied to

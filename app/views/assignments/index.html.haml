@@ -16,10 +16,10 @@
   .small-12.columns
     
     .assignments
-      - @assignments.group_by(&:assignment_type).each do |assignment_type, assignments|
+      = @assignment_type.each do |assignment_type|
         .assignment_type{:id => "assignment-type-#{assignment_type.id}" }
           %h3.collapse.medium-8
-            = "#{assignment_type.name} – #{points assignment_type.max_value} points"
+            #{assignment_type.name} – [#{assignment_type.position}] #{points assignment_type.max_value} points
           .collapse-hidden
             .small-12.medium-3.right.hide-for-small
               .button-bar.aindex

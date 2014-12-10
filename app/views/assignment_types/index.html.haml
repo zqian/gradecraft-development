@@ -25,7 +25,7 @@
             %span.sr-only Actions
         %tbody
           - current_course.assignment_types.each do |assignment_type|
-            %tr
+            %term_for
               %td= link_to assignment_type.name, assignment_type
               %td= assignment_type.points_predictor_display
               %td= points assignment_type.max_value

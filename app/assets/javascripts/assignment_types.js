@@ -42,7 +42,7 @@
       $link.prev('input.destroy').val(true);
       $link.closest('fieldset.challenge-score-level').hide();
       return false;
-    })
+    });
 
     $form.on('click', '.add-proposal', function(e) {
       var $wrapper = $('.proposals');
@@ -56,7 +56,37 @@
       $link.prev('input.destroy').val(true);
       $link.closest('fieldset.proposal').hide();
       return false;
-    })
+    });
+  
+    // persistence plugin and accordion behaviour
+    $(".assignment_type").collapse({
+      show: function() {
+        // The context of 'this' is applied to
+        // the collapsed details in a jQuery wrapper 
+        this.slideDown(100);
+      },
+      hide: function() {
+        this.slideUp(100);
+      },
+      accordion: true,
+      persist: true
+    });
+
+    $('.assignments').sortable({  
+      update: function(){
+        var temp = $('.assignments').sortable('serialize');
+        //debugger;
+        $.ajax({
+          url: '/assignment_types/sort',
+          type: 'post',
+          data: temp,
+          dataType: 'script',
+          complete: function(request){
+            //$('#books').effect('highlight');
+          }
+        });
+      }
+    });
   };
   $(init);
 }(jQuery);
