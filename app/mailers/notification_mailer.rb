@@ -113,7 +113,7 @@ class NotificationMailer < ActionMailer::Base
   def grade_export(course,user,csv_data)
     @user = user
     @course = course
-    attachments["#{course.id}.csv"] = {:mime_type => 'tex/csv',:content => csv_data }
+    attachments["#{course.id}.csv"] = {:mime_type => 'text/csv',:content => csv_data }
     mail(:to =>  @user.email, :bcc=>"admin@gradecraft.com", :subject => "#{course.name} grade export is attached") do |format|
       format.text
       format.html
@@ -123,7 +123,7 @@ class NotificationMailer < ActionMailer::Base
   def gradebook_export(course,user,csv_data)
     @user = user
     @course = course
-    attachments["#{course.id}.csv"] = {:mime_type => 'tex/csv',:content => csv_data }
+    attachments["#{course.id}.csv"] = {:mime_type => 'text/csv',:content => csv_data }
     mail(:to =>  @user.email, :bcc=>"admin@gradecraft.com", :subject => "#{course.name} grade export is attached") do |format|
       format.text
       format.html
