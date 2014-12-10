@@ -65,6 +65,7 @@ class GradesController < ApplicationController
     @grade.update_attributes params[:grade].merge(instructor_modified: true)
 
     GradeUpdater.perform_async([@grade.id]) if @grade.graded_or_released?
+    #GradeUpdater.perform_async([@grade.id])if @grade.graded_or_released?
 
     if session[:return_to].present?
       redirect_to session[:return_to]
@@ -192,7 +193,7 @@ class GradesController < ApplicationController
       @grade.status = "Graded"
       respond_to do |format|
         if @grade.save
-          GradeUpdater.perform_async([@grade.id])
+          aGradeUpdater.perform_async([@grade.id])
           format.html { redirect_to syllabus_path, notice: 'Nice job! Thanks for logging your grade!' }
         else
           format.html { redirect_to syllabus_path, notice: "We're sorry, this grade could not be added." }
@@ -260,7 +261,8 @@ class GradesController < ApplicationController
   def mass_update
     @assignment = current_course.assignments.find(params[:id])
     if @assignment.update_attributes(params[:assignment])
-      GradeUpdater.perform_async(params[:assignment].find_all_values_for(:id))
+
+      #GradeUpdater.perform_async(params[:assignment].find_all_values_for(:id))
 
       if !params[:team_id].blank?
         redirect_to assignment_path(@assignment, :team_id => params[:team_id])
@@ -297,7 +299,7 @@ class GradesController < ApplicationController
       grade_ids << grade.id
     end
 
-    GradeUpdater.perform_async(grade_ids)
+    #GradeUpdater.perform_async(grade_ids)
 
     respond_with @assignment
   end
@@ -318,7 +320,7 @@ class GradesController < ApplicationController
       grade_ids << grade.id
     end
 
-    GradeUpdater.perform_async(grade_ids)
+    #GradeUpdater.perform_async(grade_ids)
 
     flash[:notice] = "Updated Grades!"
     redirect_to assignment_path(@assignment)
@@ -371,7 +373,7 @@ class GradesController < ApplicationController
         end
       end
 
-    GradeUpdater.perform_async(grade_ids)
+    #GradeUpdater.perform_async(grade_ids)
 
     redirect_to assignment_path(@assignment), :notice => "Upload successful"
     end
@@ -419,7 +421,7 @@ class GradesController < ApplicationController
         end
       end
     
-      GradeUpdater.perform_async(grade_ids)
+      #GradeUpdater.perform_async(grade_ids)
 
       redirect_to assignment_path(@assignment), :notice => "Upload successful"
     end
@@ -467,7 +469,7 @@ class GradesController < ApplicationController
         end
       end
       
-      GradeUpdater.perform_async(grade_ids)
+      #GradeUpdater.perform_async(grade_ids)
 
       redirect_to assignment_path(@assignment), :notice => "Upload successful"
     end

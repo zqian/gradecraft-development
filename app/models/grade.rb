@@ -37,7 +37,7 @@ class Grade < ActiveRecord::Base
 
   before_save :clean_html
   #TODO: removed these callback check with cait
-  #after_save :save_student, :save_team
+  after_save :update_scores
   #after_destroy :save_student, :save_team
   #TODO: called only destroy callback since worker is executing cache_student_and_team_scores
   after_destroy :cache_student_and_team_scores
@@ -179,6 +179,10 @@ class Grade < ActiveRecord::Base
     self.assignment_type_id ||= assignment.try(:assignment_type_id)
     self.course_id ||= assignment.try(:course_id)
     self.team_id ||= student.team_for_course(course).try(:id)
+  end
+
+  def update_scores
+     GradeUpdater.perform_async([self.id])
   end
 
 end
