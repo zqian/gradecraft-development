@@ -72,8 +72,13 @@
       persist: true
     });
 
-    $('.assignments').sortable({  
+    $('.assignments').sortable({
+      start: function()  {
+        $('.assignments').find('h3.collapse a').css('float', 'none');
+        //debugger;
+      },
       update: function(){
+        $('.assignments').find('h3.collapse a').css('float', 'left');
         var temp = $('.assignments').sortable('serialize');
         //debugger;
         $.ajax({
