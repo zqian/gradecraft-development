@@ -73,17 +73,13 @@
     });
 
     $('.assignments').sortable({
-      start: function()  {
-        $('.assignments').find('h3.collapse a').css('float', 'none');
-      },
       update: function(){
         $.ajax({
           url: '/assignment_types/sort',
           type: 'post',
           data: $('.assignments').sortable('serialize'),
           dataType: 'script',
-          complete: function(request){
-            $('.assignments').find('h3.collapse a').css('float', 'left');
+          complete: function(){
           }
         });
       }
