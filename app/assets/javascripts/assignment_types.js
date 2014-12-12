@@ -75,19 +75,15 @@
     $('.assignments').sortable({
       start: function()  {
         $('.assignments').find('h3.collapse a').css('float', 'none');
-        //debugger;
       },
       update: function(){
-        $('.assignments').find('h3.collapse a').css('float', 'left');
-        var temp = $('.assignments').sortable('serialize');
-        //debugger;
         $.ajax({
           url: '/assignment_types/sort',
           type: 'post',
-          data: temp,
+          data: $('.assignments').sortable('serialize'),
           dataType: 'script',
           complete: function(request){
-            //$('#books').effect('highlight');
+            $('.assignments').find('h3.collapse a').css('float', 'left');
           }
         });
       }
