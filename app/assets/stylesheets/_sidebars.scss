@@ -6,7 +6,9 @@
   border-radius: $global-radius;
   
   /* Subheadings */
-  label{
+  h5 {
+    margin-left: 1rem;
+    font-weight: bold;
     text-transform: uppercase;
   }
 
