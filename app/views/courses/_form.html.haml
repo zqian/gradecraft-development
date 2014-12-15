@@ -1,4 +1,4 @@
-- if @course.errors.any? 
+- if @course.errors.any?
   .alert-box.alert.radius
     .italic= "#{pluralize(@course.errors.count, "error")} prohibited this course from being saved:"
     %ul
@@ -6,7 +6,7 @@
         %li= msg
 
 = simple_form_for(@course, :validate => false)  do |f|
- 
+
   .small-12.large-4.columns.right.columns-no-padding_right
     .panel.callout.radius
       %h4.uppercase SETTINGS
@@ -33,7 +33,7 @@
           = f.label :team_challenges, "Section Assignments"
           = f.check_box :team_challenges, {"aria-describedby" => "txtSections"}
           .form_label{:id => "txtSections"}  Will you have section assignments in your course?
-      
+
       .small-12
         %label.checkbox{ :for => "badge_setting" }
           = f.label :badge_setting, "Badges"
@@ -132,7 +132,7 @@
       .small-12.large-5.columns
         = f.label :name, "Course Title"
         = f.text_field :name
-      
+
       .small-12.large-2.columns
         = f.label :courseno, "Course Number"
         = f.text_field :courseno, {"aria-describedby" => "txtCourseNo"}
@@ -150,16 +150,24 @@
       .small-12.large-2.columns
         = f.label :year
         = f.select :year, (Date.today.year - 3)..(Date.today.year + 2)
-    
+
       .small-12.large-5.columns
         = f.label :point_total, "Maximum Number of Points"
         = f.number_field :point_total, {"aria-describedby" => "txtMaxPoints"}
         .form_label{:id => "txtMaxPoints"} If you leave this blank, GradeCraft will calculate the total number of points based on the assignments you create.
 
+    .row
+      .small-12.large-6.columns
+        = f.input :start_date, as: :string, :include_blank => true, :input_html => { :class => 'datetimepicker', :value => @course.try(:start_date) }
+
+      .small-12.large-6.columns
+        = f.input :end_date, as: :string, :include_blank => true, :input_html => { :class => 'datetimepicker', :value => @course.try(:end_date) }
+
+
     .small-12.large-2.columns
       = f.label :min_group_size, "Min Group Size"
       = f.number_field :min_group_size
-    
+
     .small-12.large-2.columns
       = f.label :max_group_size, "Max Group Size"
       = f.number_field :max_group_size
@@ -175,7 +183,7 @@
 
   .panel
     %h4 MULTIPLIERS
-    %span.has-tip{:title => "Multipliers allow students to 'boost' their grades on specific assignment types. You decide how many multipliers students can allocate, then the students select which assignment types will get a boost (through their dashboard) and those assignment type's points are multiplied by the number of multipliers that the student allocates.", :data => {'tooltip' => true} } 
+    %span.has-tip{:title => "Multipliers allow students to 'boost' their grades on specific assignment types. You decide how many multipliers students can allocate, then the students select which assignment types will get a boost (through their dashboard) and those assignment type's points are multiplied by the number of multipliers that the student allocates.", :data => {'tooltip' => true} }
 
     %hr
     .row-100
@@ -218,7 +226,7 @@
         = f.label :user_term, "User Term"
         = f.text_field :user_term, {"aria-describedby" => "txtUserTerm"}
         .form_label{:id => "txtUserTerm"} What will you call your user? Student, Learner, Player..."
-      
+
       .small-12.large-4.columns
         = f.label :assignment_term, "Assignment Term"
         = f.text_field :assignment_term, {"aria-describedby" => "txtAssignmentTerm"}
@@ -251,7 +259,7 @@
         = f.label :badge_term, "Badge Term"
         = f.text_field :badge_term, {"aria-describedby" => "txtBadgeTerm"}
         .form_label{:id => "txtBadgeTerm"} Would you like to call badges something else?
-  
+
 
   .button-bar
     %ul.button-group.radius.right
