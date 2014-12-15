@@ -12,6 +12,13 @@ namespace :analytics do
 
   desc "Populate FnordMetric with events to simulate user activity"
   task :populate => :environment do
+
+    if ENV['COURSE'] and Course.exists?(ENV['COURSE'])
+      current_course = Course.find(ENV['COURSE'])
+    else
+      raise("No course provided. Please add COURSE=ID to the rake task")
+    end
+
     user_count = User.count
     events = [].tap do |e|
       e << :login
@@ -37,7 +44,7 @@ namespace :analytics do
                    pages = %w(/ /dashboard /users/predictor)
                    {:page => pages.sample}
                  when :login
-                   last_login_at = Random.rand(100).hours.ago
+                   last_login_at = Random.rand(1000).hours.ago
                    {:last_login_at => last_login_at}
                  when :predictor
                    if course
@@ -62,6 +69,8 @@ namespace :analytics do
 
           attributes = {course_id: course.id, user_id: user.id, user_role: user.role(current_course)}
           EventLogger.perform_async(event, attributes.merge(data)) if data
+          puts "logging event: #{event}"
+          puts "     attributes: #{attributes.merge(data)}" if data
           sleep(rand)
         end
       end
