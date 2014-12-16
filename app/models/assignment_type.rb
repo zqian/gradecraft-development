@@ -1,6 +1,7 @@
 class AssignmentType < ActiveRecord::Base
   acts_as_list scope: :course
   default_scope :order => 'position ASC'
+  
   attr_accessible :due_date_present, :levels, :max_value, :name,
     :percentage_course, :point_setting, :points_predictor_display,
     :predictor_description, :resubmission, :universal_point_value, :order_placement, 

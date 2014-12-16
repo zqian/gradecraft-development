@@ -69,6 +69,7 @@ class AssignmentTypesController < ApplicationController
   end
 
   def sort
+    logger.debug "////// #{params}" 
     params[:"assignment-type"].each_with_index do |id, index|
       AssignmentType.update_all({position: index+1}, {id: id})
     end

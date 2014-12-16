@@ -1,7 +1,13 @@
 class Badge < ActiveRecord::Base
-   attr_accessible :name, :description, :icon, :icon_cache, :visible, :can_earn_multiple_times, 
-    :value, :multiplier, :point_total, :earned_badges, :earned_badges_attributes, :score, :badge_file_ids, :badge_files_attributes, :badge_file
 
+  attr_accessible :name, :description, :icon, :icon_cache, :visible, :can_earn_multiple_times, :value, 
+  :multiplier, :point_total, :earned_badges, :earned_badges_attributes, :score, :badge_file_ids, 
+  :badge_files_attributes, :badge_file
+
+
+  acts_as_list scope: :course
+  default_scope :order => 'position ASC'
+  
   mount_uploader :icon, BadgeIconUploader
 
   has_many :earned_badges, :dependent => :destroy

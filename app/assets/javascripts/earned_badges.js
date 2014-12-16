@@ -4,4 +4,18 @@ $(document).ready(function() {
     $destroy = $input.parent().children('input.destroy');
     $destroy.val(!$input.is(':checked'));
   });
+
+  $('tbody').sortable({
+	update: function (){
+	  $.ajax({
+        url: '/badges/sort',
+	    type: 'post',
+	    data: $('tbody').sortable('serialize'),
+	    dataType: 'script',
+	    complete: function(){}
+	  });
+	}  	
+  });
 });
+
+

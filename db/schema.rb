@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141210185501) do
+ActiveRecord::Schema.define(version: 20141216185002) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -179,6 +179,7 @@ ActiveRecord::Schema.define(version: 20141210185501) do
     t.boolean  "visible",                 default: true
     t.boolean  "can_earn_multiple_times", default: true
     t.text     "email_description"
+    t.integer  "position"
   end
 
   create_table "bootsy_image_galleries", force: true do |t|

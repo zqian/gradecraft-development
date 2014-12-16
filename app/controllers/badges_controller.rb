@@ -75,6 +75,13 @@ class BadgesController < ApplicationController
     end
   end
 
+  def sort
+    params[:"badge"].each_with_index do |id, index|
+      Badge.update_all({position: index+1}, {id: id})
+    end
+    render nothing: true
+  end
+
   def destroy
     @badge = current_course.badges.find(params[:id])
     @name = @badge.name
