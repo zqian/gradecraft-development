@@ -144,9 +144,9 @@
                       %span.not_bold= label_tag(asl.name)
                       %br
                   - elsif assignment.grade_checkboxes?
-                    = check_box_tag 'score'
+                    = check_box_tag 'score', '', false, :disabled => true
                   - else
-                    = text_field_tag 'score'
+                    = text_field_tag 'score', '', :disabled => true
                 %td= points assignment.point_total
                 %td
                   %ul

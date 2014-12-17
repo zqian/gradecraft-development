@@ -16,14 +16,14 @@
       .panel
         %h4 SETTINGS
         .small-12
-          %label.checkbox{ :for => "visible" }
+          %label.checkbox 
             = f.label :visible, "Visible to students"
             %i.fi-eye
             = f.check_box :visible
             .form_label Can #{term_for :students} see this #{term_for :assignment} in their dashboard?  
 
         .small-12
-          %label.checkbox{ :for => "required" }
+          %label.checkbox
             = f.label :required
             %i.fi-star
             = f.check_box :required
@@ -32,21 +32,21 @@
 
         - if current_course.accepts_submissions?
           .small-12
-            %label.checkbox{ :for => "accepts_submissions" }
+            %label.checkbox
               = f.label :accepts_submissions #{term_for :assignment} Submissions
               %i.fi-paperclip
               = f.check_box :accepts_submissions
               .form_label Will you be using GradeCraft to accept submissions for this #{term_for :assignment}?
 
         .small-12
-          %label.checkbox{ :for => "student_logged" }
+          %label.checkbox
             = f.label :student_logged
             %i.fi-pencil
             = f.check_box :student_logged
             .form_label Do students self-report their grade for this #{term_for :assignment}?
 
         .small-12
-          %label.checkbox{ :for => "release_necessary" }
+          %label.checkbox
             = f.label :release_necessary
             %i.fi-unlock
             = f.check_box :release_necessary
@@ -54,20 +54,20 @@
 
         - if @assignment.assignment_type.present? && ! @assignment.assignment_type.notify_released?
           .small-12
-            %label.checkbox{ :for => "notify_released" }
+            %label.checkbox
               = f.label :notify_released, "Notify by email?"
               %i.fi-mail
               = f.check_box :notify_released
               .form_label Do you want to notify students by email when a grade is awarded? If grade release is necessary, this email will not be sent out until the grade is officially released.
         .small-12
-          %label.checkbox{ :for => "include_in_timeline" }
+          %label.checkbox
             = f.label :include_in_timeline, "Timeline"
             %i.fi-layout
             = f.check_box :include_in_timeline
             .form_label Can #{term_for :students} see this #{term_for :assignment} in the course timeline? Note that #{term_for :assignments} without open or due dates will be excluded automatically.
 
         .small-12
-          %label.checkbox{ :for => "include_in_predictor" }
+          %label.checkbox
             = f.label :include_in_predictor, "Predictor"
             %i.fi-checkbox
             = f.check_box :include_in_predictor
@@ -115,15 +115,6 @@
         .small-12.large-8.columns
           = f.label :points_predictor_display, "How should this assignment appear in the Grade Predictor?"
           = f.select :points_predictor_display, [[], ["Checkbox", "Fixed"], ["Select List"], ["Slider"], ]
-
-      .clearfix
-
-      .small-12.large-4.columns
-        
-        = f.simple_fields_for :assignment_files, @assignment.assignment_files.new do |aff|
-          = aff.input :filepath, :input_html => { :class => 's3_files' }, :as => :hidden
-      
-      .clearfix
       
     .small-12.large-4.columns.right.columns-no-padding_right
 
@@ -148,13 +139,13 @@
           = f.label :media_caption, "Caption"
           = f.text_field :media_caption
     
-    .small-12.medium-8.textarea.panel
+    .small-12.medium-8.columns.textarea.panel
       %h4.uppercase Assignment Description
-      = f.bootsy_area :description
+      %label.small-12
+        .sr-only Description
+        = f.bootsy_area :description
       .form_label 
         %span This will be shown to students on their dashboard, and when they submit their assignment.
-
-    .clearfix
 
     .small-12.large-8.columns.panel
       %h4.uppercase Grade Levels
@@ -169,6 +160,9 @@
             = f.simple_fields_for :assignment_score_levels, assignment_score_level, class: 'form-inline' do |slf|
               = render 'assignment_score_level_fields', f: slf
       = link_to 'Add a Level', '#', class: 'add-assignment-score-level button radius'
+
+      = f.simple_fields_for :assignment_files, @assignment.assignment_files.new do |aff|
+        = aff.input :filepath, :input_html => { :class => 's3_files' }, :as => :hidden
 
     .clearfix
 

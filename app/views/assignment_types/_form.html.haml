@@ -14,32 +14,32 @@
         %h4.uppercase SETTINGS
       
         .small-12
-          %label.checkbox{ :for => "include_in_predictor" }
+          %label.checkbox
             = f.label :include_in_predictor, "Include in Grade Predictor"
             = f.check_box :include_in_predictor, {"aria-describedby" => "txtIncludeInGradePredictor"}
             .form_label{:id => "txtIncludeInGradePredictor"} Can #{term_for :students} see this #{term_for :assignment} in the grade predictor?
 
         .small-12
-          %label.checkbox{ :for => "include_in_timeline" }
+          %label.checkbox
             = f.label :include_in_timeline, "Include in Timeline"
             = f.check_box :include_in_timeline, {"aria-describedby" => "txtIncludeInTimeline"}
             .form_label{:id => "txtIncludeInTimeline"} Can #{term_for :students} see this #{term_for :assignment} in the course timeline? Note that #{term_for :assignments} without open or due dates will be excluded automatically.
 
         .small-12
-          %label.checkbox{ :for => "include_in_to_do" }
+          %label.checkbox
             = f.label :include_in_to_do, "Include in To Do List"
             = f.check_box :include_in_to_do, {"aria-describedby" => "txtIncludeInToDo"}
             .form_label{:id => "txtIncludeInToDo"} Can #{term_for :students} see this #{term_for :assignment} in the course to do list? Note that #{term_for :assignments} without due dates will be excluded automatically.
 
         .small-12
-          %label.checkbox{ :for => "student_weightable" }
+          %label.checkbox
             = f.label :student_weightable, "Student Weighted"
             = f.check_box :student_weightable, {"aria-describedby" => "txtStudentWeighted"}
             .form_label{:id => "txtStudentWeighted"} Do students decide how much this #{term_for :assignment} type will count towards their grade?
 
         .small-12
           / Does this assignment type have due dates? If not, they won't appear in the timeline but they will appear on the assignment list
-          %label.checkbox{ :for => "due_date_present" }
+          %label.checkbox
             = f.label :due_date_present, "Due Dates"
             = f.check_box :due_date_present, {"aria-describedby" => "txtDueDates"}
             .form_label{:id => "txtDueDates"} Will #{term_for :assignments} in this category have due dates?
@@ -98,7 +98,9 @@
 
     .small-12.medium-8.columns.textarea.panel
       %h4.uppercase Description
-      = f.bootsy_area :predictor_description
+      %label.small-12
+        .sr-only Description
+        = f.bootsy_area :predictor_description, :label => "Description"
       .form_label How would you like to describe this #{term_for :assignment} type on the student dashboard? Are there hints that you can give students that will help them understand how to succeed?
 
       .clearfix
