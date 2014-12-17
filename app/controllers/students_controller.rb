@@ -26,6 +26,7 @@ class StudentsController < ApplicationController
 
   #Displaying the list of assignments and team challenges for the semester
   def syllabus
+    @assignment_type = current_course.assignment_types
     @assignments = current_course.assignments.chronological.alphabetical
   end
 
@@ -54,6 +55,7 @@ class StudentsController < ApplicationController
   def show
     self.current_student = current_course.students.where(id: params[:id]).first
     @assignments = current_course.assignments.chronological.alphabetical
+    @assignment_type = current_course.assignment_types
     if current_user_is_staff?
       @scores_for_current_course = current_student.scores_for_course(current_course)
     end
