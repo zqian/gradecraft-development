@@ -1,4 +1,7 @@
 class Assignment < ActiveRecord::Base
+  acts_as_list scope: :course
+  default_scope :order => 'position ASC'
+  
   attr_accessible :name, :description, :point_total, :open_at, :due_at, :grade_scope, :visible, :required, 
     :accepts_submissions, :release_necessary, :media, :thumbnail, :media_credit, :media_caption, 
     :accepts_submissions_until, :points_predictor_display, :notify_released, :mass_grade_type, :assignment_type_id, :assignment_type,

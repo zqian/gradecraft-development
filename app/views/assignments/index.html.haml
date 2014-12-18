@@ -39,10 +39,10 @@
                     %th{:style => "display: none"} Due Date
                     %th{:scope => "col", :width => "10%"}  Max Value
                     %th
-                %tbody
+                %tbody.sort-assignments
                   - @assignments.each do |assignment|
                     - next unless assignment.assignment_type == assignment_type
-                    %tr
+                    %tr{:id => "assignment-#{assignment.id}"}
                       %td= link_to assignment.name, assignment
                       // If an attendance assignment has past and students could earn points for the class,
                       // display visual of attendance percentage. Otherwise display empty space.

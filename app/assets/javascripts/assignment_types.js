@@ -80,8 +80,20 @@
           type: 'post',
           data: $('.assignments').sortable('serialize'),
           dataType: 'script',
+          complete: function(){}
+        });
+      }
+    });
+
+    $('.sort-assignments').sortable({
+      update: function(event){
+        $.ajax({          
+          url: '/assignments/sort',
+          type: 'post',
+          data: $('.sort-assignments').sortable('serialize'),
+          dataType: 'script',
           complete: function(event){
-            //$('.assignments').sortable('option', 'items', '> .assignment_type');
+            //debugger;
           }
         });
       }

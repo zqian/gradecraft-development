@@ -53,6 +53,7 @@ GradeCraft::Application.routes.draw do
   #2. Assignments, Submissions, Tasks, Grades
   resources :assignments do
     collection do
+      post :sort
       get :feed
       get :settings
       post 'copy' => 'assignments#copy'

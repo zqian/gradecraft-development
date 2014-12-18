@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141216185002) do
+ActiveRecord::Schema.define(version: 20141218202040) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -143,6 +143,7 @@ ActiveRecord::Schema.define(version: 20141216185002) do
     t.boolean  "include_in_timeline",         default: true
     t.boolean  "include_in_predictor",        default: true
     t.boolean  "include_in_to_do",            default: true
+    t.integer  "position"
   end
 
   add_index "assignments", ["course_id"], name: "index_assignments_on_course_id", using: :btree
