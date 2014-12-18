@@ -5,7 +5,7 @@ $(document).ready(function() {
     $destroy.val(!$input.is(':checked'));
   });
 
-  $('tbody').sortable({
+  $('.sort-badges').sortable({
 	update: function (){
 	  $.ajax({
         url: '/badges/sort',
@@ -17,5 +17,5 @@ $(document).ready(function() {
 	}  	
   });
 });
-
+	
 

@@ -26,7 +26,7 @@
           %th Awarded
           %th Visible to Students
           %th.button-column
-      %tbody
+      %tbody.sort-badges
         - current_course.badges.each do |badge|
           %tr{:id => "badge-#{badge.id}"}
             %td.center

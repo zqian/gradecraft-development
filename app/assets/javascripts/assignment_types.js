@@ -73,13 +73,15 @@
     });
 
     $('.assignments').sortable({
-      update: function(){
-        $.ajax({
+      items: 'div.assignment_type',
+      update: function(event){
+        $.ajax({          
           url: '/assignment_types/sort',
           type: 'post',
           data: $('.assignments').sortable('serialize'),
           dataType: 'script',
-          complete: function(){
+          complete: function(event){
+            //$('.assignments').sortable('option', 'items', '> .assignment_type');
           }
         });
       }
