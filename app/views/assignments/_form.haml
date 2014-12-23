@@ -77,8 +77,7 @@
       %h4.uppercase Basic Info
       .small-12
         .small-12.large-8.columns
-          = f.label :assignment_type, "#{term_for :assignment} Type"
-          = select_tag :assignment_type_id, options_from_collection_for_select(current_course.assignment_types, "id", "name", @assignment.try(:assignment_type_id))
+          = f.input :assignment_type_id, :collection => current_course.assignment_types
 
       .small-12
 
