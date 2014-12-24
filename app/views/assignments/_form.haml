@@ -77,7 +77,7 @@
       %h4.uppercase Basic Info
       .small-12
         .small-12.large-8.columns
-          = f.input :assignment_type_id, :collection => current_course.assignment_types
+          = f.association :assignment_type, :collection => current_course.assignment_types
 
       .small-12
 
