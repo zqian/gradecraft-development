@@ -138,6 +138,7 @@
         .small-12
           = f.label :thumbnail
           = f.file_field :thumbnail
+          %img{:src => @assignment.thumbnail, :width => 40 }
 
         .small-12
           = f.label :media_credit, "Media Credit"
