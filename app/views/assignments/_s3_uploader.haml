@@ -19,4 +19,4 @@
             = link_to af.try(:filename), af.try(:url), :target => "_blank"
             = link_to "[Remove]", remove_uploads_path({ :model => "AssignmentFile", :assignment_id => @assignment.id, :upload_id => af.id } )
     - else
-      .s3_files
+      %ul#uploaded_files
