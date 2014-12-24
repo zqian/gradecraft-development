@@ -22,7 +22,7 @@
     %li.has-dropdown.show-for-small-up{:role => "navigation", "aria-labeledby" => "user-profile-navigation", "title" => "Navigation to user profile and log out"}
       %a
         - if current_user.avatar_file_name.present?
-          %img.img-rounded{:src => current_user.avatar_file_name, :size => 30} 
+          %img.img-rounded{:src => current_user.avatar_file_name, :width => 30, :height => 30} 
         = current_user.public_name
       %ul.dropdown
         %li= link_to "My Account", edit_profile_users_path
