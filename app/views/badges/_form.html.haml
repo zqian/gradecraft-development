@@ -28,6 +28,7 @@
       .small-12.medium-3.columns
         = f.label :file_field, "Icon"
         = f.file_field :icon
+        %img{:src => @badge.icon }
 
       .small-12.medium-3.columns
         %label.checkbox{ :for => "visible" }

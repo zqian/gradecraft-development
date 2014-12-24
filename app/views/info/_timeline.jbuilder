@@ -21,8 +21,8 @@ json.set! :timeline do
       json.headline event.name
       json.text event.description
       json.set! :asset do
-        json.thumbnail event.thumbnail
-        json.media event.media
+        json.media event.media_url if event.media
+        json.thumbnail event.thumbnail_url if event.thumbnail
         json.credit event.media_credit
         json.caption event.media_caption
       end

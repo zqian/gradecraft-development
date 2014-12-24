@@ -5,7 +5,8 @@
       = file_field_tag :file, :multiple => true
     .small-12.medium-8.columns
       .upload.s3_progress
-        Progress:
+        %div{:style => "float: left;"}
+          Progress:
         .progress
           .bar
       .clearfix
@@ -17,4 +18,5 @@
           %li
             = link_to af.try(:filename), af.try(:url), :target => "_blank"
             = link_to "[Remove]", remove_uploads_path({ :model => "AssignmentFile", :assignment_id => @assignment.id, :upload_id => af.id } )
-
+    - else
+      %ul#uploaded_files

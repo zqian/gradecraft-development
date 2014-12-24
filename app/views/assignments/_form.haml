@@ -131,12 +131,14 @@
         %h4.uppercase Timeline
           
         .small-12
-          = f.label :media, "Image/Video"
-          = f.text_field :media
+          = f.label :media, "Image"
+          = f.file_field :media
+          %img{:src => @assignment.media, :width => 40 }
 
         .small-12
           = f.label :thumbnail
-          = f.text_field :thumbnail
+          = f.file_field :thumbnail
+          %img{:src => @assignment.thumbnail, :width => 40 }
 
         .small-12
           = f.label :media_credit, "Media Credit"

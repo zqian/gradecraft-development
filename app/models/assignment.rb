@@ -7,6 +7,9 @@ class Assignment < ActiveRecord::Base
 
   belongs_to :course
   belongs_to :assignment_type, -> { order('order_placement ASC') }
+
+  mount_uploader :media, AssignmentMediaUploader
+  mount_uploader :thumbnail, AssignmentThumbnailUploader
   has_one :rubric
   delegate :mass_grade?, :student_weightable?, :to => :assignment_type
 
