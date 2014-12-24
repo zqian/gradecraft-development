@@ -4,17 +4,19 @@
   %h5.bold Attachments
   .s3_uploader
     = s3_uploader_form key: upload_url('submission_files', @assignment), acl: "private", max_file_size: 40.megabytes do
-      .small-12.medium-6.columns
+      .small-12.medium-3.columns
         = file_field_tag :file, :multiple => true
-      .small-12.medium-6.columns
+      .small-12.medium-8.columns
         .upload.s3_progress
-          Progress:
+          %div{:style => "float: left;"}
+            Progress:
           .progress
             .bar
         .clearfix
-      %ul#uploaded_files
-        - if @submission.submission_files.present?
-          %hr
+      - if @submission.submission_files.present?
+        %hr
+        %h5.bold Uploaded files
+        %ul#uploaded_files
           - current_student.submission_for_assignment(@assignment).submission_files.each do |sf|
             %li
               = link_to sf.filename, sf.url, :target => "_blank"
