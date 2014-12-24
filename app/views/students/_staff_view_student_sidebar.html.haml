@@ -1,5 +1,5 @@
 .columns.columns-no-padding.sideBar
-  .gravatar.panel.radius
+  .avatar.panel.radius
     .button-group.right.radius{:style => "margin-top: 2px" }
       %li
         %a{:href => edit_user_path(current_student), :class => "button" }
@@ -8,7 +8,8 @@
         %a{:href => "mailto:#{current_student.email}", :class => "button" }
           Email
     %span.large= current_student.name
-    = gravatar_for current_student
+    - if current_student.avatar_file_name.present?
+      %img.img-rounded{:src => current_student.avatar_file_name, :size => 100} 
     %p
     %h5
       = "#{term_for :team} #{current_student.team_for_course(current_course).name}" if current_student.team_for_course(current_course).present?
