@@ -1,6 +1,6 @@
 .upload.s3_progress {
-  visibility: hidden;
   margin-top: -5rem;
+  visibility: hidden;
 }
 
 #attachments.panel {
@@ -12,8 +12,7 @@
   margin-top: 0px !important;
 
   .progress {
-    float: left;
-    margin-left: 0.5rem;
+    margin-left: 70px;
     border: solid 1px #555;
     border-radius: 3px;
     -moz-border-radius: 3px;
