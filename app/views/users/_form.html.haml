@@ -80,5 +80,5 @@
 
   .button-bar
     %ul.button-group.radius.right
-      %li= submit_tag "#{@user.persisted? ? 'Update' : 'Create'} User", :class => "button radius"
-      %li= link_to 'Cancel', users_path, :class => 'button radius transparent'
+      %li= submit_tag "#{@user.persisted? ? 'Update' : 'Create'} User", :class => "button"
+      %li= link_to 'Cancel', users_path, :class => 'button'
