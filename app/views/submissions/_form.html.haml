@@ -21,6 +21,8 @@
             %li
               = link_to sf.filename, sf.url, :target => "_blank"
               = link_to "(Remove)", remove_uploads_path({ :model => "SubmissionFile", :assignment_id => @assignment.id, :upload_id => sf.id } )
+      - else
+        %ul#uploaded_files
 
 
 = simple_form_for([@assignment, @submission]) do |f|
