@@ -17,6 +17,9 @@
       %tbody
         - @staff.each do |user|
           %tr
+            %td 
+              - if user.avatar_file_name.present?
+                %img.img-rounded{:src => user.avatar_file_name, :size => 30} 
             %td= link_to user.first_name, staff_path(user)
             %td= link_to user.last_name, staff_path(user)
             %td= user.role(current_course).capitalize
