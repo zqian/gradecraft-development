@@ -23,12 +23,6 @@
           .form_label{:id => "txtAcceptSubmission"} Will you be using GradeCraft to accept assignment submissions?
 
       .small-12
-        %label.checkbox{ :for => "predictor_setting" }
-          = f.label :predictor_setting, "Grade Predictor"
-          = f.check_box :predictor_setting
-          .form_label The grade predictor is a tab on the student dashboard where students can plan out their course work and estimate their grade.
-
-      .small-12
         %label.checkbox{ :for => "team_setting" }
           = f.label :team_setting, "Sections"
           = f.check_box :team_setting, {"aria-describedby" => "txtSections"}
