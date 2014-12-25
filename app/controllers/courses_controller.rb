@@ -42,7 +42,7 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       if @course.save
-        @course.course_memberships.create(:user_id => current_user.id)
+        @course.course_memberships.create(:user_id => current_user.id, :role => current_user.course_memberships.where(:course_id => current_course.id).first.role)
         session[:course_id] = @course.id
         format.html { redirect_to course_path(@course), notice: "Course #{@course.name} successfully created" }
         format.json { render json: @course, status: :created, location: @course }
