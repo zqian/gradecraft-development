@@ -52,6 +52,6 @@
                       Delete
                       %span.sr-only #{course.name}
                   %li
-                    = link_to copy_courses_path(:id => current_course), :class => 'button', :method => :copy do
+                    = link_to copy_courses_path(:id => course.id), :class => 'button', :method => :copy do
                       Copy
                       %span.sr-only #{course.name}
