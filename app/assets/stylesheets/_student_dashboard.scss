@@ -103,7 +103,7 @@ img.earned {
 
 .success.bar_magic {
   color: #FFF;
-  .meter { background-color: $secondary-color;
+  .meter { background-color: $secondary-color-2;
   }
   .has-tip {
     color: #FFF;
@@ -115,7 +115,7 @@ img.earned {
   height: 100%;
   width: 100%;
   border-radius: 25px;
-  background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.5) 35px, rgba(255,255,255,.5) 70px);
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, $primary-color-4 35px, $primary-color-4 70px);
 }
 
 #levels_per_assignment {
