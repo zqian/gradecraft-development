@@ -32,21 +32,20 @@
 
     .clearfix
 
-  - if current_user_is_staff?
+  - if current_user_is_admin?
 
     .panel
       %h4.uppercase= "Course Settings"
 
-      - if current_user_is_admin?
-        .small-12.medium-4.columns
-          = f.association :courses, :as => :check_boxes
+      .small-12.medium-4.columns
+        = f.association :courses, :as => :check_boxes
 
-        .small-12.medium-4.columns
-          .small-12
-            = f.label :default_course_id, "Default Course"
-            = f.select :default_course_id, options_from_collection_for_select(@courses, "id", "name", @user.try(:default_course_id))
-            .form_label This course will be automatically loaded when a student logs in to GradeCraft
-        .small-12.medium-4.columns
+      .small-12.medium-4.columns
+        .small-12
+          = f.label :default_course_id, "Default Course"
+          = f.select :default_course_id, options_from_collection_for_select(@courses, "id", "name", @user.try(:default_course_id))
+          .form_label This course will be automatically loaded when a student logs in to GradeCraft
+      .small-12.medium-4.columns
 
   - if current_user_is_staff?
     .panel
