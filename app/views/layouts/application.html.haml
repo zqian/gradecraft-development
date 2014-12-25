@@ -19,6 +19,8 @@
               %a(href="/dashboard")
                 - if current_course
                   #{current_course.name}
+                - else
+                  GradeCraft
         - if current_course && current_course.tagline?
           %section.top-bar-section.show-for-large
             %ul.left.tagline
@@ -28,7 +30,7 @@
           = render 'layouts/authenticated_nav'
     - if current_user
       - if current_user_is_staff?
-        .columns= render 'layouts/staff'
+        .columns.pageContainer= render 'layouts/staff'
       - else
         = render 'layouts/student'
     - else

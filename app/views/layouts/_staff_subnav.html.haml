@@ -9,8 +9,7 @@
       .large-4.small-3.columns
         %a.alert.button{ :href => "#" } Go
   
-  %li
-    %label Overview
+  %h5 Overview
   - if current_course.use_timeline?
     %li
       %i.fi-home
@@ -33,8 +32,7 @@
 
   %hr
 
-  %li
-    %label Coursework
+  %h5 Coursework
   %li
     %i.fi-map
     = link_to term_for(:assignments), assignments_path
@@ -49,8 +47,7 @@
 
   %hr
 
-  %li
-    %label Analytics
+  %h5 Analytics
   %li
     %i.fi-graph-horizontal
     = link_to "Top 10/Bottom 10", analytics_top_10_path
@@ -64,8 +61,7 @@
   - if current_user_is_professor? || current_user_is_admin?
     %hr
 
-    %li
-      %label Downloads
+    %h5 Downloads
     %li
       %i.fi-book-bookmark
       = link_to "Final Grades", final_grades_path(format: 'csv')
@@ -75,8 +71,7 @@
 
   %hr
 
-  %li
-    %label Users
+  %h5 Users
   %li
     %i.fi-torsos-female-male
     = link_to "#{term_for :students}", students_path
@@ -93,8 +88,7 @@
   
   %hr
 
-  %li
-    %label Course Setup
+  %h5 Course Setup
   %li
     %i.fi-wrench
     = link_to "Options", edit_course_path(current_course)
@@ -108,8 +102,7 @@
   - if LTIProvider.present?
     %hr
 
-    %li
-      %label Tools
+    %h5 Tools
     - LTIProvider.all.each do |tool|
       %li
         %i.fi-puzzle
@@ -118,8 +111,7 @@
   - if current_user_is_admin?
     %hr
 
-    %li
-      %label Admin
+    %h5 Admin
     %li
       %i.fi-torsos-all
       = link_to "All Users", users_path

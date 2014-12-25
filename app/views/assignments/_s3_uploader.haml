@@ -2,7 +2,10 @@
 .s3_uploader
   = s3_uploader_form key: upload_url('assignment_files', @assignment), acl: "private", max_file_size: 40.megabytes do
     .small-12.medium-3.columns
-      = file_field_tag :file, :multiple => true
+      %label
+        .sr-only
+          File Uploads
+        = file_field_tag :file, :multiple => true
     .small-12.medium-8.columns
       .upload.s3_progress
         %div{:style => "float: left;"}

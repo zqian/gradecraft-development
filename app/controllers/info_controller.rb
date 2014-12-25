@@ -45,9 +45,10 @@ class InfoController < ApplicationController
 
   #grade index export
   def gradebook
+    session[:return_to] = request.referer  
     GradebookExporter.perform_async(current_user.id, current_course.id)
     flash[:notice]="Your request to export the gradebook for \"#{current_course.name}\" is currently being processed. We will email you the data shortly."
-    redirect_to courses_path
+    redirect_to session[:return_to]
   end
 
   def final_grades

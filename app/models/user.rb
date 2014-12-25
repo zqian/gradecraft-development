@@ -55,6 +55,8 @@ class User < ActiveRecord::Base
   scope :order_by_low_score, -> { includes(:course_memberships).order 'course_memberships.score ASC' }
   scope :alphabetical , -> { order 'last_name ASC'}
 
+  mount_uploader :avatar_file_name, AvatarUploader
+
   has_many :course_memberships, :dependent => :destroy
   has_one :student_academic_history, :foreign_key => :student_id, :dependent => :destroy, :class_name => 'StudentAcademicHistory'
   accepts_nested_attributes_for :student_academic_history

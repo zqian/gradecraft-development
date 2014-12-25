@@ -78,7 +78,7 @@ class AssignmentsController < ApplicationController
   def create
     @assignment = current_course.assignments.new(params[:assignment])
     @title = "Create a New #{term_for :assignment}"
-    @assignment.assignment_type = current_course.assignment_types.find_by_id(params[:assignment_type_id])
+    #@assignment.assignment_type = current_course.assignment_types.find_by_id(params[:assignment_type_id])
     respond_to do |format|
       self.check_uploads
       @assignment.save

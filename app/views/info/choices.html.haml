@@ -8,7 +8,9 @@
   - if current_course.has_teams?
     .small-12.large-4.medium-6.columns.right
       = form_tag multiplier_choices_path, :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
-        = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "– Select #{current_course.team_term} –"
+        %label 
+          .sr-only Select #{term_for :team}
+          = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "– Select #{current_course.team_term} –"
         
   .columns
     %table.responsive.nofeatures_default_last_name_dynatable

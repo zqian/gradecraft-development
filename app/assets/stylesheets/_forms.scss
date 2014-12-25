@@ -13,6 +13,7 @@ label, input {
   padding-bottom: 0;
 }
 
+
 .radio label,
 .checkbox label {
   cursor: pointer;
@@ -130,12 +131,13 @@ ul.dropdown-menu {
   font-style: italic;
   color: #FFF;
   padding: 1rem;
+  margin-top: -.35rem;
   margin-bottom: 1rem;
   border-bottom-right-radius: $global-radius;
   border-bottom-left-radius: $global-radius;
 }
 
-.textarea .wysihtml5-toolbar {
+.textarea ul.wysihtml5-toolbar {
   background-color: $medium-grey;
 }
 
