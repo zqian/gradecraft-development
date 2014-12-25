@@ -4,7 +4,7 @@ class AssignmentType < ActiveRecord::Base
     :predictor_description, :resubmission, :universal_point_value, :order_placement, 
     :student_weightable, :mass_grade, :score_levels_attributes, :score_level, :mass_grade_type, 
     :student_logged_revert_button_text, :student_logged_button_text,
-    :notify_released, :include_in_timeline, :include_in_predictor, :include_in_to_do
+    :include_in_timeline, :include_in_predictor, :include_in_to_do
 
   belongs_to :course
   has_many :assignments

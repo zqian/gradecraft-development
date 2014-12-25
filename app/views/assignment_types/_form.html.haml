@@ -44,12 +44,6 @@
             = f.check_box :due_date_present, {"aria-describedby" => "txtDueDates"}
             .form_label{:id => "txtDueDates"} Will #{term_for :assignments} in this category have due dates?
 
-        .small-12
-          %label.checkbox
-            = f.label :notify_released, "Notify by email"
-            = f.check_box :notify_released, {"aria-describedby" => "txtNotify"}
-            .form_label{:id => "txtNotify"} Do you want to notify students by email when a grade is awarded? If grade release is necessary, this email will not be sent out until the grade is officially released.
-
     .small-12.columns.medium-8.panel
       %h4.uppercase THE BASICS
 

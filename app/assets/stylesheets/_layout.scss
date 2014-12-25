@@ -112,3 +112,9 @@ form .tabs-content .content {
     padding-right: 0;
   }
 }
+@media (max-width: 400px) {
+  .columns.pageContainer, .columns.outerContainer, .columns.sideBarContainer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
