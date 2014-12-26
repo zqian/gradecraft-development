@@ -48,6 +48,7 @@ class CoursesController < ApplicationController
         nat.save
         at.assignments.each do |a|
           na = a.dup
+          na.assignment_type_id = nat.id
           na.course_id = new_course.id
           na.save
         end
