@@ -9,6 +9,10 @@
     .button-bar
       %ul.button-group.context_menu
         %li
+          %a{:href => new_badge_path }
+            %i.fi-plus
+            New #{(term_for :badge).titleize} 
+        %li
           %a{:href => edit_badge_path(@badge) }
             %i.fi-pencil
             Edit

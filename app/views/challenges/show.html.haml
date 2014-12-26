@@ -10,6 +10,10 @@
       .button-bar
         %ul.button-group.context_menu
           %li
+            %a{:href => new_challenge_path }
+              %i.fi-plus
+              New #{(term_for :challenge).titleize}
+          %li
             %a{:href => edit_challenge_path(@challenge) }
               %i.fi-pencil
               Edit

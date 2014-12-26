@@ -7,6 +7,10 @@
     .button-bar
       %ul.button-group.context_menu
         %li
+          %a{:href => new_team_path }
+            %i.fi-plus
+            New #{(term_for :team).titleize}
+        %li
           %a{:href => edit_team_path(@team) }
             %i.fi-pencil
             Edit #{(term_for :team).titleize}

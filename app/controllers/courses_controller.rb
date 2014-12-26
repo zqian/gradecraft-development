@@ -32,8 +32,46 @@ class CoursesController < ApplicationController
   def copy
     @course = Course.find(params[:id])
     new_course = @course.dup
+    new_course.name.prepend("Copy of ")
     new_course.save
-    redirect_to courses_path
+    if @course.badges.present?
+      @course.badges.each do |b|
+        nb = b.dup
+        nb.course_id = new_course.id
+        nb.save
+      end
+    end
+    if @course.assignment_types.present?
+      @course.assignment_types.each do |at|
+        nat = at.dup
+        nat.course_id = new_course.id
+        nat.save
+        at.assignments.each do |a|
+          na = a.dup
+          na.assignment_type_id = nat.id
+          na.course_id = new_course.id
+          na.save
+        end
+      end
+    end
+    if @course.challenges.present?
+      @course.challenges.each do |c|
+        nc = c.dup
+        nc.course_id = new_course.id
+        nc.save
+      end
+    end
+    respond_to do |format|
+      if new_course.save
+        new_course.course_memberships.create(:user_id => current_user.id, :role => current_user.course_memberships.where(:course_id => current_course.id).first.role)
+        session[:course_id] = new_course.id
+        format.html { redirect_to course_path(@course), notice: "#{@course.name} successfully copied" }
+      else
+        format.html { render action: "new" }
+        format.json { render json: @course.errors, status: :unprocessable_entity }
+      end
+    end
+    
   end
 
   def create

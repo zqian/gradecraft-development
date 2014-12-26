@@ -8,6 +8,10 @@
     .button-bar.right
       %ul.button-group.context_menu
         %li
+          %a{:href => new_challenge_path }
+            %i.fi-plus
+            New #{(term_for :challenge).titleize}
+        %li
           %a{:href => review_groups_path(:id => @group) }
             %i.fi-pencil
             Review #{term_for :group}
