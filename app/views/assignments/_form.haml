@@ -72,6 +72,12 @@
             %i.fi-checkbox
             = f.check_box :include_in_predictor
             .form_label Can #{term_for :students} see this #{term_for :assignment} in the grade predictor?
+        
+        .small-12
+          %label.checkbox
+            = f.label :include_in_timeline, "Include in Timeline"
+            = f.check_box :include_in_timeline, {"aria-describedby" => "txtIncludeInTimeline"}
+            .form_label{:id => "txtIncludeInTimeline"} Can #{term_for :students} see this #{term_for :assignment} in the course timeline? Note that #{term_for :assignments} without due dates will be excluded automatically.
 
     .small-12.large-8.columns.panel
       %h4.uppercase Basic Info

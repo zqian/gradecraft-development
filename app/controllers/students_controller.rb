@@ -66,7 +66,7 @@ class StudentsController < ApplicationController
   # AJAX endpoint for student name search
   def autocomplete_student_name
     return [] unless current_user_is_staff?
-    students = current_course.students_being_graded
+    students = current_course.students
     students.map! do |u|
       { :name => [u.first_name, u.last_name].join(' '), :id => u.id }
     end
