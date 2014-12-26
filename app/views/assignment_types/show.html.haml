@@ -9,6 +9,10 @@
     .button-bar
       %ul.button-group.context_menu
         %li
+          %a{:href => new_assignment_type_path }
+            %i.fi-plus
+            New #{(term_for :assignment_type).titleize}
+        %li
           %a{:href => edit_assignment_type_path(@assignment_type) }
             %i.fi-pencil
             Edit
