@@ -2,8 +2,9 @@ class Assignment < ActiveRecord::Base
   attr_accessible :name, :description, :point_total, :open_at, :due_at, :grade_scope, :visible, :required, 
     :accepts_submissions, :release_necessary, :media, :thumbnail, :media_credit, :media_caption, 
     :accepts_submissions_until, :points_predictor_display, :notify_released, :mass_grade_type, :assignment_type_id, :assignment_type,
-    :include_in_timeline, :include_in_predictor, :grades_attributes, :assignment_file_ids, :student_logged,
-    :assignment_files_attributes, :assignment_file, :assignment_score_levels_attributes, :assignment_score_level, :score_levels_attributes
+    :include_in_timeline, :include_in_predictor, :include_in_to_do, :grades_attributes, :assignment_file_ids, :student_logged,
+    :assignment_files_attributes, :assignment_file, :assignment_score_levels_attributes, :assignment_score_level, :score_levels_attributes,
+    :remove_media, :remove_thumbnail
 
   belongs_to :course
   belongs_to :assignment_type, -> { order('order_placement ASC') }

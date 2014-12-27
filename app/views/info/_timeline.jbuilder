@@ -5,7 +5,7 @@ json.set! :timeline do
   json.set! :text, current_course.formatted_tagline
 
   json.set! :asset do
-    json.set! :media, current_course.media_file
+    json.set! :media, current_course.media_file_url if current_course.media_file
     json.set! :credit, current_course.media_credit
     json.set! :caption, current_course.media_caption
   end
@@ -21,8 +21,15 @@ json.set! :timeline do
       json.headline event.name
       json.text event.description
       json.set! :asset do
-        json.media event.media_url if event.media
-        json.thumbnail event.thumbnail_url if event.thumbnail
+        if event.thumbnail && event.media
+          json.thumbnail event.thumbnail_url
+          json.media event.media_url
+        elsif event.thumbnail
+          json.thumbnail event.thumbnail_url
+        elsif event.media
+          json.thumbnail event.media_url
+          json.media event.media_url
+        end
         json.credit event.media_credit
         json.caption event.media_caption
       end

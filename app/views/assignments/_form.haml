@@ -32,21 +32,21 @@
 
         - if current_course.accepts_submissions?
           .small-12
-            %label.checkbox
+            .checkbox
               = f.label :accepts_submissions #{term_for :assignment} Submissions
               %i.fi-paperclip
               = f.check_box :accepts_submissions
               .form_label Will you be using GradeCraft to accept submissions for this #{term_for :assignment}?
 
         .small-12
-          %label.checkbox
+          .checkbox
             = f.label :student_logged
             %i.fi-pencil
             = f.check_box :student_logged
             .form_label Do students self-report their grade for this #{term_for :assignment}?
 
         .small-12
-          %label.checkbox
+          .checkbox
             = f.label :release_necessary
             %i.fi-unlock
             = f.check_box :release_necessary
@@ -54,30 +54,30 @@
 
         - if @assignment.assignment_type.present? && ! @assignment.assignment_type.notify_released?
           .small-12
-            %label.checkbox
+            .checkbox
               = f.label :notify_released, "Notify by email?"
               %i.fi-mail
               = f.check_box :notify_released
               .form_label Do you want to notify students by email when a grade is awarded? If grade release is necessary, this email will not be sent out until the grade is officially released.
         .small-12
-          %label.checkbox
+          .checkbox
             = f.label :include_in_timeline, "Timeline"
             %i.fi-layout
-            = f.check_box :include_in_timeline
-            .form_label Can #{term_for :students} see this #{term_for :assignment} in the course timeline? Note that #{term_for :assignments} without open or due dates will be excluded automatically.
+            = f.check_box :include_in_timeline, {"aria-describedby" => "txtIncludeInTimeline"}
+            .form_label{:id => "txtIncludeInTimeline"} Can #{term_for :students} see this #{term_for :assignment} in the course timeline? Note that #{term_for :assignments} without open or due dates will be excluded automatically.
 
         .small-12
-          %label.checkbox
+          .checkbox
             = f.label :include_in_predictor, "Predictor"
             %i.fi-checkbox
             = f.check_box :include_in_predictor
             .form_label Can #{term_for :students} see this #{term_for :assignment} in the grade predictor?
-        
         .small-12
-          %label.checkbox
-            = f.label :include_in_timeline, "Include in Timeline"
-            = f.check_box :include_in_timeline, {"aria-describedby" => "txtIncludeInTimeline"}
-            .form_label{:id => "txtIncludeInTimeline"} Can #{term_for :students} see this #{term_for :assignment} in the course timeline? Note that #{term_for :assignments} without due dates will be excluded automatically.
+          .checkbox
+            = f.label :include_in_to_do, "To Do List"
+            %i.fi-checkbox
+            = f.check_box :include_in_to_do
+            .form_label Can #{term_for :students} see this #{term_for :assignment} in the to do list?
 
     .small-12.large-8.columns.panel
       %h4.uppercase Basic Info
@@ -130,12 +130,18 @@
         .small-12
           = f.label :media, "Image"
           = f.file_field :media
-          %img{:src => @assignment.media, :width => 40 }
+          - if @assignment.media.present?
+            %img{:src => @assignment.media, :width => 40, :alt => "Primary Assignment Image" }
+            = f.check_box :remove_media
+            Remove Image
 
         .small-12
           = f.label :thumbnail
           = f.file_field :thumbnail
-          %img{:src => @assignment.thumbnail, :width => 40 }
+          - if @assignment.thumbnail.present?
+            %img{:src => @assignment.thumbnail, :width => 40, :alt => "Primary Assignment Image" }
+            = f.check_box :remove_thumbnail
+            Remove Thumbnail
 
         .small-12
           = f.label :media_credit, "Media Credit"
