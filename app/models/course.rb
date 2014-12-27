@@ -71,6 +71,7 @@ class Course < ActiveRecord::Base
   accepts_nested_attributes_for :users
   accepts_nested_attributes_for :assignments
 
+  mount_uploader :media_file, CourseMediaUploader
 
   accepts_nested_attributes_for :grade_scheme_elements, allow_destroy: true
 
