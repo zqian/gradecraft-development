@@ -120,6 +120,12 @@
         = f.label :meeting_times, "Class Meeting Times"
         = f.text_field :meeting_times
 
+    .panel.callout.radius
+      %h4.uppercase COURSE SETTINGS 
+      = f.file_field :media_file
+      = f.input :media_credit
+      = f.input :media_caption
+
   .small-12.large-8.columns.panel
     %h4 THE BASICS
     .row

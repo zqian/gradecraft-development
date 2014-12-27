@@ -12,10 +12,6 @@
           %a{:href => new_assignment_path }
             %i.fi-plus
             New #{(term_for :assignment).titleize}
-        %li
-          %a{:href => settings_assignments_path }
-            %i.fi-results
-            Settings Overview
             
   .small-12.columns
     
@@ -75,6 +71,10 @@
                             %li
                               %a{:href => edit_assignment_path(assignment), :class => 'button' }
                                 Edit
+                                %span.sr-only=assignment.name
+                            %li
+                              %a{:href => copy_assignments_path(:id => assignment), :class => 'button', :method => :copy }
+                                Copy
                                 %span.sr-only=assignment.name
                             %li
                               %a{:href => assignment_path(assignment), :class => "button", :data => { confirm: 'Are you sure?', method: :delete } }

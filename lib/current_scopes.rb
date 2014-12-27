@@ -57,7 +57,6 @@ module CurrentScopes
   end
 
   def current_student=(student)
-    puts "Setting current student"
     @__current_student = student
   end
 

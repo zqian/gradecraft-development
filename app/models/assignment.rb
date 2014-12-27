@@ -2,8 +2,9 @@ class Assignment < ActiveRecord::Base
   attr_accessible :name, :description, :point_total, :open_at, :due_at, :grade_scope, :visible, :required, 
     :accepts_submissions, :release_necessary, :media, :thumbnail, :media_credit, :media_caption, 
     :accepts_submissions_until, :points_predictor_display, :notify_released, :mass_grade_type, :assignment_type_id, :assignment_type,
-    :include_in_timeline, :include_in_predictor, :grades_attributes, :assignment_file_ids, :student_logged,
-    :assignment_files_attributes, :assignment_file, :assignment_score_levels_attributes, :assignment_score_level, :score_levels_attributes
+    :include_in_timeline, :include_in_predictor, :include_in_to_do, :grades_attributes, :assignment_file_ids, :student_logged,
+    :assignment_files_attributes, :assignment_file, :assignment_score_levels_attributes, :assignment_score_level, :score_levels_attributes,
+    :remove_media, :remove_thumbnail
 
   belongs_to :course
   belongs_to :assignment_type, -> { order('order_placement ASC') }
@@ -63,6 +64,7 @@ class Assignment < ActiveRecord::Base
   # Filtering Assignments by where in the interface they are displayed
   scope :timelineable, -> { where(:include_in_timeline => true) }
   scope :predictable, -> { where(:include_in_predictor => true) }
+  scope :todoable, -> { where(:include_in_to_do => true) }
 
   # Invisible Assignments are displayed on the instructor side, but not students (until they have a grade for them)
   scope :visible, -> { where visible: TRUE }
@@ -254,19 +256,19 @@ class Assignment < ActiveRecord::Base
   
   #The below four are the Quick Grading Types, can be set at either the assignment or assignment type level
   def grade_checkboxes?
-    assignment_type.mass_grade_type == "Checkbox" || self.mass_grade_type == "Checkbox"
+    self.mass_grade_type == "Checkbox"
   end
 
   def grade_select?
-    (assignment_type.mass_grade_type == "Select List" && assignment_type.score_levels.present?) || (self.mass_grade_type == "Select List" && self.assignment_score_levels.present?)
+    (self.mass_grade_type == "Select List" && self.assignment_score_levels.present?)
   end
 
   def grade_radio?
-    (assignment_type.mass_grade_type == "Radio Buttons" && assignment_type.score_levels.present?) ||(self.mass_grade_type == "Radio Buttons" && self.assignment_score_levels.present?)
+    (self.mass_grade_type == "Radio Buttons" && self.assignment_score_levels.present?)
   end
 
   def grade_text?
-    assignment_type.mass_grade_type == "Text" || self.mass_grade_type == "Text"
+    self.mass_grade_type == "Text"
   end
 
   #Checking to see if an assignment has related score levels

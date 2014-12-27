@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141008174828) do
+ActiveRecord::Schema.define(version: 20141226213150) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
 
   create_table "assignment_files", force: true do |t|
     t.string  "filename"
@@ -140,6 +141,7 @@ ActiveRecord::Schema.define(version: 20141008174828) do
     t.string   "mass_grade_type"
     t.boolean  "include_in_timeline",         default: true
     t.boolean  "include_in_predictor",        default: true
+    t.boolean  "include_in_to_do",            default: true
   end
 
   add_index "assignments", ["course_id"], name: "index_assignments_on_course_id", using: :btree
