@@ -83,6 +83,10 @@
 - else
 
   .small-12.columns
+
+    - if @assignment.release_necessary? && @grade.status != "Released" && @grade.status != nil
+      .alert-box.alert.radius
+        This grade needs to be released before #{@grade.student.first_name} will be able to see it.
     .small-12.panel
       = render 's3_uploader'
 
