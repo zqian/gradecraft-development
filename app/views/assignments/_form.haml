@@ -78,6 +78,32 @@
             %i.fi-checkbox
             = f.check_box :include_in_to_do
             .form_label Can #{term_for :students} see this #{term_for :assignment} in the to do list?
+      .panel
+        %h4.uppercase Timeline
+          
+        .small-12
+          = f.label :media, "Image"
+          = f.file_field :media
+          - if @assignment.media.present?
+            %img{:src => @assignment.media, :width => 40, :alt => "Primary Assignment Image" }
+            = f.check_box :remove_media
+            Remove Image
+
+        .small-12
+          = f.label :thumbnail
+          = f.file_field :thumbnail
+          - if @assignment.thumbnail.present?
+            %img{:src => @assignment.thumbnail, :width => 40, :alt => "Primary Assignment Image" }
+            = f.check_box :remove_thumbnail
+            Remove Thumbnail
+
+        .small-12
+          = f.label :media_credit, "Media Credit"
+          = f.text_field :media_credit
+
+        .small-12
+          = f.label :media_caption, "Caption"
+          = f.text_field :media_caption
 
     .small-12.large-8.columns.panel
       %h4.uppercase Basic Info
@@ -124,32 +150,7 @@
       
     .small-12.large-4.columns.right.columns-no-padding_right
 
-      .panel
-        %h4.uppercase Timeline
-          
-        .small-12
-          = f.label :media, "Image"
-          = f.file_field :media
-          - if @assignment.media.present?
-            %img{:src => @assignment.media, :width => 40, :alt => "Primary Assignment Image" }
-            = f.check_box :remove_media
-            Remove Image
-
-        .small-12
-          = f.label :thumbnail
-          = f.file_field :thumbnail
-          - if @assignment.thumbnail.present?
-            %img{:src => @assignment.thumbnail, :width => 40, :alt => "Primary Assignment Image" }
-            = f.check_box :remove_thumbnail
-            Remove Thumbnail
-
-        .small-12
-          = f.label :media_credit, "Media Credit"
-          = f.text_field :media_credit
-
-        .small-12
-          = f.label :media_caption, "Caption"
-          = f.text_field :media_caption
+      
     
     .small-12.medium-8.columns.textarea.panel
       %h4.uppercase Assignment Description
