@@ -49,7 +49,7 @@ class Course < ActiveRecord::Base
     :challenge_term, :badge_term, :grading_philosophy, :team_score_average,
     :team_challenges, :team_leader_term, :max_assignment_types_weighted,
     :point_total, :in_team_leaderboard, :grade_scheme_elements_attributes,
-    :add_team_score_to_student, :status, :assignments_attributes
+    :add_team_score_to_student, :status, :assignments_attributes, :badge_emails
 
   with_options :dependent => :destroy do |c|
     c.has_many :assignment_types

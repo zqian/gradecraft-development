@@ -39,6 +39,7 @@ gem 'omniauth-kerberos'
 gem 'omniauth-lti'
 gem 'pacecar'
 gem 'pg'
+gem 'premailer-rails'
 gem 'protected_attributes'
 gem 'puma'
 gem 'rails_autolink'
@@ -67,6 +68,7 @@ group :development do
   gem 'rubystats'
   gem 'spring'
   gem 'byebug'
+  gem 'letter_opener'
 end
 
 group :test do

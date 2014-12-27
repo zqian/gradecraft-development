@@ -1,5 +1,6 @@
 class Team < ActiveRecord::Base
-  attr_accessible :name, :course, :course_id, :student_ids, :score, :students, :leaders, :teams_leaderboard, :in_team_leaderboard, :banner, :leader_ids
+  attr_accessible :name, :course, :course_id, :student_ids, :score, :students, :leaders, :teams_leaderboard, :in_team_leaderboard, 
+  :banner, :leader_ids, :badge_email_type
 
   validates_presence_of :course, :name
 

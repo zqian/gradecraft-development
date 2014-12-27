@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141226213150) do
+ActiveRecord::Schema.define(version: 20141227193608) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -177,6 +177,7 @@ ActiveRecord::Schema.define(version: 20141226213150) do
     t.datetime "updated_at"
     t.boolean  "visible",                 default: true
     t.boolean  "can_earn_multiple_times", default: true
+    t.text     "email_description"
   end
 
   create_table "bootsy_image_galleries", force: true do |t|
@@ -354,6 +355,7 @@ ActiveRecord::Schema.define(version: 20141226213150) do
     t.integer  "point_total"
     t.boolean  "in_team_leaderboard"
     t.boolean  "add_team_score_to_student",                             default: false
+    t.boolean  "badge_emails",                                          default: false
   end
 
   add_index "courses", ["lti_uid"], name: "index_courses_on_lti_uid", using: :btree
@@ -680,6 +682,7 @@ ActiveRecord::Schema.define(version: 20141226213150) do
     t.boolean  "teams_leaderboard",   default: false
     t.boolean  "in_team_leaderboard", default: false
     t.string   "banner"
+    t.string   "badge_email_type"
   end
 
   create_table "themes", force: true do |t|

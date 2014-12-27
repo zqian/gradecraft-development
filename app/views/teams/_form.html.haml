@@ -35,6 +35,13 @@
           = f.check_box :in_team_leaderboard
           .form_label= "#{term_for :students} in this #{term_for :team} will be able to see the in-#{term_for :team} rankings, with #{term_for :students}'s listed by their chosen screenname, and accompanying scores"
 
+      - if current_user_is_admin? && current_course.has_badges?
+        %hr
+        %h4.uppercase Email Settings
+        = f.label :badge_email_type, "Badge Email Type"
+        = f.select :badge_email_type, [[],["Team"], ["Individual"]]
+        .form_label What type of badging email should students receive?
+
   .clearfix
   
   .button-bar

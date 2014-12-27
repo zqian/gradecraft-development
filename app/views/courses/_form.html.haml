@@ -45,6 +45,11 @@
           = f.input :shared_badges, :label => "Social Badges"
           .form_label Can students can share badges with the class?
 
+      .small-12
+        %label.checkbox{ :for => "badge_emails"}
+          = f.input :badge_emails, :label => "Weekly Badge Emails"
+          .form_label Would you like students to receive weekly emails highlighting what badges they've earned?
+
 
       .small-12
         %label.checkbox{ :for => "teams_visible" }
@@ -252,6 +257,7 @@
         = f.text_field :badge_term, {"aria-describedby" => "txtBadgeTerm"}
         .form_label{:id => "txtBadgeTerm"} Would you like to call badges something else?
   
+  .clearfix
 
   .button-bar
     %ul.button-group.radius.right

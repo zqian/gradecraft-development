@@ -6,4 +6,16 @@ class UserMailer < ActionMailer::Base
     mail(:to => user.email, :subject => "Your password has been reset")
   end
 
+  def welcome_student_email(user)
+
+  end
+
+  def individual_badging_email(user)
+
+  end
+
+  def team_badging_email(user)
+
+  end
+
 end
