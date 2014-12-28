@@ -254,6 +254,18 @@ class User < ActiveRecord::Base
     end
   end
 
+  def unearned_badges_for_course(course)
+    @unearned_badges = []
+    course.badges.each do |badge|
+      if self.badges.where(:id => badge.id).present?
+        next 
+      else
+        @unearned_badges << badge
+      end
+    end
+    return @unearned_badges
+  end
+
   def earned_badge_count_for_course(course)
     earned_badges.where(course: course).count
   end
@@ -262,6 +274,16 @@ class User < ActiveRecord::Base
     @earned_badge_score ||= earned_badges.sum(:score)
   end
 
+  def recently_earned_badges
+    time_range = (1.week.ago..Time.now)
+    earned_badges.where(:created_at => time_range)
+  end
+
+  def recently_earned_badges_count
+    time_range = (1.week.ago..Time.now)
+    earned_badges.where(:created_at => time_range).count
+  end
+  
   #grabbing the stored score for the current course
   def cached_score_for_course(course)
     course_memberships.where(:course_id => course).first.score || 0
@@ -277,6 +299,13 @@ class User < ActiveRecord::Base
      }
   end
 
+  def team_badging_email?(course)
+    team_for_course(course).badge_email_type == "Team"
+  end
+
+  def individual_badging_email?(course)
+    team_for_course(course).badge_email_type == "Individual"
+  end
 
   #recalculating the student's score for the course
   def score_for_course(course)

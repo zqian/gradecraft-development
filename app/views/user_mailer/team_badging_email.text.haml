@@ -1,0 +1,28 @@
+Hello <%= @user.first_name %>,
+
+Check out some of your and your <%= term_for :team %>'s recent <%= term_for :badge %> activity from <%= @course.name %>. (<%= Date.today %>)
+
+Your Team's Recently Awarded <%= term_for :badges %>: 
+- @recently_earned_badges.each do |badge|
+  = badge.name
+
+Earn these <%= term_for :badges %> next: 
+
+- @future_badges.each do |badge|
+  = badge.name
+                                
+Find out how: https://www.gradecraft.com/badges
+
+<%= term_for :team %> All-time Stats:
+<%= @team.badge_count %> <%= term_for :badges %> earned as a <%= term_for :team %>
+<%= @student.badge_count %> <%= term_for :badges %> earned individually
+
+See all your <%= term_for :badges %>: https://www.gradecraft.com/badges
+
+--
+
+Have feedback about this email? Let us know!
+
+--
+
+&copy; GradeCraft 2014

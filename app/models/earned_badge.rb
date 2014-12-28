@@ -16,7 +16,7 @@ class EarnedBadge < ActiveRecord::Base
   #Some badges can only be earned once - we check on award if that's the case
   validate :multiple_allowed
 
-  delegate :name, :description, :icon, :to => :badge
+  delegate :name, :description, :icon, :email_description, :to => :badge
 
   def self.score
     pluck('SUM(score)').first || 0

@@ -57,6 +57,11 @@ class EarnedBadgesController < ApplicationController
     respond_to do |format|
       if @earned_badge.save
         NotificationMailer.earned_badge_awarded(@earned_badge.id).deliver
+        if current_course.has_teams? && @earned_badge.student.team_badging_email?(current_course)
+          UserMailer.team_badging_email(@earned_badge.student).deliver
+        elsif @earned_badge.student.individual_badging_email?(current_course)
+          UserMailer.individual_badging_email(@earned_badge.student, current_course).deliver
+        end
         format.html { redirect_to badge_path(@badge), notice: "The #{@badge.name} #{term_for :badge} was successfully awarded to #{@earned_badge.student.name}" }
       else
         @title = "Award #{@badge.name}"

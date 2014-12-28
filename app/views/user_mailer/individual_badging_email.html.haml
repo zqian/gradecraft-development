@@ -1,0 +1,145 @@
+%head
+  <link rel="stylesheet" href="emails.css">
+%body
+  %table.body
+    %tr
+      %td.center{:align => "center", :valign => "top" }
+        %center
+          %table.row.header
+            %tr
+              %td.center{:align => "center" }
+                %center
+                  %table.container
+                    %tr
+                      %td.wrapper.last
+                        %table.twelve.columns
+                          %tr
+                            %td.six.sub-columns
+                              %img{:src => "https://www.gradecraft.com/images/gradecraft_logo.png" }
+                            %td.six.sub-columns.last{ :style => "text-align:right; text-transform: uppercase; vertical-align:middle; color: #FFFFFF" }
+                              %br
+                              %br
+                              = @date
+                            %td.expander
+        %br
+
+        %center
+        %table.container
+          %tr
+            %td
+              // Header start
+              %table.row
+                %tr
+                  %td.wrapper
+                    %table.four.columns
+                      %tr
+                        %td
+                          %img.border-radius{ :src => @avatar }
+                        %td.expander
+                  %td.wrapper.last
+                    %table.eight.columns
+                      %tr
+                        %td.panel
+                          %h3 Hello #{ @user_first_name },
+                          %p Check out some of your recent #{ @badge_term.downcase } activity from #{@course_name}.
+                        %td.expander
+
+              //-- content start
+
+              %table.row
+                %tr
+                  %td.wrapper
+
+                    %table.seven.columns
+                      %tr 
+                        %td
+                          
+                          %h6= "Your Recently Earned #{ @badge_term.pluralize }"
+
+
+                          - if @recently_earned_badges.present?
+                            - @recently_earned_badges.each do |eb|
+                              %table
+                                %tr
+                                  %td.three.sub-columns
+                                    %img{ :src => "http://www.gradecraft.com/images/badge.png" }
+                                
+
+                                  %td.four.sub-columns.last
+                                    %p <strong>#{@congrats.sample}</strong> You earned the #{ eb.name } #{ @badge_term } for #{ eb.email_description }
+
+                        %td.expander
+
+                    %table.seven.columns
+                      %tr
+                        %td
+                          %br
+
+                          %table.button.border-radius 
+                            %tr
+                              %td
+                                %a{:href => "http://www.gradecraft.com/badges" } 
+                                  What #{ @badge_term.pluralize } will you earn next?
+                        %td.expander
+
+                  %td.wrapper.last
+
+                    %table.five.columns
+                      %tr
+                        %td
+                          %h6 Earn These #{ @badge_term.pluralize } Next
+                          %table
+                            %tr
+                              - if @unearned_badges.present?
+                                - @unearned_badges.each do |ub|
+                                  %td.two.sub-columns
+                                    %img{ :src => "http://www.gradecraft.com/images/badge.png" }
+                                    %a{:align => "center" }= link_to ub.name, badge_url(ub)
+                                    
+
+                          %table.button.border-radius
+                            %tr
+                              %td
+                                %a{:href => "http://www.gradecraft.com/badges" } Find out how
+                        %td.expander
+                    %br
+
+                    %table.five.columns
+                      %tr
+                        %td
+                          %h6{:style => "margin-bottom:5px;" } All-Time Stats
+
+                          %table
+                            %tr
+                              %td.two.sub-columns
+                                %img{ :src => "http://www.gradecraft.com/images/badge.png" }
+                              %td.two.sub-columns
+                                %h1.badgeNumber= @earned_badges_count
+                                %p #{ @badge_term.pluralize } earned total
+                            %tr
+                              %td.two.sub-columns
+                                %img{ :src => "http://www.gradecraft.com/images/badge.png" }
+                              %td.two.sub-columns
+                                %h1.badgeNumber= @recently_earned_badges_count
+                                %p #{ @badge_term.pluralize } earned this week
+                        %td.expander
+
+                    %br
+
+                    %table.five.columns
+                      %tr
+                        %td.panel
+                          %h6{ :style => "margin-bottom:5px;" } Have feedback about this email?
+                          %p Let us know: <a href="mailto: help@gradecraft.com">help@gradecraft.com</a>
+                        %td.expander
+              %br
+              %br
+              %table.row
+                %tr
+                  %td.wrapper.last
+                    %table.twelve.columns
+                      %tr
+                        %td{:align => "center"}
+                          %center
+                            %p{ :style => "text-align:center;" } &copy; GradeCraft 2014
+                        %td.expander

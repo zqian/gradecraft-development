@@ -1,6 +1,7 @@
 class Badge < ActiveRecord::Base
    attr_accessible :name, :description, :icon, :icon_cache, :visible, :can_earn_multiple_times, 
-    :value, :multiplier, :point_total, :earned_badges, :earned_badges_attributes, :score, :badge_file_ids, :badge_files_attributes, :badge_file
+    :value, :multiplier, :point_total, :earned_badges, :earned_badges_attributes, :score, :badge_file_ids, 
+    :badge_files_attributes, :badge_file, :email_description
 
   mount_uploader :icon, BadgeIconUploader
 
@@ -45,7 +46,7 @@ class Badge < ActiveRecord::Base
   end
 
   def earned_badges_for_student(student)
-    earned_badges.where(:student_id => student)  
+    earned_badges.where(:student_id => student)
   end
 
   #Counting how many times a particular student has earned this badge
@@ -55,6 +56,10 @@ class Badge < ActiveRecord::Base
   
   def earned_badge_total_value(student)
     earned_badges.where(:student_id => student).pluck('score').sum
+  end
+
+  def unearned_by_student(student)
+    ! earned_badges.where(:student_id => student).present?
   end
 
 end

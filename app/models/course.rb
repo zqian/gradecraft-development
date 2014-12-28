@@ -87,13 +87,6 @@ class Course < ActiveRecord::Base
   validates_format_of :twitter_hashtag, :with => /\A[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)*\z/, :allow_blank => true, :length   => { :within => 3..20 }
   validate :max_more_than_min
 
-  # amoeba do
-
-  #   enable :badges
-  #   exclude_field :earned_badges
-  #   prepend :name => "Copy of "
-  # end
-
   def user_term
     super.presence || 'Player'
   end
@@ -332,6 +325,10 @@ class Course < ActiveRecord::Base
 
   def awarded_course_badge_count
    earned_badges.count
+  end
+
+  def earned_badges_for_student(student)
+    earned_badges.where(:student_id => student.id)
   end
 
   def max_more_than_min

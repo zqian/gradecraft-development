@@ -36,10 +36,10 @@
                   = "#{points badge.point_total} points" if badge.point_total?
                 %td
                   - if badge.can_earn_multiple_times
-                    - badge.earned_badges_for_student(current_student.id).each do
-                      %img{ :src => badge.icon, :alt => badge.name, :width => "30" }
-                      = current_student_data.earned_badge(badge).created_at
-                      %p= raw current_student_data.earned_badge(badge).try(:feedback)
+                    - badge.earned_badges_for_student(current_student.id).each do |eb|
+                      %img{ :src => eb.icon, :alt => eb.name, :width => "30" }
+                      = eb.created_at
+                      %p= raw eb.try(:feedback)
 
                     - if badge.earned_badges_for_student(current_student.id).count >1
                       = "#{points badge.earned_badge_total_value(current_student)} points earned" if badge.point_total?

@@ -1,0 +1,155 @@
+%body
+  %table.body
+    %tr
+      %td.center{:align => "center", :valign => "top" }
+        %center
+          %table.row.header
+            %tr
+              %td.center{ :align => "center" }
+                %center
+                  %table.container
+                    %tr
+                      %td.wrapper.last
+                        %table.twelve.columns
+                          %tr
+                            %td.six.sub-columns
+                              %img{:src => "images/gradecraft_logo.png" }
+                            %td.six.sub-columns.last{ :style => "text-align:right; vertical-align:middle;" }
+                            %td.expander
+        %br
+
+        %table.container
+          %tr
+            %td
+              // Header start
+              %table.row
+                %tr
+                  %td.wrapper
+                    %table.four.columns
+                      %tr
+                        %td
+                          %img{ :src => "http://placehold.it/200x100" } 
+                        %td.expander
+                  %td.wrapper.last
+                    %table.eight.columns
+                      %tr
+                        %td.panel
+                          %h3 Hello #{@user.name},
+                          %p= "Check out some of the #{ @course.badge_term.pluralize } that you and your #{ term_for :team} have earned recently in #{@course.name}."
+                        %td.expander
+
+              //-- content start -->
+
+              %table.row
+                %tr
+                  %td.wrapper
+
+                    %table.seven.columns
+                      %tr 
+                        %td
+                          
+                          %h6= "Your Team's Recently Earned #{ @course.badge_term.pluralize }"
+
+                          %table
+                            %tr
+                              %td.three.sub-columns
+                                %img{ :src => "http://placehold.it/120x120" }
+                              
+
+                              %td.four.sub-columns.last
+                                %p= "You and 2 other people received the <b>Attendance Streak</b> #{@course.badge_term.pluralize} for showing up to class 10 times in a row."
+                          %table
+                            %tr
+                              %td.three.sub-columns
+                                %img{ :src => "http://placehold.it/120x120" }
+
+                              %td.four.sub-columns.last
+                                %p Someone in your section received the <b>Busy Bee</b> #{ term_for :badge} for working hard in class.
+
+                          %table
+                            %tr
+                              %td.three.sub-columns
+                                %img{ :src => "http://placehold.it/120x120" }
+                              %td.four.sub-columns.last
+                                %p Nicely done. {{You and 4 others}} earned the {{Meet the Professor}} #{ term_for :badge} for {{visiting the professor in office hours.}}
+                        %td.expander
+
+                    %table.seven.columns
+                      %tr
+                        %td
+                          %br
+
+                          %table.button
+                            %tr
+                              %td
+                                %a{:href => "#" }What #{ term_for :badges} will you earn next?
+                        %td.expander
+
+                  %td.wrapper.last
+
+                    %table.five.columns
+                      %tr
+                        %td
+                          %h6 Earn These #{ term_for :badges} Next
+                          %table
+                            %tr
+                              %td.two.sub-columns
+                                %img{ :src => "http://placehold.it/67x67" }
+                              %td.two.sub-columns
+                                %img{ :src => "http://placehold.it/67x67" }
+                              %td.two.sub-columns
+                                %img{ :src => "http://placehold.it/67x67" }
+                            %tr
+                              %td.two.sub-columns
+                                %img{ :src => "http://placehold.it/67x67" }
+                              %td.two.sub-columns
+                                %img{ :src => "http://placehold.it/67x67" }
+                              %td.two.sub-columns
+                                %img{ :src => "http://placehold.it/67x67" }
+                          %table.button
+                            %tr
+                              %td
+                                %a{:href => "#" }Find out how
+                        %td.expander
+                    %br
+
+                    %table.five.columns
+                      %tr
+                        %td
+                          %h6{:style => "margin-bottom:5px;" } All-time Stats
+
+                          %table
+                            %tr
+                              %td.two.sub-columns
+                                %img src="images/badge.png" 
+                              %td.two.sub-columns
+                                %h1.badgeNumber 67
+                                %p #{ term_for :badges} earned as a team
+                            %tr
+                              %td.two.sub-columns
+                                %img{ :src => "images/badge.png" }
+                              %td.two.sub-columns
+                                %h1.badgeNumber 12
+                                %p #{ term_for :badges} earned individually
+                        %td.expander
+
+                    %br
+
+                    %table.five.columns
+                      %tr
+                        %td.panel
+                          %h6{ :style => "margin-bottom:5px;" } Have feedback about this email?
+                          %p Let us know: <a href="#">{{LINK HERE}}</a>
+                        %td.expander
+              %br
+              %br
+              // Legal + Unsubscribe
+              %table.row
+                %tr
+                  %td.wrapper.last
+                    %table.twelve.columns
+                      %tr
+                        %td{:align => "center"}
+                          %center
+                            %p{ :style => "text-align:center;" } &copy; GradeCraft 2014
+                        %td.expander
