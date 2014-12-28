@@ -73,9 +73,8 @@
                                 Edit
                                 %span.sr-only=assignment.name
                             %li
-                              %a{:href => copy_assignments_path(:id => assignment), :class => 'button', :method => :copy }
-                                Copy
-                                %span.sr-only=assignment.name
+                              = link_to "Copy", copy_assignments_path(:id => assignment), :class => 'button', :method => :copy
+                              %span.sr-only=assignment.name
                             %li
                               %a{:href => assignment_path(assignment), :class => "button", :data => { confirm: 'Are you sure?', method: :delete } }
                                 Delete

@@ -69,10 +69,15 @@ class AssignmentsController < ApplicationController
 
   # Duplicate an assignment - important for super repetitive items like attendance and reading reactions
   def copy
+    session[:return_to] = request.referer
     @assignment = current_course.assignments.find(params[:id])
     new_assignment = @assignment.dup
     new_assignment.save
-    redirect_to @assignment.assignment_type
+    if session[:return_to].present?
+      redirect_to session[:return_to]
+    else
+      redirect_to assignments
+    end
   end
 
   def create
