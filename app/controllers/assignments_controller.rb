@@ -73,6 +73,13 @@ class AssignmentsController < ApplicationController
     @assignment = current_course.assignments.find(params[:id])
     new_assignment = @assignment.dup
     new_assignment.save
+    if @assignment.assignment_score_levels.present?
+      @assignment.assignment_score_levels.each do |asl|
+        asl.dup
+        asl.assignment_id = new_assignment.id
+        asl.save
+      end
+    end
     if session[:return_to].present?
       redirect_to session[:return_to]
     else
