@@ -1,5 +1,6 @@
 GradeCraft::Application.routes.draw do
 
+
   require 'sidekiq/web'
   require 'admin_constraint'
   mount Sidekiq::Web => '/sidekiq', :constraints => AdminConstraint.new
@@ -18,6 +19,7 @@ GradeCraft::Application.routes.draw do
   #12. Users
   #13. User Auth
   #14. Uploads
+  #15. Events
 
   #1. Analytics & Charts
   namespace :analytics do
@@ -301,4 +303,7 @@ GradeCraft::Application.routes.draw do
   resource :uploads do
     get :remove
   end
+
+  #15. Events
+  resources :events
 end
