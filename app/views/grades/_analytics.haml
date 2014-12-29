@@ -27,11 +27,7 @@
     .small-12.medium-12.large-6.columns.box
       %h4.bold Participants
 
-      - if @assignment.accepts_submissions? && @assignment.submissions.present?
-        #numberComplete{:"data-type" => "full", "data-info" => "#{term_for :students} Submitted", "data-percent" => "#{@assignment.submission_rate(current_course)}", "data-fgcolor" => "#61a9dc", "data-bgcolor" => "#333333", "data-text" => "#{@assignment.submissions.count}", "data-dimension" => "180", "data-fontsize" => "38", "data-border" => "#222222", "data-bordersize" => "2"  }
-
-      - else
-        #numberComplete{:"data-type" => "full", "data-info" => "#{term_for :students} Participated", "data-percent" => "#{@assignment.completion_rate(current_course)}", "data-fgcolor" => "#61a9dc", "data-bgcolor" => "#333333", "data-text" => "#{@assignment.grade_count}", "data-dimension" => "180", "data-fontsize" => "38", "data-border" => "#222222", "data-bordersize" => "2"   }
+      #numberComplete{:"data-type" => "full", "data-info" => "#{term_for :students} Participated", "data-percent" => "#{@assignment.completion_rate(current_course)}", "data-fgcolor" => "#61a9dc", "data-bgcolor" => "#333333", "data-text" => "#{@assignment.grade_count}", "data-dimension" => "180", "data-fontsize" => "38", "data-border" => "#222222", "data-bordersize" => "2"   }
 
     .small-12.medium-12.large-6.columns.box
       %h4.bold Percentage Scores Earned
