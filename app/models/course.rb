@@ -65,6 +65,7 @@ class Course < ActiveRecord::Base
     c.has_many :submissions
     c.has_many :teams
     c.has_many :course_memberships
+    c.has_many :events
   end
 
   has_many :users, :through => :course_memberships

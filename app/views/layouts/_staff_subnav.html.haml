@@ -98,6 +98,9 @@
   %li
     %i.fi-list
     = link_to "Grading Scheme", grade_scheme_elements_path
+  %li
+    %i.fi-calendar
+    = link_to "Calendar Events", events_path
   
   - if LTIProvider.present?
     %hr
