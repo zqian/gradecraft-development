@@ -106,7 +106,7 @@ class NotificationMailer < ActionMailer::Base
     @course = @earned_badge.course
     mail(:to => @user.email, :subject => "#{@course.courseno} - You've earned a new #{@course.badge_term}!") do |format|
       format.text
-      format.html
+      #format.html
     end
   end
 
