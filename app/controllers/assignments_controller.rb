@@ -75,9 +75,9 @@ class AssignmentsController < ApplicationController
     new_assignment.save
     if @assignment.assignment_score_levels.present?
       @assignment.assignment_score_levels.each do |asl|
-        asl.dup
-        asl.assignment_id = new_assignment.id
-        asl.save
+        new_asl = asl.dup
+        new_asl.assignment_id = new_assignment.id
+        new_asl.save
       end
     end
     if session[:return_to].present?
