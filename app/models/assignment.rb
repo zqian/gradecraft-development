@@ -300,7 +300,7 @@ class Assignment < ActiveRecord::Base
 
   #Counting how many grades there are for an assignment
   def grade_count
-    grades.graded.count
+    grades.released.count
   end
 
   #Counting how many non-zero grades there are for an assignment
@@ -313,6 +313,7 @@ class Assignment < ActiveRecord::Base
    ((grade_count / course.graded_student_count.to_f) * 100).round(2)
   end
 
+  #Counting the percentage of submissions from the entire class
   def submission_rate(course)
     ((submissions.count / course.graded_student_count.to_f) * 100).round(2)
   end
