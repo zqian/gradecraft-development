@@ -9,17 +9,17 @@
 * Assignment Submissions
 * Student Dashboard
 * Interactive Grade Predictor
+* Interactive Course Timeline
 * Grading schemes
-* Import students
-* Unified Gradebook view
 * Export students and final grades
 * User analytics
 * Team analytics
+* Custom leveling system
 * Assignment stats
 * Student-logged assignment scoring
 * Multipliers (students decide assignment weight)
 
-## Upcoming:
+## Coming Soon:
 * Interactive rubrics
 * Learning analytics suite
 
