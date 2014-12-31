@@ -184,7 +184,7 @@ class AnalyticsController < ApplicationController
     if current_course.start_date && current_course.end_date
       @range = (current_course.start_date..current_course.end_date)
     else
-      @range = params[:range].presence && params[:range].to_sym
+      @range = :past_year
     end
   end
 end
