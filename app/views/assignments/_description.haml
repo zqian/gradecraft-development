@@ -1,27 +1,28 @@
 - if current_user_is_staff? 
   %a{:href => "#", "data-reveal-id" => "assignment_description", :data => {:reveal => "true" } } 
-    %i.fi-eye
-    Rules
+    %i.fi-download
+    Downloads
 - else
   %a.button.radius{:href => "#", "data-reveal-id" => "assignment_description", :data => {:reveal => "true" } } 
-    %i.fi-eye
-    Rules
+    %i.fi-download
+    Downloads
 #assignment_description.reveal-modal{:data => {:reveal => "true" }}
   %h3.bold= @assignment.name
   -if @assignment.due_at.present?
     .italic= "Due: #{@assignment.due_at}"    
   - if @assignment.assignment_files.present?
     %ul
-      .bold Attached files
+      .bold Downloads
       - @assignment.assignment_files.each do |af|
         %li
           = link_to af.filename, af.url
   %p= raw @assignment.description
 
-  %hr
 
-  %h3.uppercase #{ @assignment.assignment_type.name} Guidelines
+  - if @assignment.assignment_type.predictor_description.present?
+    %hr
+    %h3.uppercase #{ @assignment.assignment_type.name} Guidelines
 
-  %p= raw @assignment.assignment_type.predictor_description
+    %p= raw @assignment.assignment_type.predictor_description
 
   %a.close-reveal-modal &#215;

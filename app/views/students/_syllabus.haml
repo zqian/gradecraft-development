@@ -91,12 +91,9 @@
                       - else
                         - if assignment.description?
                           %li
-                            %a.button{:href => "#", "data-reveal-id" => "assignment_description_#{assignment.id}", :data => {:reveal => "true" } } See Description
+                            %a.button{:href => "#", "data-reveal-id" => "assignment_description_#{assignment.id}", :data => {:reveal => "true" } } Downloads
                             %div.reveal-modal{:id => "assignment_description_#{assignment.id}", :data => {:reveal => "true" }}
-                              %h3= assignment.name
-                              = "Due: #{assignment.due_at}"
-                              %p= raw assignment.description
-                              %a.close-reveal-modal &#215;
+                              = render "assignments/description"
                       - if current_user_is_staff?
                         - if assignment.is_individual?
                           - if current_student_data.grade_released_for_assignment?(assignment)
