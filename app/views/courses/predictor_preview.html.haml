@@ -49,7 +49,7 @@
                       .small-12.medium-5.columns.assignmentData{:data => {:assignment => assignment.id, :'possible-points' => assignment.point_total}}  
 
                         - if assignment.fixed?
-                          %input{:type => "checkbox", :name => assignment.name, :class => "class-checkbox right", :'data-assignment-type-id' => assignment.assignment_type_id }
+                          %input{:type => "checkbox", :name => assignment.name, :class => "class-checkbox right", :'data-assignment-type-id' => assignment.assignment_type_id, :value => assignment.point_total }
                         - elsif assignment.select?
                           = select_tag assignment.name, options_from_collection_for_select(assignment.assignment_score_levels,'value','name'),  :class => 'point-value', :id => "total-#{assignment.id}", :include_blank => true
                         - else
