@@ -14,9 +14,6 @@ class Assignment < ActiveRecord::Base
   has_one :rubric
   delegate :mass_grade?, :student_weightable?, :to => :assignment_type
 
-  #For instances where the assignment inherits the score levels through the assignment type
-  has_many :score_levels, :through => :assignment_type
-
   #for instances where the assignment needs its own unique score levels
   has_many :assignment_score_levels, -> { order "value" }
   accepts_nested_attributes_for :assignment_score_levels, allow_destroy: true, :reject_if => proc { |a| a['value'].blank? || a['name'].blank? }
@@ -286,9 +283,7 @@ class Assignment < ActiveRecord::Base
 
   #Using the parent assignment type's score levels if they're present - otherwise getting the assignment score levels
   def score_levels_set
-    if assignment_type.score_levels.present?
-      assignment_type.score_levels
-    elsif self.assignment_score_levels.present?
+    if self.assignment_score_levels.present?
       assignment_score_levels
     end
   end
