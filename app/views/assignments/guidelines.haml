@@ -49,33 +49,24 @@
               %i.fi-page-export-csv
               Download Grades
 
-    - if @assignment.has_groups?
-      = render "group_show"
-    - else
-      = render "individual_show"
-  
-  - else
-
-    .small-12
-      %h3.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
-
+  .small-12.columns
+    %br
+    -if @assignment.due_at.present?
+      .italic= "Due: #{@assignment.due_at}"    
+    - if @assignment.assignment_files.present?
+      %ul
+        .bold Downloads
+        - @assignment.assignment_files.each do |af|
+          %li
+            = link_to af.filename, af.url
+    
+  - if @assignment.rubric.present? && @assignment.rubric.designed?  
     .small-12.columns
-      - if @assignment.has_groups?
-        = render "grades/group_show"
-      - else
-        = render "grades/individual_show"
-      .clearfix
-
-  .clearfix
-   
-  - if @assignment.rubric.present? && @assignment.rubric.designed?    
-    - if current_user_is_staff?
-      %h3#rubric-preview-headline Rubric Preview 
-      %h4#ungraded-subtitle= "#{@ungraded_percentage}% ungraded"
-    - else
-      %h3#rubric-preview-headline Grading Rubric
+      %hr
+    
+      %h4.uppercase Grading Rubric:
     #preview-rubric(style="font-size: 12px")
-      %table#grade-rubric-table(width="100%")
+      %table.small-12
         %thead
           %tr
             %td.metric.heading
@@ -121,3 +112,15 @@
                     .graded-students= "#{tier.rubric_grades.size} students (#{'%.0f' % ((tier.rubric_grades.size/@graded_count).to_f * 100)}%) at this level"
               - if metric.tiers.size < @rubric.max_tier_count
                 %td.filler(colspan="#{@rubric.max_tier_count - metric.tiers.size}")
+
+    .small-12.columns
+      %hr
+    
+      %h4.uppercase Guidelines:
+      %p= raw @assignment.description
+
+      - if @assignment.assignment_type.predictor_description.present?
+        %hr
+        %h4.uppercase #{ @assignment.assignment_type.name} Guidelines:
+
+        %p= raw @assignment.assignment_type.predictor_description

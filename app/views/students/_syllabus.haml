@@ -91,9 +91,7 @@
                       - else
                         - if assignment.description?
                           %li
-                            %a.button{:href => "#", "data-reveal-id" => "assignment_description_#{assignment.id}", :data => {:reveal => "true" } } Downloads
-                            %div.reveal-modal{:id => "assignment_description_#{assignment.id}", :data => {:reveal => "true" }}
-                              = render "assignments/description"
+                            = link_to "Downloads", guidelines_assignment_path(assignment)
                       - if current_user_is_staff?
                         - if assignment.is_individual?
                           - if current_student_data.grade_released_for_assignment?(assignment)
