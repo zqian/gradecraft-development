@@ -138,6 +138,12 @@ class CoursesController < ApplicationController
     end
   end
 
+  def predictor_preview
+    @assignments = current_course.assignments
+    @grade_scheme_elements = current_course.grade_scheme_elements
+    @grade_levels_json = @grade_scheme_elements.order(:low_range).pluck(:low_range, :letter, :level).to_json
+  end
+
   def destroy
     @course = Course.find(params[:id])
     @name = @course.name

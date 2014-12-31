@@ -166,6 +166,7 @@ GradeCraft::Application.routes.draw do
       put 'timeline_settings' => 'courses#timeline_settings_update'
       get 'predictor_settings' => 'courses#predictor_settings', as: :predictor_settings
       put 'predictor_settings' => 'courses#predictor_settings_update'
+      get 'predictor_preview' => 'courses#predictor_preview'
     end
   end
   resources :course_memberships

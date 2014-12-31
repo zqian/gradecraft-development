@@ -96,6 +96,9 @@
     %i.fi-database
     = link_to "#{term_for :assignment_types}", assignment_types_path
   %li
+    %i.fi-checkbox
+    = link_to "Predictor Preview", predictor_preview_course_path(current_course)
+  %li
     %i.fi-list
     = link_to "Grading Scheme", grade_scheme_elements_path
   %li
