@@ -78,6 +78,7 @@ class AssignmentsController < ApplicationController
     session[:return_to] = request.referer
     @assignment = current_course.assignments.find(params[:id])
     new_assignment = @assignment.dup
+    new_assignment.name.prepend("Copy of ")
     new_assignment.save
     if @assignment.assignment_score_levels.present?
       @assignment.assignment_score_levels.each do |asl|

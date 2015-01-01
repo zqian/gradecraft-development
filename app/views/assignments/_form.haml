@@ -85,7 +85,7 @@
         .small-12
           = f.label :media, "Image"
           = f.file_field :media
-          - if @assignment.media.present?
+          - if @assignment.media?
             %img{:src => @assignment.media, :width => 40, :alt => "Primary Assignment Image" }
             = f.check_box :remove_media
             Remove Image
@@ -122,7 +122,7 @@
           = f.label :point_total, "Total Points Possible"
           = f.text_field :point_total
 
-      .small-12.large-8
+      .small-12.large-12
 
         .small-12.large-4.columns
           = f.input :open_at, as: :string, :include_blank => true, :input_html => { :class => 'datetimepicker', :value => @assignment.try(:open_at) }
