@@ -16,6 +16,7 @@
   .small-12.columns
     
     .assignments
+      %br
       - @assignment_type.each do |assignment_type|
         .assignment_type{:id => "assignment-type-#{assignment_type.id}" }
           %h3.collapse.medium-8

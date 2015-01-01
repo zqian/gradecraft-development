@@ -4,20 +4,15 @@ class Badge < ActiveRecord::Base
   :multiplier, :point_total, :earned_badges, :earned_badges_attributes, :score, :badge_file_ids, 
   :badge_files_attributes, :badge_file
 
-
   acts_as_list scope: :course
-  default_scope :order => 'position ASC'
   
   mount_uploader :icon, BadgeIconUploader
 
   has_many :earned_badges, :dependent => :destroy
 
-  has_many :tasks, :as => :assignment, :dependent => :destroy
   belongs_to :course
 
   accepts_nested_attributes_for :earned_badges, allow_destroy: true, :reject_if => proc { |a| a['score'].blank? }
-
-  has_many :submissions, as: :assignment
 
   has_many :badge_files, :dependent => :destroy
   accepts_nested_attributes_for :badge_files
@@ -25,7 +20,7 @@ class Badge < ActiveRecord::Base
   validates_presence_of :course, :name
   validates_numericality_of :point_total, :allow_blank => true
 
-  scope :ordered, -> { 'assignments.id ASC' }
+  scope :sorted, -> { 'position ASC'}
   scope :visible, -> { where(visible: true) }
 
   def self.with_earned_badge_info_for_student(student)
