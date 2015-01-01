@@ -1,6 +1,5 @@
 class Assignment < ActiveRecord::Base
   acts_as_list scope: :course
-  default_scope :order => 'position ASC'
   
   attr_accessible :name, :description, :point_total, :open_at, :due_at, :grade_scope, :visible, :required, 
     :accepts_submissions, :release_necessary, :media, :thumbnail, :media_credit, :media_caption, 
@@ -72,6 +71,7 @@ class Assignment < ActiveRecord::Base
   # Sorting assignments by different properties
   scope :chronological, -> { order('due_at ASC') }
   scope :alphabetical, -> { order('name ASC') }
+  scope :sorted, -> { order('position ASC') }
 
   # Filtering Assignments by various date properties
   scope :with_due_date, -> { where('assignments.due_at IS NOT NULL') }

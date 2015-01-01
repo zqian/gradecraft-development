@@ -5,7 +5,7 @@ class StudentsController < ApplicationController
 
   before_filter :ensure_staff?, :except=> [:timeline, :predictor, :course_progress, :badges, :teams, :syllabus]
 
-  #Lists all studnets in the course, broken out by those being graded and auditors
+  #Lists all students in the course, broken out by those being graded and auditors
   def index
     @title = "#{(current_course.user_term).singularize} Roster"
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
@@ -26,8 +26,8 @@ class StudentsController < ApplicationController
 
   #Displaying the list of assignments and team challenges for the semester
   def syllabus
-    @assignment_type = current_course.assignment_types
-    @assignments = current_course.assignments.chronological.alphabetical
+    @assignment_types = current_course.assignment_types.sorted
+    @assignments = current_course.assignments.sorted
   end
 
   # Course timeline, displays all assignments that are determined by the instructor to belong on the timeline + team challenges if present

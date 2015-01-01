@@ -1,6 +1,5 @@
 class AssignmentType < ActiveRecord::Base
   acts_as_list scope: :course
-  default_scope :order => 'position ASC'
   
   attr_accessible :due_date_present, :levels, :max_value, :name,
     :percentage_course, :point_setting, :points_predictor_display,
@@ -21,7 +20,10 @@ class AssignmentType < ActiveRecord::Base
   before_save :ensure_score_levels, :if => :multi_select?
 
   scope :student_weightable, -> { where(:student_weightable => true) }
-  scope :ordered, -> { order 'order_placement ASC' }
+  scope :timelinable, -> { where(:include_in_timeline => true) }
+  scope :todoable, -> { where(:include_in_to_do => true) }
+  scope :predictable, -> { where(:include_in_predictor => true) }
+  scope :sorted, -> { order 'position' }
   scope :weighted_for_student, ->(student) { joins("LEFT OUTER JOIN assignment_weights ON assignment_types.id = assignment_weights.assignment_type_id AND assignment_weights.student_id = '#{sanitize student.id}'") }
 
   def self.weights_for_student(student)
