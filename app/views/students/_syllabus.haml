@@ -93,7 +93,7 @@
                       - else
                         - if assignment.description?
                           %li
-                            = link_to "Downloads", guidelines_assignment_path(assignment)
+                            = link_to "Downloads", guidelines_assignment_path(assignment), :class => "button"
                       - if current_user_is_staff?
                         - if assignment.is_individual?
                           - if current_student_data.grade_released_for_assignment?(assignment)

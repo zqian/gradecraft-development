@@ -1,5 +1,4 @@
 class Assignment < ActiveRecord::Base
-  acts_as_list scope: :course
   
   attr_accessible :name, :description, :point_total, :open_at, :due_at, :grade_scope, :visible, :required, 
     :accepts_submissions, :release_necessary, :media, :thumbnail, :media_credit, :media_caption, 
@@ -71,6 +70,7 @@ class Assignment < ActiveRecord::Base
   # Sorting assignments by different properties
   scope :chronological, -> { order('due_at ASC') }
   scope :alphabetical, -> { order('name ASC') }
+  acts_as_list scope: :assignment_type
   scope :sorted, -> { order('position ASC') }
 
   # Filtering Assignments by various date properties
