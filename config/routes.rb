@@ -53,6 +53,7 @@ GradeCraft::Application.routes.draw do
   #2. Assignments, Submissions, Tasks, Grades
   resources :assignments do
     collection do
+      post :sort
       get :feed
       get :settings
       post 'copy' => 'assignments#copy'
@@ -114,8 +115,10 @@ GradeCraft::Application.routes.draw do
       get 'all_grades'
       get 'export_scores'
     end
+    collection do 
+      post :sort
+    end
   end
-
 
   #4. Assignment Type Weights
   get 'assignment_type_weights' => 'assignment_type_weights#mass_edit', as: :assignment_type_weights
@@ -135,6 +138,9 @@ GradeCraft::Application.routes.draw do
     member do
       get 'mass_award' => 'earned_badges#mass_edit', as: :mass_award
       put 'mass_award' => 'earned_badges#mass_update'
+    end
+    collection do
+      post :sort
     end
   end
 

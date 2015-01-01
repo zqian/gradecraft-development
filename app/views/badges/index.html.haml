@@ -16,19 +16,19 @@
   .small-12.columns
     
     //instructor badge index table
-    %table.responsive.nofeatures_default_name_dynatable
+    %table.responsive
       %thead
         %tr
-          %th.center{"data-dynatable-no-sort" => "true", :width => "15%" } Icon
+          %th.center{:width => "15%" } Icon
           %th{:width => "35%" } Name
           - if current_course.valuable_badges?
             %th{"data-sort" => "int"} Value
           %th Awarded
           %th Visible to Students
           %th.button-column
-      %tbody
+      %tbody.sort-badges
         - current_course.badges.each do |badge|
-          %tr
+          %tr{:id => "badge-#{badge.id}"}
             %td.center
               %img{ :src => badge.icon, :alt => badge.name, :width => "100" }
             %td

@@ -1,5 +1,6 @@
+.clearfix
 // Display top headers for expandable list of assignments.
-- @assignments.group_by(&:assignment_type).each do |assignment_type, assignments|
+- current_course.assignment_types.sorted.each do |assignment_type|
   .assignment_type{:id => "assignment-type-#{assignment_type.id}" }
 
     // Display the student's points out of assignment total, if there is an assignment max value. Else
@@ -35,6 +36,7 @@
 
         // Display the assignments for each assignment type in a responsive table, below header.
         %table.responsive
+          - assignments = assignment_type.assignments.sorted
           - assignments.each do |assignment|
             - if assignment.visible? || current_student_data.grade_released_for_assignment?(assignment)
               %tr

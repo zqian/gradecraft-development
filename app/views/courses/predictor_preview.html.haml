@@ -23,8 +23,9 @@
       .clearfix
 
     #predictorPage{ 'data-course-total' => current_course.total_points }
+      %br
       %ul.slides.small-12.columns
-        - @assignments.group_by(&:assignment_type).each do |assignment_type, assignments|
+        - current_course.assignment_types.sorted.each do |assignment_type|
           %li{:id => "slide-#{assignment_type.id}", :'data-assignment-type-id' => assignment_type.id, :'data-assignment-type-name' => assignment_type.name}
             .slide-panel.assignmentType
               %h3.collapse
@@ -32,6 +33,7 @@
                 .right.radius.label.fade
                   = "#{points assignment_type.max_value} points possible"
               .small-12
+                - assignments = assignment_type.assignments.sorted
                 - assignments.each do |assignment|
                   .clearfix
                   - if assignment.point_total > 0

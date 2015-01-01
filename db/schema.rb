@@ -84,6 +84,7 @@ ActiveRecord::Schema.define(version: 20141229041249) do
     t.boolean  "is_attendance"
     t.boolean  "has_winners"
     t.integer  "num_winner_levels"
+    t.integer  "position"
   end
 
   create_table "assignment_weights", force: true do |t|
@@ -142,6 +143,7 @@ ActiveRecord::Schema.define(version: 20141229041249) do
     t.boolean  "include_in_timeline",         default: true
     t.boolean  "include_in_predictor",        default: true
     t.boolean  "include_in_to_do",            default: true
+    t.integer  "position"
   end
 
   add_index "assignments", ["course_id"], name: "index_assignments_on_course_id", using: :btree
@@ -178,6 +180,7 @@ ActiveRecord::Schema.define(version: 20141229041249) do
     t.boolean  "visible",                 default: true
     t.boolean  "can_earn_multiple_times", default: true
     t.text     "email_description"
+    t.integer  "position"
   end
 
   create_table "bootsy_image_galleries", force: true do |t|

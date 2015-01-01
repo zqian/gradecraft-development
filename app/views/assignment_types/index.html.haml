@@ -23,30 +23,30 @@
           %th{:scope => "col"} Max value
           %th.button-column
             %span.sr-only Actions
-        %tbody
-          - current_course.assignment_types.each do |assignment_type|
-            %tr
-              %td= link_to assignment_type.name, assignment_type
-              %td= assignment_type.points_predictor_display
-              %td= points assignment_type.max_value
-              %td
-                .button-bar
-                  %ul.button-group.right.radius
-                    %li
-                      %a{:href => assignment_type_path(assignment_type), :class => 'button'}
-                        See
-                        %span.sr-only= assignment_type.name
+      %tbody
+        - current_course.assignment_types.sorted.each do |assignment_type|
+          %tr
+            %td= link_to assignment_type.name, assignment_type
+            %td= assignment_type.points_predictor_display
+            %td= points assignment_type.max_value
+            %td
+              .button-bar
+                %ul.button-group.right.radius
+                  %li
+                    %a{:href => assignment_type_path(assignment_type), :class => 'button'}
+                      See
+                      %span.sr-only= assignment_type.name
 
-                    %li
-                      %a{:href => edit_assignment_type_path(assignment_type), :class => 'button'}
-                        Edit
-                        %span.sr-only= assignment_type.name
-                    %li
-                      %a{:href => export_scores_assignment_type_path(assignment_type.id, format: 'csv'), :class => "button"}
-                        Download Scores
-                    %li
-                      %a{:href => assignment_type_path(assignment_type), :data => { confirm: 'Are you sure?', method: :delete }, :class => "button" }
-                        Delete
+                  %li
+                    %a{:href => edit_assignment_type_path(assignment_type), :class => 'button'}
+                      Edit
+                      %span.sr-only= assignment_type.name
+                  %li
+                    %a{:href => export_scores_assignment_type_path(assignment_type.id, format: 'csv'), :class => "button"}
+                      Download Scores
+                  %li
+                    %a{:href => assignment_type_path(assignment_type), :data => { confirm: 'Are you sure?', method: :delete }, :class => "button" }
+                      Delete
 
   %h4.subtitle= "#{term_for :student} Scores"
 

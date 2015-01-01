@@ -5,7 +5,7 @@ class AssignmentsController < ApplicationController
   def index
     redirect_to syllabus_path if current_user_is_student?
     @title = "#{term_for :assignments}"
-    @assignments = current_course.assignments.chronological.alphabetical
+    @assignment_types = current_course.assignment_types.sorted
   end
 
   #Gives the instructor the chance to quickly check all assignment settings for the whole course
@@ -130,6 +130,13 @@ class AssignmentsController < ApplicationController
         format.html {render :action => "new", :group => @group }
       end
     end
+  end
+
+  def sort
+    params[:"assignment"].each_with_index do |id, index|
+      Assignment.update_all({position: index+1}, {id: id})
+    end
+    render nothing: true
   end
 
   def destroy

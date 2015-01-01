@@ -68,6 +68,13 @@ class AssignmentTypesController < ApplicationController
     end
   end
 
+  def sort
+    params[:"assignment-type"].each_with_index do |id, index|
+      AssignmentType.update_all({position: index+1}, {id: id})
+    end
+    render nothing: true
+  end
+
   def export_scores
     @assignment_type = current_course.assignment_types.find(params[:id])
     respond_to do |format|
