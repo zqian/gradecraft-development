@@ -356,6 +356,8 @@ ActiveRecord::Schema.define(version: 20141229041249) do
     t.boolean  "in_team_leaderboard"
     t.boolean  "add_team_score_to_student",                             default: false
     t.boolean  "badge_emails",                                          default: false
+    t.datetime "start_date"
+    t.datetime "end_date"
   end
 
   add_index "courses", ["lti_uid"], name: "index_courses_on_lti_uid", using: :btree
@@ -472,6 +474,7 @@ ActiveRecord::Schema.define(version: 20141229041249) do
     t.integer  "predicted_score",    default: 0, null: false
   end
 
+  add_index "grades", ["assignment_id", "student_id"], name: "index_grades_on_assignment_id_and_student_id", unique: true, using: :btree
   add_index "grades", ["assignment_id"], name: "index_grades_on_assignment_id", using: :btree
   add_index "grades", ["assignment_type_id"], name: "index_grades_on_assignment_type_id", using: :btree
   add_index "grades", ["course_id"], name: "index_grades_on_course_id", using: :btree
@@ -623,7 +626,7 @@ ActiveRecord::Schema.define(version: 20141229041249) do
   create_table "submission_files", force: true do |t|
     t.string  "filename",      null: false
     t.integer "submission_id", null: false
-    t.string  "filepath"
+    t.text    "filepath"
   end
 
   create_table "submissions", force: true do |t|

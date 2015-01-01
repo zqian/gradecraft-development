@@ -178,7 +178,13 @@ class AnalyticsController < ApplicationController
 
   private
   def set_granularity_and_range
-    @granularity = params[:granularity].presence && params[:granularity].to_sym
-    @range = params[:range].presence && params[:range].to_sym
+
+    @granularity = :daily
+
+    if current_course.start_date && current_course.end_date
+      @range = (current_course.start_date..current_course.end_date)
+    else
+      @range = :past_year
+    end
   end
 end
