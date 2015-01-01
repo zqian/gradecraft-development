@@ -1,5 +1,6 @@
+.clearfix
 // Display top headers for expandable list of assignments.
-- @assignment_types.each do |assignment_type|
+- current_course.assignment_types.sorted.each do |assignment_type|
   .assignment_type{:id => "assignment-type-#{assignment_type.id}" }
 
     // Display the student's points out of assignment total, if there is an assignment max value. Else

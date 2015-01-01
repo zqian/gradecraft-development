@@ -5,8 +5,7 @@ class AssignmentsController < ApplicationController
   def index
     redirect_to syllabus_path if current_user_is_student?
     @title = "#{term_for :assignments}"
-    @assignments = current_course.assignments.chronological.alphabetical
-    @assignment_type = current_course.assignment_types
+    @assignment_types = current_course.assignment_types.sorted
   end
 
   #Gives the instructor the chance to quickly check all assignment settings for the whole course
