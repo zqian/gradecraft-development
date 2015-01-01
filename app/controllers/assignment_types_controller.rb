@@ -11,14 +11,12 @@ class AssignmentTypesController < ApplicationController
   def show
     @assignment_type = current_course.assignment_types.find(params[:id])
     @title = "#{@assignment_type.name}"
-    @score_levels = @assignment_type.score_levels
   end
 
   #Create a new assignment type
   def new
     @title = "Create a New #{term_for :assignment_type}"
     @assignment_type = current_course.assignment_types.new
-    @assignment_type.score_levels.build
   end
 
   #Edit assignment type

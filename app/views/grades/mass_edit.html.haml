@@ -42,16 +42,8 @@
                   = gf.hidden_field :student_id
                   = label_tag do
                     // Checking to see if the grade is actually graded before setting the default value to 0
-                    - if @assignment.grade_select? && @assignment.assignment_type.has_levels?
-                      = gf.select :raw_score, options_from_collection_for_select(@score_levels, :value, :formatted_name, grade.try(:raw_score)), include_blank: true
-                    - elsif @assignment.grade_select? && @assignment.has_levels?
+                    - if @assignment.grade_select? && @assignment.has_levels?
                       = gf.select :raw_score, options_from_collection_for_select(@assignment_score_levels, :value, :formatted_name, grade.try(:raw_score)), include_blank: true
-                    - elsif @assignment.grade_radio? && @assignment.assignment_type.has_levels?
-                      %ul.inline-list
-                        - @score_levels.each do |score_level|
-                          %li
-                            = gf.label :raw_score, "#{score_level.formatted_name}", value: score_level.value
-                            = gf.radio_button :raw_score, score_level.value, :class => "radio_inline"
                     - elsif @assignment.grade_radio? && @assignment.has_levels?
                       - @assignment_score_levels.each do |assignment_score_level|
                         = gf.label :raw_score, "#{assignment_score_level.formatted_name}", value: assignment_score_level.value
@@ -80,16 +72,8 @@
                     = gf.hidden_field :student_id
                     = label_tag do
                       // Checking to see if the grade is actually graded before setting the default value to 0
-                      - if @assignment.grade_select? && @assignment.assignment_type.has_levels?
-                        = gf.select :raw_score, options_from_collection_for_select(@score_levels, :value, :formatted_name, grade.try(:raw_score)), include_blank: true
-                      - elsif @assignment.grade_select? && @assignment.has_levels?
+                      - if @assignment.grade_select? && @assignment.has_levels?
                         = gf.select :raw_score, options_from_collection_for_select(@assignment_score_levels, :value, :formatted_name, grade.try(:raw_score)), include_blank: true
-                      - elsif @assignment.grade_radio? && @assignment.assignment_type.has_levels?
-                        %ul.inline-list
-                          - @score_levels.each do |score_level|
-                            %li
-                              = gf.label :raw_score, score_level.name, value: score_level.value
-                              = gf.radio_button :raw_score, score_level.value, :class => "radio_inline"
                       - elsif @assignment.grade_radio? && @assignment.has_levels?
                         - @assignment_score_levels.each do |assignment_score_level|
                           = gf.label :raw_score, assignment_score_level.name, value: assignment_score_level.value

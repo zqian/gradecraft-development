@@ -26,7 +26,7 @@ class GradesController < ApplicationController
     @title = "Editing #{current_student.name}'s Grade for #{@assignment.name}"
     @rubric = @assignment.rubric
     @metrics = existing_metrics_as_json if @rubric
-    @score_levels = @assignment.score_levels.order_by_value
+    #@score_levels = @assignment.score_levels.order_by_value
     @course_badges = serialized_course_badges
     @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
   end
@@ -114,7 +114,6 @@ class GradesController < ApplicationController
     @assignment = current_course.assignments.find(params[:id])
     @title = "Quick Grade #{@assignment.name}"
     @assignment_type = @assignment.assignment_type
-    @score_levels = @assignment_type.score_levels.order_by_value
     @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
     user_search_options = {}
@@ -173,7 +172,6 @@ class GradesController < ApplicationController
     @group = @assignment.groups.find(params[:group_id])
     @title = "Grading #{@group.name}'s #{@assignment.name}"
     @assignment_type = @assignment.assignment_type
-    @score_levels = @assignment_type.score_levels
     @assignment_score_levels = @assignment.assignment_score_levels
     @grades = @group.students.map do |student|
       @assignment.grades.where(:student_id => student).first || @assignment.grades.new(:student => student, :assignment => @assignment, :graded_by_id => current_user, :status => "Graded")

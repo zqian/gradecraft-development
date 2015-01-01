@@ -32,7 +32,6 @@ class AssignmentsController < ApplicationController
     @auditing = current_course.students_auditing.includes(:teams).where(user_search_options)
     @rubric = @assignment.fetch_or_create_rubric
     @metrics = @rubric.metrics
-    @score_levels = @assignment.score_levels.order_by_value
     @course_badges = serialized_course_badges
     @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
     @course_student_ids = current_course.students.map(&:id)
@@ -50,6 +49,13 @@ class AssignmentsController < ApplicationController
 
     #used to display an alternate view of the same content
     render :detailed_grades if params[:detailed]
+  end
+
+  def guidelines
+    @assignment = current_course.assignments.find(params[:id])
+    @title = @assignment.name
+    @rubric = @assignment.fetch_or_create_rubric
+    @metrics = @rubric.metrics
   end
 
   def rules
@@ -72,6 +78,7 @@ class AssignmentsController < ApplicationController
     session[:return_to] = request.referer
     @assignment = current_course.assignments.find(params[:id])
     new_assignment = @assignment.dup
+    new_assignment.name.prepend("Copy of ")
     new_assignment.save
     if @assignment.assignment_score_levels.present?
       @assignment.assignment_score_levels.each do |asl|

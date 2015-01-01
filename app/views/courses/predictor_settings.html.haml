@@ -42,8 +42,6 @@
                           - elsif assignment.slider?
                             - if assignment.score_levels.present?
                               .slider{:max => assignment.point_total, :'data-scorelevelvals' => "#{assignment.score_levels.map(&:value)}", :'data-scorelevelnames' => "#{assignment.score_levels.map(&:name)}", :'data-highlight' => "true"}
-                            - elsif assignment.assignment_type.score_levels.present?
-                              .slider{:max => assignment.point_total, :'data-scorelevelvals' => "#{assignment.assignment_type.score_levels.map(&:value)}", :'data-scorelevelnames' => "#{assignment.assignment_type.score_levels.map(&:name)}", :'data-highlight' => "true"}
                             - else
                               .slider{:max => assignment.point_total, :'data-highlight' => "true"}
                           - else

@@ -59,6 +59,7 @@ GradeCraft::Application.routes.draw do
       get 'weights' => 'assignment_weights#mass_edit', :as => :mass_edit_weights
     end
     member do
+      get 'guidelines'
       get 'mass_grade' => 'grades#mass_edit', as: :mass_grade
       put 'mass_grade' => 'grades#mass_update'
       get 'group_grade' => 'grades#group_edit', as: :group_grade
@@ -166,6 +167,7 @@ GradeCraft::Application.routes.draw do
       put 'timeline_settings' => 'courses#timeline_settings_update'
       get 'predictor_settings' => 'courses#predictor_settings', as: :predictor_settings
       put 'predictor_settings' => 'courses#predictor_settings_update'
+      get 'predictor_preview' => 'courses#predictor_preview'
     end
   end
   resources :course_memberships
