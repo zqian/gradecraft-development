@@ -77,7 +77,7 @@ class BadgesController < ApplicationController
 
   def sort
     params[:"badge"].each_with_index do |id, index|
-      Badge.update_all({position: index+1}, {id: id})
+      current_course.badges.update_all({position: index+1}, {id: id})
     end
     render nothing: true
   end
