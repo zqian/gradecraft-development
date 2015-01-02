@@ -8,7 +8,7 @@ class AssignmentType < ActiveRecord::Base
     :student_logged_revert_button_text, :student_logged_button_text
 
   belongs_to :course
-  has_many :assignments
+  has_many :assignments, -> { order('position ASC') }
   has_many :submissions, :through => :assignments
   has_many :assignment_weights
   has_many :grades

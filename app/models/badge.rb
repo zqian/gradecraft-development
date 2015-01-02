@@ -20,7 +20,7 @@ class Badge < ActiveRecord::Base
   validates_presence_of :course, :name
   validates_numericality_of :point_total, :allow_blank => true
 
-  scope :sorted, -> { 'position ASC'}
+  scope :sorted, -> { order('position ASC') }
   scope :visible, -> { where(visible: true) }
 
   def self.with_earned_badge_info_for_student(student)

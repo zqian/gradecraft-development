@@ -1,6 +1,6 @@
 class AssignmentsController < ApplicationController
 
-  before_filter :ensure_staff?, :except => [:feed, :show, :index]
+  before_filter :ensure_staff?, :except => [:feed, :show, :index, :guidelines]
 
   def index
     redirect_to syllabus_path if current_user_is_student?
@@ -134,7 +134,7 @@ class AssignmentsController < ApplicationController
 
   def sort
     params[:"assignment"].each_with_index do |id, index|
-      Assignment.update_all({position: index+1}, {id: id})
+      current_course.assignments.update_all({position: index+1}, {id: id})
     end
     render nothing: true
   end

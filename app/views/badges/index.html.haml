@@ -19,16 +19,18 @@
     %table.responsive
       %thead
         %tr
+          %th
           %th.center{:width => "15%" } Icon
-          %th{:width => "35%" } Name
+          %th{:width => "25%" } Name
           - if current_course.valuable_badges?
             %th{"data-sort" => "int"} Value
           %th Awarded
-          %th Visible to Students
-          %th.button-column
+          %th{:width => "35%" }
       %tbody.sort-badges
-        - current_course.badges.each do |badge|
+        - current_course.badges.sorted.each do |badge|
           %tr{:id => "badge-#{badge.id}"}
+            %td
+              %img{:src => "assets/draggable_transparent.png", :width => "10px"}
             %td.center
               %img{ :src => badge.icon, :alt => badge.name, :width => "100" }
             %td
@@ -37,11 +39,6 @@
             - if current_course.valuable_badges?
               %td= points badge.point_total
             %td= badge.awarded_count
-            %td
-              - if badge.visible?
-                Yes
-              - else
-                No
             %td
               .button-bar
                 %ul.button-group.right.radius

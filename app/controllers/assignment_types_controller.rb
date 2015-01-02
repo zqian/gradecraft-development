@@ -70,7 +70,7 @@ class AssignmentTypesController < ApplicationController
 
   def sort
     params[:"assignment-type"].each_with_index do |id, index|
-      AssignmentType.update_all({position: index+1}, {id: id})
+      current_course.assignment_types.update_all({position: index+1}, {id: id})
     end
     render nothing: true
   end
