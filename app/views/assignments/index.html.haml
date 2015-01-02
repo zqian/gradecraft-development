@@ -41,7 +41,7 @@
                     %th{:scope => "col", :width => "10%"}  Max Value
                     %th
                 %tbody.sort-assignments
-                  - assignments= assignment_type.assignments.sorted
+                  - assignments = assignment_type.assignments.sorted
                   - assignments.each do |assignment|
                     %tr{:id => "assignment-#{assignment.id}"}
                       %td

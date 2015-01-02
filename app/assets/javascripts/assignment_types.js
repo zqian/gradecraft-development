@@ -86,15 +86,14 @@
     });
 
     $('.sort-assignments').sortable({
-      update: function(event){
+      update: function(event, ui){
+        var element = ui.item[0].parentElement;
         $.ajax({          
           url: '/assignments/sort',
           type: 'post',
-          data: $('.sort-assignments').sortable('serialize'),
+          data: $(element).sortable('serialize'),
           dataType: 'script',
-          complete: function(event){
-            //debugger;
-          }
+          complete: function(event){}
         });
       }
     });
