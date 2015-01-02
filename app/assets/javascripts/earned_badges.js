@@ -10,7 +10,7 @@ $(document).ready(function() {
 	  $.ajax({
         url: '/badges/sort',
 	    type: 'post',
-	    data: $('tbody').sortable('serialize'),
+	    data: $('.sort-badges').sortable('serialize'),
 	    dataType: 'script',
 	    complete: function(){}
 	  });
