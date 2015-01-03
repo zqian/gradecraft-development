@@ -37,7 +37,7 @@ class Grade < ActiveRecord::Base
 
   before_save :clean_html
   #TODO: removed these callback check with cait
-  after_save :update_scores
+  after_update :update_scores
   after_create :update_scores
   #after_destroy :save_student, :save_team
   #TODO: called only destroy callback since worker is executing cache_student_and_team_scores
