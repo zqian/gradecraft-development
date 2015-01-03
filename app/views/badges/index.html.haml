@@ -30,7 +30,7 @@
         - current_course.badges.sorted.each do |badge|
           %tr{:id => "badge-#{badge.id}"}
             %td
-              %img{:src => "assets/draggable_transparent.png", :width => "10px"}
+              = image_tag "draggable_transparent.png", :width => 10, :style => "margin-top: -6px"
             %td.center
               %img{ :src => badge.icon, :alt => badge.name, :width => "100" }
             %td

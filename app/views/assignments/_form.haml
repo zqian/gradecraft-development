@@ -52,13 +52,12 @@
             = f.check_box :release_necessary
             .form_label Do you want to release all grades at once? This is particularly useful for situations where extensive feedback is important.
 
-        - if @assignment.assignment_type.present? && ! @assignment.assignment_type.notify_released?
-          .small-12
-            .checkbox
-              = f.label :notify_released, "Notify by email?"
-              %i.fi-mail
-              = f.check_box :notify_released
-              .form_label Do you want to notify students by email when a grade is awarded? If grade release is necessary, this email will not be sent out until the grade is officially released.
+        .small-12
+          .checkbox
+            = f.label :notify_released, "Notify by email?"
+            %i.fi-mail
+            = f.check_box :notify_released
+            .form_label Do you want to notify students by email when a grade is awarded? If grade release is necessary, this email will not be sent out until the grade is officially released.
         .small-12
           .checkbox
             = f.label :include_in_timeline, "Timeline"
