@@ -26,7 +26,6 @@ class GradesController < ApplicationController
     @title = "Editing #{current_student.name}'s Grade for #{@assignment.name}"
     @rubric = @assignment.rubric
     @metrics = existing_metrics_as_json if @rubric
-    #@score_levels = @assignment.score_levels.order_by_value
     @course_badges = serialized_course_badges
     @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
   end

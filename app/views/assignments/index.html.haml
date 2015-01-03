@@ -20,7 +20,7 @@
       - @assignment_types.each do |assignment_type|
         .assignment_type{:id => "assignment-type-#{assignment_type.id}" }
           %h3.collapse.medium-8
-            %img{:src => "assets/draggable_transparent.png", :width => 10, :style => "margin-top: -6px" }
+            = image_tag "draggable_transparent.png", :width => 10, :style => "margin-top: -6px"
             #{assignment_type.name} – #{points assignment_type.max_value} points
           .collapse-hidden
             .small-12.medium-3.right.hide-for-small
@@ -45,7 +45,7 @@
                   - assignments.each do |assignment|
                     %tr{:id => "assignment-#{assignment.id}"}
                       %td
-                        %img{:src => "assets/draggable_transparent.png", :width => 10}
+                        = image_tag "draggable_transparent.png", :width => 10, :style => "margin-top: -2px"
                       %td
                         = link_to assignment.name, assignment
                       %td= assignment.try(:due_at) || "Ongoing"
