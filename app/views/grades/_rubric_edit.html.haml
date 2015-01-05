@@ -61,7 +61,7 @@
             .clear
         %td.filler(ng-show="metric.tiers.length < #{@rubric.max_tier_count}" colspan="{{#{@rubric.max_tier_count} - metric.tiers.length}}")
         %td.comments
-          %textarea(ng-model="metric.comment")
+          %textarea(ng-model="metric.comments")
 
   %br
   .row.text-center.points-given

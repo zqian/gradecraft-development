@@ -8,7 +8,7 @@ class RubricGrade < ActiveRecord::Base
 
   attr_accessible :metric_name, :metric_description, :max_points, :tier_name,
     :tier_description, :points, :submission_id, :metric_id, :tier_id, :order,
-    :student_id, :assignment_id
+    :student_id, :assignment_id, :comments
 
   validates :max_points, presence: true
   validates :metric_name, presence: true
