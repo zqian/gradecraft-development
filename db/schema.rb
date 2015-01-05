@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141204154717) do
+ActiveRecord::Schema.define(version: 20150105174901) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(version: 20141204154717) do
     t.boolean  "is_attendance"
     t.boolean  "has_winners"
     t.integer  "num_winner_levels"
+    t.integer  "position"
   end
 
   create_table "assignment_weights", force: true do |t|
@@ -141,6 +142,8 @@ ActiveRecord::Schema.define(version: 20141204154717) do
     t.boolean  "include_in_timeline",         default: true
     t.boolean  "include_in_predictor",        default: true
     t.boolean  "use_rubric_grading",          default: false
+    t.integer  "position"
+    t.boolean  "include_in_to_do",            default: true
   end
 
   add_index "assignments", ["course_id"], name: "index_assignments_on_course_id", using: :btree
@@ -176,6 +179,7 @@ ActiveRecord::Schema.define(version: 20141204154717) do
     t.datetime "updated_at"
     t.boolean  "visible",                 default: true
     t.boolean  "can_earn_multiple_times", default: true
+    t.integer  "position"
   end
 
   create_table "bootsy_image_galleries", force: true do |t|
@@ -353,6 +357,8 @@ ActiveRecord::Schema.define(version: 20141204154717) do
     t.integer  "point_total"
     t.boolean  "in_team_leaderboard"
     t.boolean  "add_team_score_to_student",                             default: false
+    t.datetime "start_date"
+    t.datetime "end_date"
   end
 
   add_index "courses", ["lti_uid"], name: "index_courses_on_lti_uid", using: :btree
@@ -395,6 +401,20 @@ ActiveRecord::Schema.define(version: 20141204154717) do
     t.integer  "badge_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+  end
+
+  create_table "events", force: true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.datetime "open_at"
+    t.datetime "due_at"
+    t.text     "media"
+    t.text     "thumbnail"
+    t.text     "media_credit"
+    t.string   "media_caption"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "course_id"
   end
 
   create_table "faqs", force: true do |t|
@@ -556,6 +576,7 @@ ActiveRecord::Schema.define(version: 20141204154717) do
     t.datetime "updated_at"
     t.integer  "assignment_id"
     t.integer  "student_id"
+    t.text     "comments"
   end
 
   create_table "rubrics", force: true do |t|

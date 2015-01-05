@@ -178,6 +178,7 @@
     this.id = attrs.id
     this.metric_id = attrs.metric_id
     this.tier_id = attrs.tier_id
+    this.comments = attrs.comments
 
   RubricGradePrototype.prototype = {}
 
@@ -248,13 +249,19 @@
     this.tiers = []
     this.selectedTier = null
     this.hasChanges = false
-    this.comments = ""
     this.id = if attrs.id then attrs.id else null
     this.rubricGrade = $scope.rubricGrades[this.id]
+
     if this.rubricGrade
       this.rubricGradeTierId = this.rubricGrade.tier_id
     else
       this.rubricGradeTierId = null
+
+    if this.rubricGrade
+      this.comments = this.rubricGrade.comments
+    else
+      this.comments = ""
+
     this.addTiers(attrs["tiers"]) if attrs["tiers"] #add tiers if passed on init
     this.name = if attrs.name then attrs.name else ""
     this.rubricId = if attrs.rubric_id then attrs.rubric_id else $scope.rubricId
@@ -330,7 +337,7 @@
         submission_id: submission_id,
         metric_id: metric.id,
         tier_id: tier.id,
-        comments: ""
+        comments: metric.comments
       }
 
   $scope.addMetrics = (existingMetrics)->

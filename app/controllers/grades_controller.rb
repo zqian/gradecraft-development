@@ -135,6 +135,7 @@ class GradesController < ApplicationController
         submission_id: submission_id,
         metric_id: rubric_grade["metric_id"],
         tier_id: rubric_grade["tier_id"],
+        comments: rubric_grade["comments"],
         assignment_id: @assignment[:id],
         student_id: params[:student_id]
       })
