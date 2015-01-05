@@ -9,6 +9,7 @@
     %table.responsive.nofeatures_default_last_name_dynatable
       %thead
         %tr
+          %th
           %th First Name
           %th Last Name
           %th Role
@@ -19,10 +20,10 @@
           %tr
             %td 
               - if user.avatar_file_name.present?
-                %img.img-rounded{:src => user.avatar_file_name, :size => 30} 
+                %img.img-rounded{:src => user.avatar_file_name, :width => 30} 
             %td= link_to user.first_name, staff_path(user)
             %td= link_to user.last_name, staff_path(user)
-            %td= user.role(current_course).capitalize
+            %td= user.course_memberships.where(:course_id => current_course.id).first.role.capitalize
             %td
               %ul
                 - user.team_leaderships.each do |leadership|
