@@ -350,7 +350,7 @@
     this.badges = {}
     this.availableBadges = angular.copy($scope.courseBadges)
     this.loadTierBadges(attrs["tier_badges"]) if attrs["tier_badges"] #add badges if passed on init
-    this.points = attrs.points || null
+    this.points = attrs.points || 0
     this.description = attrs.description or ""
     this.resetChanges()
   TierPrototype.prototype =
