@@ -22,7 +22,8 @@ class GradesController < ApplicationController
   def edit
     session[:return_to] = request.referer
     redirect_to @assignment and return unless current_student.present?
-    @grade = Grade.where(student_id: current_student[:id], assignment_id: @assignment[:id]).first
+    # @grade = Grade.where(student_id: current_student[:id], assignment_id: @assignment[:id]).first
+    @grade = current_student_data.grade_for_assignment(@assignment)
     @title = "Editing #{current_student.name}'s Grade for #{@assignment.name}"
     @rubric = @assignment.rubric
     @rubric_grades = serialized_rubric_grades
@@ -72,7 +73,10 @@ class GradesController < ApplicationController
       @submission.update_attributes(graded: true)
     end
 
-    @grade = Grade.where(assignment_id: @assignment[:id], student_id: params[:student_id]).first
+    # @grade = Grade.where(assignment_id: @assignment[:id], student_id: params[:student_id]).first
+    # @grade = Grade.where(student_id: current_student[:id], assignment_id: @assignment[:id]).first
+    @grade = current_student_data.grade_for_assignment(@assignment)
+
     if @grade
       @grade.update_attributes grade_attributes_from_rubric
     else
