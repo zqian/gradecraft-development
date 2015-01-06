@@ -57,7 +57,7 @@ class GradesController < ApplicationController
     @grade = current_student_data.grade_for_assignment(@assignment)
     self.check_uploads
 
-    @grade.update_attributes params[:grade]
+    @grade.update_attributes params[:grade].merge(instructor_modified: true)
 
     GradeUpdater.perform_async([@grade.id]) if @grade.graded_or_released?
 
