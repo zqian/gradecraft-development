@@ -13,8 +13,6 @@ class BadgesController < ApplicationController
     @badge = current_course.badges.find(params[:id])
     @title = @badge.name
     @earned_badges = @badge.earned_badges
-    @tasks = @badge.tasks
-
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
     if @team
       students = current_course.students_being_graded_by_team(@team)

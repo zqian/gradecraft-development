@@ -1,8 +1,4 @@
-- if current_user_is_student?
-  %p.bold Your Results
-  - if ! current_student.grade_for_assignment(@assignment).present?
-    .italic Sorry, your results aren't in yet
-- else
+- if current_user_is_staff?
   %h4.sr-only #{current_student.try(:first_name)}'s Grade
   %p.bold 
     #{current_student.try(:first_name)}'s Grade
@@ -22,5 +18,5 @@
       %span.small_uppercase Status:
       %span.bold= current_student.grade_for_assignment(@assignment).status
   - if grade.feedback.present?
-    %span.small_uppercase Instructor Feedback:
+    %span.small_uppercase Your Feedback:
     %p= raw current_student.grade_for_assignment(@assignment).feedback
