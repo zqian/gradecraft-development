@@ -22,7 +22,7 @@ class GradesController < ApplicationController
   def edit
     session[:return_to] = request.referer
     redirect_to @assignment and return unless current_student.present?
-    @grade = current_student_data.grade_for_assignment(@assignment)
+    @grade = Grade.where(student_id: current_student[:id], assignment_id: @assignment[:id]).first
     @title = "Editing #{current_student.name}'s Grade for #{@assignment.name}"
     @rubric = @assignment.rubric
     @rubric_grades = serialized_rubric_grades
@@ -488,7 +488,7 @@ class GradesController < ApplicationController
       raw_score: params[:points_given],
       submission_id: submission_id,
       point_total: params[:points_possible],
-      status: "Graded"
+      status: params[:grade_status]
     }
   end
 
