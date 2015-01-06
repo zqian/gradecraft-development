@@ -4,14 +4,20 @@
   $scope.gradedMetrics = []
   $scope.courseBadges = {}
   $scope.rubricGrades = {} # index in hash with metric_id as key
+  $scope.gsiGradeStatuses = ["Graded"]
+  $scope.professorGradeStatuses = ["Graded", "Released"]
 
   $scope.pointsPossible = 0
   $scope.pointsGiven = 0
 
-  $scope.init = (rubricId, metrics, assignmentId, studentId, rubricGrades, courseBadges)->
+  $scope.init = (rubricId, metrics, assignmentId, studentId, rubricGrades, gradeStatus, courseBadges)->
     $scope.rubricId = rubricId
     $scope.assignmentId = assignmentId
     $scope.studentId = studentId
+    if gradeStatus
+      $scope.gradeStatus = gradeStatus
+    else
+      $scope.gradeStatus = ""
     $scope.addRubricGrades(rubricGrades)
     $scope.addCourseBadges(courseBadges)
     $scope.addMetrics(metrics)
@@ -161,7 +167,8 @@
       metric_badges: $scope.metricBadgesParams(),
       tier_badges: $scope.tierBadgesParams(),
       tier_ids: $scope.selectedTierIds(),
-      metric_ids: $scope.allMetricIds()
+      metric_ids: $scope.allMetricIds(),
+      grade_status: $scope.gradeStatus
     }
 
   $scope.submitGrade = ()->
