@@ -59,7 +59,7 @@ class GradesController < ApplicationController
 
     @grade.update_attributes params[:grade]
 
-    GradeUpdater.perform_async([@grade.id])
+    GradeUpdater.perform_async([@grade.id]) if @grade.graded_or_released?
 
     if session[:return_to].present?
       redirect_to session[:return_to]
@@ -92,7 +92,7 @@ class GradesController < ApplicationController
     # (need to create grade_id on EarnedBadge)
     # create new rubric_grades for that
 
-    GradeUpdater.perform_async([@grade.id])
+    GradeUpdater.perform_async([@grade.id]) if @grade.graded_or_released?
 
     render status: 200, json: {}
   end
