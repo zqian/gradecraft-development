@@ -488,7 +488,8 @@ class GradesController < ApplicationController
       raw_score: params[:points_given],
       submission_id: submission_id,
       point_total: params[:points_possible],
-      status: params[:grade_status]
+      status: params[:grade_status],
+      instructor_modified: true
     }
   end
 

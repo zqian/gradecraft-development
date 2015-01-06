@@ -6,7 +6,7 @@
     %td{:data => { :"sort-value" => "#{grade.raw_score}"} }= points grade.raw_score if grade.status?
     - if @assignment.assignment_type.student_weightable?
       %td
-        = points grade.score if grade.status?
+        = points grade.score if grade.instructor_modified
     - if @assignment.release_necessary?
       %td
         - if grade.is_released?
