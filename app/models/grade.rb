@@ -116,6 +116,7 @@ class Grade < ActiveRecord::Base
   def status_is_graded_or_released?
     self.status == "Graded" || self.status == "Released"
   end
+  alias_method :graded_or_released?, :status_is_graded_or_released?
 
   #Canable Permissions
   def updatable_by?(user)
