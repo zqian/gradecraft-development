@@ -4,8 +4,8 @@
   $scope.gradedMetrics = []
   $scope.courseBadges = {}
   $scope.rubricGrades = {} # index in hash with metric_id as key
-  $scope.gsiGradeStatuses = ["Graded"]
-  $scope.professorGradeStatuses = ["Graded", "Released"]
+  $scope.gsiGradeStatuses = ["In Progress", "Graded"]
+  $scope.professorGradeStatuses = ["In Progress", "Graded", "Released"]
 
   $scope.pointsPossible = 0
   $scope.pointsGiven = 0

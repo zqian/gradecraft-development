@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150105174901) do
+ActiveRecord::Schema.define(version: 20150106170247) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -455,7 +455,7 @@ ActiveRecord::Schema.define(version: 20150105174901) do
   end
 
   create_table "grades", force: true do |t|
-    t.integer  "raw_score",          default: 0, null: false
+    t.integer  "raw_score",           default: 0,     null: false
     t.integer  "assignment_id"
     t.text     "feedback"
     t.datetime "created_at"
@@ -481,7 +481,8 @@ ActiveRecord::Schema.define(version: 20150105174901) do
     t.text     "admin_notes"
     t.integer  "graded_by_id"
     t.integer  "team_id"
-    t.integer  "predicted_score",    default: 0, null: false
+    t.integer  "predicted_score",     default: 0,     null: false
+    t.boolean  "instructor_modified", default: false
   end
 
   add_index "grades", ["assignment_id", "student_id"], name: "index_grades_on_assignment_id_and_student_id", unique: true, using: :btree

@@ -11,7 +11,7 @@
     - if @assignment_type.student_weightable?
       %td
         - if student.weighted_assignments?
-          = points grade.score if grade.status?
+          = points grade.score if grade.instructor_modified
         - else
           = "(not yet assigned)"
     - if @assignment.release_necessary?
