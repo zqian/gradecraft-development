@@ -1,4 +1,4 @@
-- if grade && grade.instructor_modified
+- if grade &&  ( grade.status? || grade.instructor_modified)
   .button-bar
     %ul.button-group.radius.right
       %li

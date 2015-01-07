@@ -1,5 +1,5 @@
 - student.submissions.where(:assignment_id => @assignment).each do |submission|
-  - if submission && grade.instructor_modified
+  - if submission && ( grade.status? || grade.instructor_modified)
     .button-bar
       - if submission.submission_files.present?
         %i.fi-paperclip.right
@@ -21,7 +21,7 @@
         %li= link_to "See Submission", assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
 
 - if ! student.submissions.where(:assignment_id => @assignment).present?
-  - if grade && grade.instructor_modified
+  - if grade &&  ( grade.status? || grade.instructor_modified)
     .button-bar
       %ul.button-group.radius.right
         %li= link_to "See Grade", assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
