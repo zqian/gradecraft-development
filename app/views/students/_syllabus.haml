@@ -40,7 +40,7 @@
           - assignments.each do |assignment|
             - if assignment.visible? || current_student_data.grade_released_for_assignment?(assignment)
               %tr
-                %td{:width => "20%"}
+                %td{:width => "30%"}
                   - if assignment.required?
                     %span.has-tip{:title => "This #{term_for :assignment} is required!", :data => {'tooltip' => true} }
                       !
@@ -75,25 +75,19 @@
                       = hidden_field_tag :present, !present
                       - if ! current_student.self_reported_done?(assignment)
                         = f.submit (assignment_type.student_logged_button_text), :class => "button #{present ? 'alert' : 'success'} tiny radius"
-                %td{:width => "35%"}
+                %td{:width => "20%"}
                   .button-bar
                     %ul.button-group.center.radius
-                      - if assignment.has_groups?
-                        - if current_student.group_for_assignment(assignment).present?
-                          %li= link_to "See Group", group_path(current_student.group_for_assignment(assignment)), :class => "button"
-                          - if assignment.accepts_submissions?
+                      - if current_user_is_student?
+                        - if current_student_data.grade_released_for_assignment?(assignment)
+                          %li= link_to "See Results", assignment_grade_path(assignment, :student_id => current_student), :class => "button"
+
+                        - elsif assignment.accepts_submissions?
+                          - if assignment.has_groups?
                             = render "students/group_submissions", assignment: assignment, group: current_student.group_for_assignment(assignment)
-                        - else
-                          %li= link_to "Create a Group", new_group_path, :class => "button"
-                      - else
-                        - if assignment.accepts_submissions?
-                          = render "students/submissions", assignment: assignment
-                      - if current_student_data.grade_released_for_assignment?(assignment) && current_student_data.grade_for_assignment(assignment).feedback?
-                        %li= link_to "See Results", assignment_grade_path(assignment, :student_id => current_student), :class => "button"
-                      - else
-                        - if assignment.description?
-                          %li
-                            = link_to "Downloads", guidelines_assignment_path(assignment), :class => "button"
+                          - else
+                            = render "students/submissions", assignment: assignment
+                      
                       - if current_user_is_staff?
                         - if assignment.is_individual?
                           - if current_student_data.grade_released_for_assignment?(assignment)
@@ -107,9 +101,6 @@
                             %li= link_to "Edit Grade", group_grade_assignment_path(assignment, :group_id => current_student.group_for_assignment(assignment)), :class => 'button'
                           - else
                             %li= link_to 'Grade', group_grade_assignment_path(assignment, :group_id => current_student.group_for_assignment(assignment)), :class => 'button'
-
-    .clearfix
-
 
 - if current_course.team_challenges? && current_course.team_score_average?
 
