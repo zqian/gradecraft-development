@@ -89,11 +89,19 @@ ul.button-group.context_menu
   /* styles for rubric on/off button, use for anything that needs to show toggle state */
   li.loading
     background-color: #666
+    display: none
     @include linear-gradient(#888, #666)
 
   li.loading a:hover
     background-color: #888
+    display: none
     @include linear-gradient(#AAA, #888)
+
+  [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak
+    display: none !important
+
+    &.loading
+      display: block !important
 
   li.off
     background-color: $dark_red !important
