@@ -5,7 +5,7 @@
 
   .small-12.right.medium-4.columns
 
-  - if @rubric && @rubric.designed?
+  - if @rubric && @rubric.designed? and @assignment.use_rubric
     = render "rubric_edit"
   - else
     = render "standard_edit"
