@@ -2,7 +2,7 @@
   %ul.button-group.context_menu
     - if @assignment.description.present?
       %li
-        = render "assignments/description"
+        -#= render "assignments/description"
     %li
       %a{:href => edit_assignment_path(@assignment) }
         %i.fi-pencil
