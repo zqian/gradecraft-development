@@ -735,7 +735,7 @@ ActiveRecord::Schema.define(version: 20150105140818) do
 
   create_table "tiers", force: true do |t|
     t.string   "name"
-    t.string   "description"
+    t.text     "description"
     t.integer  "points"
     t.integer  "metric_id"
     t.datetime "created_at"
