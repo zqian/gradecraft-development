@@ -1,127 +1,44 @@
-.small-12
-  %h3.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
+%br
 
-  .clearfix
+.small-12.columns
 
-  .small-12.columns.italic= link_to "<< Back to All Assignments", assignments_path
+  .italic.not_bold= "#{points @assignment.point_total} points possible"
+  %br
+  .italic.not_bold= "Opens: #{@assignment.due_at}" if @assignment.open_at?
+  .italic.not_bold= "Due: #{@assignment.due_at}" if @assignment.due_at?
 
-  .small-12.columns
-    - if @assignment.assignment_type.student_weightable?
-      - grade = current_student_data.grade_for_assignment(@assignment)
-      %span.has-tip{:title => "#{ points grade.score } / #{points grade.point_total} points (Multiplied), #{points grade.raw_score} / #{ points assignment.point_total } points (Raw)", :data => {'tooltip' => true}  }
-        - if current_student_data.grade_released_for_assignment?(@assignment)
-          = "#{ points grade.score }  / "
-          = "#{points grade.point_total} points earned"
-        - else
-          .italic.not_bold= "#{points grade.point_total} points possible"
-
-
-    - else
-      - if current_student_data.grade_released_for_assignment?(@assignment)
-        .bold
-          = "#{points current_student_data.score_for_assignment(@assignment)}  / "
-          = "#{points @assignment.point_total} points earned"
-      - else
-        .italic.not_bold= "#{points @assignment.point_total} points possible"
-
-
-    - if @assignment.student_logged? && @assignment.open? && current_user_is_student?
-    
-      = simple_form_for current_student_data.grade_for_assignment(@assignment), :url => self_log_grades_assignment_path(@assignment), :method => :post do |f|
-        - present = current_student.self_reported_done?(@assignment)
-        = hidden_field_tag :present, !present
-        - if ! current_student.self_reported_done?(@assignment)
-          = f.submit (@assignment_type.student_logged_button_text), :class => "button #{present ? 'alert' : 'success'} tiny radius"
+  - if @assignment.student_logged? && @assignment.open? && current_user_is_student?
   
-    .button-bar
-      %ul.button-group.center.radius
-        - if @assignment.has_groups?
-          - if current_student.group_for_assignment(@assignment).present?
-            %li= link_to "See Group", group_path(current_student.group_for_assignment(@assignment)), :class => "button"
-            - if @assignment.accepts_submissions?
-              = render "students/group_submissions", assignment: @assignment, group: current_student.group_for_assignment(@assignment)
-          - else
-            %li= link_to "Create a Group", new_group_path, :class => "button"
-        - else
-          - if @assignment.accepts_submissions?
-            = render "students/submissions", assignment: @assignment
-        - if current_student_data.grade_released_for_assignment?(@assignment) && current_student_data.grade_for_assignment(@assignment).feedback?
-          %li= link_to "See Results", assignment_grade_path(@assignment, :student_id => current_student), :class => "button"
-        - if current_user_is_staff?
-          - if @assignment.is_individual?
-            - if current_student_data.grade_released_for_assignment?(@assignment)
-              - grade = current_student_data.grade_for_assignment(@assignment)
-              %li= link_to "Edit Grade", edit_assignment_grade_path(@assignment.id, :student_id => current_student.id), :class => 'button'
-            - else
-              %li= link_to 'Grade', edit_assignment_grade_path("assignment_id"=>@assignment.id, :student_id => current_student.id), :class => 'button'
-          - elsif @assignment.has_groups?
-            - if current_student_data.grade_released_for_assignment?(@assignment)
-              - grade = current_student_data.grade_for_assignment(@assignment)
-              %li= link_to "Edit Grade", group_grade_assignment_path(@assignment, :group_id => current_student.group_for_assignment(@assignment)), :class => 'button'
-            - else
-              %li= link_to 'Grade', group_grade_assignment_path(@assignment, :group_id => current_student.group_for_assignment(@assignment)), :class => 'button'
-  
-- if @assignment.rubric.present? && @assignment.rubric.designed?  
-  .small-12.columns
+    = simple_form_for current_student_data.grade_for_assignment(@assignment), :url => self_log_grades_assignment_path(@assignment), :method => :post do |f|
+      - present = current_student.self_reported_done?(@assignment)
+      = hidden_field_tag :present, !present
+      - if ! current_student.self_reported_done?(@assignment)
+        = f.submit (@assignment_type.student_logged_button_text), :class => "button #{present ? 'alert' : 'success'} tiny radius"
+
+
+  - if @assignment.accepts_submissions?
+    %br
+    - if current_student.submission_for_assignment(@assignment)
+      = render "grades/submission"
+    - elsif @assignment.future? || @assignment.still_accepted?
+      = link_to "Submit", new_assignment_submission_path(@assignment, :student_id => current_student), :class => 'button radius'
+      - if @assignment.past?
+        .label.alert.radius= "Past due!"
+
+  - if @assignment.description.present?
     %hr
-  
-    %h4.uppercase Grading Rubric:
-  #preview-rubric(style="font-size: 12px")
-    %table.small-12
-      %thead
-        %tr
-          %td.metric.heading
-            %label.larger
-              <strong>Criterion</strong>:&nbsp;Max&nbsp;points
-          %td.tier.heading(colspan="#{@assignment.rubric.try(:max_tier_count)}")
-            %label.larger
-              %strong Level:
-              Point value
 
-      %tbody
-        - @metrics.each do |metric|
-          %tr
-            %td.metric(style="font-size: 12px !important")
-              .metric-heading
-                .metric-name= metric.wrapped_name(28).html_safe
-                .metric-points= "#{metric.max_points} Points"
-                .clear
-              .metric-description= metric.wrapped_description(40).html_safe
-
-            - metric.tiers.order("points ASC").each do |tier|
-              %td.tier
-                .tier-heading
-                  .tier-name= tier.wrapped_name(25).html_safe
-                  .clear
-                  .tier-points= "#{tier.points} Points"
-                .clear
-                %label.tier-description= tier.wrapped_description(38).html_safe
-
-                .row.badge-row
-                  - tier.tier_badges.each_with_index do |badge, index|
-                    - if index < 2
-                      .tier-badge-image
-                        = image_tag "badge.png", width: "30px", height: "30px"
-                  .clear
-
-                - if current_user_is_student?
-                  - if @rubric_grades.select {|rubric_grade| rubric_grade.tier_id == tier[:id] }.count > 0
-                    .level-scored You scored at this level
-
-                - if tier.rubric_grades.size > 0
-                  .students-padding
-                  .graded-students= "#{tier.rubric_grades.size} students (#{'%.0f' % ((tier.rubric_grades.size/@graded_count).to_f * 100)}%) at this level"
-            - if metric.tiers.size < @rubric.max_tier_count
-              %td.filler(colspan="#{@rubric.max_tier_count - metric.tiers.size}")
-
-  .small-12.columns
-    %hr
-  
     %h4.uppercase Guidelines:
+    - if @assignment.assignment_files.present?
+      %ul 
+        Downloads
+        - @assignment.assignment_files.each do |af|
+          %li= link_to af.filename, af.url
+          
     %p= raw @assignment.description
 
-    - if @assignment.assignment_type.predictor_description.present?
-      %hr
-      %h4.uppercase #{ @assignment.assignment_type.name} Guidelines:
+  - if @assignment.assignment_type.predictor_description.present?
+    %hr
+    %h4.uppercase #{ @assignment.assignment_type.name} Guidelines:
 
-      %p= raw @assignment.assignment_type.predictor_description
+    %p= raw @assignment.assignment_type.predictor_description

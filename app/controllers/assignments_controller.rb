@@ -125,7 +125,7 @@ class AssignmentsController < ApplicationController
       @assignment.assign_attributes(params[:assignment])
       if @assignment.save
         set_assignment_weights
-        format.html { respond_with @assignment, notice: "#{(term_for :assignment).titleize}  #{@assignment.name} successfully updated" }
+        format.html { redirect_to assignments_path, notice: "#{(term_for :assignment).titleize}  #{@assignment.name} successfully updated" }
       else
         format.html {render :action => "new", :group => @group }
       end

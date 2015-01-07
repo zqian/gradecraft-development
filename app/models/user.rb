@@ -360,7 +360,9 @@ class User < ActiveRecord::Base
         next_element = course.grade_scheme_elements[index + 1]
       end
       if next_element.nil?
-        next_element = course.grade_scheme_elements.order_by_low_range.first
+        if element.low_range > cached_score_for_course(course)
+          next_element = course.grade_scheme_elements.order_by_low_range.first
+        end
       end
     end
     return next_element

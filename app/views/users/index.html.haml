@@ -12,6 +12,7 @@
     %table.responsive.nofeatures_default_last_name_dynatable
       %thead
         %tr
+          %th
           %th First Name
           %th Last Name
           %th Role
@@ -22,13 +23,16 @@
       %tbody
         - @users.each do |user|
           %tr
+            %td 
+              - if user.avatar_file_name.present?
+                %img.img-rounded{:src => user.avatar_file_name, :width => 30} 
             %td
               = link_to user.first_name, student_path(user) if user.is_student?(current_course)
               = link_to user.first_name, staff_path(user) if user.is_staff?(current_course)
             %td
               = link_to user.last_name, student_path(user) if user.is_student?(current_course)
               = link_to user.last_name, staff_path(user) if user.is_staff?(current_course)
-            %td= user.role(current_course).capitalize
+            %td= user.course_memberships.where(:course_id => current_course.id).first.role.capitalize
             %td
               - user.courses.each do |course|
                 %li= link_to course.name

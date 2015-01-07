@@ -10,9 +10,10 @@
         .italic= "You are a #{current_course.grade_level_for_score(current_student.cached_score_for_course(current_course))}"
       - else
         You're just getting started!
-      %span= points current_student.points_to_next_level(current_course)
-      %span points until your next rank:
-      %span.bold= current_student.next_element_level(current_course).level      
+      - if ! current_student.won(current_course)
+        %span= points current_student.points_to_next_level(current_course)
+        %span points until your next rank:
+        %span.bold= current_student.next_element_level(current_course).level      
       / Else tally all of the points for all of the assignments in the course
     - else
       %span#userScoreNum #{points current_user.cached_score_for_course(current_course)}

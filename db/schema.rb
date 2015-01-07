@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141229041249) do
+ActiveRecord::Schema.define(version: 20150105140818) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -114,17 +114,17 @@ ActiveRecord::Schema.define(version: 20141229041249) do
     t.integer  "course_id"
     t.integer  "assignment_type_id"
     t.integer  "grade_scheme_id"
-    t.string   "grade_scope",                 default: "Individual", null: false
+    t.string   "grade_scope",                       default: "Individual", null: false
     t.datetime "close_time"
     t.datetime "open_time"
     t.boolean  "required"
     t.boolean  "accepts_submissions"
     t.boolean  "student_logged"
-    t.boolean  "release_necessary",           default: false,        null: false
+    t.boolean  "release_necessary",                 default: false,        null: false
     t.datetime "open_at"
     t.string   "icon"
     t.boolean  "can_earn_multiple_times"
-    t.boolean  "visible",                     default: true
+    t.boolean  "visible",                           default: true
     t.integer  "category_id"
     t.boolean  "resubmissions_allowed"
     t.integer  "max_submissions"
@@ -137,12 +137,14 @@ ActiveRecord::Schema.define(version: 20141229041249) do
     t.string   "media_credit"
     t.string   "media_caption"
     t.string   "points_predictor_display"
-    t.boolean  "notify_released",             default: true
+    t.boolean  "notify_released",                   default: true
     t.string   "mass_grade_type"
-    t.boolean  "include_in_timeline",         default: true
-    t.boolean  "include_in_predictor",        default: true
+    t.boolean  "include_in_timeline",               default: true
+    t.boolean  "include_in_predictor",              default: true
+    t.boolean  "include_in_to_do",                  default: true
     t.integer  "position"
-    t.boolean  "include_in_to_do",            default: true
+    t.string   "student_logged_button_text"
+    t.string   "student_logged_revert_button_text"
   end
 
   add_index "assignments", ["course_id"], name: "index_assignments_on_course_id", using: :btree
