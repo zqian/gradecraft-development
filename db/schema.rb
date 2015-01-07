@@ -148,6 +148,7 @@ ActiveRecord::Schema.define(version: 20150105140818) do
     t.boolean  "use_rubric_grading",          default: false
     t.integer  "position"
     t.boolean  "include_in_to_do",            default: true
+    t.boolean  "use_rubric",                  default: false
   end
 
   add_index "assignments", ["course_id"], name: "index_assignments_on_course_id", using: :btree

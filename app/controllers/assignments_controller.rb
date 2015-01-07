@@ -2,6 +2,8 @@ class AssignmentsController < ApplicationController
 
   before_filter :ensure_staff?, :except => [:feed, :show, :index, :guidelines]
 
+  respond_to :html, :json
+
   def index
     redirect_to syllabus_path if current_user_is_student?
     @title = "#{term_for :assignments}"
@@ -142,6 +144,12 @@ class AssignmentsController < ApplicationController
       current_course.assignments.update_all({position: index+1}, {id: id})
     end
     render nothing: true
+  end
+
+  def update_rubrics
+    @assignment = Assignment.find params[:id]
+    @assignment.update_attributes use_rubric: params[:use_rubric]
+    respond_with @assignment
   end
 
   def destroy

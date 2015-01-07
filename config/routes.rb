@@ -71,6 +71,7 @@ GradeCraft::Application.routes.draw do
       get 'name_based_grade_import' => 'assignments#name_based_grade_import'
       get 'detailed_grades' => 'assignments#show', detailed: true
       get :rules
+      put :update_rubrics
       scope 'grades', as: :grades, controller: :grades do
         post :edit_status
         put :update_status
