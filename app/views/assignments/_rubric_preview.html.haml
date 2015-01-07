@@ -27,13 +27,13 @@
                 .clear
                 .tier-points= "#{tier.points} Points"
               .clear
-              %label.tier-description= tier.wrapped_description(38).html_safe
+              .tier-description= tier.description
 
               .row.badge-row
                 - tier.tier_badges.each_with_index do |badge, index|
                   - if index < 2
                     .tier-badge-image
-                      = image_tag "badge.png", width: "30px", height: "30px"
+                      %img{:src => badge.badge.icon, width: "30px", height: "30px" }
                 .clear
 
               - if current_user_is_student?

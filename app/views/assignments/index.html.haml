@@ -54,7 +54,7 @@
                         - if assignment.due_at.present?
                           = assignment.try(:due_at).to_formatted_s(:db)
                       %td= assignment.point_total
-                      %td= "Yes" if assignment.has_rubric?
+                      %td= "Yes" if assignment.rubric and assignment.rubric.designed?
                       %td
                         .button-bar
                           %ul.button-group.right.radius

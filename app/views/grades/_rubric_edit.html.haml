@@ -76,7 +76,7 @@
               {{tier.points | number:0}}&nbsp;Points
               %input(class="tier-select" type='radio' name="metric_tier_{{metric.id}}" ng-checked="metric.isUsingTier(tier)")
           .clear
-          %label.tier-description
+          .tier-description
             {{tier.description}}
           .row.badge-row
             .tier-badge-image(ng-repeat="(tierBadgeId, tierBadge) in tier.badges")
