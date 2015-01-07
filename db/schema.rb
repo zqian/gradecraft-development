@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150106170247) do
+ActiveRecord::Schema.define(version: 20150106194627) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -141,9 +141,9 @@ ActiveRecord::Schema.define(version: 20150106170247) do
     t.string   "mass_grade_type"
     t.boolean  "include_in_timeline",         default: true
     t.boolean  "include_in_predictor",        default: true
-    t.boolean  "use_rubric_grading",          default: false
     t.integer  "position"
     t.boolean  "include_in_to_do",            default: true
+    t.boolean  "use_rubric",                  default: false
   end
 
   add_index "assignments", ["course_id"], name: "index_assignments_on_course_id", using: :btree

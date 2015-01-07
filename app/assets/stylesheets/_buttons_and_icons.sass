@@ -1,3 +1,8 @@
+$light_green: #EFFFED 
+$dark_green: #54BA3F
+$inactive_red: #DC9A9A
+$dark_red: #B40D0D
+
 @mixin transition($property, $duration)
   -webkit-transition: $property $duration
   -moz-transition: $property $duration
@@ -70,7 +75,6 @@ ul.button-group.context_menu
   li a:hover
     @include linear-gradient(#385b83, #264971)
 
-
   li:first-child, li:first-child a
     border-bottom-left-radius: $global-radius
     border-top-left-radius: $global-radius
@@ -78,6 +82,31 @@ ul.button-group.context_menu
   li:last-child, li:last-child a
     border-top-right-radius: $global-radius
     border-bottom-right-radius: $global-radius
+
+  /* styles for rubric on/off button, use for anything that needs to show toggle state */
+  li.loading
+    background-color: #666
+    @include linear-gradient(#888, #666)
+
+  li.loading a:hover
+    background-color: #888
+    @include linear-gradient(#AAA, #888)
+
+  li.off
+    background-color: $dark_red !important
+    @include linear-gradient($dark_red + #333, $dark_red)
+
+  li.off a:hover
+    background-color: $dark_red !important
+    @include linear-gradient($dark_red + #555, $dark_red + #222)
+
+  li.on
+    background-color: $dark_green !important
+    @include linear-gradient($dark_green + #222, $dark_green - #111)
+
+  li.on a:hover
+    background-color: $dark_green !important
+    @include linear-gradient($dark_green + #333, $dark_green)
 
 /* Responsive outer container */ 
 @media (max-width: 1270px) 

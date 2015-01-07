@@ -1,4 +1,4 @@
-.button-bar
+.button-bar(ng-app="gradecraft" ng-controller="AssignmentCtrl" ng-init="init(#{@assignment[:id]}, #{@assignment.use_rubric})")
   %ul.button-group.context_menu
     - if @assignment.description.present?
       %li
@@ -25,6 +25,21 @@
           Edit Rubric
         - else
           Create Rubric 
+
+    - if @assignment.rubric and @assignment.rubric.designed?
+      %li.loading(ng-hide="window.angular")
+        %a(ng-click="")
+          %i.fi-list-thumbnails
+          Rubrics
+      %li.on(ng-cloak ng-show="useRubric")
+        %a(ng-click="rubricsOff()")
+          %i.fi-list-thumbnails
+          Rubrics On
+      %li.off(ng-cloak ng-hide="useRubric")
+        %a(ng-click="rubricsOn()")
+          %i.fi-list-thumbnails
+          Rubrics Off
+
     %li
       %a{:href => import_grades_assignment_path(@assignment) }
         %i.fi-upload

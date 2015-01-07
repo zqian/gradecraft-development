@@ -1,15 +1,16 @@
 $(document).ready(function(){
 
-  $.ajax({
-      type: 'GET',
-      url: '/info/timeline_events',
-      dataType: 'json',
-      contentType: 'application/json',
-      success: function (json) {
-          createTimeline(json);
-      }
-   });
-
+  if(window.location == "/dashboard") {
+    $.ajax({
+        type: 'GET',
+        url: '/info/timeline_events',
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function (json) {
+            createTimeline(json);
+        }
+     });
+  }
 
   function createTimeline(source){
     $("#loading").hide();
