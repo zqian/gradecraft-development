@@ -1,5 +1,6 @@
 $(document).ready(function(){
 
+  //if(window.location == "/dashboard") {
     $.ajax({
         type: 'GET',
         url: '/info/timeline_events',
@@ -9,6 +10,7 @@ $(document).ready(function(){
             createTimeline(json);
         }
      });
+  //}
 
 
   function createTimeline(source){
