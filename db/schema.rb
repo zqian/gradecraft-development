@@ -15,7 +15,6 @@ ActiveRecord::Schema.define(version: 20141229041249) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "hstore"
 
   create_table "assignment_files", force: true do |t|
     t.string  "filename"
@@ -142,8 +141,8 @@ ActiveRecord::Schema.define(version: 20141229041249) do
     t.string   "mass_grade_type"
     t.boolean  "include_in_timeline",         default: true
     t.boolean  "include_in_predictor",        default: true
-    t.boolean  "include_in_to_do",            default: true
     t.integer  "position"
+    t.boolean  "include_in_to_do",            default: true
   end
 
   add_index "assignments", ["course_id"], name: "index_assignments_on_course_id", using: :btree
@@ -179,7 +178,6 @@ ActiveRecord::Schema.define(version: 20141229041249) do
     t.datetime "updated_at"
     t.boolean  "visible",                 default: true
     t.boolean  "can_earn_multiple_times", default: true
-    t.text     "email_description"
     t.integer  "position"
   end
 
@@ -358,7 +356,6 @@ ActiveRecord::Schema.define(version: 20141229041249) do
     t.integer  "point_total"
     t.boolean  "in_team_leaderboard"
     t.boolean  "add_team_score_to_student",                             default: false
-    t.boolean  "badge_emails",                                          default: false
     t.datetime "start_date"
     t.datetime "end_date"
   end
@@ -702,7 +699,6 @@ ActiveRecord::Schema.define(version: 20141229041249) do
     t.boolean  "teams_leaderboard",   default: false
     t.boolean  "in_team_leaderboard", default: false
     t.string   "banner"
-    t.string   "badge_email_type"
   end
 
   create_table "themes", force: true do |t|
