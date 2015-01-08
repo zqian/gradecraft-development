@@ -3,6 +3,7 @@ class Metric < ActiveRecord::Base
   has_many :tiers, dependent: :destroy
   has_many :metric_badges
   has_many :badges, through: :metric_badges
+  has_many :rubric_grades
   belongs_to :full_credit_tier, foreign_key: :full_credit_tier_id, class_name: "Tier"
   attr_accessible :name, :max_points, :description, :order, :rubric_id, :full_credit_tier_id
 

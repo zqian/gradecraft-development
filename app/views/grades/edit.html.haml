@@ -1,7 +1,11 @@
 .small-12.panel.mainContent
-
   = content_nav_for @assignment, "Edit Grade"
 
   %h3.pagetitle= @title
-  
-  = render 'form'
+
+  .small-12.right.medium-4.columns
+
+  - if @rubric && @rubric.designed? and @assignment.use_rubric
+    = render "rubric_edit"
+  - else
+    = render "standard_edit"

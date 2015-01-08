@@ -4,7 +4,8 @@ class Grade < ActiveRecord::Base
   attr_accessible :raw_score, :predicted_score, :final_score, :feedback, :assignment,
     :assignment_id, :status, :attempted, :student, :student_id, :submission, :submission_id, :released,
     :group, :group_id, :group_type, :task, :task_id, :graded_by_id, :team_id, :grade_file_ids,
-    :grade_files_attributes, :grade_file, :assignments_attributes, :point_total
+    :grade_files_attributes, :grade_file, :assignments_attributes, :point_total, :assignment_type_id, :course_id,
+    :instructor_modified
 
   STATUSES=%w(Graded Released)
 
@@ -115,6 +116,7 @@ class Grade < ActiveRecord::Base
   def status_is_graded_or_released?
     self.status == "Graded" || self.status == "Released"
   end
+  alias_method :graded_or_released?, :status_is_graded_or_released?
 
   #Canable Permissions
   def updatable_by?(user)

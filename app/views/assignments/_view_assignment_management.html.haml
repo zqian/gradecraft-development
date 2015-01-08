@@ -1,0 +1,13 @@
+= content_nav_for @assignment
+
+.small-12
+  %h3.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
+
+.small-12.columns
+  // Button bar at the top of the page
+  = render "buttons"
+
+- if @assignment.has_groups?
+  = render "group_show"
+- else
+  = render "individual_show"

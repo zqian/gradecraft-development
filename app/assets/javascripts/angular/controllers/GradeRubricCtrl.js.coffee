@@ -3,14 +3,22 @@
   $scope.metrics = []
   $scope.gradedMetrics = []
   $scope.courseBadges = {}
+  $scope.rubricGrades = {} # index in hash with metric_id as key
+  $scope.gsiGradeStatuses = ["In Progress", "Graded"]
+  $scope.professorGradeStatuses = ["In Progress", "Graded", "Released"]
 
   $scope.pointsPossible = 0
   $scope.pointsGiven = 0
 
-  $scope.init = (rubricId, metrics, assignmentId, studentId, courseBadges)->
+  $scope.init = (rubricId, metrics, assignmentId, studentId, rubricGrades, gradeStatus, courseBadges)->
     $scope.rubricId = rubricId
     $scope.assignmentId = assignmentId
     $scope.studentId = studentId
+    if gradeStatus
+      $scope.gradeStatus = gradeStatus
+    else
+      $scope.gradeStatus = ""
+    $scope.addRubricGrades(rubricGrades)
     $scope.addCourseBadges(courseBadges)
     $scope.addMetrics(metrics)
 
@@ -52,6 +60,28 @@
     )
     $scope.tiersSelected = tiers
     tiers
+
+
+  $scope.selectedTierIds = []
+  # count how many tiers have been selected in the UI
+  $scope.selectedTierIds = ()->
+    tierIds = []
+    angular.forEach($scope.metrics, (metric, index)->
+      if metric.selectedTier
+        tierIds.push metric.selectedTier.id
+    )
+    $scope.selectedTierIds = tierIds
+    tierIds
+
+  $scope.allMetricIds = []
+  # ids of all the metrics in the rubric
+  $scope.allMetricIds = ()->
+    metricIds = []
+    angular.forEach($scope.metrics, (metric, index)->
+      metricIds.push metric.id
+    )
+    $scope.allMetricIds = metricIds
+    metricIds
 
   # count how many points have been given from those tiers
   $scope.pointsGiven = ()->
@@ -115,6 +145,7 @@
           params.push {
             name: badge.name,
             tier_id: tier.id,
+            metric_id: tier.metric_id,
             badge_id: badge.badge.id,
             description: badge.description,
             point_total: badge.point_total,
@@ -134,7 +165,10 @@
       points_possible: $scope.pointsPossible,
       rubric_grades: $scope.gradedMetricsParams(),
       metric_badges: $scope.metricBadgesParams(),
-      tier_badges: $scope.tierBadgesParams()
+      tier_badges: $scope.tierBadgesParams(),
+      tier_ids: $scope.selectedTierIds(),
+      metric_ids: $scope.allMetricIds(),
+      grade_status: $scope.gradeStatus
     }
 
   $scope.submitGrade = ()->
@@ -145,6 +179,21 @@
       )
       .error(
       )
+
+  # Rubric Grades
+  RubricGradePrototype = (attrs={})->
+    this.id = attrs.id
+    this.metric_id = attrs.metric_id
+    this.tier_id = attrs.tier_id
+    this.comments = attrs.comments
+
+  RubricGradePrototype.prototype = {}
+
+  $scope.addRubricGrades = (rubricGrades)->
+    angular.forEach(rubricGrades, (rg, index)->
+      rubricGrade = new RubricGradePrototype(rg)
+      $scope.rubricGrades[rg.metric_id] = rubricGrade
+    )
 
   # Badge Section
   CourseBadgePrototype = (attrs={})->
@@ -195,7 +244,6 @@
   TierBadgePrototype = (tier, badge, attrs={})->
     this.tier = tier
     this.badge = badge
-    this.create()
     this.name = badge.name
     this.tier_id = tier.id
     this.badge_id = badge.id
@@ -204,44 +252,35 @@
     this.icon = badge.icon
     this.multiple = badge.multiple
 
-  TierBadgePrototype.prototype =
-    create: ()->
-      self = this
-
-      $http.post("/tier_badges", self.createParams()).success(
-        (data,status)->
-          self.id = data.existing_tier_badge.id
-      )
-      .error((err)->
-        alert("create failed!")
-        return false
-      )
-
-    createParams: ()->
-      tier_id: this.tier.id,
-      badge_id: this.badge.id
-
-
-
   MetricPrototype = (attrs={})->
     this.tiers = []
+    this.selectedTier = null
+    this.hasChanges = false
     this.id = if attrs.id then attrs.id else null
+    this.rubricGrade = $scope.rubricGrades[this.id]
+
+    if this.rubricGrade
+      this.rubricGradeTierId = this.rubricGrade.tier_id
+    else
+      this.rubricGradeTierId = null
+
+    if this.rubricGrade
+      this.comments = this.rubricGrade.comments
+    else
+      this.comments = ""
+
     this.addTiers(attrs["tiers"]) if attrs["tiers"] #add tiers if passed on init
-    # this.badges = {}
-    # this.availableBadges = angular.copy($scope.courseBadges)
-    # this.loadMetricBadges(attrs["metric_badges"]) if attrs["metric_badges"] #add badges if passed on init
     this.name = if attrs.name then attrs.name else ""
     this.rubricId = if attrs.rubric_id then attrs.rubric_id else $scope.rubricId
     this.max_points = if attrs.max_points then attrs.max_points else null
     this.description = if attrs.description then attrs.description else ""
-    this.hasChanges = false
-    this.selectedTier = null
-    this.comments = ""
   MetricPrototype.prototype =
     addTier: (attrs={})->
       self = this
       newTier = new TierPrototype(self, attrs)
-      this.tiers.push newTier
+      self.tiers.push newTier
+      if self.rubricGradeTierId == newTier.id
+        self.selectedTier = newTier
     addTiers: (tiers)->
       self = this
       angular.forEach(tiers, (tier,index)->
@@ -305,7 +344,7 @@
         submission_id: submission_id,
         metric_id: metric.id,
         tier_id: tier.id,
-        comments: ""
+        comments: metric.comments
       }
 
   $scope.addMetrics = (existingMetrics)->
@@ -325,7 +364,7 @@
     this.badges = {}
     this.availableBadges = angular.copy($scope.courseBadges)
     this.loadTierBadges(attrs["tier_badges"]) if attrs["tier_badges"] #add badges if passed on init
-    this.points = attrs.points || null
+    this.points = attrs.points || 0
     this.description = attrs.description or ""
     this.resetChanges()
   TierPrototype.prototype =

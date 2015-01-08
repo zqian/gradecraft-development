@@ -5,6 +5,7 @@ ruby '2.0.0'
 gem 'rails', '4.0.3'
 
 gem 'actionpack-action_caching'
+gem 'activerecord-import'
 gem 'actionpack-page_caching'
 gem 'active_model_serializers'
 gem 'activerecord-session_store'

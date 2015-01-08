@@ -99,10 +99,11 @@
       metric_id: this.metric.id,
       badge_id: this.badge.id
 
-  TierBadgePrototype = (tier, badge, attrs={})->
+  TierBadgePrototype = (tier, badge, attrs={create:false})->
     this.tier = tier
     this.badge = badge
-    this.create()
+    if attrs.create
+      this.create()
     this.name = badge.name
     this.description = badge.description
     this.point_total = badge.point_total
@@ -362,7 +363,7 @@
 
     selectBadge: ()->
       self = this
-      newBadge = new TierBadgePrototype(self, angular.copy(self.selectedBadge))
+      newBadge = new TierBadgePrototype(self, angular.copy(self.selectedBadge), {create: true})
       self.badges[newBadge.badge.id] = newBadge # add tier badge to tier
       delete self.availableBadges[self.selectedBadge.id] # remove badge from available badges on tier
       self.selectedBadge = "" # reset selected badge

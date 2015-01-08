@@ -28,13 +28,12 @@
 
         - @events.each do |event|
           %tr
-            %td= event.name
+            %td= link_to event.name, event
             %td= raw event.description
             %td= event.open_at
             %td= event.due_at
             %td
               .button-bar
                 %ul.button-group.radius.right
-                  %li= link_to 'Show', event, :class => "button"
                   %li= link_to 'Edit', edit_event_path(event), :class => "button"
-                  %li= link_to 'Destroy', event, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => "button"
+                  %li= link_to 'Delete', event, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => "button"

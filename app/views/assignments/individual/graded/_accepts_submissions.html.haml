@@ -1,0 +1,32 @@
+- student.submissions.where(:assignment_id => @assignment).each do |submission|
+  - if submission && ( grade.status? || grade.instructor_modified)
+    .button-bar
+      - if submission.submission_files.present?
+        %i.fi-paperclip.right
+      %ul.button-group.radius.right
+        %li
+          %a{:href => assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'}
+            See Grade
+            %span.sr-only for #{student.first_name} #{student.last_name}
+        %li
+          %a{:href => edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'}
+            Edit Grade
+            %span.sr-only for #{student.first_name} #{student.last_name}
+  - elsif submission
+    .button-bar
+      - if submission.submission_files.present?
+        %i.fi-paperclip.right
+      %ul.button-group.radius.right
+        %li= link_to "Grade", edit_assignment_grade_path(@assignment.id, submission.id, :student_id => student.id), :class => 'button'
+        %li= link_to "See Submission", assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
+
+- if ! student.submissions.where(:assignment_id => @assignment).present?
+  - if grade &&  ( grade.status? || grade.instructor_modified)
+    .button-bar
+      %ul.button-group.radius.right
+        %li= link_to "See Grade", assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
+        %li= link_to "Edit Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
+  - else
+    .button-bar
+      %ul.button-group.radius.right
+        %li= link_to "Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'

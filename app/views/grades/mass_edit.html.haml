@@ -88,6 +88,7 @@
                           = gf.text_field :raw_score, :value => nil, data: {autonumeric: true, "m-dec" => "0"}
                 %td{:style => "text-align: right"}= "/ #{points @assignment.point_total}"
 
+        %br
         .button-bar
           %ul.button-group.radius.right
             %li= f.button :submit, "Submit Grades"

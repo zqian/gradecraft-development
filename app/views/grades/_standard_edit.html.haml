@@ -1,0 +1,44 @@
+.small-12.columns
+  //.small-12.panel.columns
+  //= render 's3_uploader'
+
+  = simple_form_for @grade, url: assignment_grade_path(@assignment), method: :patch do |f|
+    = hidden_field_tag :student_id, current_student.id
+    .panel
+      .small-12.large-4.columns
+        = f.label :raw_score, "Raw Score (#{@assignment.point_total} points Possible)"
+        - if @assignment.has_levels?
+          = f.select :raw_score, @assignment_score_levels.map { |l| [l.formatted_name,l.value] }, :include_blank => true
+        - else
+          = f.text_field :raw_score, :default => @assignment.point_total, :label => "Score", :hint => "Total Assignment Points: #{ points @assignment.point_total }", data: {autonumeric: true, "m-dec" => "0"}
+        = f.simple_fields_for :grade_files, @grade.grade_files.new do |gff|
+          = gff.input :filepath, :input_html => { :class => 's3_files' }, :as => :hidden
+
+
+      - if @assignment.release_necessary?
+        .small-12.large-4.columns
+          - if current_user_is_gsi?
+            = f.input :status, as: :select, :collection => ["In Progress", "Graded"], :selected => @grade.status
+            .form_label Is this grade ready to be reviewed? 
+          - else
+            = f.input :status,  as: :select, :collection => ["In Progress", "Graded", "Released"], :selected => @grade.status, :include_blank => true
+            .form_label Can the student see this grade?
+      - elsif @grade.status.blank?
+        = f.hidden_field :status, value: 'Graded'
+
+      .small-12.large-4.columns
+        = f.simple_fields_for :grade_files, @grade.grade_files.new do |gff|
+          = gff.input :filename, :input_html => { :class => 's3_files' }, :as => :hidden
+      .clearfix
+
+      .small-12.columns
+        = f.hidden_field :graded_by_id, :value => current_user.id
+        = f.label :feedback
+        = f.bootsy_area :feedback
+
+      .clearfix
+
+    .button-bar
+      %ul.button-group.radius.right
+        %li= submit_tag "#{@grade.persisted? && @grade.is_graded? ? 'Update' : 'Submit'} Grade", :class => "button"
+        %li= link_to 'Cancel', assignment_path(@assignment), :class => 'button'
