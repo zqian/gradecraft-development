@@ -19,7 +19,7 @@
   - if @assignment.accepts_submissions?
     %br
     - if current_student.submission_for_assignment(@assignment)
-      = render "grades/submission"
+      = link_to "Edit My Submission", edit_assignment_submission_path(@assignment, current_student.submission_for_assignment(@assignment)), :class => 'button radius'
     - elsif @assignment.future? || @assignment.still_accepted?
       = link_to "Submit", new_assignment_submission_path(@assignment, :student_id => current_student), :class => 'button radius'
       - if @assignment.past?
