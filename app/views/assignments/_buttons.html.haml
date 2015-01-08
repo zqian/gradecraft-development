@@ -1,8 +1,5 @@
 .button-bar(ng-app="gradecraft" ng-controller="AssignmentCtrl" ng-init="init(#{@assignment[:id]}, #{@assignment.use_rubric})")
   %ul.button-group.context_menu
-    - if @assignment.description.present?
-      %li
-        -#= render "assignments/description"
     %li
       %a{:href => edit_assignment_path(@assignment) }
         %i.fi-pencil
