@@ -20,12 +20,6 @@
   #grade-status(ng-cloak)
   - if @assignment.release_necessary?
     .small-12.large-4.columns
-      -# - if current_user_is_gsi?
-      -# = select_tag :status, options_for_select(["In Progress", "Graded"], selected: @grade.status), ng-model: "gradeStatus"
-      -# .form_label Is this grade ready to be reviewed? 
-      -# - else
-      -# = select_tag :status, options_for_select([["Select grade status...",""], "In Progress", "Graded", "Released"], selected: @grade.status), ng-model: "gradeStatus"
-      -# .form_label Can the student see this grade?
 
     .row
       - if current_user_is_gsi?
@@ -36,9 +30,6 @@
         %select(ng-model="gradeStatus" ng-options="status for status in professorGradeStatuses")
           %option(value="" disabled) Select grade status for this submission...
         .form_label Can the student see this grade?
-
-  - elsif @grade.status.blank?
-    = f.hidden_field :status, value: 'Graded'
 
   #rubric-grader-splash.large-12.columns.text-center(ng-cloak)
     Loading assignment...
