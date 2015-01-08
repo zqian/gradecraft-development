@@ -26,7 +26,7 @@
     
     - if @assignment.rubric and @assignment.rubric.designed?
       .content#tabt2
-        = render 'assignments/rubrics_show'
+        = render 'assignments/rubric_preview'
     - if @assignment.accepts_submissions? && current_student.submission_for_assignment(@assignment)
       .content#tabt3
         = render "grades/submission"
