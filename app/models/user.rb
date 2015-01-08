@@ -247,12 +247,16 @@ class User < ActiveRecord::Base
   end
 
   def earned_badges_for_course(course)
-    @earned_badges ||= {}.tap do |earned_badges|
-      self.earned_badges.where(course: course).each do |earned_badge|
-        earned_badges[earned_badge.badge_id] = earned_badge
-      end
-    end
+    earned_badges.where(course: course)
   end
+
+  # def earned_badges_for_course(course)
+  #   @earned_badges ||= {}.tap do |earned_badges|
+  #     self.earned_badges.where(course: course).each do |earned_badge|
+  #       earned_badges[earned_badge.badge_id] = earned_badge
+  #     end
+  #   end
+  # end
 
   def earned_badge_count_for_course(course)
     earned_badges.where(course: course).count
