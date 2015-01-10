@@ -3,8 +3,6 @@
     .button-bar
       %ul.button-group.radius.right
         %li
-          - if submission.submission_files.present?
-            %i.fi-paperclip
           = link_to "See Submission", assignment_submission_path(@assignment, submission.id), :class => 'button'
         %li
           %a{:href => assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'}
