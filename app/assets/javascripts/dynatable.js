@@ -223,7 +223,7 @@ $('table.nofeatures_default_rank_dynatable').dynatable({
         sort: true
       },
   dataset: {
-      sorts: { 'score': -1 }
+      sorts: { 'rank': 1 }
   },
   readers: {
       rank: function(el, record) {
