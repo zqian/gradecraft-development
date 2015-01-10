@@ -1,9 +1,11 @@
 - student.submissions.where(:assignment_id => @assignment).each do |submission|
   - if submission && ( grade.status? || grade.instructor_modified)
     .button-bar
-      - if submission.submission_files.present?
-        %i.fi-paperclip.right
       %ul.button-group.radius.right
+        %li
+          - if submission.submission_files.present?
+            %i.fi-paperclip.right
+          = link_to "See Submission", assignment_submission_path(@assignment, submission.id), :class => 'button'
         %li
           %a{:href => assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'}
             See Grade
