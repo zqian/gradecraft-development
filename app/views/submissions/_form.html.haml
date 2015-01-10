@@ -44,5 +44,5 @@
 
   .button-bar
     %ul.button-group.radius.right
-      %li= f.button :submit, "#{@submission.persisted? ? 'Update Submission' : "Submit #{term_for :assignment}"} "
+      %li= f.button :submit, "#{@submission.persisted? ? 'Update Submission' : "Submit #{term_for :assignment}"}"
       %li= link_to 'Cancel', assignment_path(@assignment), :class => 'button'

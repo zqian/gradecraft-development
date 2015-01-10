@@ -1,18 +1,26 @@
-= content_nav_for @assignment, "Guidelines & Downloads"
-
-.small-12
-  %h3.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
+%br
 
 .small-12.columns
+
+  .italic.not_bold= "#{points @assignment.point_total} points possible"
   %br
-  -if @assignment.due_at.present?
-    .italic= "Due: #{@assignment.due_at}"    
-  - if @assignment.assignment_files.present?
-    %ul
-      .bold Downloads:
-      - @assignment.assignment_files.each do |af|
-        %li
-          = link_to af.filename, af.url
-  
-  - if @assignment.required?
-    .alert ! This #{term_for :assignment} is required!
+  .italic.not_bold= "Opens: #{@assignment.open_at}" if @assignment.open_at?
+  .italic.not_bold= "Due: #{@assignment.due_at}" if @assignment.due_at?
+
+  - if @assignment.description.present?
+    %hr
+
+    %h4.uppercase Guidelines:
+    - if @assignment.assignment_files.present?
+      %ul 
+        Downloads
+        - @assignment.assignment_files.each do |af|
+          %li= link_to af.filename, af.url
+          
+    %p= raw @assignment.description
+
+  - if @assignment.assignment_type.predictor_description.present?
+    %hr
+    %h4.uppercase #{ @assignment.assignment_type.name} Guidelines:
+
+    %p= raw @assignment.assignment_type.predictor_description

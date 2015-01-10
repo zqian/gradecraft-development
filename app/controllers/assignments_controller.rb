@@ -52,6 +52,8 @@ class AssignmentsController < ApplicationController
     if current_user_is_student?
       @grades_for_assignment = @assignment.grades_for_assignment(current_student)
       @rubric_grades = RubricGrade.joins("left outer join submissions on submissions.id = rubric_grades.submission_id").where("submissions.student_id =?", current_user[:id])
+    else
+      @grades_for_assignment = @assignment.all_grades_for_assignment
     end
 
     #used to display an alternate view of the same content

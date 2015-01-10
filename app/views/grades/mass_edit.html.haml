@@ -61,10 +61,12 @@
           - if @auditors.present?
             %tr
               %td.bold AUDITORS
+              %td
+              %td
             - @auditor_grades.each_with_index do |grade, i|
               %tr
                 %td{:style => "text-align: right"}= link_to grade.student.name, student_path(grade.student)
-                %td.center{:style => "text-align: right"}
+                %td.center
                   = f.simple_fields_for :grades, grade do |gf|
                     = gf.hidden_field :graded_by_id, :value => current_user.id
                     - if !grade.status
@@ -86,7 +88,7 @@
 
                         - else
                           = gf.text_field :raw_score, :value => nil, data: {autonumeric: true, "m-dec" => "0"}
-                %td{:style => "text-align: right"}= "/ #{points @assignment.point_total}"
+                %td{:style => "text-align: left"}= "/ #{points @assignment.point_total}"
 
         %br
         .button-bar

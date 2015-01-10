@@ -16,6 +16,7 @@
   margin-top: 0;
   background-color: $primary-color-5;
   border: none;
+  color: #FFF;
 
   h5 {
     color: $primary-color-4;
@@ -42,6 +43,14 @@
   }
 }
 
+.logged_in_footer, .logged_in_footer a, .logged_in_footer h5, .logged_in_footer h6 {
+  color: #FFF;
+}
+
+.logged_in_footer h5 {
+  font-size: 120%;
+  font-weight: bold;
+}
 
   /** Login Forms  **/
 

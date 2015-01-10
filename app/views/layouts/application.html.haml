@@ -34,11 +34,13 @@
         .columns.pageContainer= render 'layouts/staff'
       - else
         = render 'layouts/student'
+      .small-12.columns.logged_in_footer
+        %br
+        = render 'layouts/footer'
     - else
       = render 'layouts/public'
-      - if ! current_user
-        .row.panel.footer
-          .small-12.medium-12.columns
-            = render 'layouts/footer'
+      .row.panel.footer
+        .small-12.columns
+          = render 'layouts/footer'
     = render 'layouts/google_analytics'
     = javascript_include_tag 'application'

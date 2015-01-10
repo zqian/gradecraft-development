@@ -1,0 +1,91 @@
+%h3.pagetitle
+  - if @assignment.has_groups? && @group.present?
+    = "#{@title} for #{term_for :group} #{@group.name} (#{points @assignment.point_total} points)"
+  - else
+    = "#{@title} (#{points @assignment.point_total} points)"
+  %br
+.small-12.columns
+
+  - if @assignment.is_individual?
+    %h4.sr-only #{@student.first_name}'s Submission
+    %h4.bold
+      = "#{@student.first_name}'s Submission"
+      .button-bar
+        %ul.button-group.radius.right
+          %li
+            %a{:href => "#{edit_assignment_submission_path(@assignment, @student.submission_for_assignment(@assignment))}?student_id=#{@student.id}", :class => 'button'  }
+              Edit Submission
+              %span.sr-only #{@student.try(:first_name)}'s Submission
+
+          %li= link_to "Grade", edit_assignment_grade_path(@assignment.id, @submission.id, :student_id => @student.id), :class => 'button'
+    %p
+      %span.smallcaps Submitted:
+      = @student.submission_for_assignment(@assignment).created_at
+
+      // Late alert if submitted after due date
+      - if @student.submission_for_assignment(@assignment).late?
+        %span.label.alert.radius Late!
+        
+      // Checking to see if the submission was updated - if the update date is different from the creation date, displaying it
+    - if @student.submission_for_assignment(@assignment).updated_at != @student.submission_for_assignment(@assignment).created_at
+      %p
+        %span.smallcaps Updated:
+        %span= @student.submission_for_assignment(@assignment).updated_at
+
+    // Displaying the link to the submission if there is one
+    - if @student.submission_for_assignment(@assignment).link?
+      %p
+        %span.smallcaps Link:
+        = link_to @student.submission_for_assignment(@assignment).link, @student.submission_for_assignment(@assignment).link
+
+    - if @student.submission_for_assignment(@assignment).submission_files.present?
+      %p
+        %span.smallcaps Attachments:
+        %ul
+          - @student.submission_for_assignment(@assignment).submission_files.each do |sf|
+            %li
+              = link_to sf.filename, sf.url
+
+    - if @student.submission_for_assignment(@assignment).text_comment?
+      %p
+        %span.smallcaps Statement:
+        = raw @student.submission_for_assignment(@assignment).text_comment
+
+
+  - else
+    %b= "#{@group.name}'s Submission"
+    // link to edit the submission
+    %span= link_to "Edit", edit_assignment_submission_path(@assignment, @group.submission_for_assignment(@assignment)), :class => "button tiny radius secondary no-margin"
+    // Displaying when the assignment was submitted
+    %p
+      %span.smallcaps Submitted:
+      = @group.submission_for_assignment(@assignment).created_at
+
+      // Late alert if submitted after due date
+      - if @group.submission_for_assignment(@assignment).late?
+        %span.label.alert.radius Late!
+      // Checking to see if the submission was updated - if the update date is different from the creation date, displaying it
+    - if @group.submission_for_assignment(@assignment).updated_at != @group.submission_for_assignment(@assignment).created_at
+      %p
+        %span.smallcaps Updated:
+        %span= @group.submission_for_assignment(@assignment).updated_at
+
+    // Displaying the link to the submission if there is one
+    - if @group.submission_for_assignment(@assignment).link?
+      %p
+        %span.smallcaps Link:
+        = link_to @group.submission_for_assignment(@assignment).link, @group.submission_for_assignment(@assignment).link
+
+    - if @group.submission_for_assignment(@assignment).submission_files.present?
+      %p
+        %span.smallcaps Attachments:
+        %ul
+          - @group.submission_for_assignment(@assignment).submission_files.each do |sf|
+            %li
+              = link_to sf.filename, sf.url
+              = link_to "(Remove)", remove_uploads_path({ :model => "SubmissionFile", :assignment_id => @assignment.id, :upload_id => sf.id } )
+
+    - if @group.submission_for_assignment(@assignment).text_comment?
+      %p
+        %span.smallcaps Statement:
+        = raw @group.submission_for_assignment(@assignment).text_comment

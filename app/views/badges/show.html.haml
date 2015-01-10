@@ -33,6 +33,9 @@
         %label.sr-only{:for => "team_id"}
           Select Team
         = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "– Select #{current_course.team_term} –"
+  - else
+    .clearfix
+    %br
 
   .small-12.columns.columns-no-padding_right
     //badge icon, total awarded, and points

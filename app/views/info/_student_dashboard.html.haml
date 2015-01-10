@@ -1,28 +1,6 @@
 .small-12.panel.mainContent
 
-  %h4.subtitle
-    
-    / Check to see if the course has scheme elements
-    / - if current_course.grade_scheme_elements.present?
-    /   - if current_student.won(current_course)
-    /     = "Congratulations! You beat #{current_course.name}."
-    /   - elsif current_course.grade_level_for_score(current_student.cached_score_for_course(current_course)).present?
-    /     .italic= "You are a #{current_course.grade_level_for_score(current_student.cached_score_for_course(current_course))}"
-    /   - else
-    /     You're just getting started!
-    /   - if ! current_student.won(current_course)
-    /     %span= points current_student.points_to_next_level(current_course)
-    /     %span points until your next rank:
-    /     %span.bold= current_student.next_element_level(current_course).level      
-    /   / Else tally all of the points for all of the assignments in the course
-    / - else
-    Your current score is
-    %span.bold #{points current_student.cached_score_for_course(current_course)}
-    //%span /#{points current_course.total_points} points
-    - if current_student.grade_level_for_course(current_course).present?
-      / Display current level if it is present
-      Current Level:
-      %span.bold= current_student.grade_level_for_course(current_course)
+  = render 'students/earned_points_and_level'
 
   #loading
     Loading data please wait...

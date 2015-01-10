@@ -52,6 +52,10 @@ class AssignmentType < ActiveRecord::Base
     points_predictor_display == "Set per Assignment"
   end
 
+  def has_predictable_assignments?
+    assignments.any?(&:include_in_predictor?)
+  end
+
   #Checks if the assignment type has associated score levels
   def has_levels?
     score_levels.present?
