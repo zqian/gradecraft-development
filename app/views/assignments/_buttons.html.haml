@@ -4,12 +4,12 @@
       %a{:href => edit_assignment_path(@assignment) }
         %i.fi-pencil
         Edit
-    - if @team.present?
+    - if @team.present? && ! @assignment.use_rubric?
       %li
         %a{:href => mass_grade_assignment_path(@assignment, :team_id => @team) }
           %i.fi-list-thumbnails
           Quick Grade
-    - else
+    - elsif ! @assignment.use_rubric?
       %li
         %a{:href => mass_grade_assignment_path(@assignment) }
           %i.fi-check

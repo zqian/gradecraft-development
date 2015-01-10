@@ -7,19 +7,18 @@
       = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "– Select #{current_course.team_term} –"
 
 = form_tag edit_status_grades_assignment_path @assignment do
-  .columns
-    %table.responsive.nofeatures_default_last_name_dynatable
-      %thead= render "assignments/individual/graded/table_head"
-      %tbody= render "assignments/individual/graded/table_body"
+  %table.no_radius.responsive.nofeatures_default_last_name_dynatable
+    %thead= render "assignments/individual/graded/table_head"
+    %tbody= render "assignments/individual/graded/table_body"
 
   - if @auditing.present?
 
     %h4.subtitle Auditing #{term_for :students}
 
-    .small-12.columns
-      %table.responsive.nofeatures_default_last_name_dynatable
-        %thead= render "assignments/individual/auditing/table_head"
-        %tbody= render "assignments/individual/auditing/table_body"
+    
+    %table.responsive.nofeatures_default_last_name_dynatable
+      %thead= render "assignments/individual/auditing/table_head"
+      %tbody= render "assignments/individual/auditing/table_body"
 
   - if @assignment.release_necessary? && @assignment.grades.present?
     .small-12.columns

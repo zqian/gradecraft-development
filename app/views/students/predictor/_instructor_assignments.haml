@@ -46,7 +46,7 @@
                   - if assignment.fixed?
                     %input{:type => "checkbox", :name => assignment.name, :value => current_student_data.point_total_for_assignment(assignment), :class => "class-checkbox right", :'data-assignment-type-id' => assignment.assignment_type_id }
                   - elsif assignment.select?
-                    = select_tag assignment.name, options_from_collection_for_select(assignment.assignment_score_levels,'value','name',  current_student_data.grade_for_assignment(assignment).score), :class => 'point-value', :id => "total-#{assignment.id}", :include_blank => true
+                    = select_tag assignment.name, options_from_collection_for_select(assignment.assignment_score_levels,'value','formatted_name',  current_student_data.grade_for_assignment(assignment).score), :class => 'point-value', :id => "total-#{assignment.id}", :include_blank => true
                   - else
                     %span.pScore= "0 "
                     %span.score-level-name

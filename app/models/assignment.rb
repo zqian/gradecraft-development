@@ -120,6 +120,13 @@ class Assignment < ActiveRecord::Base
    }
   end
 
+  def all_grades_for_assignment
+    scores = grades.graded_or_released.pluck('raw_score')
+    return {
+    :scores => scores
+   }
+  end
+
   #Basic result stats - high, low, average, median
   def high_score
     grades.graded_or_released.maximum('grades.raw_score')

@@ -97,7 +97,7 @@ $(document).ready(function() {
 
       var options = createOptions()
       options.chart.renderTo = 'userBarTotal';
-      options.title = { text: 'Total Possible Points', margin: 30 };
+      options.title = { text: 'Total Points Earned', margin: 30 };
       options.xAxis.categories = { text: ' ' };
       options.yAxis.max = data.course_total;
       options.yAxis.plotBands = data.grade_levels;

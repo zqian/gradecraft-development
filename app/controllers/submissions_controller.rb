@@ -85,6 +85,19 @@ class SubmissionsController < ApplicationController
     end
   end
 
+  def show
+    @assignment = current_course.assignments.find(params[:assignment_id])
+    @submission = current_course.submissions.find(params[:id])
+    @student = @submission.student
+    if current_user_is_student?
+      @title = "My Submission for #{@assignment.name}"
+    else
+      @title = "Testing"
+      @student = @submission.student
+
+    end
+  end
+
   def check_uploads
     if params[:submission][:submission_files_attributes]["0"][:filepath].empty?
       params[:submission].delete(:submission_files_attributes)
