@@ -10,7 +10,7 @@
   $scope.pointsPossible = 0
   $scope.pointsGiven = 0
 
-  $scope.init = (rubricId, metrics, assignmentId, studentId, rubricGrades, gradeStatus, courseBadges)->
+  $scope.init = (rubricId, metrics, assignmentId, studentId, rubricGrades, gradeStatus, courseBadges, releaseNecessary)->
     $scope.rubricId = rubricId
     $scope.assignmentId = assignmentId
     $scope.studentId = studentId
@@ -18,6 +18,12 @@
       $scope.gradeStatus = gradeStatus
     else
       $scope.gradeStatus = ""
+
+    # use 'Graded' for all assignments for which release is necessary, bypass ui
+    $scope.releaseNecessary = releaseNecessary
+    if not $scope.releaseNecessary
+      $scope.gradeStatus = "Graded"
+
     $scope.addRubricGrades(rubricGrades)
     $scope.addCourseBadges(courseBadges)
     $scope.addMetrics(metrics)
