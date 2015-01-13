@@ -73,9 +73,7 @@ class GradesController < ApplicationController
       @submission.update_attributes(graded: true)
     end
 
-    # @grade = Grade.where(assignment_id: @assignment[:id], student_id: params[:student_id]).first
-    # @grade = Grade.where(student_id: current_student[:id], assignment_id: @assignment[:id]).first
-    @grade = current_student_data.grade_for_assignment(@assignment)
+    @grade = Grade.where(student_id: current_student[:id], assignment_id: @assignment[:id]).first
 
     if @grade
       @grade.update_attributes grade_attributes_from_rubric
@@ -89,15 +87,11 @@ class GradesController < ApplicationController
     delete_existing_earned_badges_for_metrics # if earned_badges_exist? # destroy earned_badges where assignment_id and student_id match
     create_earned_tier_badges # create_earned_tier_badges 
 
-    # need to create an array of tier_ids
-    # get tier_badges for those ids
-    # delete previous earned badges associated with the grade
-    # (need to create grade_id on EarnedBadge)
-    # create new rubric_grades for that
-
     GradeUpdater.perform_async([@grade.id]) if @grade.graded_or_released?
 
-    render status: 200, json: {}
+    respond_to do |format|
+      format.json { render nothing: true }
+    end
   end
 
   private
@@ -476,8 +470,8 @@ class GradesController < ApplicationController
       course_id: current_course[:id],
       assignment_type_id: @assignment.assignment_type_id
     }
-      .merge!(current_assignment_and_student_ids)
-      .merge!(grade_attributes_from_rubric)
+      .merge(current_assignment_and_student_ids)
+      .merge(grade_attributes_from_rubric)
   end
 
   def current_assignment_and_student_ids
