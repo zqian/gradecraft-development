@@ -338,12 +338,15 @@ class GradesController < ApplicationController
     else
       CSV.foreach(params[:file].tempfile, :headers => true, :encoding => 'ISO-8859-1') do |row|
         @students.each do |student|
-          if student.username == row[2] && row[3].present?
+          if student.username.downcase == row[2].downcase && row[3].present?
             if student.grades.where(:assignment_id => @assignment).present?
               @assignment.all_grade_statuses_grade_for_student(student).tap do |grade|
                 grade.raw_score = row[3].to_i
                 grade.feedback = row[4]
-                grade.status = "Graded"
+                if grade.status == nil
+                  grade.status = "Graded"
+                end
+                grade.instructor_modified = true
                 grade.save!
                 grade_ids << grade.id
               end
@@ -354,6 +357,7 @@ class GradesController < ApplicationController
                 grade.raw_score = row[3].to_i
                 grade.feedback = row[4]
                 grade.status = "Graded"
+                grade.instructor_modified = true
                 grade.save!
                 grade_ids << grade.id
               end
@@ -382,12 +386,15 @@ class GradesController < ApplicationController
     else
       CSV.foreach(params[:file].tempfile, :headers => true, :encoding => 'ISO-8859-1') do |row|
         @students.each do |student|
-          if student.email == row[2] && row[3].present?
+          if student.email.downcase == row[2].downcase && row[3].present?
             if student.grades.where(:assignment_id => @assignment).present?
               @assignment.all_grade_statuses_grade_for_student(student).tap do |grade|
                 grade.raw_score = row[3].to_i
-                #grade.feedback = row[4]
-                grade.status = "Graded"
+                grade.feedback = row[4]
+                if grade.status == nil
+                  grade.status = "Graded"
+                end
+                grade.instructor_modified = true
                 grade.save!
                 grade_ids << grade.id
               end
@@ -398,6 +405,7 @@ class GradesController < ApplicationController
                 grade.raw_score = row[3].to_i
                 grade.feedback = row[4]
                 grade.status = "Graded"
+                grade.instructor_modified = true
                 grade.save!
                 grade_ids << grade.id
               end
@@ -430,8 +438,11 @@ class GradesController < ApplicationController
             if student.grades.where(:assignment_id => @assignment).present?
               @assignment.all_grade_statuses_grade_for_student(student).tap do |grade|
                 grade.raw_score = row[5].to_i
-                #grade.feedback = row[4]
-                grade.status = "Graded"
+                grade.feedback = row[6]
+                if grade.status == nil
+                  grade.status = "Graded"
+                end
+                grade.instructor_modified = true
                 grade.save!
                 grade_ids << grade.id
               end
@@ -440,8 +451,9 @@ class GradesController < ApplicationController
                 grade.assignment_id = @assignment.id
                 grade.student_id = student.id
                 grade.raw_score = row[5].to_i
-                #grade.feedback = row[4]
+                grade.feedback = row[6]
                 grade.status = "Graded"
+                grade.instructor_modified = true
                 grade.save!
                 grade_ids << grade.id
               end
