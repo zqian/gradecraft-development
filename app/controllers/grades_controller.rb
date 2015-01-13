@@ -85,7 +85,7 @@ class GradesController < ApplicationController
     create_rubric_grades # create an individual record for each rubric grade
 
     delete_existing_earned_badges_for_metrics # if earned_badges_exist? # destroy earned_badges where assignment_id and student_id match
-    create_earned_tier_badges # create_earned_tier_badges 
+    create_earned_tier_badges if params[:tier_badges]# create_earned_tier_badges 
 
     GradeUpdater.perform_async([@grade.id]) if @grade.graded_or_released?
 
