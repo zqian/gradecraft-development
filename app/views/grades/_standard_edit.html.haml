@@ -2,6 +2,12 @@
   //.small-12.panel.columns
   //= render 's3_uploader'
 
+  - if @assignment.accepts_submissions? && @student.submission_for_assignment(@assignment).present?
+    .panel
+
+      %h4.uppercase= "#{@student.first_name}'s Submission"
+      = render 'submissions/instructor_data'
+
   = simple_form_for @grade, url: assignment_grade_path(@assignment), method: :patch do |f|
     = hidden_field_tag :student_id, current_student.id
     .panel

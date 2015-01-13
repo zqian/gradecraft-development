@@ -2,10 +2,11 @@
 .small-12.columns
 
   - if @assignment.is_individual?
-    %p.bold
-      %span
-        %a{:href => "#{edit_assignment_submission_path(@assignment, current_student.submission_for_assignment(@assignment))}?student_id=#{current_student.id}", :class => 'button radius'  }
-          Edit My Submission
+    %a{:href => "#{edit_assignment_submission_path(@assignment, current_student.submission_for_assignment(@assignment))}?student_id=#{current_student.id}", :class => 'button radius'  }
+      Edit My Submission
+    .clearfix
+
+    %br
     %p
       %span.smallcaps Submitted:
       = current_student.submission_for_assignment(@assignment).created_at
