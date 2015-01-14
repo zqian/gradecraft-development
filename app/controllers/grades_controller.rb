@@ -121,7 +121,8 @@ class GradesController < ApplicationController
   end
 
   def create_rubric_grades
-    RubricGrade.import(new_rubric_grades, :validate => true)
+    new_rubric_grades.collect {|new_rubric_grade| new_rubric_grade.save }
+    # RubricGrade.import(new_rubric_grades, :validate => true)
   end
 
   def new_rubric_grades
