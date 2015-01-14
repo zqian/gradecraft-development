@@ -1,5 +1,5 @@
-#preview-rubric(style="font-size: 12px")
-  %table#grade-rubric-table(width="100%")
+#preview-rubric.small-12
+  %table#grade-rubric-table.small-12
     %thead
       %tr
         %td.metric.heading
@@ -38,7 +38,7 @@
 
               - if current_user_is_student? && current_student.grade_for_assignment(@assignment).is_released?
                 - if @rubric_grades.select {|rubric_grade| rubric_grade.tier_id == tier[:id] }.count > 0
-                  .level-scored You scored at this level
+                  .level-scored You earned this level
 
               - if tier.rubric_grades.size > 0
                 .students-padding
