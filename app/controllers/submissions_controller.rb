@@ -92,7 +92,7 @@ class SubmissionsController < ApplicationController
     if current_user_is_student?
       @title = "My Submission for #{@assignment.name}"
     else
-      @title = "Testing"
+      @title = "#{@student.first_name}'s #{@assignment.name} Submission"
       @student = @submission.student
 
     end

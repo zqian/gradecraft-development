@@ -1,5 +1,5 @@
-#preview-rubric(style="font-size: 12px")
-  %table#grade-rubric-table(width="100%")
+#preview-rubric.small-12
+  %table#grade-rubric-table.small-12
     %thead
       %tr
         %td.metric.heading
@@ -36,12 +36,12 @@
                       %img{:src => badge.badge.icon, width: "30px", height: "30px" }
                 .clear
 
-              - if current_user_is_student?
+              - if current_user_is_student? && current_student.grade_for_assignment(@assignment).is_released?
                 - if @rubric_grades.select {|rubric_grade| rubric_grade.tier_id == tier[:id] }.count > 0
-                  .level-scored You scored at this level
+                  .level-scored You earned this level
 
               - if tier.rubric_grades.size > 0
                 .students-padding
-                //.graded-students= "#{tier.rubric_grades.size} students (#{'%.0f' % tier_percent_of_total_graded(tier) * 100}%) at this level"
+                .graded-students= "#{tier.rubric_grades.size} students earned this level"
           - if metric.tiers.size < @rubric.max_tier_count
             %td.filler(colspan="#{@rubric.max_tier_count - metric.tiers.size}")

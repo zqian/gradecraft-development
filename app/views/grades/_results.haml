@@ -20,3 +20,6 @@
   - if grade.feedback.present?
     %span.small_uppercase Your Feedback:
     %p= raw current_student.grade_for_assignment(@assignment).feedback
+
+- if @assignment.rubric and @assignment.rubric.designed?
+  = render 'assignments/rubric_preview'

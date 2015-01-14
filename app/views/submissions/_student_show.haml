@@ -2,10 +2,12 @@
 .small-12.columns
 
   - if @assignment.is_individual?
-    %p.bold
-      %span
-        %a{:href => "#{edit_assignment_submission_path(@assignment, current_student.submission_for_assignment(@assignment))}?student_id=#{current_student.id}", :class => 'button radius'  }
-          Edit My Submission
+    - if @assignment.open?
+      %a{:href => "#{edit_assignment_submission_path(@assignment, current_student.submission_for_assignment(@assignment))}?student_id=#{current_student.id}", :class => 'button radius'  }
+        Edit My Submission
+      .clearfix
+
+    %br
     %p
       %span.smallcaps Submitted:
       = current_student.submission_for_assignment(@assignment).created_at
@@ -43,7 +45,8 @@
   - else
     Your Submission
     // link to edit the submission
-    %span= link_to "Edit", edit_assignment_submission_path(@assignment, @group.submission_for_assignment(@assignment)), :class => "button tiny radius secondary no-margin"
+    - if @assignment.open?
+      %span= link_to "Edit", edit_assignment_submission_path(@assignment, @group.submission_for_assignment(@assignment)), :class => "button tiny radius secondary no-margin"
     // Displaying when the assignment was submitted
     %p
       %span.smallcaps Submitted:

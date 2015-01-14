@@ -300,7 +300,10 @@ class Assignment < ActiveRecord::Base
 
   #Checking to see if the assignment is still open and accepting submissons
   def open?
-    ((open_at != nil && open_at < Time.now) && (due_at != nil && due_at > Time.now)) || due_at.nil? || (due_at != nil && due_at > Time.now) || accepts_submissions_until != nil && accepts_submissions_until > Time.now
+    ((open_at != nil && open_at < Time.now) && (due_at != nil && due_at > Time.now)) || 
+    (open_at.nil? && due_at.nil?) || 
+    (open_at.nil? && due_at != nil && due_at > Time.now) || 
+    (accepts_submissions_until != nil && accepts_submissions_until > Time.now)
   end
 
   #Counting how many grades there are for an assignment
@@ -346,27 +349,18 @@ class Assignment < ActiveRecord::Base
 
   def email_based_grade_import(assignment, options = {})
     CSV.generate(options) do |csv|
-      csv << ["First Name", "Last Name", "Email", "Score"]
+      csv << ["First Name", "Last Name", "Email", "Score", "Feedback"]
       course.students.each do |student|
-        csv << [student.first_name, student.last_name, student.email, student.grade_for_assignment(assignment).try(:score)]
+        csv << [student.first_name, student.last_name, student.email, student.grade_for_assignment(assignment).try(:score), student.grade_for_assignment(assignment).try(:feedback)]
       end
     end
   end
 
   def username_based_grade_import(assignment, options = {})
     CSV.generate(options) do |csv|
-      csv << ["First Name", "Last Name", "Username", "Score"]
+      csv << ["First Name", "Last Name", "Username", "Score", "Feedback"]
       course.students.each do |student|
-        csv << [student.first_name, student.last_name, student.username, student.grade_for_assignment(assignment).try(:score)]
-      end
-    end
-  end
-
-  def name_based_grade_import(assignment, options = {})
-    CSV.generate(options) do |csv|
-      csv << ["Student", "ID", "SIS User ID", "SIS Login ID", "Section", assignment.name]
-      course.students.each do |student|
-        csv << [student.last_name + ", " + student.first_name, student.id, " ", " ", student.team_for_course(course).try(:name), student.grade_for_assignment(assignment).try(:score)]
+        csv << [student.first_name, student.last_name, student.username, student.grade_for_assignment(assignment).try(:score), student.grade_for_assignment(assignment).try(:feedback)]
       end
     end
   end

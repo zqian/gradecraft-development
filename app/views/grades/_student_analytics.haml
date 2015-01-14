@@ -32,7 +32,7 @@
       .small-7
         #numberComplete{:"data-type" => "full", "data-info" => "#{term_for :students} Participated", "data-percent" => "#{@assignment.completion_rate(current_course)}", "data-fgcolor" => "#61a9dc", "data-bgcolor" => "#333333", "data-text" => "#{@assignment.grade_count}", "data-dimension" => "250", "data-fontsize" => "38", "data-border" => "#222222", "data-bordersize" => "2"   }
 
-    .small-12.medium-12.large-6.columns.box
-      - if current_student_data.grade_released_for_assignment?(@assignment).present? || current_user_is_staff?
-        %h4.bold Percentage Scores Earned
-        #levels_per_assignment{'data-levels' =>  @assignment.percentage_score_earned.to_json }
+    / .small-12.medium-12.large-6.columns.box
+    /   - if current_student_data.grade_released_for_assignment?(@assignment).present? || current_user_is_staff?
+    /     %h4.bold Percentage Scores Earned
+    /     #levels_per_assignment{'data-levels' =>  @assignment.percentage_score_earned.to_json }
