@@ -368,12 +368,13 @@
       delete self.availableBadges[self.selectedBadge.id] # remove badge from available badges on tier
       self.selectedBadge = "" # reset selected badge
 
-    deleteTierBadge: (badge)->
+    deleteTierBadge: (badge, id)->
       self = this
       tierBadge = badge 
+      tierBadgeId = id
 
       if confirm("Are you sure you want to delete this badge from the tier?")
-        $http.delete("/tier_badges/#{tierBadge.id}").success(
+        $http.delete("/tier_badges/#{tierBadgeId}").success(
           (data,status)->
             self.availableBadges[tierBadge.badge.id] = angular.copy($scope.courseBadges[tierBadge.badge.id])
             delete self.badges[tierBadge.badge.id]
