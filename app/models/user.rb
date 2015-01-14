@@ -42,7 +42,7 @@ class User < ActiveRecord::Base
 
   attr_accessor :remember_me, :password, :password_confirmation, :cached_last_login_at, :course_team_ids, :score
   attr_accessible :username, :email, :password, :password_confirmation,
-    :avatar_file_name, :role, :first_name, :last_name, :rank, :user_id,
+    :avatar_file_name, :first_name, :last_name, :rank, :user_id,
     :display_name, :private_display, :default_course_id, :last_activity_at,
     :last_login_at, :last_logout_at, :team_ids, :courses, :course_ids,
     :shared_badges, :earned_badges, :earned_badges_attributes,
