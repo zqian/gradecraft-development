@@ -101,6 +101,7 @@
 
   TierBadgePrototype = (tier, badge, attrs={create:false})->
     this.tier = tier
+    this.id = null
     this.badge = badge
     if attrs.create
       this.create()
@@ -350,6 +351,7 @@
       self = this
       courseBadge = self.availableBadges[tierBadge.badge_id]
       loadedBadge = new TierBadgePrototype(self, angular.copy(courseBadge))
+      loadedBadge.id = tierBadge.id
       self.badges[courseBadge.id] = loadedBadge # add tier badge to tier
       delete self.availableBadges[courseBadge.id] # remove badge from available badges on tier
      
@@ -368,13 +370,12 @@
       delete self.availableBadges[self.selectedBadge.id] # remove badge from available badges on tier
       self.selectedBadge = "" # reset selected badge
 
-    deleteTierBadge: (badge, id)->
+    deleteTierBadge: (badge)->
       self = this
       tierBadge = badge 
-      tierBadgeId = id
 
       if confirm("Are you sure you want to delete this badge from the tier?")
-        $http.delete("/tier_badges/#{tierBadgeId}").success(
+        $http.delete("/tier_badges/#{tierBadge.id}").success(
           (data,status)->
             self.availableBadges[tierBadge.badge.id] = angular.copy($scope.courseBadges[tierBadge.badge.id])
             delete self.badges[tierBadge.badge.id]
