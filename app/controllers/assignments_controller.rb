@@ -18,7 +18,7 @@ class AssignmentsController < ApplicationController
   end
 
   def show
-    @assignment = current_course.assignments.find(params[:id])
+    @assignment = Assignment.find(params[:id])
     @assignment_type = @assignment.assignment_type
     @title = @assignment.name
     @groups = @assignment.groups
@@ -51,7 +51,7 @@ class AssignmentsController < ApplicationController
 
     if current_user_is_student?
       @grades_for_assignment = @assignment.grades_for_assignment(current_student)
-      @rubric_grades = RubricGrade.joins("left outer join submissions on submissions.id = rubric_grades.submission_id").where("submissions.student_id =?", current_user[:id])
+      @rubric_grades = RubricGrade.joins("left outer join submissions on submissions.id = rubric_grades.submission_id").where(student_id: current_user[:id]).where(assignment_id: params[:id])
     else
       @grades_for_assignment = @assignment.all_grades_for_assignment
     end
