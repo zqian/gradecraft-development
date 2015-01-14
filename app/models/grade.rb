@@ -7,7 +7,7 @@ class Grade < ActiveRecord::Base
     :grade_files_attributes, :grade_file, :assignments_attributes, :point_total, :assignment_type_id, :course_id,
     :instructor_modified
 
-  STATUSES=%w(Graded Released)
+  STATUSES= ["In Progress", "Graded", "Released"]
 
   belongs_to :course
   belongs_to :assignment, touch: true
