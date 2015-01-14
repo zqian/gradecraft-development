@@ -9,6 +9,10 @@
           %label.larger
             %strong Level:
             Point value
+        %td.comments.heading
+          %label.larger
+            Comments
+
 
     %tbody
       - @metrics.each do |metric|
@@ -45,3 +49,5 @@
                 .graded-students= "#{tier.rubric_grades.size} students earned this level"
           - if metric.tiers.size < @rubric.max_tier_count
             %td.filler(colspan="#{@rubric.max_tier_count - metric.tiers.size}")
+          %td.tier= @comments_by_metric_id[metric.id]
+

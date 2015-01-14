@@ -52,6 +52,9 @@ class AssignmentsController < ApplicationController
     if current_user_is_student?
       @grades_for_assignment = @assignment.grades_for_assignment(current_student)
       @rubric_grades = RubricGrade.joins("left outer join submissions on submissions.id = rubric_grades.submission_id").where(student_id: current_user[:id]).where(assignment_id: params[:id])
+      @comments_by_metric_id = @rubric_grades.inject({}) do |memo, rubric_grade|
+        memo.merge(rubric_grade.metric_id => rubric_grade.comments)
+      end
     else
       @grades_for_assignment = @assignment.all_grades_for_assignment
     end
