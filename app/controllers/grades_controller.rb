@@ -5,7 +5,10 @@ class GradesController < ApplicationController
   before_filter :ensure_student?, only: [:predict_score]
 
   def show
-    @assignment = current_course.assignments.find(params[:assignment_id])   
+    @assignment = current_course.assignments.find(params[:assignment_id]) 
+    @rubric = @assignment.rubric
+    @metrics = @rubric.metrics
+    @rubric_grades = serialized_rubric_grades
     if current_user_is_student?
       redirect_to @assignment
     end

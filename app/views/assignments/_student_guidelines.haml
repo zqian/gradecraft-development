@@ -16,7 +16,7 @@
         = f.submit (@assignment_type.student_logged_button_text), :class => "button #{present ? 'alert' : 'success'} tiny radius"
 
 
-  - if @assignment.accepts_submissions?
+  - if @assignment.accepts_submissions? && @assignment.open?
     %br
     - if current_student.submission_for_assignment(@assignment)
       = link_to "Edit My Submission", edit_assignment_submission_path(@assignment, current_student.submission_for_assignment(@assignment)), :class => 'button radius'
@@ -24,6 +24,7 @@
       = link_to "Submit", new_assignment_submission_path(@assignment, :student_id => current_student), :class => 'button radius'
       - if @assignment.past?
         .label.alert.radius= "Past due!"
+    %br
 
   - if @assignment.description.present?
     %hr

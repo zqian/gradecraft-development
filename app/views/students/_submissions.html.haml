@@ -1,4 +1,4 @@
 - if current_student.submission_for_assignment(assignment).present?
   %li= link_to "See Submission", assignment_submission_path(assignment, current_student.submission_for_assignment(assignment)), :class => 'button'
-- elsif assignment.future? || assignment.still_accepted?
+- elsif assignment.open?
   %li= link_to "Submit", new_assignment_submission_path(assignment, :student_id => current_student), :class => 'button'
