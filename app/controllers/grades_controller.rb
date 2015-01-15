@@ -126,29 +126,21 @@ class GradesController < ApplicationController
     { assignment_id: params[:assignment_id], student_id: params[:student_id], metric_id: params[:metric_ids] }
   end
 
-  def create_rubric_grades
+  def save_new_rubric_grades
     new_rubric_grades.collect {|new_rubric_grade| new_rubric_grade.save }
     # RubricGrade.import(new_rubric_grades, :validate => true)
   end
 
-  def new_rubric_grades
+  def create_rubric_grades
     params[:rubric_grades].collect do |rubric_grade|
-      RubricGrade.new({
-        metric_name: rubric_grade["metric_name"],
-        metric_description: rubric_grade["metric_description"],
-        max_points: rubric_grade["max_points"],
-        tier_name: rubric_grade["tier_name"],
-        tier_description: rubric_grade["tier_description"],
-        points: rubric_grade["points"],
-        order: rubric_grade["order"],
-        submission_id: submission_id,
-        metric_id: rubric_grade["metric_id"],
-        tier_id: rubric_grade["tier_id"],
-        comments: rubric_grade["comments"],
-        assignment_id: @assignment[:id],
-        student_id: params[:student_id]
-      })
+      RubricGrade.create! rubric_grade.merge(extra_rubric_grade_params)
     end
+  end
+
+  def extra_rubric_grade_params
+    { submission_id: submission_id,
+      assignment_id: @assignment[:id],
+      student_id: params[:student_id] }
   end
 
   def create_earned_tier_badges
