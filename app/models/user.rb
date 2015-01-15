@@ -42,7 +42,7 @@ class User < ActiveRecord::Base
 
   attr_accessor :remember_me, :password, :password_confirmation, :cached_last_login_at, :course_team_ids, :score
   attr_accessible :username, :email, :password, :password_confirmation,
-    :avatar_file_name, :role, :first_name, :last_name, :rank, :user_id,
+    :avatar_file_name, :first_name, :last_name, :rank, :user_id,
     :display_name, :private_display, :default_course_id, :last_activity_at,
     :last_login_at, :last_logout_at, :team_ids, :courses, :course_ids,
     :shared_badges, :earned_badges, :earned_badges_attributes,
@@ -198,17 +198,9 @@ class User < ActiveRecord::Base
     end
   end
 
-  # During the migration where roles are transferred from the user to the
-  # course membership, we need to account for role being a column on users (before)
-  # and a method (after). Once this migration is complete, course should not be an
-  # optional parameter, and we should remove the if...else check and always go with else
-  def role(course=nil)
-    if self.attributes.include? "role"
-      self.attributes["role"]
-    else
-      return nil if self.course_memberships.where(course_id: course).empty?
-      self.course_memberships.where(course: course).first.role
-    end
+  def role(course)
+    return nil if self.course_memberships.where(course_id: course).empty?
+    self.course_memberships.where(course: course).first.role
   end
 
   # TODO redefine staff as professors and gsi only.
