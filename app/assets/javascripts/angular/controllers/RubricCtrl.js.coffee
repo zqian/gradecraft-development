@@ -101,6 +101,7 @@
 
   TierBadgePrototype = (tier, badge, attrs={create:false})->
     this.tier = tier
+    this.id = null
     this.badge = badge
     if attrs.create
       this.create()
@@ -350,6 +351,7 @@
       self = this
       courseBadge = self.availableBadges[tierBadge.badge_id]
       loadedBadge = new TierBadgePrototype(self, angular.copy(courseBadge))
+      loadedBadge.id = tierBadge.id
       self.badges[courseBadge.id] = loadedBadge # add tier badge to tier
       delete self.availableBadges[courseBadge.id] # remove badge from available badges on tier
      

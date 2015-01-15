@@ -9,10 +9,9 @@
           %label.larger
             %strong Level:
             Point value
-        - if current_user_is_student?
-          %td.comments.heading
-            %label.larger
-              Comments
+        %td.comments.heading
+          %label.larger
+            Comments
 
 
     %tbody
@@ -41,17 +40,16 @@
                       %img{:src => badge.badge.icon, width: "30px", height: "30px" }
                 .clear
 
-              - if current_user_is_student? && current_student.grade_for_assignment(@assignment).is_released?
-                - if @rubric_grades.select {|rubric_grade| rubric_grade.tier_id == tier[:id] }.count > 0
-                  .level-scored You earned this level
+              - if @viewable_rubric_grades.select {|rubric_grade| rubric_grade.tier_id == tier[:id] }.count > 0
+                .level-scored #{current_student.first_name} earned this level
 
               - if tier.rubric_grades.size > 0
                 .students-padding
                 .graded-students= "#{tier.rubric_grades.size} students earned this level"
           - if metric.tiers.size < @rubric.max_tier_count
             %td.filler(colspan="#{@rubric.max_tier_count - metric.tiers.size}")
-          - if current_user_is_student?
-            %td.tier
-              - if @comments_by_metric_id.size > 0
-                = @comments_by_metric_id[metric.id]
+          %td.tier
+            - if @comments_by_metric_id.size > 0
+              = @comments_by_metric_id[metric.id]
+
 
