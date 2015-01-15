@@ -92,7 +92,7 @@ class GradesController < ApplicationController
       @grade = Grade.create(new_grade_from_rubric_grades_attributes)
     end
 
-    delete_existing_rubric_grades if rubric_grades_exist? # destroy rubric grades where assignment_id and student_id match
+    delete_existing_rubric_grades
     create_rubric_grades # create an individual record for each rubric grade
 
     delete_existing_earned_badges_for_metrics # if earned_badges_exist? # destroy earned_badges where assignment_id and student_id match
@@ -107,7 +107,24 @@ class GradesController < ApplicationController
 
   private
   def rubric_grades_exist?
-    RubricGrade.where(assignment_student_metric_params).count > 0
+    rubric_grades.count > 0
+  end
+
+  def rubric_grades
+    @rubric_grades ||= RubricGrade.where(assignment_student_metric_params)
+  end
+
+  def rubric_grades_by_metric_id
+    @rubric_grades_by_metric_id = rubric_grades.inject({}) do |memo, rubric_grade|
+      memo[rubric_grade.metric_id] = rubric_grade
+      memo
+    end
+  end
+
+  def update_rubric_grades
+    params[:rubric_grades].each do |rubric_grade_params|
+      rubric_grades_by_metric_id[rubric_grade_params["metric_id"]].update_attributes rubric_grade_params
+    end
   end
 
   def earned_badges_exist?
@@ -126,29 +143,19 @@ class GradesController < ApplicationController
     { assignment_id: params[:assignment_id], student_id: params[:student_id], metric_id: params[:metric_ids] }
   end
 
-  def create_rubric_grades
-    new_rubric_grades.collect {|new_rubric_grade| new_rubric_grade.save }
-    # RubricGrade.import(new_rubric_grades, :validate => true)
+  def update_rubric_grades
   end
 
-  def new_rubric_grades
+  def create_rubric_grades
     params[:rubric_grades].collect do |rubric_grade|
-      RubricGrade.new({
-        metric_name: rubric_grade["metric_name"],
-        metric_description: rubric_grade["metric_description"],
-        max_points: rubric_grade["max_points"],
-        tier_name: rubric_grade["tier_name"],
-        tier_description: rubric_grade["tier_description"],
-        points: rubric_grade["points"],
-        order: rubric_grade["order"],
-        submission_id: submission_id,
-        metric_id: rubric_grade["metric_id"],
-        tier_id: rubric_grade["tier_id"],
-        comments: rubric_grade["comments"],
-        assignment_id: @assignment[:id],
-        student_id: params[:student_id]
-      })
+      RubricGrade.create! rubric_grade.merge(extra_rubric_grade_params)
     end
+  end
+
+  def extra_rubric_grade_params
+    { submission_id: submission_id,
+      assignment_id: @assignment[:id],
+      student_id: params[:student_id] }
   end
 
   def create_earned_tier_badges
