@@ -101,8 +101,8 @@
   $scope.gradedMetrics = ()->
     metrics = []
     angular.forEach($scope.metrics, (metric, index)->
-      if metric.selectedTier
-        metrics.push metric
+      # if metric.selectedTier
+      metrics.push metric
     )
     $scope.gradedMetrics = metrics
     metrics 
@@ -110,20 +110,37 @@
   $scope.gradedMetricsParams = ()->
     params = []
     angular.forEach($scope.gradedMetrics(), (metric, index)->
-       params.push {
-        metric_name: metric.name,
-        metric_description: metric.description,
-        max_points: metric.max_points,
-        order: index,
-        tier_name: metric.selectedTier.name,
-        tier_description: metric.selectedTier.description,
-        points: metric.selectedTier.points,
-        metric_id: metric.id,
-        tier_id: metric.selectedTier.id,
-        comments: metric.comments
-       }
+      # get params just from the metric object
+      metricParams = $scope.metricOnlyParams(metric,index)
+
+      # add params from the tier if a tier has been selected
+      if metric.selectedTier
+        jQuery.extend(metricParams, $scope.gradedTierParams(metric))
+
+      # create params for the rubric grade regardless
+      params.push metricParams
     )
     params
+
+  # params for just the metric
+  $scope.metricOnlyParams = (metric,index)->
+    {
+      metric_name: metric.name,
+      metric_description: metric.description,
+      max_points: metric.max_points,
+      order: index,
+      metric_id: metric.id,
+      comments: metric.comments
+    }
+
+  # additional tier params if a tier is selected
+  $scope.gradedTierParams = (metric) ->
+    {
+      tier_name: metric.selectedTier.name,
+      tier_description: metric.selectedTier.description,
+      points: metric.selectedTier.points,
+      tier_id: metric.selectedTier.id
+    }
 
   $scope.metricBadgesParams = ()->
     params = []

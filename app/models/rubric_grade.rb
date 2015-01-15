@@ -13,8 +13,8 @@ class RubricGrade < ActiveRecord::Base
   validates :max_points, presence: true
   validates :metric_name, presence: true
   validates :order, presence: true
-  validates :tier_name, presence: true
-  validates :points, presence: true
+  # validates :tier_name, presence: true
+  # validates :points, presence: true
   validates :student_id, presence: true
   validate :submission_or_assignment_present
 
