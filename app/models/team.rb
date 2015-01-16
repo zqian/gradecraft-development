@@ -55,7 +55,7 @@ class Team < ActiveRecord::Base
 
   #Tallying how many badges the students on the team have earned total
   def badge_count
-    earned_badges.count
+    earned_badges.where(:course_id => self.course_id).count
   end
 
   #Calculating the average points amongst all students on the team

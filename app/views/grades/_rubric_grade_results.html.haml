@@ -42,7 +42,7 @@
 
               - if current_user_is_staff? && @viewable_rubric_grades.select {|rubric_grade| rubric_grade.tier_id == tier[:id] }.count > 0
                 .level-scored #{current_student.first_name} earned this level
-              - elsif @rubric_grades.select {|rubric_grade| rubric_grade.tier_id == tier[:id] }.count > 0
+              - elsif current_user_is_student? && @rubric_grades.select {|rubric_grade| rubric_grade.tier_id == tier[:id] }.count > 0
                 .level-scored I earned this level
 
               - if tier.rubric_grades.size > 0
