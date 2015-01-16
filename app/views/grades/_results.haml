@@ -22,4 +22,4 @@
     %p= raw current_student.grade_for_assignment(@assignment).feedback
 
 - if @assignment.rubric and @assignment.rubric.designed?
-  = render 'rubric_grade_results'
+  = render 'grades/rubric_grade_results'
