@@ -300,10 +300,20 @@ class Assignment < ActiveRecord::Base
 
   #Checking to see if the assignment is still open and accepting submissons
   def open?
-    ((open_at != nil && open_at < Time.now) && (due_at != nil && due_at > Time.now)) || 
+    #No due dates whatsoever, always accept
     (open_at.nil? && due_at.nil?) || 
+    #Open date has passed and due date is nil, accept submissions
+    ((open_at != nil && open_at < Time.now) && (due_at.nil? )) ||
+    #No open date present, due date is after now, accept submissions
     (open_at.nil? && due_at != nil && due_at > Time.now) || 
-    (accepts_submissions_until != nil && accepts_submissions_until > Time.now)
+    #No open date is present, due date has passed, but accept until limit is absent 
+    (open_at.nil? && due_at != nil && due_at < Time.now && accepts_submissions_until.nil?) || 
+    #Open date is absent, due date and accept until date are present
+    (open_at.nil? && due_at != nil && (accepts_submissions_until != nil && accepts_submissions_until > Time.now)) || 
+    #open date and due date both defined, limit from accepts submissions until absent - accept assignments indefinitely
+    ((open_at != nil && open_at < Time.now) && (due_at != nil && due_at > Time.now) && accepts_submissions_until.nil?) || 
+    #if both the open date and the accept until date are present and it is between them, accept submissions 
+    ((open_at != nil && open_at < Time.now) && (accepts_submissions_until != nil && accepts_submissions_until > Time.now))
   end
 
   #Counting how many grades there are for an assignment
