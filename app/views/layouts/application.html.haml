@@ -12,35 +12,47 @@
 
   %body(class="#{body_class}")
     .fixed
-      %nav.top-bar{:data => {'topbar' => true}}
-        %ul.title-area{:role =>'banner'}
-          %li.name
-            %h1
-              %a(href="/dashboard")
-                - if current_course
-                  #{current_course.courseno}:
-                  #{current_course.name}
-                - else
-                  GradeCraft
-        - if current_course && current_course.tagline?
-          %section.top-bar-section.show-for-large
-            %ul.left.tagline
-              %li
-                %a= current_course.try(:tagline)
-        - if current_user
-          = render 'layouts/authenticated_nav'
-    - if current_user
-      - if current_user_is_staff?
-        .columns.pageContainer= render 'layouts/staff'
-      - else
-        = render 'layouts/student'
-      .small-12.columns.logged_in_footer
-        %br
-        = render 'layouts/footer'
-    - else
-      = render 'layouts/public'
-      .row.panel.footer
-        .small-12.columns
-          = render 'layouts/footer'
-    = render 'layouts/google_analytics'
-    = javascript_include_tag 'application'
+      .off-canvas-wrap{:"data-offcanvas" => true}
+        .inner-wrap
+          %nav.top-bar{:data => {'topbar' => true}}
+            %ul.title-area{:role =>'banner'}
+              %li.toggle-topbar.show-for-small.left-off-canvas-toggle.menu-icon
+                %a{:href => "#"}
+                  %span 
+              %li.name
+                %h1
+                  %a(href="/dashboard")
+                    - if current_course
+                      #{current_course.courseno}:
+                      #{current_course.name}
+                    - else
+                      GradeCraft 
+            - if current_course && current_course.tagline?
+              %section.top-bar-section.show-for-large
+                %ul.left.tagline
+                  %li
+                    %a= current_course.try(:tagline)    
+            - if current_user
+              %section.top-bar-section.hide-for-small
+                %ul.right
+                  = render 'layouts/authenticated_nav'
+          %aside.left-off-canvas-menu.show-for-small
+            %ul.off-canvas-list
+              - if current_user
+                = render 'layouts/authenticated_nav'
+              = render 'layouts/staff_subnav_links'      
+          - if current_user
+            - if current_user_is_staff?
+              .columns.pageContainer= render 'layouts/staff'
+            - else
+              = render 'layouts/student'
+            .small-12.columns.logged_in_footer
+              %br
+              = render 'layouts/footer'
+          - else
+            = render 'layouts/public'
+            .row.panel.footer
+              .small-12.columns
+                = render 'layouts/footer'
+          = render 'layouts/google_analytics'
+          = javascript_include_tag 'application'

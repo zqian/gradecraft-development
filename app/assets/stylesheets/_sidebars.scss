@@ -51,12 +51,16 @@
 
 .has-form ul.dropdown-menu li.active a, .has-form ul.dropdown-menu li.active {
   background-color: $primary-color-2 !important;
-  color: #FFF !important;
+  //color: #FFF !important;
 }
 
 /* Forcing buttons and icons to display inline */ 
 .side-nav li a:not(.button) {
   display: inline !important;
+}
+
+ul.off-canvas-list li a {
+  color: black;
 }
 
 /* Styles the hover state on the box plot on the student dashboard */

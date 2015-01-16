@@ -33,7 +33,26 @@ body.logged-in, body.logged-out {
 .title-area li.name {
   background: image-url("GradeCraft_Logo_Horizontal_White_Blue.png") no-repeat left 4px;
   padding-left: 2.1rem;
-  margin-left: 1rem;
+  margin-left: 85px;
+  h1 a {
+    width: auto;
+  }
+}
+
+.top-bar {
+  height: auto;
+  &.expanded {
+    background: #333333;
+  }
+}
+
+.top-bar .toggle-topbar.menu-icon {
+  position: relative;
+  top: 0;
+  margin-top: 6px;
+  left: 0;
+  right: initial;
+  float: left;
 }
 
 .panel.callout {
@@ -117,7 +136,5 @@ form .tabs-content .content {
     padding-left: 0;
     padding-right: 0;
   }
-  .columns.pageContainer{
-    margin-top: -1rem;
-  }
+  
 }
