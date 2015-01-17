@@ -159,12 +159,8 @@ class AssignmentsController < ApplicationController
 
   def rubric_grades_review
     @assignment = current_course.assignments.find(params[:id])
-    #@assignment_type = @assignment.assignment_type
     @title = @assignment.name
     @groups = @assignment.groups
-
-    # Returns a hash of grades given for the assignment in format of {student_id: grade}
-    #@assignment_grades_by_student_id = current_course_data.assignment_grades(@assignment)
     
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
     if @team
@@ -191,12 +187,6 @@ class AssignmentsController < ApplicationController
     @comments_by_metric_id = @viewable_rubric_grades.inject({}) do |memo, rubric_grade|
       memo.merge(rubric_grade.metric_id => rubric_grade.comments)
     end
-
-    # # Data for displaying student grading distribution
-    # @submissions_count = @assignment.submissions.count
-    # @ungraded_submissions_count = @assignment.ungraded_submissions.count
-    # @ungraded_percentage = @ungraded_submissions_count / @submissions_count rescue 0
-    # @graded_count = @submissions_count - @ungraded_submissions_count
 
   end
   
