@@ -1,0 +1,46 @@
+%table#grade-rubric-table.small-12
+  %thead
+    %tr
+      %td.metric.heading
+        %label.larger
+          <strong>Criterion</strong>:&nbsp;Max&nbsp;points
+      %td.tier.heading(colspan="#{@assignment.rubric.try(:max_tier_count)}")
+        %label.larger
+          %strong Level:
+          Point value
+      %td.comments.heading
+        %label.larger
+          Comments
+
+
+  %tbody
+    - @metrics.each do |metric|
+      %tr
+        %td.metric(style="font-size: 12px !important")
+          .metric-heading
+            .metric-name= metric.wrapped_name(28).html_safe
+            .metric-points= "#{metric.max_points} Points"
+            .clear
+          .metric-description= metric.wrapped_description(40).html_safe
+
+        - metric.tiers.order("points ASC").each do |tier|
+          %td.tier
+            .tier-heading
+              .tier-name= tier.wrapped_name(25).html_safe
+              .clear
+              .tier-points= "#{tier.points} Points"
+            .clear
+            .tier-description= tier.description
+
+            .row.badge-row
+              - tier.tier_badges.each_with_index do |badge, index|
+                - if index < 2
+                  .tier-badge-image
+                    %img{:src => badge.badge.icon, width: "30px", height: "30px" }
+                .clear
+                - @viewable_rubric_grades.where(student_id: student.id, tier_id: tier.id).each do |rg|
+                  .italic #{student.first_name} earned this level
+                  %p= rg.comments
+        %td.comments
+          - @viewable_rubric_grades.where(student_id: student.id, tier_id: nil).each do |rg|
+            = rg.comments

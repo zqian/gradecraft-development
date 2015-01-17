@@ -18,7 +18,7 @@
       %tr
         %td
           - if student.avatar_file_name.present?
-            %img.img-rounded{:src => student.avatar_file_name, :size => 30} 
+            %img.img-rounded{:src => student.avatar_file_name, :width => 30} 
         %td= link_to student.first_name, student_path(student)
         %td= link_to student.last_name, student_path(student)
         - if current_course.in_team_leaderboard?

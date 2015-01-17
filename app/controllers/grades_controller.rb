@@ -143,9 +143,6 @@ class GradesController < ApplicationController
     { assignment_id: params[:assignment_id], student_id: params[:student_id], metric_id: params[:metric_ids] }
   end
 
-  def update_rubric_grades
-  end
-
   def create_rubric_grades
     params[:rubric_grades].collect do |rubric_grade|
       RubricGrade.create! rubric_grade.merge(extra_rubric_grade_params)

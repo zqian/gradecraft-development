@@ -18,7 +18,7 @@ class AssignmentsController < ApplicationController
   end
 
   def show
-    @assignment = Assignment.find(params[:id])
+    @assignment = current_course.assignments.find(params[:id])
     @assignment_type = @assignment.assignment_type
     @title = @assignment.name
     @groups = @assignment.groups
@@ -152,10 +152,73 @@ class AssignmentsController < ApplicationController
   end
 
   def update_rubrics
-    @assignment = Assignment.find params[:id]
+    @assignment = current_course.assignments.find params[:id]
     @assignment.update_attributes use_rubric: params[:use_rubric]
     respond_with @assignment
   end
+
+  def rubric_grades_review
+    @assignment = current_course.assignments.find(params[:id])
+    #@assignment_type = @assignment.assignment_type
+    @title = @assignment.name
+    @groups = @assignment.groups
+
+    # Returns a hash of grades given for the assignment in format of {student_id: grade}
+    #@assignment_grades_by_student_id = current_course_data.assignment_grades(@assignment)
+    
+    @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
+    if @team
+      students = current_course.students_being_graded_by_team(@team)
+    else
+      students = current_course.students_being_graded
+    end
+    user_search_options = {}
+    user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
+    @students = students
+    
+    @auditing = current_course.students_auditing.includes(:teams).where(user_search_options)
+    
+    @rubric = @assignment.fetch_or_create_rubric
+    @metrics = @rubric.metrics
+    @course_badges = serialized_course_badges
+    @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
+    @course_student_ids = current_course.students.map(&:id)
+
+
+    @rubric_grades = serialized_rubric_grades
+
+    @viewable_rubric_grades = RubricGrade.where(assignment_id: @assignment.id)
+    @comments_by_metric_id = @viewable_rubric_grades.inject({}) do |memo, rubric_grade|
+      memo.merge(rubric_grade.metric_id => rubric_grade.comments)
+    end
+
+    # # Data for displaying student grading distribution
+    # @submissions_count = @assignment.submissions.count
+    # @ungraded_submissions_count = @assignment.ungraded_submissions.count
+    # @ungraded_percentage = @ungraded_submissions_count / @submissions_count rescue 0
+    # @graded_count = @submissions_count - @ungraded_submissions_count
+
+  end
+  
+  private
+
+  def serialized_rubric_grades
+    ActiveModel::ArraySerializer.new(fetch_rubric_grades, each_serializer: ExistingRubricGradesSerializer).to_json
+  end
+
+  def fetch_rubric_grades
+    RubricGrade.where(fetch_rubric_grades_params)
+  end
+
+  def fetch_rubric_grades_params
+    { student_id: params[:student_id], assignment_id: params[:assignment_id], metric_id: existing_metric_ids }
+  end
+
+  def existing_metric_ids
+    rubric_metrics_with_tiers.collect {|metric| metric[:id] }
+  end
+
+  public
 
   def destroy
     @assignment = current_course.assignments.find(params[:id])
