@@ -2,7 +2,7 @@
   %h3.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
 
 .small-12.columns
-  %dl.tabs{:data => {'tab' => true}}
+  %dl.tabs{:data => {'tab' => true}, "data-options" => 'deep_linking: true' }
     %dd.active
       %a{ "href" => "#tabt1"} Description & Downloads
     - if @assignment.rubric and @assignment.rubric.designed? && ! current_student_data.grade_released_for_assignment?(@assignment)
