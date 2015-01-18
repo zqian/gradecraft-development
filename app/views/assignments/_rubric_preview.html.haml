@@ -51,6 +51,6 @@
         - if metric.tiers.size < @rubric.max_tier_count
           %td.filler(colspan="#{@rubric.max_tier_count - metric.tiers.size}")
         - if current_user_is_student?
-          %td.tier
+          %td.tier.italic{style: "font-size: 100%"}
             - if @comments_by_metric_id.size > 0
               = @comments_by_metric_id[metric.id]

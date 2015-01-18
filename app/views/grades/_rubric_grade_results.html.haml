@@ -8,10 +8,9 @@
         .larger
           %strong Level
           .not_bold.italic Point value
-      - if current_user_is_student?
-        %td
-          %strong
-            Your Feedback
+      %td{:width => "25%"}
+        %strong
+          Your Feedback
 
 
   %tbody
@@ -50,6 +49,6 @@
               .graded-students= "#{pluralize(tier.rubric_grades.size, 'student')} earned this level"
         - if metric.tiers.size < @rubric.max_tier_count
           %td.filler(colspan="#{@rubric.max_tier_count - metric.tiers.size}")
-        %td.tier.comments.italic
+        %td.tier.italic{style: "font-size: 100%"}
           - if @comments_by_metric_id.size > 0
             = @comments_by_metric_id[metric.id]

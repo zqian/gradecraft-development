@@ -44,6 +44,6 @@
                 .italic{style: "color: #00BD39; font-size: 110%"} #{student.first_name} earned this level
         - if metric.tiers.size < @rubric.max_tier_count
           %td.filler(colspan="#{@rubric.max_tier_count - metric.tiers.size}")
-        %td.comments
+        %td.comments.italic{style: "font-size: 100%"}
           - @viewable_rubric_grades.where(student_id: student.id).each do |rg|
             = rg.comments
