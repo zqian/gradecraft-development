@@ -14,7 +14,7 @@
 
 
   %tbody
-    - @metrics.each do |metric|
+    - @metrics.ordered.each do |metric|
       %tr
         %td.metric(style="font-size: 12px !important; width: 10%")
           .metric-heading
