@@ -45,5 +45,5 @@
         - if metric.tiers.size < @rubric.max_tier_count
           %td.filler(colspan="#{@rubric.max_tier_count - metric.tiers.size}")
         %td.comments.italic{style: "font-size: 100%"}
-          - @viewable_rubric_grades.where(student_id: student.id).each do |rg|
+          - @viewable_rubric_grades.where(student_id: student.id, metric_id: metric.id).each do |rg|
             = rg.comments
