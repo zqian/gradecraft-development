@@ -9,17 +9,7 @@ $dark_red: #B40D0D
   -ms-transition: $property $duration
   -o-transition: $property $duration
   transition: $property $duration
-
-@mixin linear-gradient($fromColor, $toColor)
-  background-color: $toColor //* Fallback Color */
-  background-image: -webkit-gradient(linear, left top, left bottom, from($fromColor), to($toColor)) /* Saf4+, Chrome */
-  background-image: -webkit-linear-gradient(top, $fromColor, $toColor) // Chrome 10+, Saf5.1+, iOS 5+ */
-  background-image:    -moz-linear-gradient(top, $fromColor, $toColor) /* FF3.6 */
-  background-image:     -ms-linear-gradient(top, $fromColor, $toColor) /* IE10 */
-  background-image:      -o-linear-gradient(top, $fromColor, $toColor) /* Opera 11.10+ */
-  background-image:         linear-gradient(top, $fromColor, $toColor)
-  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#{$fromColor}', EndColorStr='#{$toColor}')
-
+  
 .button
   margin-bottom: 0
   text-transform: capitalize
@@ -113,13 +103,15 @@ ul.button-group.context_menu
 
   li.on
     background-color: $dark_green !important
-    @include linear-gradient($dark_green + #222, $dark_green - #111)
+    @include linear-gradient($secondary-color-4, $secondary-color)
     border-top-right-radius: $global-radius
     border-bottom-right-radius: $global-radius
 
   li.on a:hover
     background-color: $dark_green !important
     @include linear-gradient($dark_green + #333, $dark_green)
+    border-top-right-radius: $global-radius
+    border-bottom-right-radius: $global-radius
 
 /* Responsive outer container */ 
 @media (max-width: 1270px) 

@@ -19,17 +19,17 @@ class ThumbnailUploader < CarrierWave::Uploader::Base
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
-  # def default_url
+  def default_url
   #   # For Rails 3.1+ asset pipeline compatibility:
   #   # asset_path("fallback/" + [version_name, "default.png"].compact.join('_'))
   #
   #   "/images/fallback/" + [version_name, "default.png"].compact.join('_')
-  # end
+  end
 
   # Process files as they are uploaded:
   # process :scale => [200, 300]
   #
-  process :resize_and_pad => [30, 30, "#FFFFFF", "Center"]
+  #process :resize_to_fit => [30, 30, "#FFFFFF", "Center"]
 
   # Create different versions of your uploaded files:
   # version :thumb do

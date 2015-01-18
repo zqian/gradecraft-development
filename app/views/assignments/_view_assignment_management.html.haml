@@ -34,6 +34,7 @@
     
     - if @assignment.rubric and @assignment.rubric.designed?
       .content#tabt3
+        %br
         = render 'assignments/rubric_preview'
     .content#tabt4
       = render "grades/instructor_analytics"
