@@ -1,4 +1,11 @@
 GIT
+  remote: https://github.com/alfajango/granalytics.git
+  revision: c71f97df6564baa6d7ab3c04bd50078052b71acd
+  specs:
+    granalytics (0.0.1)
+      mongoid
+
+GIT
   remote: https://github.com/mongoid/kiqstand.git
   revision: fdd5ea62293707fe044180a220670b0142314d04
   specs:
@@ -385,6 +392,7 @@ DEPENDENCIES
   foreman
   foundation-icons-sass-rails
   foundation-rails
+  granalytics!
   haml
   haml-rails
   jbuilder

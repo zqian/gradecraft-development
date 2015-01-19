@@ -1,5 +1,5 @@
 class CoursePredictorExport
-  include Analytics::Export
+  include Granalytics::Export
 
   rows_by :events
 

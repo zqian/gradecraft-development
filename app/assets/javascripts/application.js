@@ -8,7 +8,7 @@
 //= require jquery-ui
 //= require jquery_ujs
 //= require foundation
-//= require_self 
+//= require_self
 //= require jquery.omniselect
 //= require autonumeric
 //= require bootsy
@@ -36,7 +36,6 @@
 //= require users
 //= require selectToUISlider.jQuery
 
-//= require analytics
 //= require analytics_dashboard
 //= require assignment_types
 //= require assignments
