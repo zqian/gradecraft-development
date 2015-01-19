@@ -1,4 +1,6 @@
+
 Granalytics.configure do |config|
+
   config.event_aggregates = {
     predictor: [
       Aggregates::AssignmentEvent,
@@ -27,9 +29,9 @@ Granalytics.configure do |config|
 
   config.exports = {
     course: [
-      CourseEventExport,
-      CoursePredictorExport,
-      CourseUserAggregateExport
+      Granalytics::Export::CourseEventExport,
+      Granalytics::Export::CoursePredictorExport,
+      Granalytics::Export::CourseUserAggregateExport
     ]
   }
 end
