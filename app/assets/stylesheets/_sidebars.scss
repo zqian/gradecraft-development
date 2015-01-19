@@ -26,6 +26,11 @@
 
 }
 
+.left-off-canvas-menu h5 {
+  -webkit-backface-visibility: hidden;
+  text-align: center;
+}
+
 .has-form input {
   border-top-left-radius: $global-radius;
   border-bottom-left-radius: $global-radius;
