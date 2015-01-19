@@ -17,11 +17,15 @@ $(document).ready(function(){
     $("#loading").hide();
     //get the events.json format from https://github.com/VeriteCo/TimelineJS#file-formats
     var timeline_dates = source.timeline.date;
-    var start_index = 0;
+    var start_index = 1;
     var target_date = new Date(); 
+    console.log(target_date);
     for(x in timeline_dates) {
       var slide_date = new Date( timeline_dates[x].startDate );
-      if( slide_date < target_date) start_index++;
+      console.log(timeline_dates[x]);
+      if( slide_date < target_date ) {
+        start_index++
+      };
     }
 
       createStoryJS({

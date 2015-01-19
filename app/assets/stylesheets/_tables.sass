@@ -53,7 +53,7 @@ table.responsive
     border-bottom-right-radius: $global-radius
     padding: .3rem
 
-table.responsive.no_radius 
+table.responsive.no_radius
   border-top: none
 
   thead
@@ -61,6 +61,27 @@ table.responsive.no_radius
       border-top-left-radius: 0
     tr:first-child th:last-child 
       border-top-right-radius: 0
+
+table#grade-rubric-table
+  border-collapse: collapse
+
+  thead
+    background-color: $primary-color-3 !important
+    
+    td
+      color: #FFF !important
+
+  .metric-name
+    font-weight: bold
+    font-size: 120%
+
+  tbody
+    tr
+      background-color: #FFF
+      vertical-align: top
+
+  td
+    border: 1px solid #999
 
 /* Styling pattern tables for assignment outcome overview */ 
 td.complete, tr.achieved

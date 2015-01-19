@@ -93,7 +93,7 @@
           = f.label :thumbnail
           = f.file_field :thumbnail
           - if @assignment.thumbnail.present?
-            %img{:src => @assignment.thumbnail, :width => 40, :alt => "Primary Assignment Image" }
+            %img{:src => @assignment.thumbnail, :alt => "Thumbnail Assignment Image", :style => "height: 25px; width: 25px;" }
             = f.check_box :remove_thumbnail
             Remove Thumbnail
 

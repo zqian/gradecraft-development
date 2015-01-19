@@ -26,7 +26,7 @@ class AssignmentThumbnailUploader < CarrierWave::Uploader::Base
 
   # Process files as they are uploaded:
   
-  process :resize_and_pad => [30, 30, "#FFFFFF", "Center"]
+  process :resize_to_fill => [25, 25, gravity = 'NorthWest']
   
   # Create different versions of your uploaded files:
   # version :thumb do
