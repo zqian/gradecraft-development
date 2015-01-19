@@ -15,7 +15,6 @@ ActiveRecord::Schema.define(version: 20150108002147) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "hstore"
 
   create_table "assignment_files", force: true do |t|
     t.string  "filename"
@@ -142,8 +141,8 @@ ActiveRecord::Schema.define(version: 20150108002147) do
     t.string   "mass_grade_type"
     t.boolean  "include_in_timeline",               default: true
     t.boolean  "include_in_predictor",              default: true
-    t.boolean  "include_in_to_do",                  default: true
     t.integer  "position"
+    t.boolean  "include_in_to_do",                  default: true
     t.string   "student_logged_button_text"
     t.string   "student_logged_revert_button_text"
     t.boolean  "use_rubric",                        default: true
@@ -182,7 +181,6 @@ ActiveRecord::Schema.define(version: 20150108002147) do
     t.datetime "updated_at"
     t.boolean  "visible",                 default: true
     t.boolean  "can_earn_multiple_times", default: true
-    t.text     "email_description"
     t.integer  "position"
   end
 
@@ -361,7 +359,6 @@ ActiveRecord::Schema.define(version: 20150108002147) do
     t.integer  "point_total"
     t.boolean  "in_team_leaderboard"
     t.boolean  "add_team_score_to_student",                             default: false
-    t.boolean  "badge_emails",                                          default: false
     t.datetime "start_date"
     t.datetime "end_date"
   end
@@ -485,7 +482,6 @@ ActiveRecord::Schema.define(version: 20150108002147) do
     t.boolean  "instructor_modified", default: false
   end
 
-  add_index "grades", ["assignment_id", "student_id"], name: "index_grades_on_assignment_id_and_student_id", unique: true, using: :btree
   add_index "grades", ["assignment_id"], name: "index_grades_on_assignment_id", using: :btree
   add_index "grades", ["assignment_type_id"], name: "index_grades_on_assignment_type_id", using: :btree
   add_index "grades", ["course_id"], name: "index_grades_on_course_id", using: :btree
@@ -640,7 +636,7 @@ ActiveRecord::Schema.define(version: 20150108002147) do
   create_table "submission_files", force: true do |t|
     t.string  "filename",      null: false
     t.integer "submission_id", null: false
-    t.text    "filepath"
+    t.string  "filepath"
   end
 
   create_table "submissions", force: true do |t|
@@ -713,7 +709,6 @@ ActiveRecord::Schema.define(version: 20150108002147) do
     t.boolean  "teams_leaderboard",   default: false
     t.boolean  "in_team_leaderboard", default: false
     t.string   "banner"
-    t.string   "badge_email_type"
   end
 
   create_table "themes", force: true do |t|

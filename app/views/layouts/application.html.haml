@@ -39,8 +39,9 @@
           %aside.left-off-canvas-menu.show-for-small
             %ul.off-canvas-list
               - if current_user
-                = render 'layouts/authenticated_nav'
-              = render 'layouts/staff_subnav_links'      
+                - if current_user_is_staff?
+                  = render 'layouts/authenticated_nav'
+                  = render 'layouts/staff_subnav_links'      
           - if current_user
             - if current_user_is_staff?
               .columns.pageContainer= render 'layouts/staff'
