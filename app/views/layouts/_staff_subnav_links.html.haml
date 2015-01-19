@@ -10,98 +10,78 @@
 %h5 Overview
 - if current_course.use_timeline?
   %li
-    %i.fi-home
-    = link_to "Timeline", dashboard_path
+    = link_to raw('<i class="fi-home"></i> Timeline'), dashboard_path
+
 %li
-  %i.fi-list-thumbnails
-  = link_to "Leaderboard", leaderboard_path
+  = link_to raw('<i class="fi-list-thumbnails"></i> Leaderboard'), leaderboard_path
 %li
-  %i.fi-flag
-  = link_to "Grading Status", grading_status_path
+  = link_to raw('<i class="fi-flag"></i> Grading Status'), grading_status_path
 
 - if current_course.student_weighted?
   %li
-    %i.fi-die-three
-    = link_to "#{term_for :weight} Choices", multiplier_choices_path
+    = link_to raw('<i class="fi-die-three"></i> #{term_for :weight} Choices'), multiplier_choices_path
 - if current_course.has_badges?
   %li
-    %i.fi-star
-    = link_to "Awarded #{current_course.badge_term.pluralize}", earned_badges_path
+    = link_to raw("<i class='fi-star'></i> Awarded #{current_course.badge_term.pluralize}"), earned_badges_path
 
 %hr
 
 %h5 Coursework
 %li
-  %i.fi-map
-  = link_to term_for(:assignments), assignments_path
+  = link_to raw("<i class='fi-map'></i> #{term_for :assignments}"), assignments_path
 - if current_course.has_badges?
   %li
-    %i.fi-shield
-    = link_to term_for(:badges), badges_path
+    = link_to raw("<i class='fi-shield'></i> #{term_for :badges}"), badges_path
 - if current_course.team_challenges?
   %li
-    %i.fi-trophy
-    = link_to term_for(:challenges), challenges_path
+    = link_to raw("<i class='fi-trophy'></i> #{term_for :challenges}"), challenges_path
 
 %hr
 
 %h5 Analytics
 %li
-  %i.fi-graph-horizontal
-  = link_to "Top 10/Bottom 10", analytics_top_10_path
+  = link_to raw('<i class="fi-graph-horizontal"></i> Top 10/Bottom 10'), analytics_top_10_path
 %li
-  %i.fi-graph-trend
-  = link_to "System Analytics", analytics_students_path
+  = link_to raw('<i class="fi-graph-trend"></i> System Analytics'), analytics_students_path
 %li
-  %i.fi-results-demographics
-  = link_to "#{term_for :assignment} Analytics", analytics_per_assign_path
+  = link_to raw("<i class='fi-results-demographics'></i> #{term_for :assignment} Analytics"), analytics_per_assign_path
 
 - if current_user_is_professor? || current_user_is_admin?
   %hr
 
   %h5 Downloads
   %li
-    %i.fi-book-bookmark
-    = link_to "Final Grades", final_grades_path(format: 'csv')
+    = link_to raw('<i class="fi-book-bookmark"></i> Final Grades'), final_grades_path(format: 'csv')
   %li
-    %i.fi-book
-    %a{:href => gradebook_path(format: 'csv') } Full Gradebook
+    %a{:href => gradebook_path(format: 'csv')} <i class="fi-book"></i> Full Gradebook
+
 
 %hr
 
 %h5 Users
 %li
-  %i.fi-torsos-female-male
-  = link_to "#{term_for :students}", students_path
+  = link_to raw("<i class='fi-torsos-female-male'></i> #{term_for :students}"), students_path
 - if current_course.has_teams?
   %li
-    %i.fi-die-three
-    = link_to term_for(:teams), teams_path
+    = link_to raw("<i class='fi-die-three'></i> #{term_for :teams}"), teams_path
 %li
-  %i.fi-elevator
-  = link_to term_for(:groups), groups_path
+  = link_to raw("<i class='fi-elevator'></i> #{term_for :groups}"), groups_path
 %li
-  %i.fi-torso-business
-  = link_to "Staff", staff_index_path 
+  = link_to raw('<i class="fi-torso-business"></i> Staff'), staff_index_path
 
 %hr
 
 %h5 Course Setup
 %li
-  %i.fi-wrench
-  = link_to "Options", edit_course_path(current_course)
+  = link_to raw('<i class="fi-wrench"></i> Options'), edit_course_path(current_course)
 %li
-  %i.fi-database
-  = link_to "#{term_for :assignment_types}", assignment_types_path
+  = link_to raw("<i class='fi-database'></i> #{term_for :assignment_types}"), assignment_types_path
 %li
-  %i.fi-checkbox
-  = link_to "Predictor Preview", predictor_preview_course_path(current_course)
+  = link_to raw('<i class="fi-checkbox"></i> Predictor Preview'), predictor_preview_course_path(current_course)
 %li
-  %i.fi-list
-  = link_to "Grading Scheme", grade_scheme_elements_path
+  = link_to raw('<i class="fi-list"></i> Grading Scheme'), grade_scheme_elements_path
 %li
-  %i.fi-calendar
-  = link_to "Calendar Events", events_path
+  = link_to raw('<i class="fi-calendar"></i> Calendar Events'), events_path
 
 - if LTIProvider.present?
   %hr
@@ -109,19 +89,17 @@
   %h5 Tools
   - LTIProvider.all.each do |tool|
     %li
-      %i.fi-puzzle
-      = link_to tool.name, launch_lti_provider_path(tool)
+      = link_to raw("<i class='fi-puzzle'></i> #{tool.name}"), launch_lti_provider_path(tool)
+
 
 - if current_user_is_admin?
   %hr
 
   %h5 Admin
   %li
-    %i.fi-torsos-all
-    = link_to "All Users", users_path
+    = link_to raw('<i class="fi-torsos-all"></i> All Users'), users_path
   %li
-    %i.fi-key
-    = link_to "Course Index", courses_path
+    = link_to raw('<i class="fi-key"></i> Course Index'), courses_path
   %li
     = link_to "Predictor Settings", predictor_settings_course_path(current_course)
   %li
