@@ -1,4 +1,4 @@
-class CourseUserAggregateExport
+class Exports::CourseUserAggregateExport
   include Granalytics::Export
 
   rows_by :users

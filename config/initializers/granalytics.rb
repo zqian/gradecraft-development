@@ -29,9 +29,9 @@ Granalytics.configure do |config|
 
   config.exports = {
     course: [
-      Granalytics::Export::CourseEventExport,
-      Granalytics::Export::CoursePredictorExport,
-      Granalytics::Export::CourseUserAggregateExport
+      Exports::CourseEventExport,
+      Exports::CoursePredictorExport,
+      Exports::CourseUserAggregateExport
     ]
   }
 end

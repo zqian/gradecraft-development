@@ -1,4 +1,4 @@
-class CourseEventExport
+class Exprots::CourseEventExport
   include Granalytics::Export
 
   rows_by :events
