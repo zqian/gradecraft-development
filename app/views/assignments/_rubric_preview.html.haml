@@ -8,11 +8,6 @@
         .larger
           %strong Level
           .not_bold.italic Point value
-      - if current_user_is_student?
-        %td
-          %strong
-            Comments
-
 
   %tbody
     - @metrics.ordered.each do |metric|
@@ -41,16 +36,5 @@
                     %img{:src => badge.badge.icon, width: "30px", height: "30px" }
             .clear
 
-            - if current_user_is_student? && current_student.grade_for_assignment(@assignment).is_released?
-              - if @rubric_grades.select {|rubric_grade| rubric_grade.tier_id == tier[:id] }.count > 0
-                .italic{style: "color: #00BD39; font-size: 110%"} You earned this level
-
-            - if tier.rubric_grades.size > 0
-              .students-padding
-              .graded-students= "#{pluralize(tier.rubric_grades.size, 'student')} earned this level"
         - if metric.tiers.size < @rubric.max_tier_count
           %td.filler(colspan="#{@rubric.max_tier_count - metric.tiers.size}")
-        - if current_user_is_student?
-          %td.tier.italic{style: "font-size: 100%"}
-            - if @comments_by_metric_id.size > 0
-              = @comments_by_metric_id[metric.id]

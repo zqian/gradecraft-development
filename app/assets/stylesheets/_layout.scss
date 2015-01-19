@@ -26,14 +26,20 @@ body.logged-in, body.logged-out {
   }
 }
 
-.title-area li.name, .top-bar-section .tagline {
-    margin-top: 3px;
+.top-bar {
+  /*overflow: hidden;*/
 }
 
 .title-area li.name {
   background: image-url("GradeCraft_Logo_Horizontal_White_Blue.png") no-repeat left 4px;
   padding-left: 2.1rem;
-  margin-left: 1rem;
+  margin-left: .25rem;
+  overflow-x: hidden;
+}
+
+section.authenticated_nav {
+  position: absolute;
+  right: 0;
 }
 
 .panel.callout {
