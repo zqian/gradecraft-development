@@ -89,6 +89,8 @@ class Course < ActiveRecord::Base
   validates_format_of :twitter_hashtag, :with => /\A[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)*\z/, :allow_blank => true, :length   => { :within => 3..20 }
   validate :max_more_than_min
 
+  scope :alphabetical, -> { order('courseno ASC') }
+
   def user_term
     super.presence || 'Player'
   end

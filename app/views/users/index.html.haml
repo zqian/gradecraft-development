@@ -49,4 +49,4 @@
                     = link_to "Dashboard", student_path(user), :class => 'button' if user.is_student?(current_course)
                     = link_to "Dashboard", staff_path(user), :class => 'button' if user.is_staff?(current_course)
                   %li= link_to 'Edit', edit_user_path(user), :class => 'button'
-                  %li= link_to 'Delete', users_path, :class => 'button', :data => { confirm: 'This will delete the student from GradeCraft - Are you sure?' }, :method => :delete
+                  %li= link_to 'Delete', user.course_memberships.where(:course_id => current_course.id).first, :class => 'button', :data => { confirm: 'This will delete the student from your course - Are you sure?' }, :method => :delete
