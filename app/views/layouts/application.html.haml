@@ -11,53 +11,52 @@
     = yield(:head)
 
   %body(class="#{body_class}")
-    .fixed
-      .off-canvas-wrap{:"data-offcanvas" => true}
-        .inner-wrap
-          %nav.top-bar{:data => {'topbar' => true}}
-            %ul.title-area{:role =>'banner'}
-              %li.toggle-topbar.show-for-small.left-off-canvas-toggle.menu-icon
-                %a{:href => "#"}
-                  %span 
-              %li.name
-                %h1
-                  %a(href="/dashboard")
-                    - if current_course
-                      %span.left #{current_course.courseno}
-                      %span.left.show-for-large-up= ": #{current_course.name}"
-                    - else
-                      GradeCraft
-            - if current_course && current_course.tagline?
-              %section.top-bar-section.show-for-large
-                %ul.left.tagline
-                  %li
-                    %a= current_course.try(:tagline)    
-            - if current_user
-              %section.top-bar-section.hide-for-small
-                %ul.right
-                  = render 'layouts/authenticated_nav'
-          %aside.left-off-canvas-menu.show-for-small
-            %ul.off-canvas-list
-              - if current_user
-                - if current_user_is_staff?
-                  = render 'layouts/course_list'
-                  = render 'layouts/logout'
-                  = render 'layouts/staff_subnav_links'
-                - else
-                  = render 'layouts/course_list'
-                  = render 'layouts/logout'
+    .off-canvas-wrap{:"data-offcanvas" => true}
+      .inner-wrap
+        %nav.top-bar{:data => {'topbar' => true}}
+          %ul.title-area{:role =>'banner'}
+            %li.toggle-topbar.show-for-small.left-off-canvas-toggle.menu-icon
+              %a{:href => "#"}
+                %span 
+            %li.name
+              %h1
+                %a(href="/dashboard")
+                  - if current_course
+                    %span.left #{current_course.courseno}
+                    %span.left.show-for-large-up= ": #{current_course.name}"
+                  - else
+                    GradeCraft
+          - if current_course && current_course.tagline?
+            %section.top-bar-section.show-for-large
+              %ul.left.tagline
+                %li
+                  %a= current_course.try(:tagline)    
           - if current_user
-            - if current_user_is_staff?
-              .columns.pageContainer= render 'layouts/staff'
-            - else
-              = render 'layouts/student'
-            .small-12.columns.logged_in_footer
-              %br
-              = render 'layouts/footer'
+            %section.top-bar-section.hide-for-small
+              %ul.right
+                = render 'layouts/authenticated_nav'
+        %aside.left-off-canvas-menu.show-for-small
+          %ul.off-canvas-list
+            - if current_user
+              - if current_user_is_staff?
+                = render 'layouts/course_list'
+                = render 'layouts/logout'
+                = render 'layouts/staff_subnav_links'
+              - else
+                = render 'layouts/course_list'
+                = render 'layouts/logout'
+        - if current_user
+          - if current_user_is_staff?
+            .columns.pageContainer= render 'layouts/staff'
           - else
-            = render 'layouts/public'
-            .row.panel.footer
-              .small-12.columns
-                = render 'layouts/footer'
-          = render 'layouts/google_analytics'
-          = javascript_include_tag 'application'
+            = render 'layouts/student'
+          .small-12.columns.logged_in_footer
+            %br
+            = render 'layouts/footer'
+        - else
+          = render 'layouts/public'
+          .row.panel.footer
+            .small-12.columns
+              = render 'layouts/footer'
+        = render 'layouts/google_analytics'
+        = javascript_include_tag 'application'

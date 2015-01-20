@@ -2,7 +2,6 @@
 /* Background image for site, this is declared because otherwise it overrides the text editor's bkg */
 body.logged-in, body.logged-out {
   background: image-url("cloud_bg.gif");
-  padding-top: 3.6rem;
 }
 
 /* Primary page content */ 
@@ -16,6 +15,10 @@ body.logged-in, body.logged-out {
   border-radius: $global-radius;
   border: none;
   overflow: hidden;
+}
+
+.off-canvas-wrap {
+
 }
 
 .tabs-content > .content {
