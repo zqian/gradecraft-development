@@ -40,8 +40,12 @@
             %ul.off-canvas-list
               - if current_user
                 - if current_user_is_staff?
-                  = render 'layouts/authenticated_nav'
-                  = render 'layouts/staff_subnav_links'      
+                  = render 'layouts/course_list'
+                  = render 'layouts/logout'
+                  = render 'layouts/staff_subnav_links'
+                - else
+                  = render 'layouts/course_list'
+                  = render 'layouts/logout'
           - if current_user
             - if current_user_is_staff?
               .columns.pageContainer= render 'layouts/staff'
