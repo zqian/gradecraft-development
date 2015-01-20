@@ -12,21 +12,17 @@
 
   %body(class="#{body_class}")
     .fixed
-      %nav.top-bar{:data => {'topbar' => true}}
-        %ul.title-area{:role =>'banner'}
-          %li.name
-            %h1
-              %a(href="/dashboard")
-                - if current_course
-                  #{current_course.courseno}:
-                  #{current_course.name}
-                - else
-                  GradeCraft
-        - if current_course && current_course.tagline?
-          %section.top-bar-section.show-for-large
-            %ul.left.tagline
-              %li
-                %a= current_course.try(:tagline)
+      %nav.top-bar.contain-to-grid{:data => {'topbar' => true}}
+        %section.top-bar-section.small-6.medium-8.columns
+          %ul.title-area{:role =>'banner'}
+            %li.name
+              %h1
+                %a(href="/dashboard")
+                  - if current_course
+                    %span.left #{current_course.courseno}
+                    %span.left.show-for-large-up= ": #{current_course.name}"
+                  - else
+                    GradeCraft
         - if current_user
           = render 'layouts/authenticated_nav'
     - if current_user

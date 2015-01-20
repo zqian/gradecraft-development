@@ -1,4 +1,10 @@
 /* Coloring the brand */
+.title-area li.name
+  background: image-url("GradeCraft_Logo_Horizontal_White_Blue.png") no-repeat left 7px
+  padding-left: 2.1rem
+  margin-left: .25rem
+  overflow-x: hidden
+
 .title-area li.name h1 a
   color: $secondary-color-2
   white-space:nowrap
@@ -16,6 +22,9 @@
   padding: 0.2rem
   color: $secondary-color-2
   line-height: 2rem !important
+
+section.authenticated_nav
+  right: 0
 
 .top-bar-section ul ul.dropdown.classInfo
   width: 20rem
@@ -102,3 +111,10 @@ dl.tabs dd.active > a:hover
     margin-bottom: 0px
     margin-top: 0px
     text-transform: uppercase
+
+@media (max-width: 610px)
+  .top-bar-section .dropdown
+    position: relative
+
+  .top-bar-section ul ul 
+    padding: 0 1.5rem !important
