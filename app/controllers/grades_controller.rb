@@ -6,13 +6,15 @@ class GradesController < ApplicationController
 
   def show
     @assignment = current_course.assignments.find(params[:assignment_id]) 
-    @rubric = @assignment.rubric
-    @metrics = @rubric.metrics
-    @rubric_grades = serialized_rubric_grades
+    if @assignment.rubric.present?
+      @rubric = @assignment.rubric
+      @metrics = @rubric.metrics
+      @rubric_grades = serialized_rubric_grades
 
-    @viewable_rubric_grades = RubricGrade.joins("left outer join submissions on submissions.id = rubric_grades.submission_id").where(student_id: current_student.id).where(assignment_id: params[:assignment_id])
-    @comments_by_metric_id = @viewable_rubric_grades.inject({}) do |memo, rubric_grade|
-      memo.merge(rubric_grade.metric_id => rubric_grade.comments)
+      @viewable_rubric_grades = RubricGrade.joins("left outer join submissions on submissions.id = rubric_grades.submission_id").where(student_id: current_student.id).where(assignment_id: params[:assignment_id])
+      @comments_by_metric_id = @viewable_rubric_grades.inject({}) do |memo, rubric_grade|
+        memo.merge(rubric_grade.metric_id => rubric_grade.comments)
+      end
     end
 
     if current_user_is_student?
