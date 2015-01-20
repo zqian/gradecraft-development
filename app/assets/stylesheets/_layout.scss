@@ -26,22 +26,6 @@ body.logged-in, body.logged-out {
   }
 }
 
-.top-bar {
-  /*overflow: hidden;*/
-}
-
-.title-area li.name {
-  background: image-url("GradeCraft_Logo_Horizontal_White_Blue.png") no-repeat left 4px;
-  padding-left: 2.1rem;
-  margin-left: .25rem;
-  overflow-x: hidden;
-}
-
-section.authenticated_nav {
-  position: absolute;
-  right: 0;
-}
-
 .panel.callout {
   background-color: lighten(#666, 50%);
   border-color: #CCC;

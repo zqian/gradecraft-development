@@ -6,7 +6,7 @@
       %ul.dropdown
         - current_user.courses.each do |c|
           - if c.active?
-            %li= link_to "#{c.courseno}: #{c.name}", change_current_course_path(:course_id => c.id), :method => 'post'
+            %li= link_to "#{c.courseno} #{c.semester.capitalize.first[0]}#{c.year}", change_current_course_path(:course_id => c.id), :method => 'post'
 
         - if current_user.archived_courses.present?
           .past_courses
@@ -14,7 +14,7 @@
             %h5 Past Courses
             - current_user.courses.each do |c|
               - if ! c.active?
-                %li.archived= link_to "#{c.courseno}: #{c.name} (#{c.semester.capitalize} #{c.year})", change_current_course_path(:course_id => c.id), :method => 'post'
+                %li.archived= link_to "#{c.courseno} #{c.semester} #{c.year}: #{truncate(c.name, 20)} (#{c.semester.capitalize} #{c.year})", change_current_course_path(:course_id => c.id), :method => 'post'
     %li.divider            
     = render "layouts/class_info"
 
