@@ -2,7 +2,6 @@
 /* Background image for site, this is declared because otherwise it overrides the text editor's bkg */
 body.logged-in, body.logged-out {
   background: image-url("cloud_bg.gif");
-  padding-top: 3.6rem;
 }
 
 /* Primary page content */ 
@@ -16,6 +15,10 @@ body.logged-in, body.logged-out {
   border-radius: $global-radius;
   border: none;
   overflow: hidden;
+}
+
+.pageContainer {
+  margin-top: 1rem;
 }
 
 .tabs-content > .content {
@@ -107,7 +110,14 @@ form .tabs-content .content {
     padding-left: 0;
     padding-right: 0;
   }
-  .columns.pageContainer{
-    margin-top: -1rem;
+
+  .pageContainer, .row.panel.publicContent {
+    margin-top: 0 !important;
+  }
+
+}
+@media (max-width: 1000px) {
+  .row.panel.publicContent {
+    margin-top: 0 !important;
   }
 }
