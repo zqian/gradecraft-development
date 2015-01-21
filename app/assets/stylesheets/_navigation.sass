@@ -1,14 +1,38 @@
 /* Coloring the brand */
 
-.title-area li.name
-  background: image-url("GradeCraft_Logo_Horizontal_White_Blue.png") no-repeat left 7px
-  padding-left: 2.1rem
-  margin-left: .25rem
-  overflow-x: hidden
+.top-bar
+  height: auto
+  &.expanded
+    background: #333333
 
-.title-area li.name h1 a
-  color: $secondary-color-2
-  white-space:nowrap
+.top-bar .toggle-topbar.menu-icon 
+  right: initial
+  &.left-off-canvas-toggle
+    position: relative
+    margin-top: 6px
+    float: left
+    left: 0
+    padding-left: 0px
+
+.top-bar .toggle-topbar.right-off-canvas-toggle
+  position: absolute
+  float: right
+  right: 0
+  padding-top: 6px
+  padding-right: 6px
+
+  .user_icon
+    font-size: 200%
+
+.title-area li.name
+  background: image-url("GradeCraft_Logo_Horizontal_White_Blue.png") no-repeat 10px 7px
+  padding-left: 2.5rem
+  margin-left: .5rem
+  overflow-x: hidden
+  h1 a
+    width: auto
+    color: $secondary-color-2
+    white-space:nowrap
 
 .top-bar-section ul ul.dropdown 
   padding: .2rem .6rem
@@ -23,9 +47,6 @@
   padding: 0.2rem
   color: $secondary-color-2
   line-height: 2rem !important
-
-section.authenticated_nav
-  right: 0
 
 .top-bar-section ul ul.dropdown.classInfo
   width: 20rem
@@ -112,10 +133,3 @@ dl.tabs dd.active > a:hover
     margin-bottom: 0px
     margin-top: 0px
     text-transform: uppercase
-
-@media (max-width: 610px)
-  .top-bar-section .dropdown
-    position: relative
-
-  .top-bar-section ul ul 
-    padding: 0 1.5rem !important

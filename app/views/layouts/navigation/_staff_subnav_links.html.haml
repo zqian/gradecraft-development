@@ -19,7 +19,7 @@
 
 - if current_course.student_weighted?
   %li
-    = link_to raw('<i class="fi-die-three"></i> #{term_for :weight} Choices'), multiplier_choices_path
+    = link_to raw("<i class='fi-die-three'></i> #{term_for :weight} Choices"), multiplier_choices_path
 - if current_course.has_badges?
   %li
     = link_to raw("<i class='fi-star'></i> Awarded #{current_course.badge_term.pluralize}"), earned_badges_path
