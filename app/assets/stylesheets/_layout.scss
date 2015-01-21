@@ -110,5 +110,14 @@ form .tabs-content .content {
     padding-left: 0;
     padding-right: 0;
   }
-  
+
+  .pageContainer, .row.panel.publicContent {
+    margin-top: 0 !important;
+  }
+
+}
+@media (max-width: 1000px) {
+  .row.panel.publicContent {
+    margin-top: 0 !important;
+  }
 }
