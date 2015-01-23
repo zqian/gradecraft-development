@@ -283,68 +283,21 @@ class User < ActiveRecord::Base
      }
   end
 
+  # list of all earned badges for the current course that are visible
+  # to the student based ont he released/graded flags
+  def student_visible_earned_badges(course)
+    @student_visible_earned_badges ||= earned_badges.joins("left outer join grades on earned_badges.course_id = grades.course_id and earned_badges.student_id = grades.student_id and earned_badges.assignment_id = grades.assignment_id").where(course: course).where("grades.status = ?", "Graded")
+
+  end
+
+  def student_visible_unearned_badges(course)
+    Badge.where(course: course).joins(:earned_badges).where("earned_badges.id not in (?)", student_visible_earned_badges(course))
+  end
 
   #recalculating the student's score for the course
   def score_for_course(course)
     @score_for_course ||= grades.released.where(course: course).score + earned_badge_score_for_course(course) + (team_for_course(course).try(:challenge_grade_score) || 0)
   end
-
-  # def predictions(course)
-  #   scores = []
-  #   course.assignment_types.each do |assignment_type|
-  #     scores << { data: [grades.released.where(assignment_type: assignment_type).score], name: assignment_type.name }
-  #   end
-
-
-  #   _assignments = assignments.where(course: course)
-  #   in_progress = _assignments.graded_for_student(self)
-
-  #   grade_levels = []
-  #   course.grade_scheme_elements.each do |gse|
-  #     grade_levels << { :from => [gse.low_range], :to => [gse.high_range], :label => { :text => "#{ gse.level} / #{gse.letter}" , textAlign: 'right', :rotation => 270 } }
-  #   end
-
-  #   if course.valuable_badges? && course.has_team_challenges?
-  #     earned_badge_score = earned_badges.where(course: course).score
-  #     team_score = self.team_for_course(course).score
-  #     scores << { :data => [team_score], :name => "#{course.challenge_term.pluralize}" }
-  #     scores << { :data => [earned_badge_score], :name => "#{course.badge_term.pluralize}" }
-  #     return {
-  #       :student_name => name,
-  #       :scores => scores,
-  #       :course_total => course.total_points + earned_badge_score + team_score,
-  #       :in_progress => in_progress.point_total + earned_badge_score + team_score,
-  #       :grade_levels => grade_levels
-  #       }
-  #   elsif course.valuable_badges?
-  #     earned_badge_score = earned_badges.where(course: course).score
-  #     scores << { :data => [earned_badge_score], :name => "#{course.badge_term.pluralize}" }
-  #     return {
-  #       :student_name => name,
-  #       :scores => scores,
-  #       :course_total => course.total_points + earned_badge_score,
-  #       :in_progress => in_progress.point_total + earned_badge_score,
-  #       :grade_levels => grade_levels
-  #       }
-  #   elsif course.has_team_challenges?
-  #     team_score = self.team_for_course(course).score
-  #     scores << { :data => [team_score], :name => "#{course.challenge_term.pluralize}" }
-  #     return {
-  #       :student_name => name,
-  #       :scores => scores,
-  #       :in_progress => in_progress.point_total + team_score,
-  #       :course_total => course.total_points + team_score,
-  #       :grade_levels => grade_levels
-  #       }
-  #   else
-  #     return {
-  #       :scores => scores,
-  #       :in_progress => in_progress.point_total,
-  #       :course_total => course.total_points,
-  #       :grade_levels => grade_levels
-  #       }
-  #   end
-  # end
 
   #student setting as to whether or not they wish to share their earned badges for this course
   def badges_shared(course)
@@ -489,12 +442,6 @@ class User < ActiveRecord::Base
       scores << { :data => [earned_badge_score], :name => "#{course.badge_term.pluralize}" }
     end
 
-    # grade_levels = []
-    # course.grade_scheme_elements.each do |gse|
-    #   grade_levels << { :from => [gse.low_range], :to => [gse.high_range], :borderColor => '#DDD', :borderWidth => 1, :label => { :text => "#{ gse.level} / #{gse.letter}" , textAlign: 'left', y: 95, :rotation => -45 } }
-    # end
-
-
     return {
       :student_name => name,
       :scores => scores,
@@ -522,18 +469,6 @@ class User < ActiveRecord::Base
       end
     end
   end
-
-  #def cache_scores
-    #course_memberships.each do |membership|
-      #if membership.course.add_team_score_to_student?
-        #membership.update_attribute :score, (grades.released.where(course_id: membership.course_id).score || 0) + (earned_badge_score_for_course(membership.course_id) || 0 ) + ( self.team_for_course(membership.course_id).try(:score) || 0 )
-        ##self.team_for_course(membership.course_id).save! if self.team_for_course(membership.course_id).present?
-      #else
-        #membership.update_attribute :score, (grades.released.where(course_id: membership.course_id).score || 0) + (earned_badge_score_for_course(membership.course_id) || 0 )
-        ##team_for_course(membership.course_id).save! if team_for_course(membership.course_id).present?
-      #end
-    #end
-  #end
 
   private
 

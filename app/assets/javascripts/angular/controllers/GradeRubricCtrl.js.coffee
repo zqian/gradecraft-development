@@ -169,8 +169,29 @@
         }
       )
     )
-    return params
+    params
 
+  $scope.tierBadgesParams = ()->
+    params = []
+    angular.forEach($scope.gradedMetrics, (metric, index)->
+      angular.forEach(metric.tiers, (tier, index)->
+        angular.forEach(tier.badges, (badge, index)->
+          params.push {
+            name: badge.name,
+            tier_id: tier.id,
+            metric_id: tier.metric_id,
+            id: badge.id,
+            badge_id: badge.badge.id,
+            description: badge.description,
+            point_total: badge.point_total,
+            icon: badge.icon,
+            multiple: badge.multiple
+          }
+        )
+      )
+    )
+    params
+    
   $scope.gradedRubricParams = ()->
     {
       points_given: $scope.pointsGiven(),
@@ -226,36 +247,8 @@
       $scope.courseBadges[badge.id] = courseBadge
     )
 
-  MetricBadgePrototype = (metric, badge, attrs={})->
-    this.metric = metric
-    this.badge = badge
-    this.create()
-    this.name = badge.name
-    this.metric_id = metric.id
-    this.badge_id = badge.id
-    this.description = badge.description
-    this.point_total = badge.point_total
-    this.icon = badge.icon
-    this.multiple = badge.multiple
-
-  MetricBadgePrototype.prototype =
-    create: ()->
-      self = this
-
-      $http.post("/metric_badges", self.createParams()).success(
-        (data,status)->
-          self.id = data.existing_metric_badge.id
-      )
-      .error((err)->
-        alert("create failed!")
-        return false
-      )
-
-    createParams: ()->
-      metric_id: this.metric.id,
-      badge_id: this.badge.id
-
-  TierBadgePrototype = (tier, badge, attrs={})->
+  TierBadgePrototype = (id, tier, badge, attrs={})->
+    this.id = id
     this.tier = tier
     this.badge = badge
     this.name = badge.name
@@ -316,21 +309,6 @@
         description: self.description,
         rubric_id: self.rubricId
       }
-
-    loadMetricBadge: (metricBadge)->
-      self = this
-      courseBadge = self.availableBadges[metricBadge.badge_id]
-      loadedBadge = new MetricBadgePrototype(self, angular.copy(courseBadge))
-      self.badges[courseBadge.id] = loadedBadge # add metric badge to metric
-      delete self.availableBadges[courseBadge.id] # remove badge from available badges on metric
-     
-    # Badges
-    loadMetricBadges: (metricBadges)->
-      self = this
-      angular.forEach(metricBadges, (metricBadge, index)->
-        if (self.availableBadges[metricBadge.badge_id])
-          self.loadMetricBadge(metricBadge)
-      )
 
     index: ()->
       this.order()
@@ -407,7 +385,7 @@
      loadTierBadge: (tierBadge)->
        self = this
        courseBadge = self.availableBadges[tierBadge.badge_id]
-       loadedBadge = new TierBadgePrototype(self, angular.copy(courseBadge))
+       loadedBadge = new TierBadgePrototype(tierBadge.id, self, angular.copy(courseBadge))
        self.badges[courseBadge.id] = loadedBadge # add tier badge to tier
        delete self.availableBadges[courseBadge.id] # remove badge from available badges on tier
       
