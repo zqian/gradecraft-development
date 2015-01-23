@@ -111,6 +111,7 @@ class Assignment < ActiveRecord::Base
     joins("LEFT OUTER JOIN assignment_weights ON assignments.id = assignment_weights.assignment_id AND assignment_weights.student_id = '#{sanitize student.id}'").select('assignments.*, COALESCE(assignment_weights.point_total, assignments.point_total) AS student_point_total')
   end
 
+  # used for calculating scores in the analytics tab in Assignments#show
   def grades_for_assignment(student)
     user_score = grades.where(:student_id => student.id).first.try(:raw_score)
     scores = grades.graded_or_released.pluck('raw_score')

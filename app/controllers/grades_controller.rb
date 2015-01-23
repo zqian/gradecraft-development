@@ -96,7 +96,7 @@ class GradesController < ApplicationController
     create_rubric_grades # create an individual record for each rubric grade
 
     delete_existing_earned_badges_for_metrics # if earned_badges_exist? # destroy earned_badges where assignment_id and student_id match
-    create_earned_tier_badges if params[:tier_badges]# create_earned_tier_badges 
+    create_earned_tier_badges if params[:tier_badges] 
     
     GradeUpdater.perform_async([@grade.id]) if @grade.graded_or_released?
 
@@ -139,6 +139,14 @@ class GradesController < ApplicationController
     EarnedBadge.where(assignment_student_metric_params).delete_all
   end
 
+  def existing_earned_badges_by_tier_badge_id
+    @existing_earned_tier_badges ||= EarnedBadge.where(student_earned_tier_badge_attrs)
+  end
+
+  def student_earned_tier_badge_attrs
+    { student_id: params[:student_id], tier_badge_id: existing_tier_badge_ids }
+  end
+
   def assignment_student_metric_params
     { assignment_id: params[:assignment_id], student_id: params[:student_id], metric_id: params[:metric_ids] }
   end
@@ -159,6 +167,9 @@ class GradesController < ApplicationController
     EarnedBadge.import(new_earned_tier_badges, :validate => true)
   end
 
+  def existing_earned_badges
+  end
+
   def new_earned_tier_badges
     params[:tier_badges].collect do |tier_badge|
       EarnedBadge.new({
@@ -168,7 +179,8 @@ class GradesController < ApplicationController
         student_id: current_student[:id],
         assignment_id: @assignment[:id],
         tier_id: tier_badge[:tier_id],
-        metric_id: tier_badge[:metric_id]
+        metric_id: tier_badge[:metric_id],
+        tier_badge_id: tier_badge[:id]
       })
     end
   end
