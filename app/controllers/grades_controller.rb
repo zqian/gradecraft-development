@@ -160,7 +160,8 @@ class GradesController < ApplicationController
   def extra_rubric_grade_params
     { submission_id: submission_id,
       assignment_id: @assignment[:id],
-      student_id: params[:student_id] }
+      student_id: params[:student_id]
+    }
   end
 
   def create_earned_tier_badges
@@ -180,7 +181,8 @@ class GradesController < ApplicationController
         assignment_id: @assignment[:id],
         tier_id: tier_badge[:tier_id],
         metric_id: tier_badge[:metric_id],
-        tier_badge_id: tier_badge[:id]
+        tier_badge_id: tier_badge[:id],
+        student_visible: @grade.graded_or_released?
       })
     end
   end

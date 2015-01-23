@@ -11,11 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150108002147) do
+ActiveRecord::Schema.define(version: 20150123173529) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "hstore"
 
   create_table "assignment_files", force: true do |t|
     t.string  "filename"
@@ -142,11 +141,11 @@ ActiveRecord::Schema.define(version: 20150108002147) do
     t.string   "mass_grade_type"
     t.boolean  "include_in_timeline",               default: true
     t.boolean  "include_in_predictor",              default: true
-    t.boolean  "include_in_to_do",                  default: true
     t.integer  "position"
+    t.boolean  "include_in_to_do",                  default: true
+    t.boolean  "use_rubric",                        default: true
     t.string   "student_logged_button_text"
     t.string   "student_logged_revert_button_text"
-    t.boolean  "use_rubric",                        default: true
   end
 
   add_index "assignments", ["course_id"], name: "index_assignments_on_course_id", using: :btree
@@ -182,7 +181,6 @@ ActiveRecord::Schema.define(version: 20150108002147) do
     t.datetime "updated_at"
     t.boolean  "visible",                 default: true
     t.boolean  "can_earn_multiple_times", default: true
-    t.text     "email_description"
     t.integer  "position"
   end
 
@@ -361,7 +359,6 @@ ActiveRecord::Schema.define(version: 20150108002147) do
     t.integer  "point_total"
     t.boolean  "in_team_leaderboard"
     t.boolean  "add_team_score_to_student",                             default: false
-    t.boolean  "badge_emails",                                          default: false
     t.datetime "start_date"
     t.datetime "end_date"
   end
@@ -371,6 +368,13 @@ ActiveRecord::Schema.define(version: 20150108002147) do
   create_table "dashboards", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "duplicated_users", id: false, force: true do |t|
+    t.integer "id"
+    t.string  "last_name"
+    t.string  "role"
+    t.integer "submissions", limit: 8
   end
 
   create_table "earned_badges", force: true do |t|
@@ -391,6 +395,8 @@ ActiveRecord::Schema.define(version: 20150108002147) do
     t.integer  "rubric_grade_id"
     t.integer  "metric_id"
     t.integer  "tier_id"
+    t.integer  "tier_badge_id"
+    t.boolean  "student_visible", default: false
   end
 
   create_table "elements", force: true do |t|
@@ -440,7 +446,6 @@ ActiveRecord::Schema.define(version: 20150108002147) do
     t.integer  "grade_scheme_id"
     t.string   "description"
     t.integer  "high_range"
-    t.integer  "team_id"
     t.integer  "course_id"
   end
 
@@ -454,7 +459,7 @@ ActiveRecord::Schema.define(version: 20150108002147) do
   end
 
   create_table "grades", force: true do |t|
-    t.integer  "raw_score",           default: 0
+    t.integer  "raw_score",           default: 0,     null: false
     t.integer  "assignment_id"
     t.text     "feedback"
     t.datetime "created_at"
@@ -480,12 +485,12 @@ ActiveRecord::Schema.define(version: 20150108002147) do
     t.text     "admin_notes"
     t.integer  "graded_by_id"
     t.integer  "team_id"
-    t.boolean  "released"
     t.integer  "predicted_score",     default: 0,     null: false
     t.boolean  "instructor_modified", default: false
   end
 
   add_index "grades", ["assignment_id", "student_id"], name: "index_grades_on_assignment_id_and_student_id", unique: true, using: :btree
+  add_index "grades", ["assignment_id", "task_id", "submission_id"], name: "index_grades_on_assignment_id_and_task_id_and_submission_id", unique: true, using: :btree
   add_index "grades", ["assignment_id"], name: "index_grades_on_assignment_id", using: :btree
   add_index "grades", ["assignment_type_id"], name: "index_grades_on_assignment_type_id", using: :btree
   add_index "grades", ["course_id"], name: "index_grades_on_course_id", using: :btree
@@ -604,17 +609,6 @@ ActiveRecord::Schema.define(version: 20150108002147) do
   add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", unique: true, using: :btree
   add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
 
-  create_table "shared_earned_badges", force: true do |t|
-    t.integer  "course_id"
-    t.text     "student_name"
-    t.integer  "user_id"
-    t.string   "icon"
-    t.string   "name"
-    t.integer  "badge_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "student_academic_histories", force: true do |t|
     t.integer "student_id"
     t.string  "major"
@@ -641,6 +635,15 @@ ActiveRecord::Schema.define(version: 20150108002147) do
     t.string  "filename",      null: false
     t.integer "submission_id", null: false
     t.text    "filepath"
+  end
+
+  create_table "submission_files_duplicate", id: false, force: true do |t|
+    t.string  "key",        limit: nil
+    t.string  "format",     limit: nil
+    t.integer "upload_id"
+    t.string  "full_name",  limit: nil
+    t.string  "last_name",  limit: nil
+    t.string  "first_name", limit: nil
   end
 
   create_table "submissions", force: true do |t|
@@ -713,7 +716,6 @@ ActiveRecord::Schema.define(version: 20150108002147) do
     t.boolean  "teams_leaderboard",   default: false
     t.boolean  "in_team_leaderboard", default: false
     t.string   "banner"
-    t.string   "badge_email_type"
   end
 
   create_table "themes", force: true do |t|
@@ -744,7 +746,7 @@ ActiveRecord::Schema.define(version: 20150108002147) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "username",                                        null: false
+    t.string   "username",                                            null: false
     t.string   "email"
     t.string   "crypted_password"
     t.string   "salt"
@@ -759,6 +761,7 @@ ActiveRecord::Schema.define(version: 20150108002147) do
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
+    t.string   "role",                            default: "student", null: false
     t.string   "first_name"
     t.string   "last_name"
     t.integer  "rank"
