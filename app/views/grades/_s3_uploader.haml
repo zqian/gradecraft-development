@@ -6,9 +6,10 @@
       = file_field_tag :file, :multiple => true
     .small-12.medium-8.columns
       .upload.s3_progress
-        Progress:
-        .progress
-          .bar
+        %div{:style => "float: left;"}
+          Progress:
+          .progress
+            .bar
       .clearfix
     - if @grade.grade_files.present?
       %hr
@@ -18,3 +19,5 @@
           %li
             = link_to gf.try(:filename), gf.try(:url), :target => "_blank"
             = link_to "[Remove]", remove_uploads_path({ :model => "GradeFile", :grade_id => @grade.id, :upload_id => gf.id } )
+    - else
+      %ul#uploaded_files

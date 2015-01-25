@@ -21,5 +21,13 @@
     %span.small_uppercase Your Feedback:
     %p= raw current_student.grade_for_assignment(@assignment).feedback
 
+  - if grade.grade_files.present?
+    %hr
+    %h5.bold Attachments
+    %ul#uploaded_files
+      - grade.grade_files.each do |gf|
+        %li
+          = link_to gf.try(:filename), gf.try(:url), :target => "_blank"
+
 - if @assignment.rubric and @assignment.rubric.designed?
   = render 'grades/rubric_grade_results'

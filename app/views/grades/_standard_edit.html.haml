@@ -1,6 +1,6 @@
 .small-12.columns
-  //.small-12.panel.columns
-  //= render 's3_uploader'
+  .small-12.panel.columns
+    = render 's3_uploader'
 
   - if @assignment.accepts_submissions? && @student.submission_for_assignment(@assignment).present?
     .panel
