@@ -40,6 +40,12 @@ describe SubmissionFile, focus: true do
     end
   end
 
+  it "accepts text files as well as images" do
+    @submission_file.filepath = fixture_file('test_file.txt', 'txt')
+    @submission.save!
+    expect @submission_file.url.should =~ /\/uploads\/submission_file\/filepath\/#{@submission_file.id}\/\d+_test_file\.txt/
+  end
+
   it "has an accessible url" do
     @submission.save!
     expect @submission_file.url.should =~ /\/uploads\/submission_file\/filepath\/#{@submission_file.id}\/\d+_test_image\.jpg/
