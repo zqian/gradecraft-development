@@ -22,5 +22,14 @@
     return false;
   };
 
+  $('ul > .submit').hide();
+  $('.assignment_options').change(function(){
+    if($(this).is(":checked")) {
+      $('ul > .submit').toggle();
+    } else {
+      $('ul > .submit').toggle();
+    }
+  });
+
   $(init);
 }(jQuery);
