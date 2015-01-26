@@ -32,11 +32,24 @@
 
         - if current_course.accepts_submissions?
           .small-12
-            .checkbox
+            .checkbox.assignment_options
               = f.label :accepts_submissions #{term_for :assignment} Submissions
               %i.fi-paperclip
               = f.check_box :accepts_submissions
               .form_label Will you be using GradeCraft to accept submissions for this #{term_for :assignment}?
+            %ul.submit
+              %li.submit
+                .checkbox
+                  = f.label :accepts_links 
+                  = f.check_box :accepts_links
+              %li.submit
+                .checkbox
+                  = f.label :accepts_attachments
+                  = f.check_box :accepts_submissions
+              %li.submit
+                .checkbox
+                  = f.label :accepts_text 
+                  = f.check_box :accepts_submissions
 
           .small-12
             .checkbox
