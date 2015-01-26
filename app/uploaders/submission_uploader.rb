@@ -51,7 +51,7 @@ class SubmissionUploader < CarrierWave::Uploader::Base
   private
 
   def sanitized_name
-    file.basename.gsub(/\s/, "_")
+    file.basename.gsub(/\s/, "_").downcase
   end
 
   def tokenized_name

@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Submission, focus: true do
+
   before do
     @submission = build(:submission)
   end
@@ -31,4 +32,38 @@ describe Submission, focus: true do
 
   it { should be_valid }
 
+  describe "when an source url is invalid" do
+    before { @submission.link = "not a url" }
+    it { should_not be_valid }
+  end
+
+  it "can't be saved without any information" do
+    expect { @submission.save! }.to raise_error(ActiveRecord::RecordNotSaved)
+  end
+
+  it "can be saved with only a text comment" do
+    @submission.text_comment = "I volunteer! I volunteer! I volunteer as tribute!"
+    @submission.save!
+    expect @submission.should have(0).errors
+  end
+
+  it "can be saved with only a link" do
+    @submission.link = "http://www.amazon.com/dp/0439023521"
+    @submission.save!
+    expect @submission.should have(0).errors
+  end
+
+  it "can be saved with only an attached file" do
+    @submission.submission_files.new(filename: "test", filepath: fixture_file('test_image.jpg', 'img/jpg'))
+    @submission.save!
+    expect @submission.should have(0).errors
+  end
+
+  it "can have an an attached file, comment, and link" do
+    @submission.text_comment = "I volunteer! I volunteer! I volunteer as tribute!"
+    @submission.link = "http://www.amazon.com/dp/0439023521"
+    @submission.submission_files.new(filename: "test", filepath: fixture_file('test_image.jpg', 'img/jpg'))
+    @submission.save!
+    expect @submission.should have(0).errors
+  end
 end
