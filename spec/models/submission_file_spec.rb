@@ -3,7 +3,7 @@ require 'spec_helper'
 describe SubmissionFile, focus: true do
   before do
     @submission = build(:submission)
-    @submission_file = @submission.submission_files.new
+    @submission_file = build(:submission_file, submission: @submission)
     #: {filepath: fixture_file_upload('/files/test_image.jpeg', 'image/jpg')})
   end
 
@@ -15,4 +15,8 @@ describe SubmissionFile, focus: true do
 
   it { should be_valid }
 
+  describe "when filename is not present" do
+    before { @submission_file.filename = nil }
+    it { should_not be_valid }
+  end
 end

@@ -6,6 +6,9 @@ class SubmissionFile < ActiveRecord::Base
   belongs_to :submission
   #before_save :strip_path
 
+  validates :filename, presence: true,
+                         length: { maximum: 50 }
+
   mount_uploader :filepath, SubmissionUploader
 
 
