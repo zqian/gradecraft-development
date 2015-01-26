@@ -17,7 +17,7 @@
             - elsif assignment.has_groups?
               %th{:scope => "col"} Group
             %th{:scope => "col", :width => "7%"} Current Score 
-            %th{:scope => "col", :width => "7%"} Submitted
+            %th{:scope => "col", :width => "7%"} Graded
             %th{:scope => "col", :width => "7%"} Resubmitted
             %th{:scope => "col", :width => "15%"}
               %span.sr-only Actions
@@ -59,7 +59,7 @@
                     - if current_course.has_teams? && re.student.present? && re.student.team_for_course(current_course).present?
                       = link_to re.student.team_for_course(current_course).try(:name), re.student.team_for_course(current_course)
                   %td= points re.student.grade_for_assignment(re.assignment).score
-                  %td= re.created_at
+                  %td= re.student.grade_for_assignment(re.assignment).updated_at
                   %td= re.updated_at
 
                   %td
