@@ -1,5 +1,8 @@
 .small-12.panel.mainContent
   - if current_user_is_student?
+    
+    = content_nav_for @assignment, "My Submission"
+
     %h3.pagetitle
       - if @assignment.has_groups? && @group.present?
         = "#{@title} for #{term_for :group} #{@group.name} (#{points @assignment.point_total} points)"

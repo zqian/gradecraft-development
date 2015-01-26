@@ -3,6 +3,9 @@
   - if current_user_is_staff?
     = content_nav_for @assignment, "Edit Submission"
 
+  - else
+    = content_nav_for @assignment, "Edit My Submission"
+
   %h3.pagetitle= @title
 
   .small-12.columns

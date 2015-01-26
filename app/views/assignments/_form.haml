@@ -38,12 +38,19 @@
               = f.check_box :accepts_submissions
               .form_label Will you be using GradeCraft to accept submissions for this #{term_for :assignment}?
 
+          .small-12
+            .checkbox
+              = f.label :resubmissions_allowed #{term_for :assignment} Resubmissions
+              %i.fi-loop
+              = f.check_box :resubmissions_allowed
+              .form_label Can #{term_for :students} resubmit this #{term_for :assignment}?
+
         .small-12
           .checkbox
             = f.label :student_logged
             %i.fi-pencil
             = f.check_box :student_logged
-            .form_label Do students self-report their grade for this #{term_for :assignment}?
+            .form_label Do #{term_for :students} self-report their grade for this #{term_for :assignment}?
 
         .small-12
           .checkbox
