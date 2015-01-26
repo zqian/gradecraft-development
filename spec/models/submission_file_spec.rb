@@ -4,7 +4,6 @@ describe SubmissionFile, focus: true do
   before do
     @submission = build(:submission)
     @submission_file = build(:submission_file, submission: @submission)
-    #: {filepath: fixture_file_upload('/files/test_image.jpeg', 'image/jpg')})
   end
 
   subject { @submission_file }
@@ -19,4 +18,13 @@ describe SubmissionFile, focus: true do
     before { @submission_file.filename = nil }
     it { should_not be_valid }
   end
+
+  describe "when filepath is not present" do
+    pending "confirmation that we should fail out on this"
+  end
+
+  # describe "accepts a file in the file path" do
+  #   @submission_file.filepath = fixture_file_upload('/files/test_image.jpeg', 'image/jpg')
+  #   it { should_not be_valid }
+  # end
 end

@@ -2,6 +2,6 @@ FactoryGirl.define do
   factory :submission_file do
     submission
     filename "test_file.rb"
-    #filepath {fixture_file_upload('/files/test_image.jpeg', 'image/jpg')}
+    filepath { fixture_file('test_image.jpg', 'img/jpg') }
   end
 end
