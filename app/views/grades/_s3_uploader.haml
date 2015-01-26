@@ -1,6 +1,6 @@
 %h4.uppercase Supporting Files
 .s3_uploader
-  = s3_uploader_form key: upload_url('grade_files', @assignment), acl: "private", max_file_size: 40.megabytes do
+  = s3_uploader_form key: upload_url('grade_files', @grade), acl: "private", max_file_size: 40.megabytes do
     .small-12.medium-3.columns
       = label_tag :file, "Select files to share"
       = file_field_tag :file, :multiple => true

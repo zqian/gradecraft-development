@@ -38,6 +38,9 @@
         = f.label :feedback
         = f.bootsy_area :feedback
 
+      = f.simple_fields_for :grade_files, @grade.grade_files.new do |gf|
+        = gf.input :filepath, :input_html => { :class => 's3_files' }, :as => :hidden
+
       .clearfix
 
     .button-bar
