@@ -345,6 +345,12 @@ class User < ActiveRecord::Base
     Course.find(course.id).grade_scheme_elements.order_by_high_range.first.high_range < cached_score_for_course(course)
   end
 
+  def earn_badges(badges)
+    badges.each do |badge|
+      earned_badges.create badge: badge, course: badge.course
+    end
+  end
+
   def point_total_for_course(course)
     @point_total_for_course ||= course.assignments.point_total_for_student(self) + earned_badge_score_for_course(course)
   end
