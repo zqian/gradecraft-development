@@ -3,7 +3,7 @@
     .button-bar
       %ul.button-group.radius.right
         - if submission.resubmitted?
-          %li= link_to "Resubmitted!", assignment_submission_path(@assignment, submission.id), :class => 'button'
+          %li= link_to "Resubmitted!", assignment_submission_path(@assignment, submission.id), :class => 'button alert'
         - else
           %li= link_to "See Submission", assignment_submission_path(@assignment, submission.id), :class => 'button'
         %li
