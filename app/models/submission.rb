@@ -1,7 +1,7 @@
 class Submission < ActiveRecord::Base
   attr_accessible :task, :task_id, :assignment, :assignment_id, :assignment_type_id, :comment,
     :feedback, :group, :group_id, :attachment, :link, :student, :student_id,
-    :creator, :creator_id, :text_feedback, :text_comment, :graded, :submission_file, :submission_files_attributes,
+    :creator, :creator_id, :text_feedback, :text_comment, :graded, :submission_file, :submission_files_attributes, :submission_files,
     :course_id, :submission_file_ids
 
   include Canable::Ables
@@ -20,7 +20,7 @@ class Submission < ActiveRecord::Base
   has_many :rubric_grades, dependent: :destroy
 
   accepts_nested_attributes_for :grade
-  has_many :submission_files, :dependent => :destroy
+  has_many :submission_files, :dependent => :destroy, autosave: true
   accepts_nested_attributes_for :submission_files
 
   scope :ungraded, -> { where('NOT EXISTS(SELECT 1 FROM grades WHERE submission_id = submissions.id OR (assignment_id = submissions.assignment_id AND student_id = submissions.student_id) AND (status = ? OR status = ?))', "Graded", "Released") }
@@ -32,6 +32,7 @@ class Submission < ActiveRecord::Base
 
   validates_uniqueness_of :task, :scope => :student, :allow_nil => true
   validates_uniqueness_of :assignment_id, { :scope => :student_id }
+  validates :link, :format => URI::regexp(%w(http https)) , :allow_blank => true
 
   #Canable permissions#
   def updatable_by?(user)

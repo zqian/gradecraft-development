@@ -11,3 +11,26 @@ GradeCraft::Application.configure do
   config.static_cache_control = "public, max-age=3600"
   config.session_store :cookie_store, key: '_gradecraft_session', :expire_after => 60.minutes
 end
+
+
+CarrierWave.configure do |config|
+  config.storage = :file
+  config.enable_processing = false
+end
+
+# List tested uploaders here to make sure they are auto-loaded
+# This assures files are created in spec/support/uploads and can be deleted after tests
+SubmissionUploader
+
+CarrierWave::Uploader::Base.descendants.each do |klass|
+  next if klass.anonymous?
+  klass.class_eval do
+    def cache_dir
+      "#{Rails.root}/spec/support/uploads/tmp"
+    end
+
+    def store_dir
+      "#{Rails.root}/spec/support/uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    end
+  end
+end
