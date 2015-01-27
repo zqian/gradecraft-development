@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150126190829) do
+ActiveRecord::Schema.define(version: 20150127201110) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -146,9 +146,9 @@ ActiveRecord::Schema.define(version: 20150126190829) do
     t.string   "student_logged_button_text"
     t.string   "student_logged_revert_button_text"
     t.boolean  "use_rubric",                        default: true
-    t.boolean  "accepts_links"
-    t.boolean  "accepts_text"
-    t.boolean  "accepts_attachments"
+    t.boolean  "accepts_attachments",               default: true
+    t.boolean  "accepts_text",                      default: true
+    t.boolean  "accepts_links",                     default: true
   end
 
   add_index "assignments", ["course_id"], name: "index_assignments_on_course_id", using: :btree
@@ -485,6 +485,7 @@ ActiveRecord::Schema.define(version: 20150126190829) do
     t.boolean  "instructor_modified", default: false
   end
 
+  add_index "grades", ["assignment_id", "student_id"], name: "index_grades_on_assignment_id_and_student_id", unique: true, using: :btree
   add_index "grades", ["assignment_id"], name: "index_grades_on_assignment_id", using: :btree
   add_index "grades", ["assignment_type_id"], name: "index_grades_on_assignment_type_id", using: :btree
   add_index "grades", ["course_id"], name: "index_grades_on_course_id", using: :btree
@@ -562,11 +563,11 @@ ActiveRecord::Schema.define(version: 20150126190829) do
 
   create_table "rubric_grades", force: true do |t|
     t.string   "metric_name"
-    t.string   "metric_description"
+    t.text     "metric_description"
     t.integer  "max_points"
     t.integer  "order"
     t.string   "tier_name"
-    t.string   "tier_description"
+    t.text     "tier_description"
     t.integer  "points"
     t.integer  "submission_id"
     t.integer  "metric_id"
@@ -639,7 +640,7 @@ ActiveRecord::Schema.define(version: 20150126190829) do
   create_table "submission_files", force: true do |t|
     t.string  "filename",      null: false
     t.integer "submission_id", null: false
-    t.string  "filepath"
+    t.text    "filepath"
   end
 
   create_table "submissions", force: true do |t|
