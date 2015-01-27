@@ -122,12 +122,12 @@ GEM
     excon (0.25.3)
     execjs (1.4.0)
       multi_json (~> 1.0)
-    factory_girl (4.2.0)
+    factory_girl (4.5.0)
       activesupport (>= 3.0.0)
-    factory_girl_rails (4.2.1)
-      factory_girl (~> 4.2.0)
+    factory_girl_rails (4.5.0)
+      factory_girl (~> 4.5.0)
       railties (>= 3.0.0)
-    faker (1.1.2)
+    faker (1.4.3)
       i18n (~> 0.5)
     faraday (0.8.7)
       multipart-post (~> 1.1)
@@ -382,8 +382,8 @@ DEPENDENCIES
   dalli
   database_cleaner (~> 1.0.1)
   dotenv-rails
-  factory_girl_rails (~> 4.2.1)
-  faker
+  factory_girl_rails (~> 4.5.0)
+  faker (~> 1.4.3)
   fog
   foreman
   foundation-icons-sass-rails

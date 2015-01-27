@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :course do
-    name 'Intro to Political Theory'
-    courseno 'POLSCI101'
+    name Faker::Internet.domain_word
+    courseno Faker::Internet.domain_word
   end
 end

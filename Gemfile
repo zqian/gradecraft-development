@@ -73,7 +73,7 @@ group :development do
 end
 
 group :test do
-  gem 'faker'
+  gem 'faker', '~> 1.4.3'
   gem 'capybara', '~> 2.1.0'
   gem 'database_cleaner', "~> 1.0.1"
   gem 'launchy'
@@ -82,6 +82,6 @@ end
 
 group :test, :development do
   gem 'rspec-rails', '~> 2.14.0'
-  gem 'factory_girl_rails', '~> 4.2.1'
+  gem 'factory_girl_rails', '~> 4.5.0'
 end
 
