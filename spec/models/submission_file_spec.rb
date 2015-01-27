@@ -46,6 +46,12 @@ describe SubmissionFile, focus: true do
     expect @submission_file.url.should =~ /\/uploads\/submission_file\/filepath\/#{@submission_file.id}\/\d+_test_file\.txt/
   end
 
+  it "accepts multiple files" do
+    @submission.submission_files.new(filename: "test", filepath: fixture_file('test_file.txt', 'img/jpg'))
+    @submission.save!
+    @submission.submission_files.count.should equal 2
+  end
+
   it "has an accessible url" do
     @submission.save!
     expect @submission_file.url.should =~ /\/uploads\/submission_file\/filepath\/#{@submission_file.id}\/\d+_test_image\.jpg/
