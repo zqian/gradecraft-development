@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150108002147) do
+ActiveRecord::Schema.define(version: 20150126190829) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -146,6 +146,9 @@ ActiveRecord::Schema.define(version: 20150108002147) do
     t.string   "student_logged_button_text"
     t.string   "student_logged_revert_button_text"
     t.boolean  "use_rubric",                        default: true
+    t.boolean  "accepts_links"
+    t.boolean  "accepts_text"
+    t.boolean  "accepts_attachments"
   end
 
   add_index "assignments", ["course_id"], name: "index_assignments_on_course_id", using: :btree
