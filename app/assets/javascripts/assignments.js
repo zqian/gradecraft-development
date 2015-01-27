@@ -22,7 +22,12 @@
     return false;
   };
 
-  $('ul > .submit').hide();
+  if($('.assignment_options > input').is(':checked')) {
+    $('ul > .submit').show();    
+  } else {
+    $('ul > .submit').hide();    
+  }
+
   $('.assignment_options').change(function(){
     if($(this).is(":checked")) {
       $('ul > .submit').toggle();
