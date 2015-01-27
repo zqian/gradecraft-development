@@ -108,6 +108,7 @@ class SubmissionsController < ApplicationController
     end
   end
 
+  # deprecated method from S3
   def check_uploads
     if params[:submission][:submission_files]["0"][:filepath].empty?
       params[:submission].delete(:submission_files_attributes)
@@ -117,9 +118,20 @@ class SubmissionsController < ApplicationController
 
   def update
     @assignment = current_course.assignments.find(params[:assignment_id])
+    if params[:submission][:submission_files_attributes].present?
+      @submission_files = params[:submission][:submission_files_attributes]
+      params[:submission].delete :submission_files_attributes
+    end
+
     @submission = @assignment.submissions.find(params[:id])
+
+    if @submission_files
+      @submission_files.each do |key,sf|
+        s = @submission.submission_files.new(filepath: sf[:filepath], filename: sf[:filepath].original_filename)
+      end
+    end
+
     respond_to do |format|
-      self.check_uploads
       if @submission.update_attributes(params[:submission])
         if current_user_is_student?
           format.html { redirect_to assignment_grade_path(@assignment, :student_id => current_user), notice: "Your submission for #{@assignment.name} was successfully updated." }
