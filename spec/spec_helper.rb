@@ -12,6 +12,13 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
 
+# fixture file no longer works, this is a workaround
+# here is an alternative solution that didn't work for me:
+# http://stackoverflow.com/questions/9011425/fixture-file-upload-has-file-does-not-exist-error
+def fixture_file(file, filetype='image/jpg')
+  Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'files', file), filetype)
+end
+
 RSpec.configure do |config|
   # ## Mock Framework
   #
@@ -25,6 +32,7 @@ RSpec.configure do |config|
   #config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.include FactoryGirl::Syntax::Methods
 
+  config.filter_run focus: true
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
@@ -40,4 +48,9 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
+
+  # Remove uploader files, see config/environments/test.rb
+  config.after(:all) do
+    FileUtils.rm_rf(Dir["#{Rails.root}/spec/support/uploads"])
+  end
 end

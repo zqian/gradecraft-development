@@ -10,7 +10,7 @@ class SubmissionsController < ApplicationController
     @assignment = current_course.assignments.find(params[:assignment_id])
     redirect_to @assignment
   end
-  
+
   def new
     session[:return_to] = request.referer
     @assignment = current_course.assignments.find(params[:assignment_id])
@@ -58,10 +58,20 @@ class SubmissionsController < ApplicationController
 
   def create
     @assignment = current_course.assignments.find(params[:assignment_id])
+    if params[:submission][:submission_files_attributes].present?
+      @submission_files = params[:submission][:submission_files_attributes]
+      params[:submission].delete :submission_files_attributes
+    end
     @submission = @assignment.submissions.new(params[:submission])
     @submission.student = current_student if current_user_is_student?
+    if @submission_files
+      @submission_files.each do |sf|
+        s = @submission.submission_files.new(filepath: sf[:filepath], filename: sf[:filepath].original_filename)
+      end
+    end
     respond_to do |format|
-      self.check_uploads
+
+      #self.check_uploads
       if @submission.save
         if current_user_is_student?
           format.html { redirect_to assignment_grade_path(@assignment, :student_id => current_user), notice: "#{@assignment.name} was successfully submitted." }
@@ -79,7 +89,7 @@ class SubmissionsController < ApplicationController
       elsif @submission.errors[:link].any?
         format.html { redirect_to new_assignment_submission_path(@assignment, @submission), notice: "Please provide a valid link for #{@assignment.name} submissions." }
       else
-        format.html { redirect_to new_assignment_submission_path(@assignment, @submission), notice: "#{@assignment.name} was not successfully submitted! Please try again." }
+        format.html { redirect_to new_assignment_submission_path(@assignment, @submission), alert: "#{@assignment.name} was not successfully submitted! Please try again." }
         format.json { render json: @assignment.errors, status: :unprocessable_entity }
       end
     end
@@ -99,7 +109,7 @@ class SubmissionsController < ApplicationController
   end
 
   def check_uploads
-    if params[:submission][:submission_files_attributes]["0"][:filepath].empty?
+    if params[:submission][:submission_files]["0"][:filepath].empty?
       params[:submission].delete(:submission_files_attributes)
       @submission.submission_files.destroy_all
     end
