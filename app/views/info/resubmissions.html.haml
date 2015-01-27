@@ -29,9 +29,10 @@
                   - if re.assignment.is_individual?
                     %td= link_to re.student.try(:first_name), student_path(re.student)
                     %td= link_to re.student.try(:last_name), student_path(re.student)
-                    %td
-                      - if current_course.has_teams? && re.student.present? && re.student.team_for_course(current_course).present?
-                        = link_to re.student.team_for_course(current_course).try(:name), re.student.team_for_course(current_course)
+                    - if current_course.has_teams? 
+                      %td
+                        - if re.student.present? && re.student.team_for_course(current_course).present?
+                          = link_to re.student.team_for_course(current_course).try(:name), re.student.team_for_course(current_course)
                     %td
                       .button-bar
                         %ul.button-group.right.radius
