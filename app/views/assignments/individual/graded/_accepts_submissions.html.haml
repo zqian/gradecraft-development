@@ -2,8 +2,10 @@
   - if submission && ( grade.status? || grade.instructor_modified)
     .button-bar
       %ul.button-group.radius.right
-        %li
-          = link_to "See Submission", assignment_submission_path(@assignment, submission.id), :class => 'button'
+        - if submission.resubmitted?
+          %li= link_to "Resubmitted!", assignment_submission_path(@assignment, submission.id), :class => 'button alert'
+        - else
+          %li= link_to "See Submission", assignment_submission_path(@assignment, submission.id), :class => 'button'
         %li
           %a{:href => assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'}
             See Grade

@@ -1,12 +1,15 @@
 %h4.uppercase Supporting Files
 .s3_uploader
-  = s3_uploader_form key: upload_url('grade_files', @grade), acl: "private", max_file_size: 40.megabytes do
-    .small-12.medium-8.columns
-      = label_tag :file, "Select files to share with the student"
-      = file_field_tag :file, :multiple => true
+  = s3_uploader_form key: upload_url('grade_files', @assignment), acl: "private", max_file_size: 40.megabytes do
+    .small-12.medium-3.columns
+      %label
+        .sr-only
+          File Uploads
+        = file_field_tag :file, :multiple => true
     .small-12.medium-8.columns
       .upload.s3_progress
-        Progress:
+        %div{:style => "float: left;"}
+          Progress:
         .progress
           .bar
       .clearfix
@@ -18,3 +21,5 @@
           %li
             = link_to gf.try(:filename), gf.try(:url), :target => "_blank"
             = link_to "[Remove]", remove_uploads_path({ :model => "GradeFile", :grade_id => @grade.id, :upload_id => gf.id } )
+    - else
+      %ul#uploaded_files
