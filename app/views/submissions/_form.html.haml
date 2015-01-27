@@ -11,17 +11,18 @@
   - elsif @assignment.is_individual? && current_user_is_staff?
     = f.input :student_id, :input_html => { :value => @student.id }, :as => :hidden
 
-  = f.simple_fields_for :submission_files, @submission.submission_files.new do |sff|
-    = sff.file_field :filepath#, :multiple => true
+  - if @assignments.accepts_links
+    = f.simple_fields_for :submission_files, @submission.submission_files.new do |sff|
+      = sff.file_field :filepath#, :multiple => true
 
+  - if @assignments.accepts_attachments :accepts_text, :accepts_links
+    .small-12.panel
+      = f.input :link
 
-
-  .small-12.panel
-    = f.input :link
-
-  .small-12.panel
-    %h5.bold Content/Description
-    = f.bootsy_area :text_comment
+  - if @assignments.accepts_text
+    .small-12.panel
+      %h5.bold Content/Description
+      = f.bootsy_area :text_comment
 
   .button-bar
     %ul.button-group.radius.right

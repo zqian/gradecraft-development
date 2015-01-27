@@ -147,9 +147,9 @@ ActiveRecord::Schema.define(version: 20150126222048) do
     t.string   "student_logged_button_text"
     t.string   "student_logged_revert_button_text"
     t.boolean  "use_rubric",                        default: true
-    t.boolean  "accepts_links"
-    t.boolean  "accepts_text"
-    t.boolean  "accepts_attachments"
+    t.boolean  "accepts_attachments",               default: true
+    t.boolean  "accepts_text",                      default: true
+    t.boolean  "accepts_links",                     default: true
   end
 
   add_index "assignments", ["course_id"], name: "index_assignments_on_course_id", using: :btree
