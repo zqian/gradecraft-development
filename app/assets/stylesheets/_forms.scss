@@ -93,7 +93,7 @@ ul.dropdown-menu {
 
   }
 
-  li a, li.active a {
+  li a {
     background-color: #FFF !important;
     color: #333 !important;
     line-height: 1.8rem !important;
@@ -101,7 +101,7 @@ ul.dropdown-menu {
     width: 100% !important;
   }
 
-  li a:hover {
+  li a:hover, li.active a {
     background-color: $primary-color-2 !important;
     border-radius: $global-radius;
     color: #fff !important;

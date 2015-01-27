@@ -187,6 +187,7 @@ GradeCraft::Application.routes.draw do
   get 'multiplier_choices' => 'info#choices'
   get 'earned_badges' => 'info#class_badges'
   get 'grading_status' => 'info#grading_status'
+  get 'resubmissions' => 'info#resubmissions'
   get 'gradebook' => 'info#gradebook'
   get 'final_grades' => 'info#final_grades'
   get 'research_gradebook' => 'info#research_gradebook'
@@ -209,6 +210,7 @@ GradeCraft::Application.routes.draw do
     get :grading_status
     get :leaderboard
     get :timeline_events
+    get :resubmissions
   end
 
   resources :home

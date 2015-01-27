@@ -5,7 +5,7 @@ class Assignment < ActiveRecord::Base
     :accepts_submissions_until, :points_predictor_display, :notify_released, :mass_grade_type, :assignment_type_id, :assignment_type,
     :include_in_timeline, :include_in_predictor, :include_in_to_do, :grades_attributes, :assignment_file_ids, :student_logged,
     :assignment_files_attributes, :assignment_file, :assignment_score_levels_attributes, :assignment_score_level, :score_levels_attributes,
-    :remove_media, :remove_thumbnail, :use_rubric
+    :remove_media, :remove_thumbnail, :use_rubric, :resubmissions_allowed
 
   belongs_to :course
   belongs_to :assignment_type, -> { order('order_placement ASC') }
@@ -312,6 +312,8 @@ class Assignment < ActiveRecord::Base
     (open_at.nil? && due_at != nil && (accepts_submissions_until != nil && accepts_submissions_until > Time.now)) || 
     #open date and due date both defined, limit from accepts submissions until absent - accept assignments indefinitely
     ((open_at != nil && open_at < Time.now) && (due_at != nil && due_at > Time.now) && accepts_submissions_until.nil?) || 
+    #open date and due date are both defined, it is after the due date but no accept_submissions_until date is present
+    ((open_at != nil && open_at < Time.now) && (due_at != nil && due_at < Time.now) && accepts_submissions_until.nil?) || 
     #if both the open date and the accept until date are present and it is between them, accept submissions 
     ((open_at != nil && open_at < Time.now) && (accepts_submissions_until != nil && accepts_submissions_until > Time.now))
   end

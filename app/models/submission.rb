@@ -25,6 +25,8 @@ class Submission < ActiveRecord::Base
 
   scope :ungraded, -> { where('NOT EXISTS(SELECT 1 FROM grades WHERE submission_id = submissions.id OR (assignment_id = submissions.assignment_id AND student_id = submissions.student_id) AND (status = ? OR status = ?))', "Graded", "Released") }
   scope :graded, -> { where(:grade) }
+  scope :resubmitted, -> { where('EXISTS(SELECT 1 FROM grades WHERE (assignment_id = submissions.assignment_id AND student_id = submissions.student_id) AND updated_at < submissions.updated_at)' ) }
+  
 
   before_validation :cache_associations
 
@@ -53,6 +55,11 @@ class Submission < ActiveRecord::Base
   def ungraded?
     ! grade || grade.status == nil
   end
+
+  def resubmitted?
+    student.grade_for_assignment(assignment).present? && student.grade_for_assignment(assignment).updated_at < self.updated_at
+  end
+
 
   #Permissions regarding who can see a grade
   def viewable_by?(user)

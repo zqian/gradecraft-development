@@ -31,7 +31,7 @@ class InfoController < ApplicationController
     @title = "Awarded #{term_for :badges}"
   end
 
-  # Displaying all ungraded, graded but unreleased, and in progress assignment submissions in the system"
+  # Displaying all ungraded, graded but unreleased, and in progress assignment submissions in the system
   def grading_status
     @title = "Grading Status"
     @ungraded_submissions = current_course.submissions.ungraded
@@ -41,6 +41,12 @@ class InfoController < ApplicationController
     @count_ungraded = @ungraded_submissions.count
     @count_in_progress = @in_progress_grades.count
     @badges = current_course.badges.includes(:tasks)
+  end
+
+  # Displaying all resubmisisons
+  def resubmissions
+    @title = "Resubmitted Assignments"
+    @resubmissions = current_course.submissions.resubmitted
   end
 
   #grade index export

@@ -2,7 +2,7 @@
 .small-12.columns
 
   - if @assignment.is_individual?
-    - if @assignment.open?
+    - if (@assignment.open? && ! current_student_data.grade_released_for_assignment?(@assignment)) || (@assignment.open? && @assignment.resubmissions_allowed?)
       %a{:href => "#{edit_assignment_submission_path(@assignment, current_student.submission_for_assignment(@assignment))}?student_id=#{current_student.id}", :class => 'button radius'  }
         Edit My Submission
       .clearfix
