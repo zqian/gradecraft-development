@@ -65,7 +65,7 @@ class SubmissionsController < ApplicationController
     @submission = @assignment.submissions.new(params[:submission])
     @submission.student = current_student if current_user_is_student?
     if @submission_files
-      @submission_files.each do |sf|
+      @submission_files.each do |key,sf|
         s = @submission.submission_files.new(filepath: sf[:filepath], filename: sf[:filepath].original_filename)
       end
     end
