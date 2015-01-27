@@ -1,6 +1,6 @@
 FactoryGirl.define do
-  factory :course do
+  factory :badge do
     name Faker::Internet.domain_word
-    courseno Faker::Internet.domain_word
+    point_total rand(100) + 20
   end
 end
