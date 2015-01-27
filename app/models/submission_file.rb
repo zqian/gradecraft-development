@@ -1,5 +1,5 @@
 class SubmissionFile < ActiveRecord::Base
-  #include S3File
+  include S3File
 
   attr_accessible :filename, :filepath, :submission_id
 
@@ -10,8 +10,13 @@ class SubmissionFile < ActiveRecord::Base
 
   mount_uploader :filepath, SubmissionUploader
 
-  # Note: older direct upload files have a url method that we must accomodate in the view
-  # def url
-  #   @url || filepath.url
-  # end
+  def url
+    s3 = AWS::S3.new
+    bucket = s3.buckets["gradecraft-#{Rails.env}"]
+    begin
+      bucket.objects[CGI::unescape(filepath)].url_for(:read, :expires => 15 * 60).to_s #15 minutes
+    rescue Exception => e
+      bucket.objects[CGI::unescape(filepath.url.split("/").last)].url_for(:read, :expires => 15 * 60).to_s #15 minutes
+    end
+  end
 end
