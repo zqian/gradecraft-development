@@ -1,6 +1,6 @@
 .small-12.columns
-  .small-12.panel.columns
-    = render 's3_uploader'
+  //.small-12.panel.columns
+  //= render 's3_uploader'
 
   - if @assignment.accepts_submissions? && @student.submission_for_assignment(@assignment).present?
     .panel
@@ -33,10 +33,10 @@
         = f.label :feedback
         = f.bootsy_area :feedback
 
-      = f.simple_fields_for :grade_files, @grade.grade_files.new do |ggf|
-        = ggf.input :filepath, :input_html => { :class => 's3_files' }, :as => :hidden
-
       .clearfix
+
+    = f.simple_fields_for :grade_files, @grade.grade_files.new do |gff|
+      = gff.input :filepath, :input_html => { :class => 's3_files' }, :as => :hidden
 
     .button-bar
       %ul.button-group.radius.right
