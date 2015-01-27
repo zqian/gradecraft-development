@@ -11,7 +11,7 @@ class SubmissionFile < ActiveRecord::Base
   mount_uploader :filepath, SubmissionUploader
 
   # Note: older direct upload files have a url method that we must accomodate in the view
-  def url
-    @url || filepath.url
-  end
+  # def url
+  #   @url || filepath.url
+  # end
 end
