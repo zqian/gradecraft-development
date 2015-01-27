@@ -311,7 +311,7 @@ class Assignment < ActiveRecord::Base
     #Open date is absent, due date and accept until date are present
     (open_at.nil? && due_at != nil && (accepts_submissions_until != nil && accepts_submissions_until > Time.now)) || 
     #open date and due date both defined, limit from accepts submissions until absent - accept assignments indefinitely
-    ((open_at != nil && open_at < Time.now) && (due_at != nil && due_at > Time.now) && accepts_submissions_until.nil?) || 
+    ((open_at != nil && open_at < Time.now) && (due_at != nil && due_at < Time.now) && accepts_submissions_until.nil?) || 
     #if both the open date and the accept until date are present and it is between them, accept submissions 
     ((open_at != nil && open_at < Time.now) && (accepts_submissions_until != nil && accepts_submissions_until > Time.now))
   end
