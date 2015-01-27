@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Submission, focus: true do
+describe Submission do
 
   before do
     @submission = build(:submission)

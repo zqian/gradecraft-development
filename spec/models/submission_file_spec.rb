@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SubmissionFile, focus: true do
+describe SubmissionFile do
 
   before do
     @submission = build(:submission)
