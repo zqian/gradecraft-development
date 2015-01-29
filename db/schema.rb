@@ -644,6 +644,7 @@ ActiveRecord::Schema.define(version: 20150126222048) do
     t.string  "filename",      null: false
     t.integer "submission_id", null: false
     t.text    "filepath"
+    t.string  "file"
   end
 
   create_table "submissions", force: true do |t|

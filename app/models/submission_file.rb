@@ -8,7 +8,7 @@ class SubmissionFile < ActiveRecord::Base
   validates :filename, presence: true,
                          length: { maximum: 50 }
 
-  mount_uploader :filepath, SubmissionUploader
+  mount_uploader :file, SubmissionUploader
 
   def url
     s3 = AWS::S3.new
