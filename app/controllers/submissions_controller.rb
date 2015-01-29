@@ -59,19 +59,18 @@ class SubmissionsController < ApplicationController
   def create
     @assignment = current_course.assignments.find(params[:assignment_id])
     if params[:submission][:submission_files_attributes].present?
-      @submission_files = params[:submission][:submission_files_attributes]
+      @submission_files = params[:submission][:submission_files_attributes]["0"]["file"]
       params[:submission].delete :submission_files_attributes
     end
     @submission = @assignment.submissions.new(params[:submission])
     @submission.student = current_student if current_user_is_student?
     if @submission_files
-      @submission_files.each do |key,sf|
-        s = @submission.submission_files.new(file: sf[:file], filename: sf[:file].original_filename)
+      @submission_files.each do |sf|
+        s = @submission.submission_files.new(file: sf, filename: sf.original_filename)
       end
     end
-    respond_to do |format|
 
-      #self.check_uploads
+    respond_to do |format|
       if @submission.save
         if current_user_is_student?
           format.html { redirect_to assignment_grade_path(@assignment, :student_id => current_user), notice: "#{@assignment.name} was successfully submitted." }
@@ -119,15 +118,15 @@ class SubmissionsController < ApplicationController
   def update
     @assignment = current_course.assignments.find(params[:assignment_id])
     if params[:submission][:submission_files_attributes].present?
-      @submission_files = params[:submission][:submission_files_attributes]
+      @submission_files = params[:submission][:submission_files_attributes]["0"]["file"]
       params[:submission].delete :submission_files_attributes
     end
 
     @submission = @assignment.submissions.find(params[:id])
 
     if @submission_files
-      @submission_files.each do |key,sf|
-        s = @submission.submission_files.new(file: sf[:file], filename: sf[:file].original_filename)
+      @submission_files.each do |sf|
+        s = @submission.submission_files.new(file: sf, filename: sf.original_filename)
       end
     end
 

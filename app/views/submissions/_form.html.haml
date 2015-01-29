@@ -10,7 +10,7 @@
 
   - if @assignment.accepts_links
     = f.simple_fields_for :submission_files, @submission.submission_files.new do |sff|
-      = sff.file_field :file#, :multiple => true #TODO add multiple back in and test as well
+      = sff.file_field :file, :multiple => true
 
   - if @assignment.accepts_attachments
     .small-12.panel
