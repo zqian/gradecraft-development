@@ -265,25 +265,31 @@ class User < ActiveRecord::Base
      }
   end
 
-  # list of all earned badges for the current course that are visible
-  # to the student based ont he released/graded flags
+  # this should be all earned badges that either:
+  # 1) have no associated grade and have been awarded to the student, or...
+  # 2) have an associated grade that has been marked graded_or_released? (indicated through the student_visible boolean)
   def student_visible_badges(course)
-    @student_visible_badges ||=  Badge
+    @student_visible_badges ||= Badge
+      .where("badges.course_id = ?", course[:id])
       .joins(:earned_badges)
+      .where("earned_badges.student_id = ?", self[:id])
       .where("earned_badges.student_visible = ?", true)
-      .where(course: course)
   end
 
   def earned_badge_ids(course)
     student_visible_badges(course).collect(&:id)
   end
 
-  # show all badges that the student hasn't earned,
-  # and also that he hasn't seen that he has yet earned
+  # this should be all badges that:
+  # 1) exist in the current course, in which the student is enrolled
+  # 2) the student has either not earned at all, but is visible and available, or...
+  # 3) the student has earned_badge for, but that earned_badge is set to student_visible 'false'
   def student_visible_unearned_badges(course)
-    Badge.where(course: course)
+    Badge
+      .where("badges.course_id = ?", course[:id])
       .joins(:earned_badges)
       .where("earned_badges.student_id = ?", self[:id])
+      .where("earned_badges.student_visible = ?", false)
   end
 
   #recalculating the student's score for the course
