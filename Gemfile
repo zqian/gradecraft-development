@@ -77,10 +77,6 @@ group :test do
   gem 'database_cleaner', "~> 1.0.1"
   gem 'launchy'
   gem 'selenium-webdriver'
-end
-
-group :test, :development do
-  gem 'rspec-rails', '~> 2.14.0'
   gem 'factory_girl_rails', '~> 4.5.0'
+  gem 'rspec-rails', '~> 2.14.0'
 end
-
