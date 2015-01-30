@@ -291,6 +291,21 @@ class User < ActiveRecord::Base
       .where("earned_badges.student_id = ?", self[:id])
       .where("earned_badges.student_visible = ?", false)
   end
+  
+  # badges that have not been marked 'invisible' by the instructor, and for which
+  # the student has earned a badge, but the badge has yet to be marked 'student_visible'
+  def student_invisible_earned_badges
+    Badge
+      .where("badges.course_id = ?", course[:id])
+      .joins(:earned_badges)
+      .where("earned_badges.student_id = ?", self[:id])
+      .where("earned_badges.student_visible = ?", false)
+  end
+
+  # badges that have not been marked 'invisible' but the instructor, but which
+  # the student has yet to earn
+  def visible_unearned_badges
+  end
 
   #recalculating the student's score for the course
   def score_for_course(course)
