@@ -4,7 +4,6 @@ FactoryGirl.define do
   factory :event do
     name ""
     description ""
-    close_date ""
     media ""
     thumbnail ""
     media_credit ""

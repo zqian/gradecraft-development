@@ -36,7 +36,7 @@ describe User do
       @student = create(:user)
       create(:course_membership, course: @course, user: @student)
       @assignment = create(:assignment, course: @course)
-      @grade = create(:grade, assignment: @assignment, assignment_type: @assignment.assignment_type, course: @course, user: @student)
+      @grade = create(:grade, assignment: @assignment, assignment_type: @assignment.assignment_type, course: @course, student: @student)
 
       @earned_badges = create_list(:badge, 3, course: @course)
       @student.earn_badges(@earned_badges)
