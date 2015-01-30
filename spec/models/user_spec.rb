@@ -3,65 +3,31 @@
 require 'spec_helper'
 
 describe User do
-  it "is valid with a first name, a last name, a username, and an email address" do
-    user = User.new(first_name: 'Hermione', last_name: 'Granger', email: 'hermione.granger@hogwarts.edu', username: 'crookshanks')
-    expect(user).to be_valid
+  
+  before(:each) do
+    @earned_badges = create_list(:badge, 3, course: @course)
+    @student.earn_badges(@earned_badges)
+    @unearned_badges = create_list(:badge, 2, course: @course)
   end
 
-  it "is invalid without a first name" do
-    expect(User.new(first_name: nil)).to have(1).errors_on(:first_name)
+  it "should know which badges a student has earned" do
+    expect(@student.student_visible_badges(@course)).to eq(@earned_badges)
   end
 
-  it "is invalid without a last name" do
-    expect(User.new(last_name: nil)).to have(1).errors_on(:last_name)
+  it "should not return unearned badges as earned badges" do
+    expect(@student.student_visible_badges(@course)).not_to include(@unearned_badges)
   end
 
-  it "is invalid without a username" do
-    expect(User.new(username: nil)).to have(1).errors_on(:username)
+  it "should know which badges a student has yet to earn" do
+    expect(@student.student_visible_unearned_badges(@course)).to eq(@unearned_badges)
   end
 
-  it "is invalid without an email address" do
-    pending
-    expect(User.new(email: nil)).to have(3).errors_on(:email)
+  it "should not return earned badges as unearned ones" do
+    expect(@student.student_visible_unearned_badges(@course)).not_to include(@earned_badges)
   end
 
-  it "returns a user's full name as a string" do
-    user = User.new(first_name: 'Hermione', last_name: 'Granger', email: 'hermione.granger@hogwarts.edu', username: 'crookshanks')
-    expect(user.name).to eq 'Hermione Granger'
-  end
-
-  context "finding earned and unearned badges" do
-    before(:all) do
-      @course = create(:course)
-      @student = create(:user)
-      create(:course_membership, course: @course, user: @student)
-      @assignment = create(:assignment, course: @course)
-      @grade = create(:grade, assignment: @assignment, assignment_type: @assignment.assignment_type, course: @course, student: @student)
-
-      @earned_badges = create_list(:badge, 3, course: @course)
-      @student.earn_badges(@earned_badges)
-      @unearned_badges = create_list(:badge, 2, course: @course)
-    end
-
-    it "should know which badges a student has earned" do
-      @student.student_visible_badges(@course).should == @earned_badges
-    end
-
-    it "should not return unearned badges as earned badges" do
-    end
-
-    it "should know which badges a student has yet to earn" do
-      @student.student_visible_unearned_badges(@course).should == @unearned_badges
-    end
-
-    it "should not return earned badges as unearned ones" do
-    end
-  end
-
-  context "earning badges" do
-    it "should be able to earn badges" do
-      
-    end
+  it "should be able to earn badges" do
+    
   end
 
 end
