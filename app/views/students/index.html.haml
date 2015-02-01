@@ -17,9 +17,9 @@
 
   .clearfix
 
-  - if @auditing.count > 0
+  - if @auditing_students.present?
     / Display the table of auditing students if they're present
     %h4.subtitle= "Auditing Roster"
 
     .small-12.columns
-      = render 'students_table', :course => current_course, :students => @auditing
+      = render 'students_table', :course => current_course, :students => @auditing_students

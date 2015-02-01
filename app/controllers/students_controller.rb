@@ -8,20 +8,46 @@ class StudentsController < ApplicationController
   #Lists all students in the course, broken out by those being graded and auditors
   def index
     @title = "#{(current_course.user_term).singularize} Roster"
-    @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
-    user_search_options = {}
-    user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
-    if @team
-      students = current_course.students_being_graded_by_team(@team)
+
+    if team_filter_active?
+      # fetch user ids for all students in the active team
+      @students = graded_students_in_current_course_for_active_team.order(alpha_sort_order)
+      @auditing_students = auditing_students_in_current_course_for_active_team.order(alpha_sort_order)
     else
-      students = current_course.students_being_graded
+      # fetch user ids for all students in the course, regardless of team
+      @students = graded_students_in_current_course.order(alpha_sort_order)
+      @auditing_students = auditing_students_in_current_course.order(alpha_sort_order)
     end
-    @students = students
-    @auditing = current_course.students_auditing.includes(:teams).where(user_search_options)
+    
+    @student_ids = @students.collect {|s| s[:id] }
+    @auditing_student_ids = @auditing_students.collect {|s| s[:id] }
+    @teams_by_student_id = teams_by_student_id
+    @earned_badges_by_student_id = earned_badges_by_student_id
+    @student_grade_schemes_by_id = course_grade_scheme_by_student_id
+
     respond_to do |format|
       format.html
       format.csv { send_data @students.csv_for_course(current_course) }
     end
+  end
+
+  #Course wide leaderboard - excludes auditors from view
+  def leaderboard
+    # before_filter :ensure_staff?
+    @title = "Leaderboard"
+
+    if team_filter_active?
+      # fetch user ids for all students in the active team
+      @students = graded_students_in_current_course_for_active_team.order(leaderboard_sort_order)
+    else
+      # fetch user ids for all students in the course, regardless of team
+      @students = graded_students_in_current_course.order(leaderboard_sort_order)
+    end
+
+    @student_ids = @students.collect {|s| s[:id] }
+    @teams_by_student_id = teams_by_student_id
+    @earned_badges_by_student_id = earned_badges_by_student_id
+    @student_grade_schemes_by_id = course_grade_scheme_by_student_id
   end
 
   #Displaying the list of assignments and team challenges for the semester
@@ -110,4 +136,115 @@ class StudentsController < ApplicationController
     self.current_student = current_course.students.where(id: params[:id]).first
     @grades = current_student.grades.where(:course_id => current_course)
   end
+
+  
+  protected
+
+  def course_grade_scheme_by_student_id
+    @students.inject({}) do |memo, student|
+      student_score = student.cached_score
+      student_grade_scheme = nil
+      course_grade_scheme_elements.each do |grade_scheme|
+        if student_score >= grade_scheme.low_range and student_score <= grade_scheme.high_range
+          student_grade_scheme = grade_scheme
+          break
+        end
+      end
+      memo.merge student[:id] => student_grade_scheme
+    end
+  end
+
+  def course_grade_scheme_elements
+    @course_grade_scheme_elements ||= current_course.grade_scheme_elements.order("low_range ASC")
+  end
+
+  def earned_badges_by_student_id
+    @earned_badges_by_student_id ||= student_earned_badges_for_entire_course.inject({}) do |memo, earned_badge|
+      student_id = earned_badge.student_id
+      if memo[student_id]
+        memo[student_id] << earned_badge
+      else
+        memo[student_id] = [earned_badge]
+      end
+      memo
+    end
+  end
+
+  def teams_by_student_id
+    @teams_by_student_id ||= team_memberships_for_course.inject({}) do |memo, tm|
+      memo.merge tm.student_id => tm.team
+    end
+  end
+
+  def team_memberships_for_course
+    @team_memberships_for_course ||= TeamMembership.joins(:team)
+      .where("teams.course_id = ?", current_course.id)
+      .where(student_id: @student_ids)
+      .includes(:team)
+  end
+
+  def course_teams
+    @course_teams ||= Team.where(course: current_course)
+      .joins(:team_memberships)
+      .where("team_memberships.student_id in (?)", student_ids)
+  end
+
+  def course_team_membership_count
+    TeamMembership.joins(:team).where("teams.course_id = ?", current_course[:id]).count
+  end
+
+  def student_earned_badges_for_entire_course
+    @student_earned_badges ||= EarnedBadge.where(course: current_course).where("student_id in (?)", @student_ids).includes(:badge)
+  end
+
+  def leaderboard_sort_order
+    "course_memberships.score DESC, users.last_name ASC, users.first_name ASC"
+  end
+
+  def alpha_sort_order
+    "users.last_name ASC, users.first_name ASC"
+  end
+
+  def fetch_active_team
+    @team ||= Team.find params[:team_id]
+  end
+
+  def team_filter_active?
+    params[:team_id].present?
+  end
+
+  def graded_students_in_current_course
+    if course_team_membership_count > 0
+      User.graded_students_in_course_include_and_join_team(current_course.id)
+    else
+      User.graded_students_in_course(current_course.id)
+    end
+  end
+
+  def auditing_students_in_current_course
+    if course_team_membership_count > 0
+      User.auditing_students_in_course_include_and_join_team(current_course.id)
+    else
+      User.auditing_students_in_course(current_course.id)
+    end
+  end
+
+  def graded_students_in_current_course_for_active_team
+    if course_team_membership_count > 0
+      User.graded_students_in_course_include_and_join_team(current_course.id)
+        .where("team_memberships.team_id = ?", params[:team_id])
+    else
+      []
+    end
+  end
+
+  def auditing_students_in_current_course_for_active_team
+    if course_team_membership_count > 0
+      User.auditing_students_in_course_include_and_join_team(current_course.id)
+        .where("team_memberships.team_id = ?", params[:team_id])
+    else
+      []
+    end
+  end
+
 end

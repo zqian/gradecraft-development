@@ -183,7 +183,7 @@ GradeCraft::Application.routes.draw do
   get 'current_course' => 'current_courses#show'
   get  'class_badges' => 'students#class_badges'
 
-  get 'leaderboard' => 'info#leaderboard'
+  get 'leaderboard' => 'students#leaderboard'
   get 'multiplier_choices' => 'info#choices'
   get 'earned_badges' => 'info#class_badges'
   get 'grading_status' => 'info#grading_status'
@@ -208,7 +208,6 @@ GradeCraft::Application.routes.draw do
     get :class_badges
     get :dashboard
     get :grading_status
-    get :leaderboard
     get :timeline_events
     get :resubmissions
   end
