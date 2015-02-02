@@ -79,7 +79,7 @@ GradeCraft::Application.routes.draw do
         post :predict_score
         get :import
         post :email_import
-        post :username_import 
+        post :username_import
         post :name_import
         post :remove
       end
@@ -116,7 +116,7 @@ GradeCraft::Application.routes.draw do
       get 'all_grades'
       get 'export_scores'
     end
-    collection do 
+    collection do
       post :sort
     end
   end
@@ -169,7 +169,7 @@ GradeCraft::Application.routes.draw do
     collection do
       post 'copy' => 'courses#copy'
     end
-    member do 
+    member do
       get 'timeline_settings' => 'courses#timeline_settings'
       put 'timeline_settings' => 'courses#timeline_settings_update'
       get 'predictor_settings' => 'courses#predictor_settings', as: :predictor_settings
@@ -193,10 +193,10 @@ GradeCraft::Application.routes.draw do
   get 'research_gradebook' => 'info#research_gradebook'
 
   #8. Groups
-  resources :groups do 
+  resources :groups do
     collection do
       get :review
-    end  
+    end
     resources :proposals
   end
   resources :group_memberships
@@ -267,8 +267,8 @@ GradeCraft::Application.routes.draw do
     get :badges
     get :predictor
     get :course_progress
-    get :teams    
-    collection do      
+    get :teams
+    collection do
       get :leaderboard
       get :choices
       get :autocomplete_student_name
@@ -312,6 +312,7 @@ GradeCraft::Application.routes.draw do
   #14. Uploads
   resource :uploads do
     get :remove
+    get :remove_submission_file
   end
 
   #15. Events
