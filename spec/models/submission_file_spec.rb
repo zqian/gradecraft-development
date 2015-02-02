@@ -4,7 +4,7 @@ describe SubmissionFile do
 
   before do
     @submission = build(:submission)
-    @submission_file = @submission.submission_files.new(filename: "test", filepath: fixture_file('test_image.jpg', 'img/jpg'))
+    @submission_file = @submission.submission_files.new(filename: "test", file: fixture_file('test_image.jpg', 'img/jpg'))
   end
 
   subject { @submission_file }
@@ -12,6 +12,7 @@ describe SubmissionFile do
   it { should respond_to("filename")}
   it { should respond_to("submission_id")}
   it { should respond_to("filepath")}
+  it { should respond_to("file")}
 
   it { should be_valid }
 
@@ -41,25 +42,25 @@ describe SubmissionFile do
   end
 
   it "accepts text files as well as images" do
-    @submission_file.filepath = fixture_file('test_file.txt', 'txt')
+    @submission_file.file = fixture_file('test_file.txt', 'txt')
     @submission.save!
-    expect @submission_file.url.should =~ /\/uploads\/submission_file\/filepath\/#{@submission_file.id}\/\d+_test_file\.txt/
+    expect @submission_file.url.should =~ /.*\/uploads\/submission_file\/file\/#{@submission_file.id}\/\d+_test_file\.txt/
   end
 
   it "accepts multiple files" do
-    @submission.submission_files.new(filename: "test", filepath: fixture_file('test_file.txt', 'img/jpg'))
+    @submission.submission_files.new(filename: "test", file: fixture_file('test_file.txt', 'img/jpg'))
     @submission.save!
     @submission.submission_files.count.should equal 2
   end
 
   it "has an accessible url" do
     @submission.save!
-    expect @submission_file.url.should =~ /\/uploads\/submission_file\/filepath\/#{@submission_file.id}\/\d+_test_image\.jpg/
+    expect @submission_file.url.should =~ /.*\/uploads\/submission_file\/file\/#{@submission_file.id}\/\d+_test_image\.jpg/
   end
 
   it "removes spaces from file names on save" do
-    @submission_file.filepath = fixture_file('Spaces In Name.jpg', 'img/jpg')
+    @submission_file.file = fixture_file('Spaces In Name.jpg', 'img/jpg')
     @submission.save!
-    expect @submission_file.url.should =~ /\/uploads\/submission_file\/filepath\/#{@submission_file.id}\/\d+_spaces_in_name\.jpg/
+    expect @submission_file.url.should =~ /.*\/uploads\/submission_file\/file\/#{@submission_file.id}\/\d+_spaces_in_name\.jpg/
   end
 end
