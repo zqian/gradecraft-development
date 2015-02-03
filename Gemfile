@@ -70,6 +70,7 @@ group :development do
   gem 'rubystats'
   gem 'spring'
   gem 'byebug'
+  gem 'rake-hooks'
 end
 
 group :test do

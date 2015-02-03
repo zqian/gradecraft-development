@@ -286,16 +286,25 @@ class User < ActiveRecord::Base
   # this should be all earned badges that either:
   # 1) have no associated grade and have been awarded to the student, or...
   # 2) have an associated grade that has been marked graded_or_released? (indicated through the student_visible boolean)
-  def student_visible_badges(course)
-    @student_visible_badges ||= Badge
-      .where("badges.course_id = ?", course[:id])
-      .joins(:earned_badges)
+  def student_visible_earned_badges(course)
+    @student_visible_earned_badges ||= EarnedBadge
+      .includes(:badge)
+      .where(course: course)
+      .where(student_id: self[:id])
+      .where(student_visible: true)
+  end
+
+  # Unique badges associated with all of the earned badges for a given student/course combo
+  def unique_student_earned_badges(course)
+    @unique_student_earned_badges ||= Badge
+      .includes(:earned_badges)
+      .where(course: course)
       .where("earned_badges.student_id = ?", self[:id])
       .where("earned_badges.student_visible = ?", true)
   end
 
-  def earned_badge_ids(course)
-    student_visible_badges(course).collect(&:id)
+  def student_visible_earned_badge_ids(course)
+    student_visible_earned_badges(course).collect(&:id)
   end
 
   # this should be all badges that:
@@ -304,10 +313,9 @@ class User < ActiveRecord::Base
   # 3) the student has earned_badge for, but that earned_badge is set to student_visible 'false'
   def student_visible_unearned_badges(course)
     Badge
-      .where("badges.course_id = ?", course[:id])
-      .joins(:earned_badges)
-      .where("earned_badges.student_id = ?", self[:id])
-      .where("earned_badges.student_visible = ?", false)
+      .where(course_id: course[:id])
+      .where(visible: true)
+      .where("id not in (select distinct(badge_id) from earned_badges where earned_badges.student_id = ? and earned_badges.course_id = ?)", self[:id], course[:id])
   end
   
   # badges that have not been marked 'invisible' by the instructor, and for which
@@ -370,6 +378,9 @@ class User < ActiveRecord::Base
     badges.each do |badge|
       earned_badges.create badge: badge, course: badge.course
     end
+  end
+
+  def badges_earned
   end
 
   def point_total_for_course(course)
