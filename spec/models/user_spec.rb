@@ -18,11 +18,11 @@ describe User do
     expect(@badges_earned).to eq(@badges.sort_by(&:id))
   end
 
-  it "should know which badges a student has earned" focus: true do 
+  it "should know which badges a student has earned", focus: true do 
     @badges = create_list(:badge, 3, course: @course)
     @student.earn_badges(@badges)
-    @badges_earned = @student.earned_badges.collect {|e| e.badge }.sort_by(&:id)
-    expect(@student.student_visible_earned_badges(@course)).to eq(@earned_badges)
+    @badges_earned = @student.earned_badges.collect
+    expect(@student.student_visible_earned_badges(@course)).to eq(@badges)
   end
 
   it "should not return unearned badges as earned badges" do
