@@ -1,11 +1,11 @@
 .row
   .small-8.columns(style="padding:0")
-    %input(type="text" ng-model="tier.name" placeholder="Level Name" required ng-blur="tier.modify(tierForm)" ng-Maxlength=255 ng-change="tier.change()")
+    %input(type="text" ng-model="tier.name" placeholder="Level Name" required ng-blur="tier.$valid && tier.modify(tierForm)" ng-Maxlength=30 ng-change="tier.change()")
   .small-4.columns(style="padding:0")
     %input(type="number" ng-model="tier.points" placeholder="Points" min=0 ng-blur="tier.modify(tierForm)" ng-change="tier.change()" required)
 
 .row
-  %input(type="text" ng-model="tier.description" placeholder="Description" value="{{tier.description}}" ng-blur="tier.modify(tierForm)" ng-change="tier.change()")
+  %input(type="text" ng-model="tier.description" placeholder="Description" value="{{tier.description}}" ng-blur="tier.$valid && tier.modify(tierForm)" ng-change="tier.change()")
 
 - if @course_badge_count > 0
   .row.badge-row(ng-click="tier.editBadges()" ng-show="tier.isSaved()")
