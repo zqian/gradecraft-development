@@ -1,11 +1,11 @@
 .row.first_row
   .small-8.columns(style="padding:0")
-    %input(type="text" ng-model="metric.name" name="name" placeholder="Criterion Name" value="{{metric.name}}" required ng-blur="metric.$valid && metric.modify(metricForm)" ng-Maxlength=30 ng-change="metric.change()")
+    %input(type="text" ng-model="metric.name" name="name" placeholder="Criterion Name" value="{{metric.name}}" required ng-blur="metric.modify(metricForm)" ng-Maxlength=30 ng-change="metric.change()")
   .small-4.columns(style="padding:0")
     %input.points(type="number" ng-model="metric.max_points" name="maxPoints" placeholder="Max Points" value="{{metric.max_points}}" required integer min=0 ng-blur="metric.modify(metricForm)" ng-change="metric.change()")
 
 .row
-  %input(type="text" ng-model="metric.description" placeholder="Description" value="{{metric.description}}" ng-change="metric.change()" ng-blur="metric.$valid && metric.update()")
+  %input(type="text" ng-model="metric.description" placeholder="Description" value="{{metric.description}}" ng-change="metric.change()" ng-blur="metric.update()")
     -#
       %option(ng-repeat="(availableBadgeId, availableBadge) in metric.availableBadges" value="{{availableBadge.id}}") {{availableBadge.name}}
 
