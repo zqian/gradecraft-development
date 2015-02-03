@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe User do
-  before(:all) do
+  before(:each) do
     @course = create(:course)
     @student = create(:user)
     create(:course_membership, course: @course, user: @student)
@@ -11,18 +11,29 @@ describe User do
     @grade = create(:grade, assignment: @assignment, assignment_type: @assignment.assignment_type, course: @course, student: @student)
   end
 
-  before(:each) do
-    @earned_badges = create_list(:badge, 3, course: @course)
-    @student.earn_badges(@earned_badges)
-    @unearned_badges = create_list(:badge, 2, course: @course)
+  it "should be able to earn badges" do
+    @badges = create_list(:badge, 2, course: @course)
+    @student.earn_badges(@badges)
+    @badges_earned = @student.earned_badges.collect {|e| e.badge }.sort_by(&:id)
+    expect(@badges_earned).to eq(@badges.sort_by(&:id))
   end
 
-  it "should know which badges a student has earned" do
-    expect(@student.student_visible_badges(@course)).to eq(@earned_badges)
+  it "should know which badges a student has earned" focus: true do 
+    @badges = create_list(:badge, 3, course: @course)
+    @student.earn_badges(@badges)
+    @badges_earned = @student.earned_badges.collect {|e| e.badge }.sort_by(&:id)
+    expect(@student.student_visible_earned_badges(@course)).to eq(@earned_badges)
   end
 
   it "should not return unearned badges as earned badges" do
-    expect(@student.student_visible_badges(@course)).not_to include(@unearned_badges)
+    @unearned_badges = create_list(:badge, 2, course: @course)
+    expect(@student.student_visible_earned_badges(@course)).not_to include(@unearned_badges)
+  end
+
+  it "should know which badges are unique to those student earned badges" do
+  end
+
+  it "should not return badges associated with student-unearned badges" do
   end
 
   it "should know which badges a student has yet to earn" do
