@@ -649,12 +649,13 @@ ActiveRecord::Schema.define(version: 20150126222048) do
   end
 
   create_table "submission_files", force: true do |t|
-    t.string   "filename",      null: false
-    t.integer  "submission_id", null: false
+    t.string   "filename",                        null: false
+    t.integer  "submission_id",                   null: false
     t.text     "filepath"
     t.string   "file"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "file_processing", default: false, null: false
   end
 
   create_table "submissions", force: true do |t|

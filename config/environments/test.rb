@@ -20,7 +20,7 @@ end
 
 # List tested uploaders here to make sure they are auto-loaded
 # This assures files are created in spec/support/uploads and can be deleted after tests
-SubmissionUploader
+AttachmentUploader
 
 CarrierWave::Uploader::Base.descendants.each do |klass|
   next if klass.anonymous?
