@@ -6,6 +6,7 @@ module S3File
     return bucket.objects[CGI::unescape(filepath)].url_for(:read, :expires => 15 * 60).to_s #15 minutes
   end
 
+  # TODO: Verify that this is handled solely though the uploads controller
   def remove
     s3 = AWS::S3.new
     bucket = s3.buckets["gradecraft-#{Rails.env}"]
