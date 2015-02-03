@@ -188,6 +188,17 @@ class GradesController < ApplicationController
   end
 
   public
+
+  def remove
+    @grade = Grade.find(params[:grade_id])
+    @grade.raw_score = 0
+    @grade.status = nil
+    @grade.feedback = nil
+    @grade.instructor_modified = false
+    @grade.update_attributes(params[:grade])
+    redirect_to @grade.assignment, notice: "#{ @grade.student.name}'s #{@grade.assignment.name} grade was successfully deleted."
+  end
+
   def destroy
     redirect_to @assignment and return unless current_student.present?
     @grade = current_student_data.grade_for_assignment(@assignment)

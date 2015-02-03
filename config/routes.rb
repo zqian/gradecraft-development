@@ -81,6 +81,7 @@ GradeCraft::Application.routes.draw do
         post :email_import
         post :username_import 
         post :name_import
+        post :remove
       end
     end
     resources :submissions do
@@ -88,7 +89,6 @@ GradeCraft::Application.routes.draw do
     end
     resources :tasks
     resource :grade, only: [:show, :edit, :update, :destroy] do
-
       put :submit_rubric, on: :collection
       resources :earned_badges
     end

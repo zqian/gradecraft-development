@@ -28,6 +28,7 @@
       %ul.button-group.radius.right
         %li= link_to "See Grade", assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
         %li= link_to "Edit Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
+        %li= link_to "Delete", remove_grades_assignment_path(:grade_id => grade.id, :assignment_id => @assignment.id), :class => 'button', :method => :post
   - else
     .button-bar
       %ul.button-group.radius.right
