@@ -1,6 +1,6 @@
-%section.top-bar-section.authenticated_nav
-  %ul.right.hide-for-small
-    //%li.sr-only#my-courses-navigation Navigation for my courses
+%section.top-bar-section.authenticated_nav.hide-for-small
+  %ul.right
+    %li.sr-only#my-courses-navigation Navigation for my courses
     %li.has-dropdown.course_switch{:role => "navigation", "aria-labeledby" => "my-courses-navigation", "title" => "Navigation for my courses"}
       %a My Courses
       %ul.dropdown
@@ -8,6 +8,9 @@
     %li.divider            
     = render "layouts/navigation/class_info"
 
-    %li.sr-only#user-profile-navigation Navigation to user profile and log out
     %li.divider
-    = render "layouts/navigation/account_info"
+    %li.sr-only#user-profile-navigation Navigation to user profile and log out
+    %li.has-dropdown
+      %a= current_user.public_name
+      %ul.dropdown
+        = render "layouts/navigation/account_info"
