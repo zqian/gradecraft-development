@@ -7,7 +7,8 @@ class SubmissionFile < ActiveRecord::Base
 
   validates :filename, presence: true, length: { maximum: 50 }
 
-  mount_uploader :file, SubmissionUploader
+  mount_uploader :file, AttachmentUploader
+  process_in_background :file
 
   # Override S3File#url and S3File#remove
   # Legacy submission files were handled by S3 direct upload and we stored their

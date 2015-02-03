@@ -17,8 +17,11 @@
         %ul#uploaded_files
           - current_student.submission_for_assignment(@assignment).submission_files.each do |sf|
             %li
-              = link_to sf.filename, sf.url, :target => "_blank"
-              = link_to "(Remove)", remove_submission_file_uploads_path({ :model => "SubmissionFile", :assignment_id => @assignment.id, :upload_id => sf.id } )
+              - if sf.file_processing
+                = "#{sf.filename} (upload in progress...)"
+              - else
+                = link_to sf.filename, sf.url, :target => "_blank"
+                = link_to "(Remove)", remove_submission_file_uploads_path({ :model => "SubmissionFile", :assignment_id => @assignment.id, :upload_id => sf.id } )
 
   - if @assignment.accepts_attachments
     .small-12.panel

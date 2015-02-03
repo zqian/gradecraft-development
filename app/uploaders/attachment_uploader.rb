@@ -1,6 +1,7 @@
 # encoding: utf-8
 
-class SubmissionUploader < CarrierWave::Uploader::Base
+class AttachmentUploader < CarrierWave::Uploader::Base
+  include ::CarrierWave::Backgrounder::Delay
 
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick

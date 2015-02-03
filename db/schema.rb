@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150203160235) do
+ActiveRecord::Schema.define(version: 20150203185322) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -646,12 +646,13 @@ ActiveRecord::Schema.define(version: 20150203160235) do
   end
 
   create_table "submission_files", force: true do |t|
-    t.string   "filename",      null: false
-    t.integer  "submission_id", null: false
+    t.string   "filename",                        null: false
+    t.integer  "submission_id",                   null: false
     t.text     "filepath"
     t.string   "file"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "file_processing", default: false, null: false
   end
 
   create_table "submissions", force: true do |t|

@@ -34,7 +34,11 @@
         %ul
           - current_student.submission_for_assignment(@assignment).submission_files.each do |sf|
             %li
-              = link_to sf.filename, sf.url
+              - if sf.file_processing
+                = "#{sf.filename} (upload in progress...)"
+              - else
+                = link_to sf.filename, sf.url
+
 
     - if current_student.submission_for_assignment(@assignment).text_comment?
       %p

@@ -18,6 +18,7 @@ gem 's3_direct_upload'
 gem 'bootsy'
 gem 'canable'
 gem 'carrierwave'
+gem 'carrierwave_backgrounder'
 gem 'coffee-rails'
 gem "compass-rails", "~> 1.1.3"
 gem 'dalli'
