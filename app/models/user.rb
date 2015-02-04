@@ -451,9 +451,9 @@ class User < ActiveRecord::Base
   #Export Users and Final Scores for Course
   def self.csv_for_course(course, options = {})
     CSV.generate(options) do |csv|
-      csv << ["GradeCraft ID", "First Name", "Last Name", "Email", "Score", "Grade" ]
+      csv << ["Email", "First Name", "Last Name", "Score", "Grade", "Earned Badge #", "GradeCraft ID"  ]
       course.students.each do |student|
-        csv << [student.id, student.first_name, student.last_name, student.email, student.score_for_course(course)]
+        csv << [ student.email, student.first_name, student.last_name, student.score_for_course(course), student.grade_level_for_course(course), student.earned_badges.count, student.id  ]
       end
     end
   end
