@@ -20,7 +20,7 @@ describe User do
     end
   end
 
-  context "student_visible_earned_badges", focus: true do
+  context "student_visible_earned_badges" do
     it "should know which badges a student has earned" do
       @earned_badges = create_list(:earned_badge, 3, course: @course, student: @student)
       expect(@student.student_visible_earned_badges(@course)).to eq(@earned_badges)
@@ -47,7 +47,7 @@ describe User do
     end
 
     it "should know which badges are unique to those student earned badges", focus: true do
-      puts @student.unique_student_earned_badges(@course)
+      @student.unique_student_earned_badges(@course).each
       expect(@student.unique_student_earned_badges(@course)).to eq(@sorted_badges)
     end
 

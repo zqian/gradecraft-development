@@ -6,6 +6,12 @@ namespace :student do
       puts Rails.env
     end
 
+    task :all => [:environment,
+      :student_visible_earned_badges,
+      :unique_student_earned_badges,
+      :student_visible_unearned_badges
+    ]
+
     desc "Check which student visible earned badges are found"
     task :student_visible_earned_badges => [:environment, :setup] do
       earned_badges = @u.student_visible_earned_badges(@c)

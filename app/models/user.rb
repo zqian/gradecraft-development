@@ -298,7 +298,7 @@ class User < ActiveRecord::Base
   def unique_student_earned_badges(course)
     @unique_student_earned_badges ||= Badge
       .includes(:earned_badges)
-      .where(course: course)
+      .where("earned_badges.course_id = ?", course[:id])
       .where("earned_badges.student_id = ?", self[:id])
       .where("earned_badges.student_visible = ?", true)
       .references(:earned_badges)
