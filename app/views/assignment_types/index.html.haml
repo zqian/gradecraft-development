@@ -14,14 +14,14 @@
             New #{(term_for :assignment_type).titleize}
     %br
 
-  .small-12.columns
+  .columns{:style => "overflow: auto"}
     %table.responsive.nofeatures_dynatable{"aria-describedby" => "tableCaption"}
       %thead
         %tr
           %th{:scope => "col"} Name
           %th{:scope => "col"} Predictor Display
           %th{:scope => "col"} Max value
-          %th.button-column
+          %th{:style => "min-width: 300px"}
             %span.sr-only Actions
       %tbody
         - current_course.assignment_types.sorted.each do |assignment_type|

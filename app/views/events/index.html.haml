@@ -16,16 +16,17 @@
 
     %br
             
-  .small-12.columns
-    .events
-      %table.responsive.nofeatures_default_due_date_dynatable
+  .columns{:style => "overflow: auto"}
+    %table.responsive.nofeatures_default_due_date_dynatable
+      %thead
         %tr
           %th{:width => "20%"} Name
           %th Description
           %th Open date
           %th Close date
-          %th{:width => "20%"}
+          %th{:style => "min-width: 200px"}
 
+      %tbody
         - @events.each do |event|
           %tr
             %td= link_to event.name, event

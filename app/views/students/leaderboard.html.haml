@@ -12,7 +12,7 @@
       = form_tag leaderboard_path, :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
         = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, params[:team_id]), :prompt => "– Select #{current_course.team_term} –"
 
-  .columns
+  .columns{:style => "overflow: auto"}
     %table.responsive.nofeatures_default_rank_dynatable{"aria-describedby" => "tableCaption"}
       %thead
         %tr
@@ -26,9 +26,9 @@
               %th{:scope => "col"} Pseudonym
           %th{:scope => "col"} Grade
           - if current_course.has_badges?
-            %th{:scope => "col", "data-dynatable-sorts" => "badgeCount", :width => "15%"  } Badges Earned
+            %th{:scope => "col", "data-dynatable-sorts" => "badgeCount", :style => "min-width: 200px"  } Badges Earned
             %th{:style => "display: none"} Badge Count
-          %th{:scope => "col", "data-dynatable-no-sort" => "true", :width => "20%" }
+          %th{:scope => "col", "data-dynatable-no-sort" => "true", :style => "min-width: 200px" }
             %span.sr-only Actions
         %tbody
           - @students.each_with_index do |student, index|

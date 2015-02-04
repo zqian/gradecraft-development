@@ -7,7 +7,7 @@
   - @assignments.group_by(&:assignment_type).each do |assignment_type, assignments|
     %h4.subtitle= assignment_type.name 
 
-    .columns
+    .columns{:style => "overflow: auto"}
       %table.responsive.nofeatures_dynatable
         %caption.sr-only= assignment_type.name 
         %thead
@@ -28,7 +28,7 @@
                 The average of all scores above zero
             %th # Submissions
             %th # Grades 
-            %th
+            %th{:style => "min-width: 250px"}
         %tbody
           - assignments.each do |assignment|
             %tr
@@ -46,6 +46,6 @@
                 .button-bar
                   %ul.button-group.right.radius
                     %li= link_to "Quick Grade", mass_grade_assignment_path(assignment), :class => "button"
-                    %li.button
-                      %a{:href => export_grades_assignment_path(assignment, format: 'csv') }
+                    %li
+                      %a.button{:href => export_grades_assignment_path(assignment, format: 'csv') }
                         Download Grades

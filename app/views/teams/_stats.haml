@@ -13,7 +13,7 @@
       %th #{term_for :team_leader}
       - if current_user_is_staff? && current_course.has_badges?
         %th{ "data-dynatable-column" => "badges"} #{term_for :badges} Earned
-        %th.button-column
+        %th{:style => "min-width: 200px"}
   %tbody
     - @teams.order_by_high_score.each_with_index do |team, index|
       %tr

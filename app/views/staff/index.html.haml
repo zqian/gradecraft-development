@@ -4,24 +4,23 @@
 
   %h3.pagetitle= @title
 
-  .small-12.columns
+  .columns{:style => "overflow: auto"}
 
     %table.responsive.nofeatures_default_last_name_dynatable
       %thead
         %tr
-          %th
           %th First Name
           %th Last Name
           %th Role
           %th #{term_for :team}
-          %th.button-column
+          %th{:style => "min-width: 200px"}
       %tbody
         - @staff.each do |user|
           %tr
-            %td 
+            %td
               - if user.avatar_file_name.present?
                 %img.img-rounded{:src => user.avatar_file_name, :width => 30} 
-            %td= link_to user.first_name, staff_path(user)
+              = link_to user.first_name, staff_path(user)
             %td= link_to user.last_name, staff_path(user)
             %td= user.course_memberships.where(:course_id => current_course.id).first.role.capitalize
             %td

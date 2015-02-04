@@ -30,22 +30,22 @@
                     %i.fi-pencil
                     = link_to "Edit", edit_assignment_type_path(assignment_type)
 
-            .columns
+            .columns{:style => "overflow: auto"}
               %table.responsive{"aria-describedby" => "assignment-type-#{assignment_type.id}"}
                 %thead
                   %tr
-                    %th
+                    %th.draggable
                     %th{:scope => "col", :width => "20%"} Name
                     %th Due
                     %th{:style => "display: none"} Due Date
                     %th{:scope => "col", :width => "10%"}  Max Value
                     %th Rubric?
-                    %th
+                    %th{ :style => "min-width: 300px" }
                 %tbody.sort-assignments
                   - assignments = assignment_type.assignments.sorted
                   - assignments.each do |assignment|
                     %tr{:id => "assignment-#{assignment.id}"}
-                      %td
+                      %td.draggable
                         = image_tag "draggable_transparent.png", :width => 10, :style => "margin-top: -2px"
                       %td
                         = link_to assignment.name, assignment

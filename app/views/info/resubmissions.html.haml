@@ -2,7 +2,7 @@
   %h3.pagetitle= @title
 
   - @resubmissions.group_by(&:assignment).each do |assignment, resubmissions|
-    .small-12.columns
+    .columns{:style => "overflow: auto"}
       %h5.section-title
         = link_to assignment.name, assignment
 
@@ -19,7 +19,7 @@
             %th{:scope => "col", :width => "7%"} Current Score 
             %th{:scope => "col", :width => "7%"} Graded
             %th{:scope => "col", :width => "7%"} Resubmitted
-            %th{:scope => "col", :width => "15%"}
+            %th{:scope => "col", :style => "min-width: 200px" }
               %span.sr-only Actions
         %tbody
           - resubmissions.each do |re|

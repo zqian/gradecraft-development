@@ -13,7 +13,7 @@
             New #{(term_for :badge).titleize} 
     %br
 
-  .small-12.columns
+  .columns{:style => "overflow: auto"}
     
     //instructor badge index table
     %table.responsive
@@ -25,7 +25,7 @@
           - if current_course.valuable_badges?
             %th{"data-sort" => "int"} Value
           %th Awarded
-          %th{:width => "35%" }
+          %th{ :style => "min-width: 300px" }
       %tbody.sort-badges
         - current_course.badges.sorted.each do |badge|
           %tr{:id => "badge-#{badge.id}"}

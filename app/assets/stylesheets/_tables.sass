@@ -1,5 +1,5 @@
-#gradebook
-  overflow: auto !important
+.table-wrapper
+  clear: both
 
 /* Set the tables to be full width of the page*/
 table.responsive
@@ -7,7 +7,6 @@ table.responsive
   border-radius: $global-radius
   border-spacing: 0 !important
   clear: both
-  overflow-x: scroll !important
 
   thead
     tr:first-child th:first-child 
@@ -124,11 +123,6 @@ i.missing_grade
 #leaderboard .score
   font-weight: bold
 
-#leaderboard #place-1 .rank
-  background-color: $alert-color
-
-#leaderboard #place-2 .rank
-  background-color: #adadad
-
-#leaderboard #place-3 .rank
-  background-color: #8c7853
+@media (max-width: 757px)
+  th.draggable, td.draggable
+    display: none
