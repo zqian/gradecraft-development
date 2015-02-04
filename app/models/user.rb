@@ -301,6 +301,7 @@ class User < ActiveRecord::Base
       .where(course: course)
       .where("earned_badges.student_id = ?", self[:id])
       .where("earned_badges.student_visible = ?", true)
+      .references(:earned_badges)
   end
 
   def student_visible_earned_badge_ids(course)

@@ -70,7 +70,6 @@ group :development do
   gem 'rubystats'
   gem 'spring'
   gem 'byebug'
-  gem 'rake-hooks'
 end
 
 group :test do
@@ -81,4 +80,8 @@ group :test do
   gem 'selenium-webdriver'
   gem 'factory_girl_rails', '~> 4.5.0'
   gem 'rspec-rails', '~> 2.14.0'
+end
+
+group :tasks do
+  gem 'rake-hooks'
 end
