@@ -9,6 +9,11 @@ class AssignmentsController < ApplicationController
     @title = "#{term_for :assignments}"
     @assignment_types = current_course.assignment_types.sorted
     @assignments = current_course.assignments.includes(:rubric)
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data @assignments.csv_for_course(current_course) }
+    end
   end
 
   #Gives the instructor the chance to quickly check all assignment settings for the whole course
