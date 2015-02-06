@@ -1,28 +1,3 @@
-@mixin transition($property, $duration)
-  -webkit-transition: $property $duration
-  -moz-transition: $property $duration
-  -ms-transition: $property $duration
-  -o-transition: $property $duration
-  transition: $property $duration
-
-@mixin linear-gradient($fromColor, $toColor)
-  background-color: $toColor //* Fallback Color */
-  background-image: -webkit-gradient(linear, left top, left bottom, from($fromColor), to($toColor)) /* Saf4+, Chrome */
-  background-image: -webkit-linear-gradient(top, $fromColor, $toColor) // Chrome 10+, Saf5.1+, iOS 5+ */
-  background-image:    -moz-linear-gradient(top, $fromColor, $toColor) /* FF3.6 */
-  background-image:     -ms-linear-gradient(top, $fromColor, $toColor) /* IE10 */
-  background-image:      -o-linear-gradient(top, $fromColor, $toColor) /* Opera 11.10+ */
-  background-image:         linear-gradient(top, $fromColor, $toColor)
-  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#{$fromColor}', EndColorStr='#{$toColor}')
-
-$light_green: #EFFFED 
-$dark_green: #54BA3F
-$inactive_red: #DC9A9A
-$dark_red: #B40D0D
-$badass_blue: #269ECC
-$badge_blue: #009BD6
-$badge_green: #54B141
-$badge_green_border: #439A31
 
 #rubric-preview-headline
   font-size: 21px
