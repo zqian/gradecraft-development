@@ -39,7 +39,6 @@ $(document).ready(function() {
 	function unsplitTable(original) {
     original.closest(".table-wrapper").find(".pinned").remove();
     original.unwrap();
-    original.unwrap();
 	}
 
   function setCellHeights(original, copy) {

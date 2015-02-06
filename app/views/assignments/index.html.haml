@@ -34,7 +34,6 @@
               %table.responsive{"aria-describedby" => "assignment-type-#{assignment_type.id}"}
                 %thead
                   %tr
-                    %th.draggable
                     %th{:scope => "col", :width => "20%"} Name
                     %th Due
                     %th{:style => "display: none"} Due Date
@@ -45,9 +44,9 @@
                   - assignments = assignment_type.assignments.sorted
                   - assignments.each do |assignment|
                     %tr{:id => "assignment-#{assignment.id}"}
-                      %td.draggable
-                        = image_tag "draggable_transparent.png", :width => 10, :style => "margin-top: -2px"
                       %td
+                        .draggable
+                          = image_tag "draggable_transparent.png", :width => 10, :style => "margin-top: -2px"
                         = link_to assignment.name, assignment
                       %td= assignment.try(:due_at) || "Ongoing"
                       %td{:style => "display: none"}

@@ -1,6 +1,10 @@
 .table-wrapper
   clear: both
 
+th
+  text-transform: capitalize
+  padding: .5rem
+
 /* Set the tables to be full width of the page*/
 table.responsive
   width: 100%
@@ -28,11 +32,9 @@ table.responsive
     background-color: darken($secondary-color-2, 15%)
 
   /* Table Header styles */
-  th
-    text-transform: capitalize
-    font-weight: normal
-    padding: .5rem
 
+  th
+    font-weight: normal
     a
       color: #000
 
@@ -123,6 +125,6 @@ i.missing_grade
 #leaderboard .score
   font-weight: bold
 
-@media (max-width: 757px)
+@media (max-width: 867px)
   th.draggable, td.draggable
     display: none
