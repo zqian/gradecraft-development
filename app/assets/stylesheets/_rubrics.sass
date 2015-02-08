@@ -9,438 +9,292 @@
     display: block !important
     font-size: 26px
 
-#rubric-column-heading
-  width: 100%
-  clear: both
-  padding-bottom: 12px
-
-#rubric
-  h5.subtitle
+#points-overview-floating
+  float: right
+  text-align: right
+  border: 1px solid (#eee)
+  border-top: none
+  position: fixed
+  top: 45px
+  right: 28px
+  z-index: 4000
+  padding: 12px 24px
+  height: 80px
+  border-bottom-left-radius: $global-radius
+  border-bottom-right-radius: $global-radius
+  background: lighten($primary-color-3, 42%)
+  
+  h4#points-legend
+    font-size: 22px
     font-style: italic
-    color: #666
+    color: $primary-color-5
 
-  #rubric-title
-    float: left
+    .points-assigned
+      margin-right: -4px
+      color: $secondary-color-3
+      font-weight: bold
+    .points-missing
+      color: $alert-color
+    .points-satisfied
+      color: $secondary-color
+    .points-overage
+      color: $dark_red
 
-
-  .row-100
-    width: 100%
-    height: 20px
-    background: gray
-
-  #points-overview-floating
-    float: right
-    display: block
-    margin-right: 28px
-    text-align: right
-    border: 2px solid ($badass_blue - #111)
-    border-top: none
-
-    &.floating
-      position: fixed
-      top: 0
-      right: 0
-    
-    h4#points-legend
-      font-size: 22px
-      font-style: italic
-      color: #269ECC
-
-      .points-assigned
-        margin-right: -4px
-        color: #555
-        font-weight: bold
-
-      .points-missing
-        color: #F78D00
-      .points-satisfied
-        color: $dark_green
-      .points-overage
-        color: $dark_red
-
-    h4.notice
-      font-size: 14px
-      font-style: italic
-      font-weight: normal
-      color: #666
-
-  #points-overview-floating
-    position: fixed
-    top: 45px
-    z-index: 4000
-    right: 0
-    padding: 12px 24px
-    height: 80px
-    background: white
-    @include linear-gradient(#fff, #EFFCFF)
-
-
-
-  h4#points-assigned
-    font-weight: bold
-    font-size: 17px
-    color: $badass_blue
-  h4#points-remaining
+  h4.notice
     font-size: 14px
     font-style: italic
     font-weight: normal
     color: #666
+    text-transform: none
 
-  #metric-box
-    width: 100%
-    margin-top: 12px
+#metric-box
+  width: 98%
+  margin-top: 12px
 
-  .metric
+#rubric-column-heading
+  .metric-heading, .tier-heading
     background: #eee
-    border: 1px solid #ccc
-    padding: 32px 12px 22px 12px
-    float: left
-    margin-right: 12px
-    max-width: 240px
-
-    .first_row
-      z-index: 600
-
-    &.saved
-      background: #D3EBF5
-      background: #BBE0EE
-      @include linear-gradient(#BBE0EE, #A2D8ED)
-      border: 1px solid #92CCE2
-
-    &.animate-enter
-      opacity: 1.0
-      display: block !important
-      transition: opacity 1s
-
-    &.animate-enter.animate-enter-leave
-      opacity: 0
-
-    input.points
-      z-index: 500
-
-    input.ng-pristine.ng-invalid
-      border: 1px solid #6CC7EC
-      background: #F0FBFF
-
-    input.ng-valid-required
-      border: 1px solid #54BA3F
-      background: $light_green
-
-    input.ng-invalid
-      border: 1px solid #E84846
-      background: #FDD
-
-    select
-      color: #333
-      font-size: 13px
-      padding: -4px 2px
-
-      &[disabled]
-        color: #999
-
-      option.default, option.selected.default
-        color: #777
-
-    .messages
-      position: absolute
-      padding: 3px 6px
-      bottom: 0
-      right: 30px
-      font-style: italic
-      font-size: 11px
-      color: #555
-
-    &.ng-valid .messages
-      color: #3B819B
-
-    button
-      padding: 6px 12px
-      font-size: 12px
-      font-weight: bold
-
-      &.create
-        background: $dark_green
-      &.delete
-        padding: 3px 6px
-        background: $inactive_red
-        position: absolute
-        right: 0
-        top: 0
-        font-weight: bold
-        margin-bottom: 0px
-
-        &:hover
-          background: $dark_red
-
-  .metric-badge
-    background: $badge_blue
-    border: 1px solid $badge_blue - #222
-    font-size: 12px
-    color: white
-    padding: 2px 0 2px 4px
-    margin-bottom: 2px
-
-    button.delete
-      position: absolute
-      padding: 4px 7px
-      background: none
-      margin-top: -2px
-      top: 0
-      right: 0
-      z-index: 400
-
-  .tier
-    background: #eee
-    border: 1px solid #333
-    padding: 32px 12px 18px 12px
-    float: left
-    margin-right: 12px
-    margin-bottom: 12px
-    max-width: 240px
-
-    &.nocredit
-      width: 180px
-    
-    &.saved
-      border: 1px solid $dark_green
-      background: #B9E7AF
-      @include linear-gradient(#E2F6DE, #B9E7AF)
-      @include linear-gradient(#B9E7AF, #ACE3A0)
-
-    .badge-messages
-      background: none
-      float: left
-      padding-top: 2px
-      border: none
-      font-style: italic
-      font-size: 11px
-      color: #7FBB71
-      margin-left: 4px
-
-    .badge-row .edit-badges
-      display: none
-      float: right
-      font-style: italic
-      margin-right: 4px
-      font-size: 11px
-      color: #7FBB71
-
-    .badge-row
-      &:hover
-        background: #9CD78F
-        cursor: pointer
-        cursor: hand
-
-        .badge-messages
-          color: #4E903E
-
-        .edit-badges
-          display: block
-          background: #4E903E
-          color: #fff
-
-    button
-      padding: 4px 8px
-      font-size: 12px
-      font-weight: bold
-
-      &.create
-        background: green
-      &.delete
-        padding: 3px 6px
-        font-weight: bold
-        position: absolute
-        top: 0
-        right: 0
-        margin-bottom: 0
-        background: $inactive_red
-        z-index: 1
-
-        &:hover
-          background: $dark_red
-
-    select
-      color: #333
-      font-size: 13px
-      padding: -4px 2px
-
-      &[disabled]
-        color: #999
-
-      option.default, option.selected.default
-        color: #777
-
-    .messages
-      position: absolute
-      padding: 3px 6px
-      bottom: 0
-      right: 30px
-      font-style: italic
-      font-size: 11px
-      color: #555
-
-    &.ng-valid .messages
-      color: #368127
-
-    input.points
-      z-index: 1000
-
-    input.ng-valid-required
-      border: 1px solid $dark_green
-      background: $light_green
-
-      &:disabled
-        background: #EBF1EA
-        background: #EFEFEF
-        border: 1px solid #bbb
-        color: #777
-
-    input.ng-pristine.ng-invalid
-      border: 1px solid #6CC7EC
-      background: #F0FBFF
-
-    input.ng-invalid
-      border: 1px solid #E84846
-      background: #FDD
-
-  .tier-badge, .tier-badge-image
-    background: $badge_green
-    border: 1px solid $badge_green_border
-    font-size: 12px
-    color: white
-    padding: 2px 0 2px 4px
-    margin-bottom: 2px
-    position: relative
-
-    button.delete
-      position: absolute
-      padding: 4px 7px
-      background: none
-      z-index: 400
-      top: 0
-      right: 0
-      float: right
-
-  .tier-badge-image
-    float: left
-    background: none
-    border: none
-    padding: 0 4px
+    font-size: 19px
+    font-style: italic
+    color: #333
+    margin-left: .5rem
+    padding: 10px 16px
 
   .metric-heading
-    font-size: 19px
-    font-style: italic
-    color: #333
-    padding: 10px 16px
-    margin-left: 13px
-    width: 240px
-
-
-  .metric, .tier
-    &.heading
-      font-size: 19px
-      font-style: italic
-      color: #333
-      padding: 10px 16px
-      z-index: 100
-
-    &.ng-invalid.saved
-      border: 1px solid #FF8786
-      background: #FEB1B0
-
-    input[type=text], input[type=number]
-      font-size: 14px
-      margin-top: -8px
+    float: left
+    width: 20%
+    max-width: 250px
 
   .tier-heading
-    background: #eee
+    float: left
+    margin-left: .5rem
+    width: 75%
+
+#metric-box
+  .metric, .tier
     border: 1px solid #ccc
+    padding: 35px 18px 20px
+    margin-right: 12px
+    height: 225px
+    position: relative
+    float: left
+    width: 20%
+    max-width: 250px
+
+.tier-container
+  overflow-x: scroll
+  overflow-y: hidden
+  height: 225px 
+
+.metric
+  background: #eee
+
+  &.saved
+    background: $primary-color-5
+
+  input.points
+    z-index: 500
+
+  input.ng-pristine.ng-invalid
+    border: 1px solid #6CC7EC
+    background: #F0FBFF
+
+  input.ng-valid-required
+    border: 1px solid $primary-color-4
+    background: lighten($primary-color-4, 25%)
+
+  input.ng-invalid
+    border: 1px solid #E84846
+    background: #FDD
+
+  select
+    color: #333
+    font-size: 13px
+    padding: -4px 2px
+
+    &[disabled]
+      color: #999
+
+    option.default, option.selected.default
+      color: #777
+
+.messages
+  position: absolute
+  bottom: 6px
+  right: 20px
+  font-size: 11px
+  color: #333
+
+.metric.ng-valid .messages
+  color: #FFF
+
+button.delete
+  padding: 3px 6px
+  font-size: 11px
+  font-weight: bold
+  background: #999
+  position: absolute
+  right: 0
+  top: 0
+
+  &:hover
+    background: $dark_red
+ 
+.tier
+  background: #eee
+
+  &.nocredit
+    width: 180px
+  
+  &.saved
+    border: 1px solid #eee
+    background: lighten($primary-color-3, 35%)
+
+  .badge-messages
+    clear: right
+    padding: 4px
+    font-style: italic
+    font-size: 11px
+    color: #333
+
+  .badge-row
+    margin-top: -15px
+    overflow: hidden
+    height: 60px
+    &:hover
+      background: $secondary-color-3
+      cursor: pointer
+      cursor: hand
+
+      .badge-messages
+        color: #FFF
+
+      .edit-badges
+        display: block
+        background: #4E903E
+        color: #fff
+
+  select
+    color: #333
+    font-size: 13px
+    padding: -4px 2px
+
+    &[disabled]
+      color: #999
+
+    option.default, option.selected.default
+      color: #777
+
+  .ng-valid .messages
+    color: #368127
+
+  input.points
+    z-index: 1000
+
+  input.ng-valid-required
+    border: 1px solid $primary-color-3
+    background: lighten($primary-color-3, 60%)
+
+    &:disabled
+      background: #EBF1EA
+      background: #EFEFEF
+      border: 1px solid #bbb
+      color: #777
+
+  input.ng-pristine.ng-invalid
+    border: 1px solid #6CC7EC
+    background: #F0FBFF
+
+  input.ng-invalid
+    border: 1px solid #E84846
+    background: #FDD
+
+.tier-badge, .tier-badge-image
+  font-size: 12px
+  color: white
+  padding: 1px 0 0px 4px
+  margin-bottom: 2px
+  position: relative
+
+.modal-window 
+  .tier-badge
+    background: $primary-color-5
+    clear: both
+
+.tier-badge-image
+  float: left
+  background: none
+  border: none
+  padding: 0 4px
+
+.metric, .tier
+  &.heading
     font-size: 19px
     font-style: italic
     color: #333
     padding: 10px 16px
-    width: 75% 
-    float: left
+    z-index: 100
 
-  .add-tier
-    background: $dark_green
-    color: white
-    font-size: 16px
-    padding: 8px 12px
-    display:block
-    float: left
-    font-style: italic
+  &.ng-invalid.saved
+    border: 1px solid #FF8786
+    background: #FEB1B0
 
-  #new-rubric-metric
-    font-size: 16px
-    color: white
-    font-style: italic
-    background: $badass_blue
-    padding: 12px 21px
-    clear: both
-
-  #add-metric
+  input[type=text], input[type=number]
     font-size: 14px
-    background: none
-    color: $badass_blue
+    margin-top: -8px
+
+.add-tier, #new-rubric-metric
+  background: $primary-color-3
+  border-radius: $global-radius
+  font-size: 13px
+  padding: 6px 10px
+  font-style: italic
+
+  &:hover
+    background: darken($primary-color-5, 15%)
+
+#add-metric
+  font-size: 14px
+  color: $primary-color-5
+  font-style: italic
+  background: none
+  margin: 0 0 0 4px
+  padding: 0
+
+.return-link
+  color: $secondary-color
+  font-style: italic
+
+.assignment-return
+  padding-bottom: 8px
+
+#rubric .divider
+  margin: 0
+  clear: both
+  margin-bottom: 18px
+  border: 1px dashed #aaa
+  padding: 10px
+  cursor: move
+  border-left: 2px solid #999
+  width: 100% !important
+  height: 275px
+
+  .order-label
+    display: block
+    float: right
+    right: 0
+    background: $primary-color
+    padding: 6px 10px
+    color: white
     font-style: italic
-    background: #5BB4D6
-    background: none
-    margin: 0
-    margin-left: 4px
-    padding: 0
-
-  .return-link
-    font-size: 13px
-    background: #888
-    color: #5BB4D6
-    background: none
-    font-style: italic
-
-  .assignment-return
-    padding-bottom: 8px
-
-  .rubric-container
-
-  .divider
-    margin: 0
-    margin-bottom: 18px
-    border: 1px dashed #aaa
-    padding: 10px
-    cursor: move
-    border-left: 2px solid #999
-    width: 100% !important
-
-    .order-label
-      position: relative
-      display: block
-      float: right
-      right: 0
-      top: 0
-      background: $badass_blue
-      padding: 6px
-      color: white
-      font-style: italic
-      font-size: 14px
-      margin-top: -10px
-      margin-right: -10px
-
-.ng-modal-overlay 
-  /* A dark translucent div that covers the whole screen */
-  position:absolute
-  z-index:  9999
-  top: 0
-  left: 0
-  width: 100%
-  height: 100%
-  background-color: #000000
-  opacity: 0.8
+    margin-top: -10px
+    margin-right: -36px
 
 .modal-window
   /* A centered div above the overlay with a box shadow. */
   z-index: 10000
   position: absolute
-  width: 100%
+  width: 240px
   padding: 14px 26px 0 26px
 
   /* Center the dialog */
@@ -450,12 +304,8 @@
   -webkit-transform: translate(-50%, -50%)
   -moz-transform: translate(-50%, -50%)
 
-  background-color: $badass_blue
+  background-color: $primary-color-4
   box-shadow: 4px 4px 80px #000
-
-.ng-modal-dialog-content 
-  padding: 10px
-  text-align: left
 
 .update-badges
   width: 100%
@@ -469,21 +319,13 @@
   font-size: 11px
   text-align: center
   margin: 4px 0 7px 0
-  padding: 2px 4px
+  padding: 4px 4px
   cursor: pointer
-  font-family: 'arial', 'sans-serif'
-  background: $inactive_red
+  border-radius: $global-radius
+  background: $primary-color-2
 
   &:hover
-    background: $dark_red
-
-.modal-window.ng-hide-add
-  opacity: 1.0
-  display: block !important
-  transition: opacity 1s
-
-.modal-window.ng-hide-add-active
-  opacity: 0
+    background: darken($primary-color-2, 15%)
 
 .level-scored 
   background-color: #000
