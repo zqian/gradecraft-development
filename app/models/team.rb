@@ -4,11 +4,7 @@ class Team < ActiveRecord::Base
   validates_presence_of :course, :name
 
   #TODO: remove these callbacks 
-  #Saving the team score if a challenge grade has been added
-  #after_validation :cache_score
-  #TODO: not sure why the save is called again, after_validation :cache_score already doing save_students
-  #after_save :save_students
-
+  before_save :cache_score
 
   #Teams belong to a single course
   belongs_to :course
@@ -74,35 +70,19 @@ class Team < ActiveRecord::Base
     challenge_grades.sum('score') || 0
   end
 
-  def cache_score
-    if course.team_score_average?
-      self.score = average_points
-    else
-      self.score = challenge_grade_score
-    end
-  end
-
-  private
-
   #Teams rack up points in two ways, which is used is determined by the instructor in the course settings.
   #The first way is that the team's score is the average of its students' scores, and challenge grades are
   #added directly into students' scores
   #The second way is that the teams compete in team challenges that earn the team points. At the end of the
   #semester these usually get added back into students' scores - this has not yet been built into GC.
-  #def cache_score
-    #if course.team_score_average?
-      #save_students
-      #self.score = average_points
-    #else
-      #self.score = challenge_grade_score
-      #save_students
-    #end
-  #end
+  def cache_score
+    if course.team_challenges?
+      self.score = challenge_grade_score
+    else
+      self.score = average_points
+    end
+  end
 
-  #def save_students
-    #students.each do |student|
-      #student.cache_scores
-    #end
-  #end
+  private
 
 end

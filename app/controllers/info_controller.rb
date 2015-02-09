@@ -34,19 +34,34 @@ class InfoController < ApplicationController
   # Displaying all ungraded, graded but unreleased, and in progress assignment submissions in the system
   def grading_status
     @title = "Grading Status"
-    @ungraded_submissions = current_course.submissions.ungraded
-    @unreleased_grades = current_course.grades.not_released
-    @in_progress_grades = current_course.grades.in_progress
-    @count_unreleased = @unreleased_grades.not_released.count
-    @count_ungraded = @ungraded_submissions.count
-    @count_in_progress = @in_progress_grades.count
-    @badges = current_course.badges.includes(:tasks)
+    @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
+
+    if @team
+      @ungraded_submissions = current_course.submissions.ungraded
+      @unreleased_grades = current_course.grades.not_released
+      @in_progress_grades = current_course.grades.in_progress
+      @count_unreleased = @unreleased_grades.not_released.count
+      @count_ungraded = @ungraded_submissions.count
+      @count_in_progress = @in_progress_grades.count
+      @badges = current_course.badges.includes(:tasks)
+    else
+      @ungraded_submissions = current_course.submissions.ungraded
+      @unreleased_grades = current_course.grades.not_released
+      @in_progress_grades = current_course.grades.in_progress
+      @count_unreleased = @unreleased_grades.not_released.count
+      @count_ungraded = @ungraded_submissions.count
+      @count_in_progress = @in_progress_grades.count
+      @badges = current_course.badges.includes(:tasks)
+    end
+
   end
 
   # Displaying all resubmisisons
   def resubmissions
     @title = "Resubmitted Assignments"
     @resubmissions = current_course.submissions.resubmitted
+    @resubmission_count = @resubmissions.count
+    @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
   end
 
   #grade index export

@@ -8,20 +8,31 @@
         %th Points
         %th Team
     %tbody
-      - current_course.teams.order_by_high_score.each do |team|
+      - @teams.order_by_high_score.each do |team|
         %tr
           %td= team.name
-          %td.right.points= team.try(:score)
+          - if current_course.team_challenges?
+            %td.points= team.challenge_grade_score
+          - else
+            %td.points= team.average_points
 
 %table#leaderboard.responsive
+  %thead
+    %tr
+      %th.rank{:width => "20px"} Rank
+      %th Team
+      %th Score
   %tbody
-    - current_course.teams.order_by_high_score.each_with_index do |team, index|
+    - @teams.order_by_high_score.each_with_index do |team, index|
       %tr{class: ("complete" if current_student.present? && team == current_student.team_for_course(current_course)) }
-        %td.rank{:width => "20"}= index + 1
+        %td.rank{:width => "20px"}= index + 1
         %td.name
           - if current_user_is_student?
             = team.name
           - else 
             = link_to team.name, team_path(team)
         %td.score
-          = points team.try(:score)
+          - if current_course.team_challenges?
+            = team.challenge_grade_score
+          - else
+            = team.average_points

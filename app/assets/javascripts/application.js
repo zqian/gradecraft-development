@@ -14,7 +14,6 @@
 //= require bootsy
 //= require jquery.sparkline.min
 //= require s3_direct_upload
-//= require responsive-tables
 //= require underscore.min
 //= require backbone.min
 //= require bootstrap

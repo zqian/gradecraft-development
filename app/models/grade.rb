@@ -48,6 +48,8 @@ class Grade < ActiveRecord::Base
   scope :released, -> { joins(:assignment).where("status = 'Released' OR (status = 'Graded' AND NOT assignments.release_necessary)") }
   scope :graded_or_released, -> { where("status = 'Graded' OR status = 'Released'")}
   scope :not_released, -> { joins(:assignment).where("status = 'Graded' AND assignments.release_necessary")}
+  scope :instructor_modified, -> { where('instructor_modified = ?', true) }
+
 
   validates_numericality_of :raw_score, integer_only: true
 

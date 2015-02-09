@@ -320,12 +320,12 @@ class Assignment < ActiveRecord::Base
 
   #Counting how many grades there are for an assignment
   def grade_count
-    grades.released.count
+    grades.graded_or_released.count
   end
 
   #Counting how many non-zero grades there are for an assignment
   def positive_grade_count
-    grades.graded.where("score > 0").count
+    grades.graded_or_released.where("score > 0").count
   end
 
   #Calculating attendance rate, which tallies number of people who have positive grades for attendance divided by the total number of students in the class
