@@ -110,8 +110,16 @@ class StudentsController < ApplicationController
     end
   end
 
+  # TODO
   def badges
     @title = "#{term_for :badges}"
+
+    # TODO: need to refactor this to make one call for earned badges, and then to pull the
+    # badges out of earned badges into a separate hash without making a second call
+    #
+    @earned_badges = current_student.student_visible_earned_badges(current_course)
+    @badges = current_student.unique_student_earned_badges(current_course)
+
   end
 
   # Display the grade predictor

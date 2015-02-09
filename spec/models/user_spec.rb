@@ -71,18 +71,18 @@ describe User do
     end
   end
 
-  context "student_invisible_earned_badges", focus: true do
+  context "student_invisible_badges", focus: true do
     it "should return invisible badges for which the student has earned a badge" do
       @invisible_badges = create_list(:badge, 2, course: @course, visible: false)
       @student.earn_badges(@invisible_badges)
-      @badges_earned_by_id = @student.student_invisible_earned_badges(@course).sort_by(&:id)
+      @badges_earned_by_id = @student.student_invisible_badges(@course).sort_by(&:id)
       expect(@badges_earned_by_id).to eq(@invisible_badges.sort_by(&:id))
     end
 
     it "should not return visible badges for which the student has earned a badge" do
       @visible_badges = create_list(:badge, 2, course: @course, visible: true)
       @student.earn_badges(@visible_badges)
-      @badges_earned_by_id = @student.student_invisible_earned_badges(@course).sort_by(&:id)
+      @badges_earned_by_id = @student.student_invisible_badges(@course).sort_by(&:id)
       expect(@badges_earned_by_id).not_to eq(@visible_badges.sort_by(&:id))
     end
   end
