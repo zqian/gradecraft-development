@@ -35,34 +35,55 @@ describe User do
       @unearned_badges = create_list(:badge, 2, course: @course)
       @visible_earned_badges = create_list(:earned_badge, 3, course: @course, student: @student)
       @unique_earned_badges = @student.student_visible_earned_badges(@course)
-      expect(@unique_earned_badges).not_to include(@unearned_badges)
+      expect(@unique_earned_badges).not_to include(*@unearned_badges)
     end
   end
 
   context "unique_student_earned_badges" do
     before(:each) do
       @earned_badges = create_list(:earned_badge, 3, course: @course, student: @student)
-      @sorted_badges = @student.earned_badges.collect(&:badge).sort_by(&:id)
+      @sorted_badges = @student.earned_badges.collect(&:badge).sort_by(&:id).flatten
       @badges_unearned = create_list(:badge, 2, course: @course)
     end
 
-    it "should know which badges are unique to those student earned badges", focus: true do
+    it "should know which badges are unique to those student earned badges" do
       @student.unique_student_earned_badges(@course).each
       expect(@student.unique_student_earned_badges(@course)).to eq(@sorted_badges)
     end
 
     it "should not return badges associated with student-unearned badges" do
-      expect(@student.unique_student_earned_badges(@course)).not_to include(@badges_unearned)
+      expect(@student.unique_student_earned_badges(@course)).not_to include(*@badges_unearned)
     end
   end
 
   context "student_visible_unearned_badges" do
+    before(:each) do
+      @badges = create_list(:badge, 2, course: @course, visible: true)
+    end
+
     it "should know which badges a student has yet to earn" do
-      expect(@student.student_visible_unearned_badges(@course)).to eq(@unearned_badges)
+      expect(@student.student_visible_unearned_badges(@course)).to eq(@badges.flatten)
     end
 
     it "should not return earned badges as unearned ones" do
-      expect(@student.student_visible_unearned_badges(@course)).not_to include(@earned_badges)
+      @earned_badges = create_list(:earned_badge, 2, course: @course, student: @student)
+      expect(@student.student_visible_unearned_badges(@course)).not_to include(*@earned_badges)
+    end
+  end
+
+  context "student_invisible_earned_badges", focus: true do
+    it "should return invisible badges for which the student has earned a badge" do
+      @invisible_badges = create_list(:badge, 2, course: @course, visible: false)
+      @student.earn_badges(@invisible_badges)
+      @badges_earned_by_id = @student.student_invisible_earned_badges(@course).sort_by(&:id)
+      expect(@badges_earned_by_id).to eq(@invisible_badges.sort_by(&:id))
+    end
+
+    it "should not return visible badges for which the student has earned a badge" do
+      @visible_badges = create_list(:badge, 2, course: @course, visible: true)
+      @student.earn_badges(@visible_badges)
+      @badges_earned_by_id = @student.student_invisible_earned_badges(@course).sort_by(&:id)
+      expect(@badges_earned_by_id).not_to eq(@visible_badges.sort_by(&:id))
     end
   end
 

@@ -319,14 +319,13 @@ class User < ActiveRecord::Base
       .where("id not in (select distinct(badge_id) from earned_badges where earned_badges.student_id = ? and earned_badges.course_id = ?)", self[:id], course[:id])
   end
   
-  # badges that have not been marked 'invisible' by the instructor, and for which
+  # badges that have not been marked 'visible' by the instructor, and for which
   # the student has earned a badge, but the badge has yet to be marked 'student_visible'
-  def student_invisible_earned_badges
+  def student_invisible_earned_badges(course)
     Badge
       .where("badges.course_id = ?", course[:id])
-      .joins(:earned_badges)
-      .where("earned_badges.student_id = ?", self[:id])
-      .where("earned_badges.student_visible = ?", false)
+      .where(visible: false)
+      .where("id not in (select distinct(badge_id) from earned_badges where earned_badges.student_id = ? and earned_badges.course_id = ?)", self[:id], course[:id])
   end
 
   # badges that have not been marked 'invisible' but the instructor, but which
