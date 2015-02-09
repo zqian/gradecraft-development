@@ -23,6 +23,10 @@ module ApplicationHelper
     classes.join ' '
   end
 
+  def goat_url
+    "http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/4/11/1397210130748/Spring-Lamb.-Image-shot-2-011.jpg"
+  end
+
   # Return a title on a per-page basis.
   def title
     base_title = ""

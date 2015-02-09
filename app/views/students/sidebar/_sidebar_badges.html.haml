@@ -2,22 +2,18 @@
   %h3= term_for :badges
   %hr
   %ul.small-block-grid-6.medium-block-grid-4
-    - goat_url = "http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/4/11/1397210130748/Spring-Lamb.-Image-shot-2-011.jpg"
     - current_student.unique_student_earned_badges(current_course).each do |badge|
       %li
         - if ! badge.point_total.present?
           %span.has-tip{:title => "#{badge.name}", :data => {'tooltip' => true} }
-            -# %img{:src => badge.icon, :alt => "You've earned the #{badge.name} badge", :class => "earned"}
-            %img{:src => goat_url, :alt => "You've earned the #{badge.name} badge", :class => "earned"}
+            %img{:src => badge.icon, :alt => "You've earned the #{badge.name} badge", :class => "earned"}
         
         - else
           %span.has-tip.tip-top{:title => "#{badge.name}, #{badge.point_total} points", :data => {'tooltip' => true} }
-            -# %img{:src => badge.icon, :alt => "You've earned the #{badge.name} badge", :class => "earned"}
-            %img{:src => goat_url, :alt => "You've earned the #{badge.name} badge", :class => "earned"}
+            %img{:src => badge.icon, :alt => "You've earned the #{badge.name} badge", :class => "earned"}
     - current_student.student_visible_unearned_badges(current_course).each do |badge|
       %li
         %span.has-tip{:title => "#{badge.name}", :data => {'tooltip' => true} }
-          -# %img{:src => badge.try(:icon), :alt => "#{badge.try(:name)}", :class => "unearned"}
-          %img{:src => goat_url, :alt => "#{badge.try(:name)}", :class => "unearned"}
+          %img{:src => badge.try(:icon), :alt => "#{badge.try(:name)}", :class => "unearned"}
     .clearfix
     .italic= "#{(term_for :badges).titleize} you've earned will shine brightly!"
