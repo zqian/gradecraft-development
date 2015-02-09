@@ -1,11 +1,15 @@
 
-.splash
+.splash, #rubric-grader-splash
   display: none
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak
   display: none !important
 
   &.splash
+    display: block !important
+    font-size: 26px
+
+  &#rubric-grader-splash
     display: block !important
     font-size: 26px
 
@@ -24,28 +28,28 @@
   border-bottom-right-radius: $global-radius
   background: lighten($primary-color-3, 42%)
   
-  h4#points-legend
-    font-size: 22px
-    font-style: italic
-    color: $primary-color-5
+h4#points-legend, h4.points-legend
+  font-size: 22px
+  font-style: italic
+  color: $primary-color-5
 
-    .points-assigned
-      margin-right: -4px
-      color: $secondary-color-3
-      font-weight: bold
-    .points-missing
-      color: $alert-color
-    .points-satisfied
-      color: $secondary-color
-    .points-overage
-      color: $dark_red
-
-  h4.notice
-    font-size: 14px
-    font-style: italic
-    font-weight: normal
+  .points-assigned
+    margin-right: -4px
     color: #666
-    text-transform: none
+    font-weight: bold
+  .points-missing
+    color: $alert-color
+  .points-satisfied
+    color: $secondary-color-3
+  .points-overage
+    color: $dark_red
+
+h4.notice
+  font-size: 14px
+  font-style: italic
+  font-weight: normal
+  color: #666
+  text-transform: none
 
 #metric-box
   width: 98%
@@ -70,7 +74,7 @@
     margin-left: .5rem
     width: 75%
 
-#metric-box
+#metric-box 
   .metric, .tier
     border: 1px solid #ccc
     padding: 35px 18px 20px
@@ -79,12 +83,70 @@
     position: relative
     float: left
     width: 20%
+    min-width: 180px
     max-width: 250px
 
 .tier-container
-  overflow-x: scroll
-  overflow-y: hidden
   height: 225px 
+  width: 78%
+  overflow-x: scroll
+
+.tier-wrapper 
+  width: 7000px
+  height: 225px 
+  overflow: hidden
+
+#grade-rubric-table 
+  .metric.heading, .tier.heading
+    background: #CCC
+
+  .metric
+    color: #FFF
+    background: $primary-color-5
+
+  .tier.heading:hover
+    background: #eee
+
+  td.tier
+    min-width: 120px
+    max-width: 20%
+    display: block
+
+    &:hover, &.selected
+      background-color: $primary-color-2
+      color: #FFF
+
+  .tier-name
+    font-weight: bold
+    font-size: 1.0rem
+
+  .tier-points
+    font-style: italic
+    clear: left
+
+  input[type=radio]
+    display: none
+
+  .row.badge-row
+    position: relative
+    margin-top: 15px
+    margin-left: -5px
+    bottom: 0
+
+    img 
+      height: 30px
+      width: 30px
+    &:hover
+      background: none
+
+  textarea
+    height: 100%
+    color: #333
+    min-width: 240px
+    min-height: 90px
+    padding-bottom: 0
+    margin-bottom: 0
+    font-size: 13px
 
 .metric
   background: #eee
@@ -243,7 +305,7 @@ button.delete
     font-size: 14px
     margin-top: -8px
 
-.add-tier, #new-rubric-metric
+.add-tier, #new-rubric-metric, #submit-grade
   background: $primary-color-3
   border-radius: $global-radius
   font-size: 13px
@@ -252,6 +314,12 @@ button.delete
 
   &:hover
     background: darken($primary-color-5, 15%)
+
+.add-tier
+  position: relative
+  float: right
+  bottom: -10px
+  right: 0
 
 #add-metric
   font-size: 14px
@@ -277,7 +345,7 @@ button.delete
   cursor: move
   border-left: 2px solid #999
   width: 100% !important
-  height: 275px
+  height: 285px
 
   .order-label
     display: block
@@ -339,3 +407,5 @@ button.delete
 
 .tier.comments
   background-color: #6ac777
+/* breakpoint */
+
