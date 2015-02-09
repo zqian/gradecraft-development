@@ -316,21 +316,16 @@ class User < ActiveRecord::Base
     Badge
       .where(course_id: course[:id])
       .where(visible: true)
-      .where("id not in (select distinct(badge_id) from earned_badges where earned_badges.student_id = ? and earned_badges.course_id = ?)", self[:id], course[:id])
+      .where("id not in (select distinct(badge_id) from earned_badges where earned_badges.student_id = ? and earned_badges.course_id = ? and earned_badges.student_visible = ?)", self[:id], course[:id], true)
   end
   
   # badges that have not been marked 'visible' by the instructor, and for which
   # the student has earned a badge, but the badge has yet to be marked 'student_visible'
   def student_invisible_earned_badges(course)
     Badge
-      .where("badges.course_id = ?", course[:id])
-      .where(visible: false)
-      .where("id not in (select distinct(badge_id) from earned_badges where earned_badges.student_id = ? and earned_badges.course_id = ?)", self[:id], course[:id])
-  end
-
-  # badges that have not been marked 'invisible' but the instructor, but which
-  # the student has yet to earn
-  def visible_unearned_badges
+      .where(visible: true)
+      .where(course_id: course[:id])
+      .where("id not in (select distinct(badge_id) from earned_badges where earned_badges.student_id = ? and earned_badges.course_id = ? and earned_badges.student_visible = ?)", self[:id], course[:id], true)
   end
 
   #recalculating the student's score for the course
