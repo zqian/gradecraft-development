@@ -5,14 +5,17 @@ class AssignmentsController < ApplicationController
   respond_to :html, :json
 
   def index
-    redirect_to syllabus_path if current_user_is_student?
-    @title = "#{term_for :assignments}"
-    @assignment_types = current_course.assignment_types.sorted
-    @assignments = current_course.assignments.includes(:rubric)
+    if current_user_is_student?
+      redirect_to syllabus_path 
+    else
+      @title = "#{term_for :assignments}"
+      @assignment_types = current_course.assignment_types.sorted
+      @assignments = current_course.assignments.includes(:rubric)
 
-    respond_to do |format|
-      format.html
-      format.csv { send_data @assignments.csv_for_course(current_course) }
+      respond_to do |format|
+        format.html
+        format.csv { send_data @assignments.csv_for_course(current_course) }
+      end
     end
   end
 
