@@ -3,60 +3,31 @@
 class AttachmentUploader < CarrierWave::Uploader::Base
   include ::CarrierWave::Backgrounder::Delay
 
-  # Include RMagick or MiniMagick support:
-  # include CarrierWave::RMagick
-  # include CarrierWave::MiniMagick
-
-  # Choose what kind of storage to use for this uploader:
-  #storage :file
-  # storage :fog
 
   # Override the directory where uploaded files will be stored.
-  # This is a sensible default for uploaders that are meant to be mounted:
+  # submission_file/course_name_id/assignment_name_id/student_name/file_name.ext
   def store_dir
-    "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    course = "#{model.submission.course.courseno}-#{model.submission.course.id}"
+    assignment = "#{model.submission.assignment.name.gsub(/\s/, "_").downcase[0..20]}-#{model.submission.assignment.id}"
+    student = "#{model.submission.student.last_name}-#{model.submission.student.first_name}"
+    "uploads/#{course}/#{assignment}/#{student}"
   end
 
-  # Provide a default URL as a default if there hasn't been a file uploaded:
-  # def default_url
-  #   # For Rails 3.1+ asset pipeline compatibility:
-  #   # ActionController::Base.helpers.asset_path("fallback/" + [version_name, "default.png"].compact.join('_'))
-  #
-  #   "/images/fallback/" + [version_name, "default.png"].compact.join('_')
-  # end
-
-  # Process files as they are uploaded:
-  # process :scale => [200, 300]
-  #
-  # def scale(width, height)
-  #   # do something
-  # end
-
-  # Create different versions of your uploaded files:
-  # version :thumb do
-  #   process :resize_to_fit => [50, 50]
-  # end
-
-  # Add a white list of extensions which are allowed to be uploaded.
-  # For images you might use something like this:
-  # def extension_white_list
-  #   %w(jpg jpeg gif png)
-  # end
-
   # Override the filename of the uploaded files:
-  # Avoid using model.id or version_name here, see uploader/store.rb for details.
   def filename
-    "#{tokenized_name}.#{file.extension}" if original_filename.present?
+    if original_filename.present?
+      if model && model.read_attribute(mounted_as).present?
+        model.read_attribute(mounted_as)
+      else
+        "#{tokenized_name}.#{file.extension}"
+      end
+    end
   end
 
   private
 
-  def sanitized_name
-    file.basename.gsub(/\s/, "_").downcase
-  end
-
   def tokenized_name
     var = :"@#{mounted_as}_secure_token"
-    model.instance_variable_get(var) or model.instance_variable_set(var, "#{Time.now.to_i}_#{sanitized_name}")
+    model.instance_variable_get(var) || model.instance_variable_set(var, "#{Time.now.to_i}_#{file.basename.gsub(/\s/, "_").downcase}")
   end
 end
