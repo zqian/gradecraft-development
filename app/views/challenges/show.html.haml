@@ -34,7 +34,7 @@
             = link_to "(Remove)", remove_uploads_path({ :model => "ChallengeFile", :upload_id => cf.id })
 
     = form_tag edit_status_challenge_challenge_grades_path @challenge do
-      %table.responsive.nofeatures_default_desc_score_dynatable
+      %table.responsive.nofeatures_dynatable
         %thead
           %tr
             %th= current_course.team_term
@@ -50,7 +50,7 @@
                 %button.button.select-all.tiny= "Check All"
                 %button.button.select-none.tiny= "Uncheck"
         %tbody
-          - @teams.each do |team|
+          - @teams.alpha.each do |team|
             - challenge_grade = @challenge.challenge_grades.find_by team: team
             %tr
               %td
@@ -60,7 +60,7 @@
                   = team.name
               %td
                 - if challenge_grade
-                  = points challenge_grade.score
+                  = challenge_grade.score
               - if @challenge.has_levels?
                 %td
                   - if challenge_grade

@@ -16,7 +16,7 @@
               New #{(term_for :challenge).titleize}
       %br
 
-  .small-12.columns
+  .columns{:style => "overflow: auto"}
   
     %table.responsive.nofeatures_default_due_date_dynatable
       %thead
@@ -29,7 +29,7 @@
           %th Visible
           %th Submissions?
           %th Release necessary
-          %th
+          %th{ :style => "min-width: 200px" }
 
       %tbody
         - @challenges.each do |challenge|

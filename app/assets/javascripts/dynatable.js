@@ -172,7 +172,7 @@ $('table.nofeatures_dynatable').dynatable({
         paginate: false,
         search: false,
         recordCount: false, 
-        sort: true
+        sort: false
       },
   readers: {
       dueDate: function(el, record) {

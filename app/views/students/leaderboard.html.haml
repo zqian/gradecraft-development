@@ -12,8 +12,8 @@
       = form_tag leaderboard_path, :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
         = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, params[:team_id]), :prompt => "– Select #{current_course.team_term} –"
 
-  .columns
-    %table.responsive.nofeatures_default_rank_dynatable{"aria-describedby" => "tableCaption"}
+  .columns{:style => "overflow: auto"}
+    %table.responsive
       %thead
         %tr
           %th{:scope => "col", "data-dynatable-sorts" => "rank"} Rank
@@ -22,36 +22,40 @@
           %th{:scope => "col", "data-dynatable-sorts" => "score"} Score
           - if current_course.has_teams?
             %th{:scope => "col"} #{current_course.team_term}
+            - if current_course.in_team_leaderboard?
+              %th{:scope => "col"} Pseudonym
           %th{:scope => "col"} Grade
           - if current_course.has_badges?
-            %th{:scope => "col", "data-dynatable-sorts" => "badgeCount", :width => "15%"  } Badges Earned
+            %th{:scope => "col", "data-dynatable-sorts" => "badgeCount", :style => "min-width: 200px"  } Badges Earned
             %th{:style => "display: none"} Badge Count
-          %th{:scope => "col", "data-dynatable-no-sort" => "true", :width => "20%" }
+          %th{:scope => "col", "data-dynatable-no-sort" => "true", :style => "min-width: 200px" }
             %span.sr-only Actions
         %tbody
           - @students.each_with_index do |student, index|
             %tr
-              %td= index + 1
-              %td= link_to student.first_name, student_path(student)
-              %td= link_to student.last_name, student_path(student)
-              %td= points student.cached_score
+              %td{"data-title" => "Rank"}= index + 1
+              %td{"data-title" => "First Name"}= link_to student.first_name, student_path(student)
+              %td{"data-title" => "Last Name"}= link_to student.last_name, student_path(student)
+              %td{"data-title" => "Score"}= points student.cached_score
               - if current_course.has_teams?
                 - student_team = @teams_by_student_id[student.id]
-                %td#team_for_course
+                %td#team_for_course{"data-title" => "Team"}
                   = link_to student_team.try(:name), student_team if student_team
-              %td
+                - if current_course.in_team_leaderboard?
+                  %td{"data-title" => "Pseudonym"}= student.display_name
+              %td{"data-title" => "Grade"}
                 - unless @student_grade_schemes_by_id[student.id].nil?
                   = "#{@student_grade_schemes_by_id[student.id][:letter]}"
                   = "#{@student_grade_schemes_by_id[student.id][:level]}"
               - if current_course.has_badges?
-                %td#earned_badges
+                %td#earned_badges{"data-title" => "Badges"}
                   - if @earned_badges_by_student_id[student.id]
                     - @earned_badges_by_student_id[student.id].each do |badge|
                       %img.has-tip{:src => badge.icon, :alt => badge.name, :width => "20", :title => badge.name, :data => {'tooltip' => true}}
                 %td{:style => "display: none"}
                   - if @earned_badges_by_student_id[student.id]
                     = @earned_badges_by_student_id[student.id].size
-              %td
+              %td{"data-title" => "Options"}
                 .button-bar
                   %ul.button-group.radius.right
                     %li= link_to "Dashboard", student_path(student), :class => "button"

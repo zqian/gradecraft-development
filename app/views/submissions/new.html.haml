@@ -7,7 +7,5 @@
       = "#{@title} (#{points @assignment.point_total} points)"
 
   .small-12.columns
-    %br
-
     - if @assignment.accepts_submissions?
       = render 'form'

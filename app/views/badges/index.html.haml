@@ -13,26 +13,24 @@
             New #{(term_for :badge).titleize} 
     %br
 
-  .small-12.columns
+  .columns{:style => "overflow: auto"}
     
     //instructor badge index table
     %table.responsive
       %thead
         %tr
-          %th
           %th.center{:width => "15%" } Icon
           %th{:width => "25%" } Name
           - if current_course.valuable_badges?
             %th{"data-sort" => "int"} Value
           %th Awarded
-          %th{:width => "35%" }
+          %th{ :style => "min-width: 300px" }
       %tbody.sort-badges
         - current_course.badges.sorted.each do |badge|
           %tr{:id => "badge-#{badge.id}"}
-            %td
-              = image_tag "draggable_transparent.png", :width => 10, :style => "margin-top: -6px"
-            %td.center
-              %img{ :src => badge.icon, :alt => badge.name, :width => "100" }
+            %td.center 
+              = image_tag "draggable_transparent.png", :width => "10%", :style => "margin-top: -6px", :class => "draggable"
+              %img.badge-icon{ :src => badge.icon, :alt => badge.name }
             %td
               .subtitle= link_to badge.name, badge_path(badge)
               = raw badge.description

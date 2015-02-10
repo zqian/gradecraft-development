@@ -3,15 +3,10 @@
  *= require jquery-ui.min
  *= require jquery.circliful
  *= require animate.min
- *= require jquery.dynatable
  *= require bootstrap-datetimepicker
  *= require select2
  *= require foundation-icons
  *= require bootstrap
- *= require rubrics
- *= require grades
- *= require assignments
- *= require responsive-tables
  *= require dynatable
  
 /* Branding colors */
@@ -34,7 +29,22 @@ $alert-color-5: #FFFD73;
 $light-grey: #CCC;
 $medium-grey: #666;
 $dark-grey: #444444;
+$light_green: #EFFFED;
+$dark_green: #54BA3F;
+$inactive_red: #CC0000;
+$dark_red: #B40D0D;
+$badass_blue: #269ECC;
+$badge_blue: #009BD6;
+$badge_green: #54B141;
+$badge_green_border: #439A31;
 
+@mixin transition($property, $duration) {
+  -webkit-transition: $property $duration;
+  -moz-transition: $property $duration;
+  -ms-transition: $property $duration;
+  -o-transition: $property $duration;
+  transition: $property $duration;
+}
 @mixin linear-gradient($fromColor, $toColor) {
   background-color: $toColor; //* Fallback Color */
   background-image: -webkit-gradient(linear, left top, left bottom, from($fromColor), to($toColor)); /* Saf4+, Chrome */
@@ -63,4 +73,5 @@ $dark-grey: #444444;
 @import 'buttons_and_icons';
 @import 'typography';
 @import 'homepage';
+@import 'rubrics';
 @import 'collapse';

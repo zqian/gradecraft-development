@@ -164,9 +164,20 @@ class User < ActiveRecord::Base
     course_memberships.count > 1
   end
 
+  def self.auditing_students_in_course(course_id)
+    User
+      .select("users.id, users.first_name, users.last_name, users.email, users.display_name, course_memberships.score as cached_score")
+      .joins("INNER JOIN course_memberships ON course_memberships.user_id = users.id")
+      .where("course_memberships.course_id = ?", course_id)
+      .where("course_memberships.auditing = ?", true)
+      .where("course_memberships.role = ?", "student")
+      .includes(:course_memberships)
+      .group("users.id, course_memberships.score")
+  end
+
   def self.graded_students_in_course(course_id)
     User
-      .select("users.id, users.first_name, users.last_name, users.email, course_memberships.score as cached_score")
+      .select("users.id, users.first_name, users.last_name, users.email, users.display_name, course_memberships.score as cached_score")
       .joins("INNER JOIN course_memberships ON course_memberships.user_id = users.id")
       .where("course_memberships.course_id = ?", course_id)
       .where("course_memberships.auditing = ?", false)
@@ -177,6 +188,13 @@ class User < ActiveRecord::Base
 
   def self.graded_students_in_course_include_and_join_team(course_id)
     self.graded_students_in_course(course_id)
+      .joins("INNER JOIN team_memberships ON team_memberships.student_id = users.id")
+      .where("course_memberships.user_id = team_memberships.student_id")
+      .includes(:team_memberships)
+  end
+
+  def self.auditing_students_in_course_include_and_join_team(course_id)
+    self.auditing_students_in_course(course_id)
       .joins("INNER JOIN team_memberships ON team_memberships.student_id = users.id")
       .where("course_memberships.user_id = team_memberships.student_id")
       .includes(:team_memberships)
@@ -433,9 +451,9 @@ class User < ActiveRecord::Base
   #Export Users and Final Scores for Course
   def self.csv_for_course(course, options = {})
     CSV.generate(options) do |csv|
-      csv << ["GradeCraft ID", "First Name", "Last Name", "Email", "Score", "Grade" ]
+      csv << ["Email", "First Name", "Last Name", "Score", "Grade", "Earned Badge #", "GradeCraft ID"  ]
       course.students.each do |student|
-        csv << [student.id, student.first_name, student.last_name, student.email, student.score_for_course(course)]
+        csv << [ student.email, student.first_name, student.last_name, student.score_for_course(course), student.grade_level_for_course(course), student.earned_badges.count, student.id  ]
       end
     end
   end

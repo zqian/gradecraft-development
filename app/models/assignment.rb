@@ -320,12 +320,12 @@ class Assignment < ActiveRecord::Base
 
   #Counting how many grades there are for an assignment
   def grade_count
-    grades.released.count
+    grades.graded_or_released.count
   end
 
   #Counting how many non-zero grades there are for an assignment
   def positive_grade_count
-    grades.graded.where("score > 0").count
+    grades.graded_or_released.where("score > 0").count
   end
 
   #Calculating attendance rate, which tallies number of people who have positive grades for attendance divided by the total number of students in the class
@@ -406,6 +406,15 @@ class Assignment < ActiveRecord::Base
     return {
       :scores => scores
     }
+  end
+
+  def self.csv_for_course(course)
+    CSV.generate() do |csv|
+      csv << ["ID", "Name", "Point Total", "Description", "Open At", "Due At", "Accept Until"  ]
+      course.assignments.each do |assignment|
+        csv << [ assignment.id, assignment.name, assignment.point_total, assignment.description, assignment.open_at, assignment.due_at, assignment.accepts_submissions_until  ]
+      end
+    end
   end
 
   private

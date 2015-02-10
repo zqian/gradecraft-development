@@ -1,12 +1,12 @@
-.small-12.columns  
+.columns{:style => "overflow: auto"}
   %table.responsive.nofeatures_dynatable
     %thead
       %tr
         %th{:width => "20%"} #{term_for :group} Name
-        %th{:width => "20%"}= "#{current_course.user_term}s"
+        %th{:style => "min-width: 200px"}= "#{current_course.user_term}s"
         %th{:width => "20%"} Status
-        %th{:width => "20%"} #{term_for :assignments} 
-        %th{:width => "20%"}
+        %th{:style => "min-width: 200px"} #{term_for :assignments} 
+        %th{:style => "min-width: 200px"}
     %tbody
       - groups.each do |group|
         %tr

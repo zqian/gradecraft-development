@@ -14,7 +14,7 @@
             New Course
     %br
 
-  .small-12.columns
+  .columns{:style => "overflow: auto"}
     %table.responsive.nosearch_dynatable{"aria-describedby" => "tableCaption"}
       %thead
         %tr
@@ -24,7 +24,9 @@
           %th{:scope => "col"} Semester
           %th{:scope => "col"} Badges
           %th{:scope => "col"} Total Points
-          %th{:scope => "col"}
+          - if current_user_is_admin?
+            %th
+          %th{:scope => "col", :style => "min-width: 200px" }
             %span.sr-only Actions
       %tbody
         - @courses.each do |course|

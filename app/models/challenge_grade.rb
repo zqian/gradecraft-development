@@ -8,22 +8,18 @@ class ChallengeGrade < ActiveRecord::Base
   belongs_to :submission # Optional
   belongs_to :task # Optional
 
-  validates_presence_of :team, :challenge
+  after_save :cache_team_score
 
-  after_save :save_team
+  validates_presence_of :team, :challenge
 
   delegate :name, :description, :due_at, :point_total, :to => :challenge
 
   def score
     super.presence || 0
   end
-  
-  private
 
-  def save_team
-    if self.score_changed?
-      team.cache_score
-    end
+  def cache_team_score 
+    team.save!
   end
 
 end

@@ -186,7 +186,7 @@
     %span.has-tip{:title => "Multipliers allow students to 'boost' their grades on specific assignment types. You decide how many multipliers students can allocate, then the students select which assignment types will get a boost (through their dashboard) and those assignment type's points are multiplied by the number of multipliers that the student allocates.", :data => {'tooltip' => true} }
 
     %hr
-    .row-100
+    .row
       .small-12.large-4.columns
         = f.label :total_assignment_weight, "Multiplier Count"
         = f.number_field :total_assignment_weight, {"aria-describedby" => "txtMultiplierCount"}
@@ -221,7 +221,7 @@
     %h4 TERMINOLOGY
     %hr
 
-    .row-100
+    .row
       .small-12.large-4.columns
         = f.label :user_term, "User Term"
         = f.text_field :user_term, {"aria-describedby" => "txtUserTerm"}
@@ -237,7 +237,7 @@
         = f.text_field :group_term, {"aria-describedby" => "txtGroupTerm"}
         .form_label{:id => "txtGroupTerm"} What will these groups be called?
 
-    .row-100
+    .row
       .small-12.large-4.columns
         = f.label :team_leader_term, "Section Leader Term"
         = f.text_field :team_leader_term, {"aria-describedby" => "txtTeamLeader"}
