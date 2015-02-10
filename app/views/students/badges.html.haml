@@ -23,8 +23,6 @@
                 .sr-only Icon
               %th Earned
               %th{ :width => 300} Description
-              - if current_course.shared_badges?
-                %th Share this with the class?
           %tbody
             - @badges.each do |badge|
               %tr
@@ -32,7 +30,7 @@
                   %img{ :src => badge.icon, :alt => badge.name, :width => "100" }
                   .bold= badge.name
                   = "#{points badge.point_total} points" if badge.point_total?
-                %td
+                 %td
                   -# logic for badges that have actually been earned
                   - if @earned_badges_by_badge_id[badge.id]
                     -# logic for badges that can be earned multiple times
@@ -49,4 +47,4 @@
                       .fi-check
                       = @earned_badges_by_badge_id[badge.id].first.created_at
                       %p= raw @earned_badges_by_badge_id[badge.id].first.try(:feedback)
-                %td= raw badge.description
+                  %td= raw badge.description
