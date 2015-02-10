@@ -114,13 +114,24 @@ class StudentsController < ApplicationController
   def badges
     @title = "#{term_for :badges}"
 
-    # TODO: need to refactor this to make one call for earned badges, and then to pull the
-    # badges out of earned badges into a separate hash without making a second call
-    #
     @earned_badges = current_student.student_visible_earned_badges(current_course)
-    @badges = current_student.unique_student_earned_badges(current_course)
-
+    @earned_badges_by_badge_id ||= earned_badges_by_badge_id
   end
+
+  private
+
+  def earned_badges_by_badge_id
+    @earned_badges.inject({}) do |memo, earned_badge|
+      if memo[earned_badge.badge.id]
+        memo[earned_badge.badge.id] << earned_badge
+      else
+        memo[earned_badge.badge.id] = [earned_badge]
+      end
+      memo
+    end
+  end
+
+  public
 
   # Display the grade predictor
   def predictor
