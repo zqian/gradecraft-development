@@ -30,4 +30,5 @@
   /         = link_to gf.try(:filename), gf.try(:url), :target => "_blank"
 
 - if @assignment.rubric and @assignment.rubric.designed?
-  = render 'grades/rubric_grade_results'
+  .rubric-container{:style => "overflow-x:auto"}
+    = render 'grades/rubric_grade_results'

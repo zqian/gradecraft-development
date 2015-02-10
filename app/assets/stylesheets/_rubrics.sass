@@ -74,7 +74,7 @@ h4.notice
     margin-left: .5rem
     width: 75%
 
-#metric-box 
+#metric-box
   .metric, .tier
     border: 1px solid #ccc
     padding: 35px 18px 20px
@@ -96,31 +96,50 @@ h4.notice
   height: 225px 
   overflow: hidden
 
-#grade-rubric-table 
-  .metric.heading, .tier.heading
+#rubric-results-table, #rubric-results-table .tier, #rubric-results-table .metric, #rubric-results-table .comments
+  border: 1px solid #999
+  border-collapse: collapse
+  background-color: #eee
+
+table#rubric-results-table tbody tr
+  vertical-align: top
+
+  td
+    padding: 0
+
+table#rubric-results-table 
+  .metric.heading, .tier.heading, .metric-name, .tier-name, .tier-comments, .metric-points, .tier-points, .tier-description, .metric-description, .badge-row
+    padding: 6px 10px
+
+#grade-rubric-table, #rubric-results-table
+  .metric.heading, .tier.heading, .comments
     background: #CCC
+    color: #000
+    font-size: .9rem
+    label 
+      color: #000
 
   .metric
     color: #FFF
     background: $primary-color-5
 
   .tier.heading:hover
-    background: #eee
+    background: #CCC
 
   td.tier
-    min-width: 120px
+    min-width: 150px
     max-width: 20%
     display: block
 
-    &:hover, &.selected
+    &.selected
       background-color: $primary-color-2
       color: #FFF
 
-  .tier-name
+  .tier-name, .metric-name
     font-weight: bold
     font-size: 1.0rem
 
-  .tier-points
+  .tier-points, .metric-points
     font-style: italic
     clear: left
 
@@ -147,6 +166,10 @@ h4.notice
     padding-bottom: 0
     margin-bottom: 0
     font-size: 13px
+
+#grade-rubric-table td.tier:hover
+  background-color: $primary-color-2
+  color: #FFF
 
 .metric
   background: #eee
@@ -395,17 +418,20 @@ button.delete
   &:hover
     background: darken($primary-color-2, 15%)
 
-.level-scored 
-  background-color: #000
-  color: #FFF
-  font-weight: bold
-  padding: 4px 6px 
-  width: 100%
-  position: absolute
-  right: 0
-  bottom: 30px
+#rubric-results-table
+  .tier 
+  .graded-students, .earned_tier
+    padding: 6px
+    color: white
+    font-style: italic
+    width: 100%
+    right: 0
 
-.tier.comments
-  background-color: #6ac777
-/* breakpoint */
+  .graded-students
+    height: auto
+    bottom: 0
+    background: $primary-color-2
 
+  .earned_tier
+    height: auto
+    background: $primary-color-3
