@@ -279,22 +279,44 @@ class GradesController < ApplicationController
 
     no_grade_students = @students.where(id: student_ids - @grades.pluck(:student_id))
     no_grade_auditors =  @students.where(id:auditor_ids - @grades.pluck(:student_id))
-
+    
     if no_grade_students.present?
       no_grade_students.each do |student|
-        @grades << Grade.create(:student => student, :assignment => @assignment, :graded_by_id => current_user)
+        logger.info student.name
+        # @grades << Grade.create(:student => student, :assignment => @assignment, :graded_by_id => current_user)
       end
     end
+
     if no_grade_auditors.present?
       no_grade_auditors.each do |student|
-        @auditor_grades << Grade.create(:student => student, :assignment => @assignment, :graded_by_id => current_user)
+        logger.info student.name
+        # @auditor_grades << Grade.create(:student => student, :assignment => @assignment, :graded_by_id => current_user)
       end
     end
 
     @grades.sort_by! { |grade| grade.student.last_name }
     @auditor_grades.sort_by! { |grade| grade.student.last_name }
-
   end
+
+  private
+    
+    def mass_edit_student_ids
+      @mass_edit_student_ids ||= @students.pluck(:id)
+    end
+
+    def mass_edit_auditor_ids
+      @mass_edit_auditor_ids ||= @auditors.pluck(:id)
+    end
+
+    def no_grade_students
+      @no_grade_students ||= @students.where(id: mass_edit_student_ids - @grades.pluck(:student_id))
+    end
+
+    def no_grade_auditors
+      @no_grade_auditors ||= @auditors.where(id: mass_edit_auditor_ids - @grades.pluck(:student_id))
+    end
+
+  public
 
   def mass_update
     @assignment = current_course.assignments.find(params[:id])
