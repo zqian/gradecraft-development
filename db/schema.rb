@@ -146,8 +146,8 @@ ActiveRecord::Schema.define(version: 20150219225846) do
     t.string   "mass_grade_type"
     t.boolean  "include_in_timeline",               default: true
     t.boolean  "include_in_predictor",              default: true
-    t.boolean  "include_in_to_do",                  default: true
     t.integer  "position"
+    t.boolean  "include_in_to_do",                  default: true
     t.string   "student_logged_button_text"
     t.string   "student_logged_revert_button_text"
     t.boolean  "use_rubric",                        default: true
@@ -193,7 +193,6 @@ ActiveRecord::Schema.define(version: 20150219225846) do
     t.datetime "updated_at"
     t.boolean  "visible",                 default: true
     t.boolean  "can_earn_multiple_times", default: true
-    t.text     "email_description"
     t.integer  "position"
   end
 
@@ -376,7 +375,6 @@ ActiveRecord::Schema.define(version: 20150219225846) do
     t.integer  "point_total"
     t.boolean  "in_team_leaderboard"
     t.boolean  "add_team_score_to_student",                             default: false
-    t.boolean  "badge_emails",                                          default: false
     t.datetime "start_date"
     t.datetime "end_date"
   end
@@ -406,6 +404,8 @@ ActiveRecord::Schema.define(version: 20150219225846) do
     t.integer  "rubric_grade_id"
     t.integer  "metric_id"
     t.integer  "tier_id"
+    t.integer  "tier_badge_id"
+    t.boolean  "student_visible", default: false
   end
 
   create_table "elements", force: true do |t|
@@ -657,6 +657,7 @@ ActiveRecord::Schema.define(version: 20150219225846) do
   end
 
   create_table "submission_files", force: true do |t|
+<<<<<<< HEAD
     t.string   "filename",                        null: false
     t.integer  "submission_id",                   null: false
     t.text     "filepath"
@@ -664,6 +665,11 @@ ActiveRecord::Schema.define(version: 20150219225846) do
     t.boolean  "file_processing", default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+=======
+    t.string  "filename",      null: false
+    t.integer "submission_id", null: false
+    t.string  "filepath"
+>>>>>>> resolve issue where grades for students without an existing grade for the assignment-student pair would appear as duplicate on the first page load only, completely refactor the mass_edit method on grades controller to drastically improve workflow and code readability
   end
 
   create_table "submissions", force: true do |t|
@@ -736,7 +742,6 @@ ActiveRecord::Schema.define(version: 20150219225846) do
     t.boolean  "teams_leaderboard",   default: false
     t.boolean  "in_team_leaderboard", default: false
     t.string   "banner"
-    t.string   "badge_email_type"
   end
 
   create_table "themes", force: true do |t|
@@ -799,6 +804,8 @@ ActiveRecord::Schema.define(version: 20150219225846) do
     t.string   "lti_uid"
     t.string   "last_login_from_ip_address"
     t.string   "kerberos_uid"
+    t.hstore   "ui_settings"
+    t.boolean  "collapse_rubric_overview",        default: false
   end
 
   add_index "users", ["kerberos_uid"], name: "index_users_on_kerberos_uid", using: :btree
