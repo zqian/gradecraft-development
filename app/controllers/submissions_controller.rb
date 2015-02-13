@@ -66,7 +66,7 @@ class SubmissionsController < ApplicationController
     @submission.student = current_student if current_user_is_student?
     if @submission_files
       @submission_files.each do |sf|
-        s = @submission.submission_files.new(file: sf, filename: sf.original_filename)
+        @submission.submission_files.new(file: sf, filename: sf.original_filename)
       end
     end
 
@@ -107,14 +107,6 @@ class SubmissionsController < ApplicationController
     end
   end
 
-  # deprecated method from S3
-  def check_uploads
-    if params[:submission][:submission_files]["0"][:filepath].empty?
-      params[:submission].delete(:submission_files_attributes)
-      @submission.submission_files.destroy_all
-    end
-  end
-
   def update
     @assignment = current_course.assignments.find(params[:assignment_id])
     if params[:submission][:submission_files_attributes].present?
@@ -126,7 +118,7 @@ class SubmissionsController < ApplicationController
 
     if @submission_files
       @submission_files.each do |sf|
-        s = @submission.submission_files.new(file: sf, filename: sf.original_filename)
+        @submission.submission_files.new(file: sf, filename: sf.original_filename)
       end
     end
 

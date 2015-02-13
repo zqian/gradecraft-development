@@ -4,13 +4,15 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   include ::CarrierWave::Backgrounder::Delay
 
 
-  # Override the directory where uploaded files will be stored.
-  # submission_file/course_name_id/assignment_name_id/student_name/file_name.ext
+  # NOTE: course, assignment, and student should be defined on the model in order to use them as subdirectories
+  # example:
+  # submission_file/course_name-id/assignment_name-id/student_name/timestamp_file_name.ext
+  # assigment_file/course_name-id/assignment_name-id/timestamp_file_name.ext
   def store_dir
-    course = "#{model.submission.course.courseno}-#{model.submission.course.id}"
-    assignment = "#{model.submission.assignment.name.gsub(/\s/, "_").downcase[0..20]}-#{model.submission.assignment.id}"
-    student = "#{model.submission.student.last_name}-#{model.submission.student.first_name}"
-    "uploads/#{course}/#{assignment}/#{student}"
+    course = "/#{model.course.courseno}-#{model.course.id}" if model.class.method_defined? :course
+    assignment = "/#{model.assignment.name.gsub(/\s/, "_").downcase[0..20]}-#{model.assignment.id}" if model.class.method_defined? :assignment
+    student = "/#{model.student.last_name}-#{model.student.first_name}" if model.class.method_defined? :student
+    "uploads#{course}#{assignment}#{student}"
   end
 
   # Override the filename of the uploaded files:
