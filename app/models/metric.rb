@@ -11,7 +11,7 @@ class Metric < ActiveRecord::Base
   after_save :update_full_credit
 
   validates :max_points, presence: true
-  validates :name, presence: true
+  validates :name, presence: true, length: { maximum: 30 }
   validates :order, presence: true
 
   scope :ordered, lambda { order(:order) }
