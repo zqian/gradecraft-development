@@ -5,7 +5,7 @@ class AssignmentFile < ActiveRecord::Base
 
   belongs_to :assignment
 
-  validates_presence_of :assignment_id
+  validates :filename, presence: true, length: { maximum: 50 }
 
   mount_uploader :file, AttachmentUploader
   process_in_background :file
