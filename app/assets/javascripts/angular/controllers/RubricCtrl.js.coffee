@@ -1,4 +1,4 @@
-@gradecraft.controller 'RubricCtrl', ['$scope', 'Restangular', '$http', ($scope, Restangular, $http) -> 
+@gradecraft.controller 'RubricCtrl', ['$scope', 'Restangular', 'MetricBadgePrototype', 'CourseBadgePrototype', '$http', ($scope, Restangular, MetricBadgePrototype, CourseBadgePrototype, $http) -> 
 
 
  # hide modal window by default
@@ -55,49 +55,11 @@
   $scope.countSavedMetric = () ->
     $scope.savedMetricCount += 1
 
-  # Badge Section
-  CourseBadgePrototype = (attrs={})->
-    this.id = attrs.id
-    this.name = attrs.name
-    this.description = attrs.description
-    this.point_total = attrs.point_total
-    this.icon = attrs.icon
-    this.multiple = attrs.multiple
-
-  CourseBadgePrototype.prototype = {}
-
   $scope.addCourseBadges = (courseBadges)->
     angular.forEach(courseBadges, (badge, index)->
       courseBadge = new CourseBadgePrototype(badge)
       $scope.courseBadges[badge.id] = courseBadge
     )
-
-  MetricBadgePrototype = (metric, badge, attrs={})->
-    this.metric = metric
-    this.badge = badge
-    this.create()
-    this.name = badge.name
-    this.description = badge.description
-    this.point_total = badge.point_total
-    this.icon = badge.icon
-    this.multiple = badge.multiple
-
-  MetricBadgePrototype.prototype =
-    create: ()->
-      self = this
-
-      $http.post("/metric_badges", self.createParams()).success(
-        (data,status)->
-          self.id = data.existing_metric_badge.id
-      )
-      .error((err)->
-        alert("create failed!")
-        return false
-      )
-
-    createParams: ()->
-      metric_id: this.metric.id,
-      badge_id: this.badge.id
 
   TierBadgePrototype = (tier, badge, attrs={create:false})->
     this.tier = tier
@@ -126,7 +88,7 @@
 
     createParams: ()->
       tier_id: this.tier.id,
-      badge_id: this.badge.id
+      badge_id: this.badge.id  
 
   # Metrics Section
   MetricPrototype = (attrs={})->
