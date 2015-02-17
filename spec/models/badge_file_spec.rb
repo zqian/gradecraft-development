@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe BadgeFile do
+describe BadgeFile, focus: true do
 
   before do
     @badge = build(:badge)

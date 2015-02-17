@@ -1,14 +1,14 @@
 .small-12
 
-  - if @badge.errors.any? 
+  - if @badge.errors.any?
     .alert-box.alert.radius
       .italic= "#{pluralize(@badge.errors.count, "error")} prohibited this #{term_for :badge} from being saved:"
       %ul
         - @badge.errors.full_messages.each do |msg|
           %li= msg
 
-  .small-12.medium-4.columns.columns-no-padding_right.right
-    .panel= render 's3_uploader'
+  / .small-12.medium-4.columns.columns-no-padding_right.right
+  /   .panel= render 's3_uploader'
 
   = simple_form_for @badge do |f|
 
@@ -24,7 +24,7 @@
         .small-12.medium-2.columns
           = f.label :point_total
           = f.text_field :point_total, data: {autonumeric: true, "m-dec" => "0"}
-      
+
       .small-12.medium-3.columns
         = f.label :file_field, "Icon"
         = f.file_field :icon
@@ -53,5 +53,5 @@
 
     .button-bar
       %ul.button-group.radius.right
-        %li= submit_tag "#{@badge.persisted? ? 'Update' : 'Create'} #{term_for :badge}", :class => 'button' 
-        %li= link_to 'Cancel', badges_path, :class => 'button' 
+        %li= submit_tag "#{@badge.persisted? ? 'Update' : 'Create'} #{term_for :badge}", :class => 'button'
+        %li= link_to 'Cancel', badges_path, :class => 'button'

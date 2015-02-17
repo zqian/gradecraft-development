@@ -5,6 +5,10 @@ class BadgeFile < ActiveRecord::Base
 
   belongs_to :badge
 
-  before_save :strip_path
+  mount_uploader :file, AttachmentUploader
+  process_in_background :file
 
+  def course
+    badge.course
+  end
 end
