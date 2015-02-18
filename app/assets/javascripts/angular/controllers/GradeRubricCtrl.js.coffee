@@ -1,7 +1,6 @@
 @gradecraft.controller 'GradeRubricCtrl', ['$scope', 'Restangular', '$http', ($scope, Restangular, $http) -> 
 
   $scope.metrics = []
-  $scope.gradedMetrics = []
   $scope.courseBadges = {}
   $scope.rubricGrades = {} # index in hash with metric_id as key
   $scope.gsiGradeStatuses = ["In Progress", "Graded"]
@@ -101,10 +100,18 @@
   $scope.gradedMetrics = ()->
     metrics = []
     angular.forEach($scope.metrics, (metric, index)->
-      # if metric.selectedTier
-      metrics.push metric
+      if metric.selectedTier
+        metrics.push metric
     )
-    $scope.gradedMetrics = metrics
+    metrics 
+
+  $scope.selectedMetrics = ()->
+    metrics = []
+    angular.forEach($scope.metrics, (metric, index)->
+      if metric.selectedTier
+        metrics.push metric
+    )
+    $scope.selectedMetrics = metrics
     metrics 
 
   $scope.gradedMetricsParams = ()->
@@ -142,43 +149,27 @@
       tier_id: metric.selectedTier.id
     }
 
-  $scope.metricBadgesParams = ()->
+  $scope.tierBadgesParams = ()->
     params = []
-    angular.forEach($scope.gradedMetrics, (metric, index)->
-      angular.forEach(metric.badges, (badge, index)->
+    # alert("# of graded metrics:" + $scope.gradedMetrics.length)
+    angular.forEach($scope.gradedMetrics(), (metric, index)->
+      # alert(metric.name)
+      # grab the selected tier for the active metric
+      tier = metric.selectedTier
+      angular.forEach(tier.badges, (badge, index)->
         params.push {
           name: badge.name,
-          metric_id: metric.id,
+          tier_id: tier.id,
+          metric_id: tier.metric_id,
           badge_id: badge.badge.id,
           description: badge.description,
           point_total: badge.point_total,
           icon: badge.icon,
           multiple: badge.multiple
-
         }
       )
     )
-    params
-
-  $scope.tierBadgesParams = ()->
-    params = []
-    angular.forEach($scope.gradedMetrics, (metric, index)->
-      angular.forEach(metric.tiers, (tier, index)->
-        angular.forEach(tier.badges, (badge, index)->
-          params.push {
-            name: badge.name,
-            tier_id: tier.id,
-            metric_id: tier.metric_id,
-            badge_id: badge.badge.id,
-            description: badge.description,
-            point_total: badge.point_total,
-            icon: badge.icon,
-            multiple: badge.multiple
-          }
-        )
-      )
-    )
-    params
+    return params
 
   $scope.gradedRubricParams = ()->
     {
@@ -187,7 +178,6 @@
       student_id: $scope.studentId,
       points_possible: $scope.pointsPossible,
       rubric_grades: $scope.gradedMetricsParams(),
-      metric_badges: $scope.metricBadgesParams(),
       tier_badges: $scope.tierBadgesParams(),
       tier_ids: $scope.selectedTierIds(),
       metric_ids: $scope.allMetricIds(),
@@ -195,8 +185,9 @@
     }
 
   $scope.submitGrade = ()->
+    self = this
     if confirm "Are you sure you want to submit the grade for this assignment?"
-      self = this
+      # alert(self.gradedRubricParams().tier_badges.length)
       $http.put("/assignments/#{$scope.assignmentId}/grade/submit_rubric", self.gradedRubricParams()).success(
         window.location = "/assignments/#{$scope.assignmentId}"
       )
@@ -293,6 +284,7 @@
       this.comments = ""
 
     this.addTiers(attrs["tiers"]) if attrs["tiers"] #add tiers if passed on init
+    # alert(this.selectedTier.id)
     this.name = if attrs.name then attrs.name else ""
     this.rubricId = if attrs.rubric_id then attrs.rubric_id else $scope.rubricId
     this.max_points = if attrs.max_points then attrs.max_points else 0
@@ -302,7 +294,9 @@
       self = this
       newTier = new TierPrototype(self, attrs)
       self.tiers.push newTier
-      if self.rubricGradeTierId == newTier.id
+      if self.rubricGradeTierId and self.rubricGradeTierId == newTier.id
+        # alert(self.rubricGradeTierId)
+        # alert(newTier.id)
         self.selectedTier = newTier
     addTiers: (tiers)->
       self = this
