@@ -33,7 +33,7 @@
               %i.fi-paperclip
               = f.check_box :accepts_submissions
               .form_label Will you be using GradeCraft to accept submissions for this #{term_for :assignment}?
-            %ul.submit
+            %ul.submit.accepts_submission_types
               %li.submit
                 .checkbox
                   = f.label :accepts_links
@@ -187,6 +187,7 @@
       = link_to 'Add a Level', '#', class: 'add-assignment-score-level button radius'
 
     .small-12.large-8.columns.panel
+      %h4.uppercase Attachments
       = f.simple_fields_for :assignment_files, @assignment.assignment_files.new do |af|
         = af.file_field :file, :multiple => true
       - if @assignment.assignment_files.exists?
@@ -200,10 +201,7 @@
               - else
                 = link_to af.filename, af.url, :target => "_blank"
                 = link_to "(Remove)", remove_uploads_path({ :model => "AssignmentFile", :assignment_id => @assignment.id, :upload_id => af.id } )
-
-
-
-    .clearfix
+      .clear
 
     .button-bar
       %ul.button-group.radius.right

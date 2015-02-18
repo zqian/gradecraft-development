@@ -1,6 +1,6 @@
 - if current_user_is_staff?
   %h4.sr-only #{current_student.try(:first_name)}'s Grade
-  %p.bold 
+  %p.bold
     #{current_student.try(:first_name)}'s Grade
     %span
       %a{:href => "#{edit_assignment_grade_path(@assignment)}?student_id=#{current_student.id}", :class => 'button radius'  }
@@ -10,24 +10,23 @@
 - grade = current_student.grade_for_assignment(@assignment)
 - if grade
   %p
-    %span You earned 
+    %span You earned
     %span.bold= "#{points grade.try(:raw_score) }"
     %span=" out of #{points @assignment.point_total } possible points."
   - if @assignment.release_necessary? && current_user_is_staff?
-    %p 
+    %p
       %span.small_uppercase Status:
       %span.bold= current_student.grade_for_assignment(@assignment).status
   - if grade.feedback.present?
     %span.small_uppercase Your Feedback:
     %p= raw current_student.grade_for_assignment(@assignment).feedback
-
-  / - if grade.grade_files.present?
-  /   %hr
-  /   %h5.bold Attachments
-  /   %ul#uploaded_files
-  /     - grade.grade_files.each do |gf|
-  /       %li
-  /         = link_to gf.try(:filename), gf.try(:url), :target => "_blank"
+  - if grade.grade_files.present?
+    %hr
+    %h5.bold Attachments
+    %ul#uploaded_files
+      - grade.grade_files.each do |gf|
+        %li
+          = link_to gf.try(:filename), gf.try(:url), :target => "_blank"
 
 - if @assignment.rubric and @assignment.rubric.designed?
   .rubric-container{:style => "overflow-x:auto"}

@@ -11,10 +11,11 @@
   - elsif @assignment.is_individual? && current_user_is_staff?
     = f.input :student_id, :input_html => { :value => @student.id }, :as => :hidden
 
-  - if @assignment.accepts_links
+  - if @assignment.accepts_attachments
     .small-12.panel
-      = f.simple_fields_for :submission_files, @submission.submission_files.new do |sff|
-        = sff.file_field :file, :multiple => true
+      %h4.uppercase Attachments
+      = f.simple_fields_for :submission_files, @submission.submission_files.new do |sf|
+        = sf.file_field :file, :multiple => true
       - if @submission.submission_files.exists?
         %h5.bold Uploaded files
         %ul#uploaded_files
@@ -26,13 +27,14 @@
                 = link_to sf.filename, sf.url, :target => "_blank"
                 = link_to "(Remove)", remove_uploads_path({ :model => "SubmissionFile", :assignment_id => @assignment.id, :upload_id => sf.id } )
 
-  - if @assignment.accepts_attachments
+  - if @assignment.accepts_link
     .small-12.panel
+      %h4.uppercase Attachments
       = f.input :link
 
   - if @assignment.accepts_text
     .small-12.panel
-      %h5.bold Content/Description
+      %h4.uppercase Content/Description
       = f.bootsy_area :text_comment
 
   .button-bar

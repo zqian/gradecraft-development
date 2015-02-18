@@ -115,11 +115,13 @@ class AssignmentsController < ApplicationController
   end
 
   def create
-    if params[:submission][:submission_files_attributes].present?
+    if params[:assignment][:assignment_files_attributes].present?
       @assignment_files = params[:assignment][:assignment_files_attributes]["0"]["file"]
       params[:assignment].delete :assignment_files_attributes
     end
+
     @assignment = current_course.assignments.new(params[:assignment])
+
     if @assignment_files
       @assignment_files.each do |af|
         @assignment.assignment_files.new(file: af, filename: af.original_filename)
@@ -127,7 +129,6 @@ class AssignmentsController < ApplicationController
     end
 
     respond_to do |format|
-      @assignment.save
       if @assignment.save
         set_assignment_weights
         format.html { respond_with @assignment, notice: "#{(term_for :assignment).titleize}  #{@assignment.name} successfully created" }
@@ -144,6 +145,7 @@ class AssignmentsController < ApplicationController
       @assignment_files = params[:assignment][:assignment_files_attributes]["0"]["file"]
       params[:assignment].delete :assignment_files_attributes
     end
+
     @assignment = current_course.assignments.includes(:assignment_score_levels).find(params[:id])
 
     if @assignment_files
@@ -160,7 +162,7 @@ class AssignmentsController < ApplicationController
       else
         # TODO: refactor, see submissions_controller
         @title = "Edit #{term_for :assignment}"
-        format.html {render :action => "new", :group => @group }
+        format.html {render :action => "edit", :group => @group }
       end
     end
   end
