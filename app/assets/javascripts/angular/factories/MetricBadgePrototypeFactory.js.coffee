@@ -1,16 +1,16 @@
 @gradecraft.factory 'MetricBadgePrototype', ->
-  MetricBadgePrototype = (metric, badge, attrs={}) ->
-    @metric = metric
-    @badge = badge
-    @name = badge.name
-    @metric_id = metric.id
-    @badge_id = badge.id
-    @description = badge.description
-    @point_total = badge.point_total
-    @icon = badge.icon
-    @multiple = badge.multiple
+  class MetricBadgePrototype
+    constructor: (metric, badge, attrs={}) ->
+      @metric = metric
+      @badge = badge
+      @name = badge.name
+      @metric_id = metric.id
+      @badge_id = badge.id
+      @description = badge.description
+      @point_total = badge.point_total
+      @icon = badge.icon
+      @multiple = badge.multiple
  
-  MetricBadgePrototype.prototype =
     create: ()->
       self = this
  
@@ -26,5 +26,3 @@
       createParams: ()->
         metric_id: this.metric.id,
         badge_id: this.badge.id
- 
-  return MetricBadgePrototype
