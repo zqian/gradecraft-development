@@ -22,7 +22,7 @@
     %p= raw current_student.grade_for_assignment(@assignment).feedback
   - if grade.grade_files.present?
     %hr
-    %h5.bold Attachments
+    %h4.uppercase Attachments from Grader
     %ul#uploaded_files
       - grade.grade_files.each do |gf|
         %li
