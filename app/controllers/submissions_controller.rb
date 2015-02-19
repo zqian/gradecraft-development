@@ -129,7 +129,7 @@ class SubmissionsController < ApplicationController
           format.json { render json: @assignment, status: :created, location: @assignment }
           #NotificationMailer.revised_submission(@submission.id).deliver
         else
-          format.html { redirect_to session.delete(:return_to), notice: "#{@assignment.name} was successfully updated." }
+          format.html { redirect_to assignment_submission_path(@assignment, @submission), notice: "#{@assignment.name} was successfully updated." }
         end
       elsif @submission.errors[:link].any?
         format.html { redirect_to edit_assignment_submission_path(@assignment, @submission), notice: "Please provide a valid link for #{@assignment.name} submissions." }
