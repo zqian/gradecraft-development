@@ -19,9 +19,9 @@ class CourseMembership < ActiveRecord::Base
     auth_hash['extra']['raw_info'].tap do |extra|
 
       case extra['roles'].downcase
-      when 'instructor'
+      when /instructor/
         self.update_attribute(:role, 'professor')
-      when 'teachingassistant'
+      when /teachingassistant/
         self.update_attribute(:role, 'gsi')
       else
         self.update_attribute(:role, 'student')
