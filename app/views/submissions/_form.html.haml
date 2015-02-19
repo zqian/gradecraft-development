@@ -27,14 +27,14 @@
                 = link_to sf.filename, sf.url, :target => "_blank"
                 = link_to "(Remove)", remove_uploads_path({ :model => "SubmissionFile", :assignment_id => @assignment.id, :upload_id => sf.id } )
 
-  - if @assignment.accepts_link
+  - if @assignment.accepts_links
     .small-12.panel
-      %h4.uppercase Attachments
-      = f.input :link
+      %h4.uppercase Link
+      = f.input :link, :label => false
 
   - if @assignment.accepts_text
     .small-12.panel
-      %h4.uppercase Content/Description
+      %h4.uppercase Content/Statement
       = f.bootsy_area :text_comment
 
   .button-bar
