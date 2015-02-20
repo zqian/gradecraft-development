@@ -35,38 +35,56 @@ class BadgesController < ApplicationController
   end
 
   def create
+
+    if params[:badge][:badge_files_attributes].present?
+      @badge_files = params[:badge][:badge_files_attributes]["0"]["file"]
+      params[:badge].delete :badge_files_attributes
+    end
+
     @badge = current_course.badges.new(params[:badge])
-    @title = "Create a New #{term_for :badge}"
+
+    if @badge_files
+      @badge_files.each do |af|
+        @badge.badge_files.new(file: af, filename: af.original_filename)
+      end
+    end
 
     respond_to do |format|
-      self.check_uploads
       if @badge.save
         format.html { redirect_to @badge, notice: "#{@badge.name} #{term_for :badge} successfully created" }
         format.json { render json: @badge, status: :created, location: @badge }
       else
+        # TODO: refactor, see submissions_controller
+        @title = "Create a New #{term_for :badge}"
         format.html { render action: "new" }
         format.json { render json: @badge.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  def check_uploads
-    # if params[:badge][:badge_files_attributes]["0"][:filepath].empty?
-    #   params[:badge].delete(:badge_files_attributes)
-    #   @badge.badge_files.destroy_all
-    # end
-  end
-
   def update
+
+    if params[:badge][:badge_files_attributes].present?
+      @badge_files = params[:badge][:badge_files_attributes]["0"]["file"]
+      params[:badge].delete :badge_files_attributes
+    end
+
     @badge = current_course.badges.find(params[:id])
 
+    if @badge_files
+      @badge_files.each do |af|
+        @badge.badge_files.new(file: af, filename: af.original_filename)
+      end
+    end
+
     respond_to do |format|
-      self.check_uploads
 
       if @badge.update_attributes(params[:badge])
         format.html { redirect_to @badge, notice: "#{@badge.name} #{term_for :badge} successfully updated" }
         format.json { head :ok }
       else
+        # TODO: refactor, see submissions_controller
+        @title = "Edit #{term_for :badge}"
         format.html { render action: "edit" }
         format.json { render json: @badge.errors, status: :unprocessable_entity }
       end

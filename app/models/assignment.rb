@@ -1,7 +1,7 @@
 class Assignment < ActiveRecord::Base
-  
-  attr_accessible :name, :description, :point_total, :open_at, :due_at, :grade_scope, :visible, :required, 
-    :accepts_submissions, :release_necessary, :media, :thumbnail, :media_credit, :media_caption, 
+
+  attr_accessible :name, :description, :point_total, :open_at, :due_at, :grade_scope, :visible, :required,
+    :accepts_submissions, :accepts_links, :accepts_text, :accepts_attachments, :release_necessary, :media, :thumbnail, :media_credit, :media_caption,
     :accepts_submissions_until, :points_predictor_display, :notify_released, :mass_grade_type, :assignment_type_id, :assignment_type,
     :include_in_timeline, :include_in_predictor, :include_in_to_do, :grades_attributes, :assignment_file_ids, :student_logged,
     :assignment_files_attributes, :assignment_file, :assignment_score_levels_attributes, :assignment_score_level, :score_levels_attributes,
@@ -18,7 +18,7 @@ class Assignment < ActiveRecord::Base
   #for instances where the assignment needs its own unique score levels
   has_many :assignment_score_levels, -> { order "value" }
   accepts_nested_attributes_for :assignment_score_levels, allow_destroy: true, :reject_if => proc { |a| a['value'].blank? || a['name'].blank? }
-  
+
   #This is the assignment weighting system (students decide how much assignments will be worth for them)
   has_many :weights, :class_name => 'AssignmentWeight'
 
@@ -46,11 +46,13 @@ class Assignment < ActiveRecord::Base
   #Preventing malicious content from being submitted
   before_save :clean_html
 
-  #Saving the course and the point total if possible 
+  #Saving the course and the point total if possible
   before_validation :cache_point_total
 
-  # Check to make sure the assignment has a name before saving 
+  # Check to make sure the assignment has a name before saving
   validates_presence_of :name
+
+  validates_presence_of :assignment_type_id
 
   validate :open_before_close, :submissions_after_due, :submissions_after_open
 
@@ -169,7 +171,7 @@ class Assignment < ActiveRecord::Base
     return (sorted_grades[(len - 1) / 2] + sorted_grades[len / 2]) / 2
   end
 
-  #Checking to see if an assignment is individually graded 
+  #Checking to see if an assignment is individually graded
   def is_individual?
     !['Group'].include? grade_scope
   end
@@ -260,7 +262,7 @@ class Assignment < ActiveRecord::Base
   def select?
     points_predictor_display == "Select List"
   end
-  
+
   #The below four are the Quick Grading Types, can be set at either the assignment or assignment type level
   def grade_checkboxes?
     self.mass_grade_type == "Checkbox"
@@ -301,20 +303,20 @@ class Assignment < ActiveRecord::Base
   #Checking to see if the assignment is still open and accepting submissons
   def open?
     #No due dates whatsoever, always accept
-    (open_at.nil? && due_at.nil?) || 
+    (open_at.nil? && due_at.nil?) ||
     #Open date has passed and due date is nil, accept submissions
     ((open_at != nil && open_at < Time.now) && (due_at.nil? )) ||
     #No open date present, due date is after now, accept submissions
-    (open_at.nil? && due_at != nil && due_at > Time.now) || 
-    #No open date is present, due date has passed, but accept until limit is absent 
-    (open_at.nil? && due_at != nil && due_at < Time.now && accepts_submissions_until.nil?) || 
+    (open_at.nil? && due_at != nil && due_at > Time.now) ||
+    #No open date is present, due date has passed, but accept until limit is absent
+    (open_at.nil? && due_at != nil && due_at < Time.now && accepts_submissions_until.nil?) ||
     #Open date is absent, due date and accept until date are present
-    (open_at.nil? && due_at != nil && (accepts_submissions_until != nil && accepts_submissions_until > Time.now)) || 
+    (open_at.nil? && due_at != nil && (accepts_submissions_until != nil && accepts_submissions_until > Time.now)) ||
     #open date and due date both defined, limit from accepts submissions until absent - accept assignments indefinitely
-    ((open_at != nil && open_at < Time.now) && (due_at != nil && due_at > Time.now) && accepts_submissions_until.nil?) || 
+    ((open_at != nil && open_at < Time.now) && (due_at != nil && due_at > Time.now) && accepts_submissions_until.nil?) ||
     #open date and due date are both defined, it is after the due date but no accept_submissions_until date is present
-    ((open_at != nil && open_at < Time.now) && (due_at != nil && due_at < Time.now) && accepts_submissions_until.nil?) || 
-    #if both the open date and the accept until date are present and it is between them, accept submissions 
+    ((open_at != nil && open_at < Time.now) && (due_at != nil && due_at < Time.now) && accepts_submissions_until.nil?) ||
+    #if both the open date and the accept until date are present and it is between them, accept submissions
     ((open_at != nil && open_at < Time.now) && (accepts_submissions_until != nil && accepts_submissions_until > Time.now))
   end
 
@@ -397,7 +399,7 @@ class Assignment < ActiveRecord::Base
     }
   end
 
-  # Creating an array with the set of scores earned on the assignment, and 
+  # Creating an array with the set of scores earned on the assignment, and
   def percentage_score_earned
     scores = []
     earned_score_count.each do |score|

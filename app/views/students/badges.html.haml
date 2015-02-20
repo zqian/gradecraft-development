@@ -6,7 +6,7 @@
 
   = render 'students/earned_points_and_level'
 
-  %h3.pagetitle= @title    
+  %h3.pagetitle= @title
 
   .small-12.columns
     %dl.tabs{:data => {'tab' => true}}
@@ -49,8 +49,15 @@
                     - elsif current_student_data.earned_badge?(badge)
                       .fi-check
                       = current_student_data.earned_badge(badge).created_at
-                      %p= raw current_student_data.earned_badge(badge).try(:feedback) 
-                  %td= raw badge.description
+                      %p= raw current_student_data.earned_badge(badge).try(:feedback)
+                  %td
+                    = raw badge.description
+                    - if badge.badge_files.present?
+                      %b Attachments:
+                      %ul
+                        - badge.badge_files.each do |bf|
+                          %li
+                            = link_to bf.filename, bf.url
                   - if current_course.shared_badges?
                     %td
                       - earned_badge = current_student_data.earned_badge(badge)
