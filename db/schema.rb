@@ -657,19 +657,13 @@ ActiveRecord::Schema.define(version: 20150219225846) do
   end
 
   create_table "submission_files", force: true do |t|
-<<<<<<< HEAD
     t.string   "filename",                        null: false
     t.integer  "submission_id",                   null: false
-    t.text     "filepath"
+    t.string   "filepath"
     t.string   "file"
     t.boolean  "file_processing", default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-=======
-    t.string  "filename",      null: false
-    t.integer "submission_id", null: false
-    t.string  "filepath"
->>>>>>> resolve issue where grades for students without an existing grade for the assignment-student pair would appear as duplicate on the first page load only, completely refactor the mass_edit method on grades controller to drastically improve workflow and code readability
   end
 
   create_table "submissions", force: true do |t|

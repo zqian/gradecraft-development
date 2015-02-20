@@ -265,25 +265,14 @@ class GradesController < ApplicationController
     @title = "Quick Grade #{@assignment.name}"
     @assignment_type = @assignment.assignment_type
     @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
+    
     @team = current_course.teams.find_by(team_params) if params[:team_id]
+    
     @students = current_course.students_being_graded.includes(:teams).where(team_params)
     @auditors = current_course.students_auditing.includes(:teams).where(team_params)
 
-    student_ids = @students.pluck(:id)
-    auditor_ids = @auditors.pluck(:id)
-
     @grades = Grade.where(student_id: mass_edit_student_ids, assignment_id: @assignment[:id] ).includes(:student,:assignment)
     @auditor_grades = Grade.where(student_id: mass_edit_auditor_ids, assignment_id: @assignment[:id] ).includes(:student,:assignment)
-
-    no_grade_students = @students.where(id: student_ids - @grades.pluck(:student_id))
-    no_grade_auditors =  @students.where(id:auditor_ids - @grades.pluck(:student_id))
-    
-    if no_grade_students.present?
-      no_grade_students.each do |student|
-        logger.info student.name
-        # @grades << Grade.create(:student => student, :assignment => @assignment, :graded_by_id => current_user)
-      end
-    end
 
     create_missing_grades # create grade objects for the student/assignment pair unless present
 
