@@ -7,16 +7,17 @@
   .italic.not_bold= "Opens: #{@assignment.open_at}" if @assignment.open_at?
   .italic.not_bold= "Due: #{@assignment.due_at}" if @assignment.due_at?
 
+  - if @assignment.assignment_files.present?
+    %hr
+    %h4.uppercase Downloads
+    %ul
+      - @assignment.assignment_files.each do |af|
+        %li= link_to af.filename, af.url
+
+
   - if @assignment.description.present?
     %hr
-
     %h4.uppercase Guidelines:
-    - if @assignment.assignment_files.present?
-      %ul 
-        Downloads
-        - @assignment.assignment_files.each do |af|
-          %li= link_to af.filename, af.url
-          
     %p= raw @assignment.description
 
   - if @assignment.assignment_type.predictor_description.present?

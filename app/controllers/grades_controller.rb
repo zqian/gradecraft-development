@@ -5,7 +5,7 @@ class GradesController < ApplicationController
   before_filter :ensure_student?, only: [:predict_score]
 
   def show
-    @assignment = current_course.assignments.find(params[:assignment_id]) 
+    @assignment = current_course.assignments.find(params[:assignment_id])
     if @assignment.rubric.present?
       @rubric = @assignment.rubric
       @metrics = @rubric.metrics
@@ -65,19 +65,34 @@ class GradesController < ApplicationController
 
   public
 
+  # To avoid duplicate grades, we don't supply a create method. Update will
+  # create a new grade if none exists, and otherwise update the existing grade
   def update
     redirect_to @assignment and return unless current_student.present?
+
+    if params[:grade][:grade_files_attributes].present?
+      @grade_files = params[:grade][:grade_files_attributes]["0"]["file"]
+      params[:grade].delete :grade_files_attributes
+    end
+
     @grade = current_student_data.grade_for_assignment(@assignment)
-    self.check_uploads
 
-    @grade.update_attributes params[:grade].merge(instructor_modified: true)
+    if @grade_files
+      @grade_files.each do |gf|
+        @grade.grade_files.new(file: gf, filename: gf.original_filename)
+      end
+    end
 
-    GradeUpdater.perform_async([@grade.id]) if @grade.graded_or_released?
+    if @grade.update_attributes params[:grade].merge(instructor_modified: true)
+      GradeUpdater.perform_async([@grade.id]) if @grade.graded_or_released?
 
-    if session[:return_to].present?
-      redirect_to session[:return_to]
+      if session[:return_to].present?
+        redirect_to session[:return_to]
+      else
+        redirect_to @assignment
+      end
     else
-      redirect_to @assignment
+      redirect_to edit_grade_path(@grade), notice: "#{@assignment.name} was not successfully submitted! Please try again."
     end
   end
 
@@ -98,8 +113,8 @@ class GradesController < ApplicationController
     create_rubric_grades # create an individual record for each rubric grade
 
     delete_existing_earned_badges_for_metrics # if earned_badges_exist? # destroy earned_badges where assignment_id and student_id match
-    create_earned_tier_badges if params[:tier_badges]# create_earned_tier_badges 
-    
+    create_earned_tier_badges if params[:tier_badges]# create_earned_tier_badges
+
     GradeUpdater.perform_async([@grade.id]) if @grade.graded_or_released?
 
     respond_to do |format|
@@ -255,7 +270,7 @@ class GradesController < ApplicationController
     user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
     @students = current_course.students_being_graded.includes(:teams).where(user_search_options)
     @auditors = current_course.students_auditing.includes(:teams).where(user_search_options)
-    
+
     student_ids = @students.pluck(:id)
     auditor_ids = @auditors.pluck(:id)
 
@@ -442,24 +457,17 @@ class GradesController < ApplicationController
           end
         end
       end
-    
+
       GradeUpdater.perform_async(grade_ids)
 
       redirect_to assignment_path(@assignment), :notice => "Upload successful"
     end
   end
 
-  def check_uploads
-    if params[:grade][:grade_files_attributes]["0"][:filepath].empty?
-      params[:grade].delete(:grade_files_attributes)
-      @grade.grade_files.destroy_all
-    end
-  end
-
   private
 
   def new_grade_from_rubric_grades_attributes
-    { 
+    {
       course_id: current_course[:id],
       assignment_type_id: @assignment.assignment_type_id
     }

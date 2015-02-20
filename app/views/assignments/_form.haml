@@ -1,26 +1,22 @@
 .small-12
-  - if @assignment.errors.any? 
+  - if @assignment.errors.any?
     .alert-box.alert.radius
       .italic= "#{pluralize(@assignment.errors.count, "error")} prohibited this #{term_for :assignment} from being saved:"
       %ul
         - @assignment.errors.full_messages.each do |msg|
           %li= msg
 
-  %br
-  .small-12.panel.columns
-    = render 's3_uploader'
-  
   = simple_form_for(@assignment) do |f|
 
     .small-12.large-4.columns.columns-no-padding_right.right
       .panel
         %h4 SETTINGS
         .small-12
-          %label.checkbox 
+          %label.checkbox
             = f.label :visible, "Visible to students"
             %i.fi-eye
             = f.check_box :visible
-            .form_label Can #{term_for :students} see this #{term_for :assignment} in their dashboard?  
+            .form_label Can #{term_for :students} see this #{term_for :assignment} in their dashboard?
 
         .small-12
           %label.checkbox
@@ -32,11 +28,24 @@
 
         - if current_course.accepts_submissions?
           .small-12
-            .checkbox
+            .checkbox.assignment_options
               = f.label :accepts_submissions #{term_for :assignment} Submissions
               %i.fi-paperclip
               = f.check_box :accepts_submissions
               .form_label Will you be using GradeCraft to accept submissions for this #{term_for :assignment}?
+            %ul.submit.accepts_submission_types
+              %li.submit
+                .checkbox
+                  = f.label :accepts_links
+                  = f.check_box :accepts_links
+              %li.submit
+                .checkbox
+                  = f.label :accepts_attachments
+                  = f.check_box :accepts_attachments
+              %li.submit
+                .checkbox
+                  = f.label :accepts_text
+                  = f.check_box :accepts_text
 
           .small-12
             .checkbox
@@ -87,7 +96,7 @@
 
       .panel
         %h4.uppercase Timeline
-          
+
         .small-12
           = f.label :media, "Image"
           = f.file_field :media
@@ -144,23 +153,23 @@
         .small-12.large-8.columns
           = f.label :grade_scope, "Do students do this individually or as a group?"
           = f.select :grade_scope, [["Individual"], ["Group"]]
-      
+
       .small-12
         .small-12.large-8.columns
           = f.label :mass_grade_type, "How should this assignment appear in Quick Grade?"
           = f.select :mass_grade_type, [[],["Checkbox"], ["Select List"], ["Radio Buttons"], ["Text"]]
-      
+
       .small-12
         .small-12.large-8.columns
           = f.label :points_predictor_display, "How should this assignment appear in the Grade Predictor?"
           = f.select :points_predictor_display, [[], ["Checkbox", "Fixed"], ["Select List"], ["Slider"], ]
-    
+
     .small-12.medium-8.columns.textarea.panel
       %h4.uppercase Assignment Description
       %label.small-12
         .sr-only Description
         = f.bootsy_area :description
-      .form_label 
+      .form_label
         %span This will be shown to students on their dashboard, and when they submit their assignment.
 
     .small-12.large-8.columns.panel
@@ -177,14 +186,26 @@
               = render 'assignment_score_level_fields', f: slf
       = link_to 'Add a Level', '#', class: 'add-assignment-score-level button radius'
 
-      = f.simple_fields_for :assignment_files, @assignment.assignment_files.new do |aff|
-        = aff.input :filepath, :input_html => { :class => 's3_files' }, :as => :hidden
-
-    .clearfix
+    .small-12.large-8.columns.panel
+      %h4.uppercase Attachments
+      = f.simple_fields_for :assignment_files, @assignment.assignment_files.new do |af|
+        = af.file_field :file, :multiple => true
+      - if @assignment.assignment_files.exists?
+        %h5.bold Uploaded files
+        %ul#uploaded_files
+          - @assignment.assignment_files.each do |af|
+            - next if af.new_record?
+            %li
+              - if af.file_processing
+                = "#{af.filename} (upload in progress...)"
+              - else
+                = link_to af.filename, af.url, :target => "_blank"
+                = link_to "(Remove)", remove_uploads_path({ :model => "AssignmentFile", :assignment_id => @assignment.id, :upload_id => af.id } )
+      .clear
 
     .button-bar
       %ul.button-group.radius.right
         %li= f.button :submit, "#{@assignment.persisted? ? 'Update' : 'Create'} #{term_for :assignment}"
         %li= link_to 'Cancel', assignments_path, :class => "button"
 
-    
+

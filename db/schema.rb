@@ -11,16 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150126222048) do
+ActiveRecord::Schema.define(version: 20150219225846) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "hstore"
 
   create_table "assignment_files", force: true do |t|
-    t.string  "filename"
-    t.integer "assignment_id"
-    t.string  "filepath"
+    t.string   "filename"
+    t.integer  "assignment_id"
+    t.string   "filepath"
+    t.string   "file"
+    t.boolean  "file_processing", default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "assignment_groups", force: true do |t|
@@ -147,17 +151,21 @@ ActiveRecord::Schema.define(version: 20150126222048) do
     t.string   "student_logged_button_text"
     t.string   "student_logged_revert_button_text"
     t.boolean  "use_rubric",                        default: true
-    t.boolean  "accepts_links"
-    t.boolean  "accepts_text"
-    t.boolean  "accepts_attachments"
+    t.boolean  "accepts_attachments",               default: true
+    t.boolean  "accepts_text",                      default: true
+    t.boolean  "accepts_links",                     default: true
   end
 
   add_index "assignments", ["course_id"], name: "index_assignments_on_course_id", using: :btree
 
   create_table "badge_files", force: true do |t|
-    t.string  "filename"
-    t.integer "badge_id"
-    t.string  "filepath"
+    t.string   "filename"
+    t.integer  "badge_id"
+    t.string   "filepath"
+    t.string   "file"
+    t.boolean  "file_processing", default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "badge_sets", force: true do |t|
@@ -214,9 +222,13 @@ ActiveRecord::Schema.define(version: 20150126222048) do
   add_index "categories", ["course_id"], name: "index_categories_on_course_id", using: :btree
 
   create_table "challenge_files", force: true do |t|
-    t.string  "filename"
-    t.integer "challenge_id"
-    t.string  "filepath"
+    t.string   "filename"
+    t.integer  "challenge_id"
+    t.string   "filepath"
+    t.string   "file"
+    t.boolean  "file_processing", default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "challenge_grades", force: true do |t|
@@ -429,9 +441,13 @@ ActiveRecord::Schema.define(version: 20150126222048) do
   end
 
   create_table "grade_files", force: true do |t|
-    t.integer "grade_id"
-    t.string  "filename"
-    t.string  "filepath"
+    t.integer  "grade_id"
+    t.string   "filename"
+    t.string   "filepath"
+    t.string   "file"
+    t.boolean  "file_processing", default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "grade_scheme_elements", force: true do |t|
@@ -641,9 +657,13 @@ ActiveRecord::Schema.define(version: 20150126222048) do
   end
 
   create_table "submission_files", force: true do |t|
-    t.string  "filename",      null: false
-    t.integer "submission_id", null: false
-    t.text    "filepath"
+    t.string   "filename",                        null: false
+    t.integer  "submission_id",                   null: false
+    t.text     "filepath"
+    t.string   "file"
+    t.boolean  "file_processing", default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "submissions", force: true do |t|
