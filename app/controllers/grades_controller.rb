@@ -315,7 +315,7 @@ class GradesController < ApplicationController
 
     def create_missing_student_grades
       no_grade_students.each do |student|
-        @grades << Grade.create(student: student, assignment: @assignment, graded_by_id: current_user)
+        Grade.create(student: student, assignment: @assignment, graded_by_id: current_user)
       end
     end
 
