@@ -265,36 +265,61 @@ class GradesController < ApplicationController
     @title = "Quick Grade #{@assignment.name}"
     @assignment_type = @assignment.assignment_type
     @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
-    @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
-    user_search_options = {}
-    user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
-    @students = current_course.students_being_graded.includes(:teams).where(user_search_options)
-    @auditors = current_course.students_auditing.includes(:teams).where(user_search_options)
+    
+    @team = current_course.teams.find_by(team_params) if params[:team_id]
+    
+    @students = current_course.students_being_graded.includes(:teams).where(team_params)
+    @auditors = current_course.students_auditing.includes(:teams).where(team_params)
 
-    student_ids = @students.pluck(:id)
-    auditor_ids = @auditors.pluck(:id)
+    @grades = Grade.where(student_id: mass_edit_student_ids, assignment_id: @assignment[:id] ).includes(:student,:assignment)
+    @auditor_grades = Grade.where(student_id: mass_edit_auditor_ids, assignment_id: @assignment[:id] ).includes(:student,:assignment)
 
-    @grades = Grade.where(:student_id => student_ids,:assignment_id=> @assignment.id ).includes(:student,:assignment)
-    @auditor_grades = Grade.where(:student_id => auditor_ids,:assignment_id=> @assignment.id ).includes(:student,:assignment)
+    create_missing_grades # create grade objects for the student/assignment pair unless present
 
-    no_grade_students = @students.where(id: student_ids - @grades.pluck(:student_id))
-    no_grade_auditors =  @students.where(id:auditor_ids - @grades.pluck(:student_id))
-
-    if no_grade_students.present?
-      no_grade_students.each do |student|
-        @grades << Grade.create(:student => student, :assignment => @assignment, :graded_by_id => current_user)
-      end
-    end
-    if no_grade_auditors.present?
-      no_grade_auditors.each do |student|
-        @auditor_grades << Grade.create(:student => student, :assignment => @assignment, :graded_by_id => current_user)
-      end
-    end
-
-    @grades.sort_by! { |grade| grade.student.last_name }
-    @auditor_grades.sort_by! { |grade| grade.student.last_name }
-
+    @grades.sort_by! { |grade| [ grade.student.last_name, grade.student.first_name ] }
+    @auditor_grades.sort_by! { |grade| [ grade.student.last_name, grade.student.first_name ] }
   end
+
+  private
+
+    def team_params
+      @team_params ||= params[:team_id] ? { id: params[:team_id] } : {}
+    end
+    
+    def mass_edit_student_ids
+      @mass_edit_student_ids ||= @students.pluck(:id)
+    end
+
+    def mass_edit_auditor_ids
+      @mass_edit_auditor_ids ||= @auditors.pluck(:id)
+    end
+
+    def no_grade_students
+      @no_grade_students ||= @students.where(id: mass_edit_student_ids - @grades.pluck(:student_id))
+    end
+
+    def no_grade_auditors
+      @no_grade_auditors ||= @auditors.where(id: mass_edit_auditor_ids - @grades.pluck(:student_id))
+    end
+
+    def create_missing_student_grades
+      no_grade_students.each do |student|
+        Grade.create(student: student, assignment: @assignment, graded_by_id: current_user)
+      end
+    end
+
+    def create_missing_auditor_grades
+      no_grade_auditors.each do |student|
+        Grade.create(student: student, assignment: @assignment, graded_by_id: current_user)
+      end
+    end
+
+    def create_missing_grades
+      create_missing_student_grades
+      create_missing_auditor_grades
+    end
+
+  public
 
   def mass_update
     @assignment = current_course.assignments.find(params[:id])
