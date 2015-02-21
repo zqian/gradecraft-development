@@ -30,7 +30,7 @@
                   %img{ :src => badge.icon, :alt => badge.name, :width => "100" }
                   .bold= badge.name
                   = "#{points badge.point_total} points" if badge.point_total?
-                 %td
+                %td
                   -# logic for badges that have actually been earned
                   - if @earned_badges_by_badge_id[badge.id]
                     -# logic for badges that can be earned multiple times
