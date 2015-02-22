@@ -29,7 +29,7 @@
             %td.center 
               = image_tag "draggable_transparent.png", :width => "10%", :style => "margin-top: -6px", :class => "draggable"
               %img.badge-icon{ :src => badge.icon, :alt => badge.name }
-              = "#{points badge.point_total} points"
+              .italic= "#{points badge.point_total} points" if badge.point_total > 0
             %td
               .subtitle= link_to badge.name, badge_path(badge)
               = raw badge.description
