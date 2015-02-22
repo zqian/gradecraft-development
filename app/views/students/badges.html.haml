@@ -41,4 +41,11 @@
                   .fi-check
                   = @earned_badges_by_badge_id[badge.id].first.created_at
                   %p= raw @earned_badges_by_badge_id[badge.id].first.try(:feedback)
-              %td= raw badge.description
+              %td
+                - if badge.badge_files.present?
+                  %b Attachments:
+                  %ul
+                    - badge.badge_files.each do |bf|
+                      %li
+                        = link_to bf.filename, bf.url
+                = raw badge.description
