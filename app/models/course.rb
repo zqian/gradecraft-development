@@ -40,7 +40,7 @@ class Course < ActiveRecord::Base
     :total_assignment_weight, :assignment_weight_close_at, :team_roles,
     :section_leader_term, :group_term, :assignment_weight_type,
     :has_submissions, :teams_visible, :badge_use_scope,
-    :weight_term, :badges_value, :predictor_setting, :max_group_size,
+    :weight_term, :predictor_setting, :max_group_size,
     :min_group_size, :shared_badges, :graph_display, :max_assignment_weight,
     :assignments, :default_assignment_weight, :accepts_submissions,
     :tagline, :academic_history_visible, :office, :phone, :class_email,
@@ -148,7 +148,7 @@ class Course < ActiveRecord::Base
   end
 
   def valuable_badges?
-    badges_value == true
+    badges.any? { |badge| badge.point_total > 0 }
   end
 
   def has_groups?
