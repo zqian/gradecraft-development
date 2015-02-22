@@ -30,7 +30,6 @@
           = f.label :visible
           = f.check_box :visible
           .form_label Can #{term_for :students} see this #{term_for :badge}?
-      .small-12.medium-3.columns
         %label.checkbox{ :for => "can_earn_multiple_times" }
           = f.label :can_earn_multiple_times,"Multi-award"
           = f.check_box :can_earn_multiple_times
@@ -47,7 +46,7 @@
 
     .small-12.columns.panel
       %h4.uppercase Attachments
-      .small-12.large-8.columns.panel
+      .small-12
         = f.simple_fields_for :badge_files, @badge.badge_files.new do |bf|
           = bf.file_field :file, :multiple => true
         - if @badge.badge_files.exists?
