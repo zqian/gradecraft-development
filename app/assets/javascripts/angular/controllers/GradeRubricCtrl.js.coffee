@@ -1,4 +1,4 @@
-@gradecraft.controller 'GradeRubricCtrl', ['$scope', 'Restangular', '$http', ($scope, Restangular, $http) -> 
+@gradecraft.controller 'GradeRubricCtrl', ['$scope', 'Restangular', 'CourseBadgePrototype', 'MetricBadgePrototype', 'RubricGradePrototype', '$http', ($scope, Restangular, CourseBadgePrototype, MetricBadgePrototype, RubricGradePrototype, $http) -> 
 
   $scope.metrics = []
   $scope.courseBadges = {}
@@ -194,66 +194,17 @@
       .error(
       )
 
-  # Rubric Grades
-  RubricGradePrototype = (attrs={})->
-    this.id = attrs.id
-    this.metric_id = attrs.metric_id
-    this.tier_id = attrs.tier_id
-    this.comments = attrs.comments
-
-  RubricGradePrototype.prototype = {}
-
   $scope.addRubricGrades = (rubricGrades)->
     angular.forEach(rubricGrades, (rg, index)->
       rubricGrade = new RubricGradePrototype(rg)
       $scope.rubricGrades[rg.metric_id] = rubricGrade
     )
 
-  # Badge Section
-  CourseBadgePrototype = (attrs={})->
-    this.id = attrs.id
-    this.name = attrs.name
-    this.description = attrs.description
-    this.point_total = attrs.point_total
-    this.icon = attrs.icon
-    this.multiple = attrs.multiple
-
-  CourseBadgePrototype.prototype = {}
-
   $scope.addCourseBadges = (courseBadges)->
     angular.forEach(courseBadges, (badge, index)->
       courseBadge = new CourseBadgePrototype(badge)
       $scope.courseBadges[badge.id] = courseBadge
     )
-
-  MetricBadgePrototype = (metric, badge, attrs={})->
-    this.metric = metric
-    this.badge = badge
-    this.create()
-    this.name = badge.name
-    this.metric_id = metric.id
-    this.badge_id = badge.id
-    this.description = badge.description
-    this.point_total = badge.point_total
-    this.icon = badge.icon
-    this.multiple = badge.multiple
-
-  MetricBadgePrototype.prototype =
-    create: ()->
-      self = this
-
-      $http.post("/metric_badges", self.createParams()).success(
-        (data,status)->
-          self.id = data.existing_metric_badge.id
-      )
-      .error((err)->
-        alert("create failed!")
-        return false
-      )
-
-    createParams: ()->
-      metric_id: this.metric.id,
-      badge_id: this.badge.id
 
   TierBadgePrototype = (tier, badge, attrs={})->
     this.tier = tier
@@ -264,7 +215,7 @@
     this.description = badge.description
     this.point_total = badge.point_total
     this.icon = badge.icon
-    this.multiple = badge.multiple
+    this.multiple = badge.multiple  
 
   MetricPrototype = (attrs={})->
     this.tiers = []
