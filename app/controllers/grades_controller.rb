@@ -200,7 +200,7 @@ class GradesController < ApplicationController
         tier_id: tier_badge[:tier_id],
         metric_id: tier_badge[:metric_id],
         tier_badge_id: tier_badge[:id],
-        student_visible: @grade.graded_or_released?
+        student_visible: @grade.is_released?
       })
     end
   end
