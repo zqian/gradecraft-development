@@ -199,6 +199,7 @@ class GradesController < ApplicationController
         assignment_id: @assignment[:id],
         tier_id: tier_badge[:tier_id],
         metric_id: tier_badge[:metric_id],
+        score: tier_badge[:point_total],
         tier_badge_id: tier_badge[:id],
         student_visible: @grade.is_released?
       })
