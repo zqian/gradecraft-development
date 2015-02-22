@@ -51,6 +51,13 @@ class CoursesController < ApplicationController
           na.assignment_type_id = nat.id
           na.course_id = new_course.id
           na.save
+          if a.assignment_score_levels.present?
+            a.assignment_score_levels.each do |asl|
+              nasl = asl.dup 
+              nasl.assignment_id = na.id 
+              nasl.save
+            end
+          end
         end
       end
     end
@@ -59,6 +66,13 @@ class CoursesController < ApplicationController
         nc = c.dup
         nc.course_id = new_course.id
         nc.save
+      end
+    end
+    if @course.grade_scheme_elements.present?
+      @course.grade_scheme_elements.each do |gse|
+        ngse = gse.dup
+        ngse.course_id = new_course.id
+        ngse.save
       end
     end
     respond_to do |format|
