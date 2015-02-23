@@ -63,6 +63,9 @@ class AssignmentsController < ApplicationController
       @comments_by_metric_id = @rubric_grades.inject({}) do |memo, rubric_grade|
         memo.merge(rubric_grade.metric_id => rubric_grade.comments)
       end
+      if @assignment.has_groups? && current_student.group_for_assignment(@assignment).present?
+        @group = current_student.group_for_assignment(@assignment)
+      end
     else
       @grades_for_assignment = @assignment.all_grades_for_assignment
     end
