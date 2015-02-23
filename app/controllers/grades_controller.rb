@@ -21,7 +21,7 @@ class GradesController < ApplicationController
       redirect_to @assignment
     end
     if @assignment.has_groups?
-      @group = @assignment.groups.find(params[:group_id])
+      @group = current_student.group_for_assignment(@assignment)
       @title = "#{@group.name}'s Grade for #{ @assignment.name }"
       @grades_for_assignment = @assignment.grades.graded_or_released
     else
