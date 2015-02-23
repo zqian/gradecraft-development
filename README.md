@@ -37,4 +37,7 @@
 1. Run `bundle install`
 1. Run `bundle exec rake db:create`
 1. Optional: run `bundle exec rake db:sample`
+1. install redis-server: brew install redis
+1. Create a tmp/sidekiq.pid file.
+1. set up environment variable for AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY
 1. Run `foreman start`

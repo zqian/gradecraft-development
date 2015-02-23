@@ -60,6 +60,9 @@ gem 'whenever'
 gem 'newrelic_rpm'
 gem 'sinatra', '>= 1.3.0', :require => nil
 
+gem 'ims_caliper', '0.1.1'
+gem 'cube-ruby', '0.0.2', require: "cube"
+
 group :development do
   gem 'haml-rails'
   gem 'valid_attribute'
