@@ -1,11 +1,9 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
-
 FactoryGirl.define do
   factory :event do
     name ""
-    descripton ""
-    open_date ""
-    close_date ""
+    description ""
+    open_at ""
+    due_at ""
     media ""
     thumbnail ""
     media_credit ""
