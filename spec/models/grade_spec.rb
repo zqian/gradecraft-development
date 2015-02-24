@@ -36,7 +36,6 @@ describe Grade do
   it { should respond_to("admin_notes")}
   it { should respond_to("graded_by_id")}
   it { should respond_to("team_id")}
-  it { should respond_to("released")}
   it { should respond_to("predicted_score")}
   it { should respond_to("instructor_modified")}
 

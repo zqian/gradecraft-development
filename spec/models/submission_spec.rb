@@ -38,6 +38,8 @@ describe Submission do
   end
 
   it "can't be saved without any information" do
+    @submission.link = nil
+    @submission.text_comment = nil
     expect { @submission.save! }.to raise_error(ActiveRecord::RecordNotSaved)
   end
 
