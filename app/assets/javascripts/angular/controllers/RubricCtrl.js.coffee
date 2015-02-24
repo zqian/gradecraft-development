@@ -1,4 +1,4 @@
-@gradecraft.controller 'RubricCtrl', ['$scope', 'Restangular', 'MetricBadgePrototype', 'CourseBadgePrototype', '$http', ($scope, Restangular, MetricBadgePrototype, CourseBadgePrototype, $http) -> 
+@gradecraft.controller 'RubricCtrl', ['$scope', 'Restangular', 'MetricBadgePrototype', 'CourseBadgePrototype','TierBadgePrototype', '$http', ($scope, Restangular, MetricBadgePrototype, CourseBadgePrototype, TierBadgePrototype, $http) -> 
 
 
  # hide modal window by default
@@ -61,34 +61,34 @@
       $scope.courseBadges[badge.id] = courseBadge
     )
 
-  TierBadgePrototype = (tier, badge, attrs={create:false})->
-    this.tier = tier
-    this.id = null
-    this.badge = badge
-    if attrs.create
-      this.create()
-    this.name = badge.name
-    this.description = badge.description
-    this.point_total = badge.point_total
-    this.icon = badge.icon
-    this.multiple = badge.multiple
+  # TierBadgePrototype = (tier, badge, attrs={create:false})->
+  #   this.tier = tier
+  #   this.id = null
+  #   this.badge = badge
+  #   if attrs.create
+  #     this.create()
+  #   this.name = badge.name
+  #   this.description = badge.description
+  #   this.point_total = badge.point_total
+  #   this.icon = badge.icon
+  #   this.multiple = badge.multiple
 
-  TierBadgePrototype.prototype =
-    create: ()->
-      self = this
+  # TierBadgePrototype.prototype =
+  #   create: ()->
+  #     self = this
 
-      $http.post("/tier_badges", self.createParams()).success(
-        (data,status)->
-          self.id = data.existing_tier_badge.id
-      )
-      .error((err)->
-        alert("create failed!")
-        return false
-      )
+  #     $http.post("/tier_badges", self.createParams()).success(
+  #       (data,status)->
+  #         self.id = data.existing_tier_badge.id
+  #     )
+  #     .error((err)->
+  #       alert("create failed!")
+  #       return false
+  #     )
 
-    createParams: ()->
-      tier_id: this.tier.id,
-      badge_id: this.badge.id  
+  #   createParams: ()->
+  #     tier_id: this.tier.id,
+  #     badge_id: this.badge.id  
 
   # Metrics Section
   MetricPrototype = (attrs={})->
@@ -328,9 +328,6 @@
     selectBadge: ()->
       self = this
       newBadge = new TierBadgePrototype(self, angular.copy(self.selectedBadge), {create: true})
-      self.badges[newBadge.badge.id] = newBadge # add tier badge to tier
-      delete self.availableBadges[self.selectedBadge.id] # remove badge from available badges on tier
-      self.selectedBadge = "" # reset selected badge
 
     deleteTierBadge: (badge)->
       self = this
