@@ -20,21 +20,26 @@ require 'spec_helper'
 
 describe EventsController do
 
-  # This should return the minimal set of attributes required to create a valid
-  # Event. As you add validations to Event, be sure to
-  # adjust the attributes here as well.
-  let(:valid_attributes) { { "name" => "" } }
+  before do
+    @course = create(:course)
+    @user = create(:user)
+    @user.courses << @course
+    login_user
+    session[:course_id] = @course.id
+  end
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # EventsController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
+  let(:valid_session) { { "current_course" => @course} }
 
   describe "GET index" do
     it "assigns all events as @events" do
       pending
-      event = Event.create! valid_attributes
-      get :index, {}, valid_session
+      event = create(:event)
+      allow(EventLogger).to receive(:perform_async).and_return(true)
+      require 'pry'; binding.pry
+      get :index
       assigns(:events).should eq([event])
     end
   end
@@ -42,7 +47,7 @@ describe EventsController do
   describe "GET show" do
     it "assigns the requested event as @event" do
       pending
-      event = Event.create! valid_attributes
+      event = create(:event)
       get :show, {:id => event.to_param}, valid_session
       assigns(:event).should eq(event)
     end

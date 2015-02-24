@@ -42,8 +42,13 @@ RSpec.configure do |config|
   #config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.include FactoryGirl::Syntax::Methods
 
-  # config.filter_run focus: true
-  # config.run_all_when_everything_filtered = true
+  # Authentication with Sorcery
+  # https://github.com/NoamB/sorcery/wiki/Testing-Rails
+  config.include Sorcery::TestHelpers::Rails#::Controller, type: :controller
+  #config.include Sorcery::TestHelpers::Rails::Integration, type: :feature
+
+  config.filter_run focus: true
+  config.run_all_when_everything_filtered = true
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
