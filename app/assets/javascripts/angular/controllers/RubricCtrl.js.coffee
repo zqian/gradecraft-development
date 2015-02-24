@@ -59,36 +59,7 @@
     angular.forEach(courseBadges, (badge, index)->
       courseBadge = new CourseBadgePrototype(badge)
       $scope.courseBadges[badge.id] = courseBadge
-    )
-
-  # TierBadgePrototype = (tier, badge, attrs={create:false})->
-  #   this.tier = tier
-  #   this.id = null
-  #   this.badge = badge
-  #   if attrs.create
-  #     this.create()
-  #   this.name = badge.name
-  #   this.description = badge.description
-  #   this.point_total = badge.point_total
-  #   this.icon = badge.icon
-  #   this.multiple = badge.multiple
-
-  # TierBadgePrototype.prototype =
-  #   create: ()->
-  #     self = this
-
-  #     $http.post("/tier_badges", self.createParams()).success(
-  #       (data,status)->
-  #         self.id = data.existing_tier_badge.id
-  #     )
-  #     .error((err)->
-  #       alert("create failed!")
-  #       return false
-  #     )
-
-  #   createParams: ()->
-  #     tier_id: this.tier.id,
-  #     badge_id: this.badge.id  
+    ) 
 
   # Metrics Section
   MetricPrototype = (attrs={})->

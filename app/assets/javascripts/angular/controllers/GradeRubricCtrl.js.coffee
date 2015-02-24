@@ -206,17 +206,6 @@
       $scope.courseBadges[badge.id] = courseBadge
     )
 
-  # TierBadgePrototype = (tier, badge, attrs={})->
-  #   this.tier = tier
-  #   this.badge = badge
-  #   this.name = badge.name
-  #   this.tier_id = tier.id
-  #   this.badge_id = badge.id
-  #   this.description = badge.description
-  #   this.point_total = badge.point_total
-  #   this.icon = badge.icon
-  #   this.multiple = badge.multiple  
-
   MetricPrototype = (attrs={})->
     this.tiers = []
     this.selectedTier = null

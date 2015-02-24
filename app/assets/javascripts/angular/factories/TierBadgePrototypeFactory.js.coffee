@@ -1,20 +1,20 @@
 @gradecraft.factory 'TierBadgePrototype', ['$http', ($http) ->
-  TierBadgePrototype = (tier, badge, attrs={create:false}) ->  
-    @tier = tier
-    @badge = badge
-    if badge.name
-      @name = badge.name
-    @tier_id = tier.id
-    @badge_id = badge.id
-    @description = badge.description
-    @point_total = badge.point_total
-    @icon = badge.icon
-    @multiple = badge.multiple
-    @id = null
-    if attrs.create
-      @create()
+  class TierBadgePrototype
+    constructor: (tier, badge, attrs={create:false}) ->  
+      @tier = tier
+      @badge = badge
+      if badge.name
+        @name = badge.name
+      @tier_id = tier.id
+      @badge_id = badge.id
+      @description = badge.description
+      @point_total = badge.point_total
+      @icon = badge.icon
+      @multiple = badge.multiple
+      @id = null
+      if attrs.create
+        @create()
  
-  TierBadgePrototype.prototype =
     create: ()->
       self = this
 
@@ -33,7 +33,5 @@
     createParams: ()->
       tier_id: this.tier.id,
       badge_id: this.badge.id
- 
-  return TierBadgePrototype
 
 ]
