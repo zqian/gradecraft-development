@@ -84,7 +84,7 @@
       alert("snakes!")
     addTier: (attrs={})->
       self = this
-      newTier = new TierPrototype(self, attrs)
+      newTier = new TierPrototype(self, attrs, $scope)
       this.tiers.splice(-1, 0, newTier)
     addTiers: (tiers)->
       self = this
@@ -93,7 +93,7 @@
       )
     loadTier: (attrs={})->
       self = this
-      newTier = new TierPrototype(self, attrs)
+      newTier = new TierPrototype(self, attrs, $scope)
       this.tiers.push newTier
 
     loadMetricBadge: (metricBadge)->

@@ -1,24 +1,25 @@
 @gradecraft.factory 'TierPrototype', ['$http', 'TierBadgePrototype', ($http, TierBadgePrototype) ->
-  TierPrototype = (metric, attrs={})->
-    this.id = attrs.id or null
-    this.metric = metric
-    this.badges = {}
-    this.availableBadges = angular.copy($scope.courseBadges)
-    this.selectedBadge = ""
-    this.id = if attrs.id then attrs.id else null
+  class TierPrototype
+    constructor: (metric, attrs={}, $scope)->
+      @$scope = $scope
+      @id = attrs.id or null
+      @metric = metric
+      @badges = {}
+      @availableBadges = angular.copy($scope.courseBadges)
+      @selectedBadge = ""
+      @id = if attrs.id then attrs.id else null
 
-    this.loadTierBadges(attrs["tier_badges"]) if attrs["tier_badges"] #add badges if passed on init
-    this.metric_id = metric.id
-    this.name = attrs.name or ""
-    this.editingBadges = false
-    this.points = attrs.points || 0
-    this.fullCredit = attrs.full_credit or false
-    this.noCredit = attrs.no_credit or false
-    this.durable = attrs.durable or false
-    this.description = attrs.description or ""
-    this.resetChanges()
+      @loadTierBadges(attrs["tier_badges"]) if attrs["tier_badges"] #add badges if passed on init
+      @metric_id = metric.id
+      @name = attrs.name or ""
+      @editingBadges = false
+      @points = attrs.points || 0
+      @fullCredit = attrs.full_credit or false
+      @noCredit = attrs.no_credit or false
+      @durable = attrs.durable or false
+      @description = attrs.description or ""
+      @resetChanges()
 
-  TierPrototype.prototype =
     isNew: ()->
       this.id is null
     isSaved: ()->
@@ -88,7 +89,7 @@
       if confirm("Are you sure you want to delete this badge from the tier?")
         $http.delete("/tier_badges/#{tierBadge.id}").success(
           (data,status)->
-            self.availableBadges[tierBadge.badge.id] = angular.copy($scope.courseBadges[tierBadge.badge.id])
+            self.availableBadges[tierBadge.badge.id] = angular.copy(self.$scope.courseBadges[tierBadge.badge.id])
             delete self.badges[tierBadge.badge.id]
         )
         .error((err)->
@@ -151,6 +152,5 @@
       else
         self.removeFromMetric(index)
     removeFromMetric: (index)->
-      this.metric.tiers.splice(index,1)  
-  return TierPrototype      
+      this.metric.tiers.splice(index,1) 
 ]

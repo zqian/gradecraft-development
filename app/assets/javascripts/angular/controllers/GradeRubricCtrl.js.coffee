@@ -232,7 +232,7 @@
   MetricPrototype.prototype =
     addTier: (attrs={})->
       self = this
-      newTier = new TierPrototype(self, attrs)
+      newTier = new TierPrototype(self, attrs, $scope)
       self.tiers.push newTier
       if self.rubricGradeTierId and self.rubricGradeTierId == newTier.id
         # alert(self.rubricGradeTierId)
