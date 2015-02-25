@@ -16,9 +16,9 @@
         @create()
  
     create: ()->
-      self = this
+      self = @
 
-      $http.post("/tier_badges", self.createParams()).success(
+      $http.post("/tier_badges", @createParams()).success(
         (data,status)->
           self.id = data.existing_tier_badge.id
           self.tier.badges[self.badge_id] = self # add tier badge to tier
@@ -31,7 +31,7 @@
       )
 
     createParams: ()->
-      tier_id: this.tier.id,
-      badge_id: this.badge.id
+      tier_id: @tier.id,
+      badge_id: @badge.id
 
 ]
