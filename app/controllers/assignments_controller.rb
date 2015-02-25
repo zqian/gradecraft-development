@@ -6,7 +6,7 @@ class AssignmentsController < ApplicationController
 
   def index
     if current_user_is_student?
-      redirect_to syllabus_path 
+      redirect_to syllabus_path
     else
       @title = "#{term_for :assignments}"
       @assignment_types = current_course.assignment_types.sorted
@@ -33,7 +33,7 @@ class AssignmentsController < ApplicationController
 
     # Returns a hash of grades given for the assignment in format of {student_id: grade}
     @assignment_grades_by_student_id = current_course_data.assignment_grades(@assignment)
-    
+
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
     if @team
       students = current_course.students_being_graded_by_team(@team)
@@ -62,6 +62,9 @@ class AssignmentsController < ApplicationController
       @rubric_grades = RubricGrade.joins("left outer join submissions on submissions.id = rubric_grades.submission_id").where(student_id: current_user[:id]).where(assignment_id: params[:id])
       @comments_by_metric_id = @rubric_grades.inject({}) do |memo, rubric_grade|
         memo.merge(rubric_grade.metric_id => rubric_grade.comments)
+      end
+      if @assignment.has_groups? && current_student.group_for_assignment(@assignment).present?
+        @group = current_student.group_for_assignment(@assignment)
       end
     else
       @grades_for_assignment = @assignment.all_grades_for_assignment
@@ -115,39 +118,54 @@ class AssignmentsController < ApplicationController
   end
 
   def create
+    if params[:assignment][:assignment_files_attributes].present?
+      @assignment_files = params[:assignment][:assignment_files_attributes]["0"]["file"]
+      params[:assignment].delete :assignment_files_attributes
+    end
+
     @assignment = current_course.assignments.new(params[:assignment])
-    @title = "Create a New #{term_for :assignment}"
-    #@assignment.assignment_type = current_course.assignment_types.find_by_id(params[:assignment_type_id])
+
+    if @assignment_files
+      @assignment_files.each do |af|
+        @assignment.assignment_files.new(file: af, filename: af.original_filename)
+      end
+    end
+
     respond_to do |format|
-      self.check_uploads
-      @assignment.save
       if @assignment.save
         set_assignment_weights
         format.html { respond_with @assignment, notice: "#{(term_for :assignment).titleize}  #{@assignment.name} successfully created" }
       else
+        # TODO: refactor, see submissions_controller
+        @title = "Create a New #{term_for :assignment}"
         format.html {render :action => "new", :group => @group }
       end
     end
   end
 
-  def check_uploads
-    if params[:assignment][:assignment_files_attributes]["0"][:filepath].empty?
-      params[:assignment].delete(:assignment_files_attributes)
-      @assignment.assignment_files.destroy_all
-    end
-  end
-
   def update
+    if params[:assignment][:assignment_files_attributes].present?
+      @assignment_files = params[:assignment][:assignment_files_attributes]["0"]["file"]
+      params[:assignment].delete :assignment_files_attributes
+    end
+
     @assignment = current_course.assignments.includes(:assignment_score_levels).find(params[:id])
-    @title = "Edit #{term_for :assignment}"
+
+    if @assignment_files
+      @assignment_files.each do |af|
+        @assignment.assignment_files.new(file: af, filename: af.original_filename)
+      end
+    end
+
     respond_to do |format|
-      self.check_uploads
-      @assignment.assign_attributes(params[:assignment])
-      if @assignment.save
+
+      if @assignment.update_attributes(params[:assignment])
         set_assignment_weights
         format.html { redirect_to assignments_path, notice: "#{(term_for :assignment).titleize}  #{@assignment.name} successfully updated" }
       else
-        format.html {render :action => "new", :group => @group }
+        # TODO: refactor, see submissions_controller
+        @title = "Edit #{term_for :assignment}"
+        format.html {render :action => "edit", :group => @group }
       end
     end
   end
@@ -169,7 +187,7 @@ class AssignmentsController < ApplicationController
     @assignment = current_course.assignments.find(params[:id])
     @title = @assignment.name
     @groups = @assignment.groups
-    
+
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
     if @team
       students = current_course.students_being_graded_by_team(@team)
@@ -179,9 +197,9 @@ class AssignmentsController < ApplicationController
     user_search_options = {}
     user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
     @students = students
-    
+
     @auditing = current_course.students_auditing.includes(:teams).where(user_search_options)
-    
+
     @rubric = @assignment.fetch_or_create_rubric
     @metrics = @rubric.metrics
     @course_badges = serialized_course_badges
@@ -197,7 +215,7 @@ class AssignmentsController < ApplicationController
     end
 
   end
-  
+
   private
 
   def serialized_rubric_grades

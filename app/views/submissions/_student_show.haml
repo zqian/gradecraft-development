@@ -15,7 +15,7 @@
       // Late alert if submitted after due date
       - if current_student.submission_for_assignment(@assignment).late?
         %span.label.alert.radius Late!
-        
+
       // Checking to see if the submission was updated - if the update date is different from the creation date, displaying it
     - if current_student.submission_for_assignment(@assignment).updated_at != current_student.submission_for_assignment(@assignment).created_at
       %p
@@ -34,20 +34,24 @@
         %ul
           - current_student.submission_for_assignment(@assignment).submission_files.each do |sf|
             %li
-              = link_to sf.filename, sf.url
+              - if sf.file_processing
+                = "#{sf.filename} (upload in progress...)"
+              - else
+                = link_to sf.filename, sf.url
+
 
     - if current_student.submission_for_assignment(@assignment).text_comment?
       %p
-        %span.smallcaps Statement:
+        %span.smallcaps Content/Statement:
         = raw current_student.submission_for_assignment(@assignment).text_comment
 
 
   - else
-    Your Submission
     // link to edit the submission
     - if @assignment.open?
-      %span= link_to "Edit", edit_assignment_submission_path(@assignment, @group.submission_for_assignment(@assignment)), :class => "button tiny radius secondary no-margin"
+      = link_to "Edit My Submission", edit_assignment_submission_path(@assignment, @group.submission_for_assignment(@assignment)), :class => "button tiny radius"
     // Displaying when the assignment was submitted
+    .clear
     %p
       %span.smallcaps Submitted:
       = @group.submission_for_assignment(@assignment).created_at
@@ -73,8 +77,10 @@
         %ul
           - @group.submission_for_assignment(@assignment).submission_files.each do |sf|
             %li
-              = link_to sf.filename, sf.url
-              = link_to "(Remove)", remove_uploads_path({ :model => "SubmissionFile", :assignment_id => @assignment.id, :upload_id => sf.id } )
+              - if sf.file_processing
+                = "#{sf.filename} (upload in progress...)"
+              - else
+                = link_to sf.filename, sf.url
 
     - if @group.submission_for_assignment(@assignment).text_comment?
       %p

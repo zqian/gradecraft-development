@@ -57,10 +57,11 @@
                       %td
                         .button-bar
                           %ul.button-group.right.radius
-                            %li
-                              %a{:href => mass_grade_assignment_path(assignment), :class => 'button' }
-                                Quick Grade
-                                %span.sr-only=assignment.name
+                            - if ! ( assignment.rubric and assignment.rubric.designed? and assignment.use_rubric? )
+                              %li
+                                %a{:href => mass_grade_assignment_path(assignment), :class => 'button' }
+                                  Quick Grade
+                                  %span.sr-only=assignment.name
                             %li
                               %a{:href => edit_assignment_path(assignment), :class => 'button' }
                                 Edit

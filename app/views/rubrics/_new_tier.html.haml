@@ -23,7 +23,6 @@
     .tier-badge(ng-repeat="(tierBadgeId, tierBadge) in tier.badges")
       %img(src="{{tierBadge.badge.icon}}" width="20px" height="20px")
       {{tierBadge.name}}
-      {{tierBadge.id}}
       %button.delete(type="button" ng-click="tier.deleteTierBadge(tierBadge)") X
 
   .update-badges

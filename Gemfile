@@ -18,6 +18,7 @@ gem 's3_direct_upload'
 gem 'bootsy'
 gem 'canable'
 gem 'carrierwave'
+gem 'carrierwave_backgrounder'
 gem 'coffee-rails'
 gem "compass-rails", "~> 1.1.3"
 gem 'dalli'
@@ -72,15 +73,15 @@ group :development do
 end
 
 group :test do
-  gem 'faker'
+  gem 'faker', '~> 1.4.3'
   gem 'capybara', '~> 2.1.0'
   gem 'database_cleaner', "~> 1.0.1"
   gem 'launchy'
   gem 'selenium-webdriver'
-end
-
-group :test, :development do
+  gem 'factory_girl_rails', '~> 4.5.0'
   gem 'rspec-rails', '~> 2.14.0'
-  gem 'factory_girl_rails', '~> 4.2.1'
 end
 
+group :tasks do
+  gem 'rake-hooks'
+end

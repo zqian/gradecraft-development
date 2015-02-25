@@ -32,6 +32,7 @@ describe EventsController do
 
   describe "GET index" do
     it "assigns all events as @events" do
+      pending
       event = Event.create! valid_attributes
       get :index, {}, valid_session
       assigns(:events).should eq([event])
@@ -40,6 +41,7 @@ describe EventsController do
 
   describe "GET show" do
     it "assigns the requested event as @event" do
+      pending
       event = Event.create! valid_attributes
       get :show, {:id => event.to_param}, valid_session
       assigns(:event).should eq(event)
@@ -48,6 +50,7 @@ describe EventsController do
 
   describe "GET new" do
     it "assigns a new event as @event" do
+      pending
       get :new, {}, valid_session
       assigns(:event).should be_a_new(Event)
     end
@@ -55,6 +58,7 @@ describe EventsController do
 
   describe "GET edit" do
     it "assigns the requested event as @event" do
+      pending
       event = Event.create! valid_attributes
       get :edit, {:id => event.to_param}, valid_session
       assigns(:event).should eq(event)
@@ -64,18 +68,21 @@ describe EventsController do
   describe "POST create" do
     describe "with valid params" do
       it "creates a new Event" do
+        pending
         expect {
           post :create, {:event => valid_attributes}, valid_session
         }.to change(Event, :count).by(1)
       end
 
       it "assigns a newly created event as @event" do
+        pending
         post :create, {:event => valid_attributes}, valid_session
         assigns(:event).should be_a(Event)
         assigns(:event).should be_persisted
       end
 
       it "redirects to the created event" do
+        pending
         post :create, {:event => valid_attributes}, valid_session
         response.should redirect_to(Event.last)
       end
@@ -83,6 +90,7 @@ describe EventsController do
 
     describe "with invalid params" do
       it "assigns a newly created but unsaved event as @event" do
+        pending
         # Trigger the behavior that occurs when invalid params are submitted
         Event.any_instance.stub(:save).and_return(false)
         post :create, {:event => { "name" => "invalid value" }}, valid_session
@@ -90,6 +98,7 @@ describe EventsController do
       end
 
       it "re-renders the 'new' template" do
+        pending
         # Trigger the behavior that occurs when invalid params are submitted
         Event.any_instance.stub(:save).and_return(false)
         post :create, {:event => { "name" => "invalid value" }}, valid_session
@@ -101,6 +110,7 @@ describe EventsController do
   describe "PUT update" do
     describe "with valid params" do
       it "updates the requested event" do
+        pending
         event = Event.create! valid_attributes
         # Assuming there are no other events in the database, this
         # specifies that the Event created on the previous line
@@ -111,12 +121,14 @@ describe EventsController do
       end
 
       it "assigns the requested event as @event" do
+        pending
         event = Event.create! valid_attributes
         put :update, {:id => event.to_param, :event => valid_attributes}, valid_session
         assigns(:event).should eq(event)
       end
 
       it "redirects to the event" do
+        pending
         event = Event.create! valid_attributes
         put :update, {:id => event.to_param, :event => valid_attributes}, valid_session
         response.should redirect_to(event)
@@ -125,6 +137,7 @@ describe EventsController do
 
     describe "with invalid params" do
       it "assigns the event as @event" do
+        pending
         event = Event.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Event.any_instance.stub(:save).and_return(false)
@@ -133,6 +146,7 @@ describe EventsController do
       end
 
       it "re-renders the 'edit' template" do
+        pending
         event = Event.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Event.any_instance.stub(:save).and_return(false)
@@ -144,6 +158,7 @@ describe EventsController do
 
   describe "DELETE destroy" do
     it "destroys the requested event" do
+      pending
       event = Event.create! valid_attributes
       expect {
         delete :destroy, {:id => event.to_param}, valid_session
@@ -151,6 +166,7 @@ describe EventsController do
     end
 
     it "redirects to the events list" do
+      pending
       event = Event.create! valid_attributes
       delete :destroy, {:id => event.to_param}, valid_session
       response.should redirect_to(events_url)

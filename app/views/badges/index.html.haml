@@ -21,8 +21,6 @@
         %tr
           %th.center{:width => "15%" } Icon
           %th{:width => "25%" } Name
-          - if current_course.valuable_badges?
-            %th{"data-sort" => "int"} Value
           %th Awarded
           %th{ :style => "min-width: 300px" }
       %tbody.sort-badges
@@ -31,11 +29,10 @@
             %td.center 
               = image_tag "draggable_transparent.png", :width => "10%", :style => "margin-top: -6px", :class => "draggable"
               %img.badge-icon{ :src => badge.icon, :alt => badge.name }
+              .italic= "#{points badge.point_total} points" if badge.point_total > 0
             %td
               .subtitle= link_to badge.name, badge_path(badge)
               = raw badge.description
-            - if current_course.valuable_badges?
-              %td= points badge.point_total
             %td= badge.awarded_count
             %td
               .button-bar

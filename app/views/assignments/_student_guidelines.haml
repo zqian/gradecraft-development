@@ -8,7 +8,7 @@
   .italic.not_bold= "Due: #{@assignment.due_at}" if @assignment.due_at?
 
   - if @assignment.student_logged? && @assignment.open? && current_user_is_student?
-  
+
     = simple_form_for current_student_data.grade_for_assignment(@assignment), :url => self_log_grades_assignment_path(@assignment), :method => :post do |f|
       - present = current_student.self_reported_done?(@assignment)
       = hidden_field_tag :present, !present
@@ -16,27 +16,30 @@
         = f.submit (@assignment_type.student_logged_button_text), :class => "button #{present ? 'alert' : 'success'} tiny radius"
 
 
-  - if @assignment.accepts_submissions?
+  - if @assignment.accepts_submissions? && ( @assignment.is_individual? || @assignment.has_groups? && current_student.group_for_assignment(@assignment).present? && current_student.group_for_assignment(@assignment).approved? )
     - if (@assignment.open? && ! current_student.grade_for_assignment(@assignment).present?) || (@assignment.open? && current_student.grade_for_assignment(@assignment).present? && current_student.grade_for_assignment(@assignment).instructor_modified == false) || (@assignment.open? && current_student.grade_for_assignment(@assignment).present? && @assignment.resubmissions_allowed?)
       %br
       - if current_student.submission_for_assignment(@assignment)
         = link_to "Edit My Submission", edit_assignment_submission_path(@assignment, current_student.submission_for_assignment(@assignment)), :class => 'button radius'
       - elsif @assignment.future? || @assignment.still_accepted?
-        = link_to "Submit", new_assignment_submission_path(@assignment, :student_id => current_student), :class => 'button radius'
+        - if @assignment.is_individual?
+          = link_to "Submit", new_assignment_submission_path(@assignment, :student_id => current_student), :class => 'button radius'
+        - else
+          = link_to "Submit", new_assignment_submission_path(@assignment, :group_id => current_student.group_for_assignment(@assignment)), :class => 'button radius'
         - if @assignment.past?
           .label.alert.radius= "Past due!"
     %br
 
+  - if @assignment.assignment_files.present?
+    %hr
+    %h4.uppercase Downloads
+    %ul
+      - @assignment.assignment_files.each do |af|
+        %li= link_to af.filename, af.url
+
   - if @assignment.description.present?
     %hr
-
     %h4.uppercase Guidelines:
-    - if @assignment.assignment_files.present?
-      %ul 
-        Downloads
-        - @assignment.assignment_files.each do |af|
-          %li= link_to af.filename, af.url
-          
     %p= raw @assignment.description
 
   - if @assignment.assignment_type.predictor_description.present?

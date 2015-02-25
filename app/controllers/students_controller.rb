@@ -110,9 +110,32 @@ class StudentsController < ApplicationController
     end
   end
 
+  # TODO
   def badges
     @title = "#{term_for :badges}"
+
+    @earned_badges = current_student.student_visible_earned_badges(current_course)
+    @unearned_badges = current_student.student_visible_unearned_badges(current_course)
+    @badges = [] << @earned_badges.collect(&:badge) << @unearned_badges
+
+    @badges = @badges.flatten.uniq.sort_by(&:position)
+    @earned_badges_by_badge_id ||= earned_badges_by_badge_id
   end
+
+  private
+
+  def earned_badges_by_badge_id
+    @earned_badges.inject({}) do |memo, earned_badge|
+      if memo[earned_badge.badge.id]
+        memo[earned_badge.badge.id] << earned_badge
+      else
+        memo[earned_badge.badge.id] = [earned_badge]
+      end
+      memo
+    end
+  end
+
+  public
 
   # Display the grade predictor
   def predictor
