@@ -81,6 +81,7 @@ class AssignmentsController < ApplicationController
     @metrics = @rubric.metrics
   end
 
+  # TODO: verify not used and remove
   def rules
     @assignment = current_course.assignments.find(params[:id])
     @title = @assignment.name

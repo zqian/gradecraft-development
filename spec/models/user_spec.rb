@@ -73,6 +73,7 @@ describe User do
 
   context "student_invisible_badges" do
     it "should return invisible badges for which the student has earned a badge" do
+      pending
       @invisible_badges = create_list(:badge, 2, course: @course, visible: false)
       @student.earn_badges(@invisible_badges)
       @badges_earned_by_id = @student.student_invisible_badges(@course).sort_by(&:id)
