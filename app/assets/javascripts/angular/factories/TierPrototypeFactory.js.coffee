@@ -1,4 +1,4 @@
-@gradecraft.factory 'TierPrototype', ['$http', 'TierBadgePrototype', ($http, TierBadgePrototype) ->
+@gradecraft.factory 'TierPrototype', ['$http', 'Restangular', 'TierBadgePrototype', ($http, Restangular, TierBadgePrototype) ->
   class TierPrototype
     constructor: (metric, attrs={}, $scope)->
       @$scope = $scope
