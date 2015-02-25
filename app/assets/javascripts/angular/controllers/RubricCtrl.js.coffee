@@ -1,4 +1,4 @@
-@gradecraft.controller 'RubricCtrl', ['$scope', 'Restangular', 'MetricBadgePrototype', 'CourseBadgePrototype','TierPrototype', '$http', ($scope, Restangular, MetricBadgePrototype, CourseBadgePrototype, TierPrototype, $http) -> 
+@gradecraft.controller 'RubricCtrl', ['$scope', 'Restangular', 'MetricPrototype', 'CourseBadgePrototype', '$http', ($scope, Restangular, MetricPrototype, CourseBadgePrototype, $http) -> 
  # hide modal window by default
  $scope.modalShown = false
  $scope.toggleModal = ->
@@ -48,7 +48,7 @@
     $scope.pointsDifference() < 0
 
   $scope.showMetric = (attrs)->
-    new MetricPrototype(attrs)
+    new MetricPrototype(attrs, $scope)
 
   $scope.countSavedMetric = () ->
     $scope.savedMetricCount += 1
@@ -59,164 +59,9 @@
       $scope.courseBadges[badge.id] = courseBadge
     ) 
 
-  # Metrics Section
-  MetricPrototype = (attrs={})->
-    this.tiers = []
-    this.badges = {}
-    # this.availableBadges = angular.copy($scope.courseBadges)
-    # this.selectedBadge = ""
-    this.id = if attrs.id then attrs.id else null
-    this.fullCreditTier = null
-    this.addTiers(attrs["tiers"]) if attrs["tiers"] #add tiers if passed on init
-    # this.loadMetricBadges(attrs["metric_badges"]) if attrs["metric_badges"] #add badges if passed on init
-    this.name = if attrs.name then attrs.name else ""
-    this.rubricId = if attrs.rubric_id then attrs.rubric_id else $scope.rubricId
-    if this.id
-      this.max_points = if attrs.max_points then attrs.max_points else 0
-    else
-      this.max_points = if attrs.max_points then attrs.max_points else null
-
-    this.description = if attrs.description then attrs.description else ""
-    this.hasChanges = false
-  MetricPrototype.prototype =
-    # Tiers
-    alert: ()->
-      alert("snakes!")
-    addTier: (attrs={})->
-      self = this
-      newTier = new TierPrototype(self, attrs, $scope)
-      this.tiers.splice(-1, 0, newTier)
-    addTiers: (tiers)->
-      self = this
-      angular.forEach(tiers, (tier,index)->
-        self.loadTier(tier)
-      )
-    loadTier: (attrs={})->
-      self = this
-      newTier = new TierPrototype(self, attrs, $scope)
-      this.tiers.push newTier
-
-    loadMetricBadge: (metricBadge)->
-      self = this
-      courseBadge = self.availableBadges[metricBadge.badge_id]
-      loadedBadge = new MetricBadgePrototype(self, angular.copy(courseBadge))
-      self.badges[courseBadge.id] = loadedBadge # add metric badge to metric
-      delete self.availableBadges[courseBadge.id] # remove badge from available badges on metric
-     
-    # Badges
-    loadMetricBadges: (metricBadges)->
-      self = this
-      angular.forEach(metricBadges, (metricBadge, index)->
-        if (self.availableBadges[metricBadge.badge_id])
-          self.loadMetricBadge(metricBadge)
-      )
-
-    selectBadge: ()->
-      self = this
-      newBadge = new MetricBadgePrototype(self, angular.copy(self.selectedBadge))
-      self.badges[newBadge.badge.id] = newBadge # add metric badge to metric
-      delete self.availableBadges[self.selectedBadge.id] # remove badge from available badges on metric
-      self.selectedBadge = "" # reset selected badge
-
-    deleteMetricBadge: (badge)->
-      self = this
-      metricBadge = badge 
-
-      if confirm("Are you sure you want to delete this badge from the metric?")
-        $http.delete("/metric_badges/#{metricBadge.id}").success(
-          (data,status)->
-            self.availableBadges[metricBadge.badge.id] = angular.copy($scope.courseBadges[metricBadge.badge.id])
-            delete self.badges[metricBadge.badge.id]
-        )
-        .error((err)->
-          alert("delete failed!")
-        )
-
-    badgeIds: ()->
-      # distill ids for all badges
-      self = this
-      badgeIds = []
-      angular.forEach(self.badges, (badge, index)->
-        badgeIds.push(badge.id)
-      )
-      badgeIds
-
-    isNew: ()->
-      this.id is null
-    isSaved: ()->
-      this.id != null
-    change: ()->
-      self = this
-      if this.fullCreditTier
-        this.updateFullCreditTier()
-      if this.isSaved()
-        self.hasChanges = true
-    updateFullCreditTier: ()->
-      this.tiers[0].points = this.max_points
-    resetChanges: ()->
-      this.hasChanges = false
-    resourceUrl: ()->
-      "/metrics/#{self.id}"
-    order: ()->
-      jQuery.inArray(this, $scope.metrics)
-    params: ()->
-      self = this
-      {
-        name: self.name,
-        max_points: self.max_points,
-        order: self.order(),
-        description: self.description,
-        rubric_id: self.rubricId
-      }
-    index: ()->
-      this.order()
-    destroy: ()->
-
-    remove:(index)->
-      $scope.metrics.splice(index,1)
-    create: ()->
-      self = this
-      Restangular.all('metrics').post(this.params())
-        .then (response)->
-          metric = response.existing_metric
-          self.id = metric.id
-          $scope.countSavedMetric()
-          self.addTiers(metric.tiers)
-
-    modify: (form)->
-      if form.$valid
-        if this.isNew()
-          this.create()
-        else
-          this.update()
-
-    update: ()->
-      self = this
-      if this.hasChanges
-        Restangular.one('metrics', self.id).customPUT(self.params())
-          .then(
-            ()-> , #success
-            ()-> # failure
-          )
-          self.resetChanges()
-
-    delete: (index)->
-      self = this
-      if this.isSaved()
-        if confirm("Are you sure you want to delete this metric? Deleting this metric will delete its tiers as well.")
-          $http.delete("/metrics/#{self.id}").success(
-            (data,status)->
-              self.remove(index)
-          )
-          .error((err)->
-            alert("delete failed!")
-          )
-      else
-        self.remove(index)
-
   $scope.addMetrics = (existingMetrics)->
     angular.forEach(existingMetrics, (em, index)->
-      emProto = new MetricPrototype(em)
+      emProto = new MetricPrototype(em, $scope)
       $scope.countSavedMetric() # indicate saved metric present
       $scope.metrics.push emProto
     )
