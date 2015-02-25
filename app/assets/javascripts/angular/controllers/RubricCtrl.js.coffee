@@ -314,7 +314,6 @@
           alert("delete failed!")
         )
 
-
     resetChanges: ()->
       this.hasChanges = false
     editBadges: ()->
@@ -352,10 +351,10 @@
           )
           self.resetChanges()
 
-     metricName: ()->
-       alert this.metric.name
+    metricName: ()->
+      alert this.metric.name
 
-     delete: (index)->
+    delete: (index)->
       self = this
       if this.isSaved()
         if confirm("Are you sure you want to delete this tier?")
@@ -370,8 +369,8 @@
           )
       else
         self.removeFromMetric(index)
-     removeFromMetric: (index)->
-       this.metric.tiers.splice(index,1)
+    removeFromMetric: (index)->
+      this.metric.tiers.splice(index,1)
 
   # declare a sortableEle variable for the sortable function
   sortableEle = undefined

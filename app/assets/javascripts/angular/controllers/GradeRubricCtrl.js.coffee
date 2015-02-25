@@ -340,23 +340,22 @@
       name: this.name,
       points: this.points,
       description: this.description
-     metricName: ()->
-       alert this.metric.name
-     removeFromMetric: (index)->
-       this.metric.tiers.splice(index,1)
-     loadTierBadge: (tierBadge)->
-       self = this
-       courseBadge = self.availableBadges[tierBadge.badge_id]
-       loadedBadge = new TierBadgePrototype(self, angular.copy(courseBadge))
-       self.badges[courseBadge.id] = loadedBadge # add tier badge to tier
-       delete self.availableBadges[courseBadge.id] # remove badge from available badges on tier
+    metricName: ()->
+      alert this.metric.name
+    removeFromMetric: (index)->
+      this.metric.tiers.splice(index,1)
+    loadTierBadge: (tierBadge)->
+      self = this
+      courseBadge = self.availableBadges[tierBadge.badge_id]
+      loadedBadge = new TierBadgePrototype(self, angular.copy(courseBadge))
+      self.badges[courseBadge.id] = loadedBadge # add tier badge to tier
+      delete self.availableBadges[courseBadge.id] # remove badge from available badges on tier
       
-     # Badges
-     loadTierBadges: (tierBadges)->
-       self = this
-       angular.forEach(tierBadges, (tierBadge, index)->
-         if (self.availableBadges[tierBadge.badge_id])
-           self.loadTierBadge(tierBadge)
-       )
-
+    # Badges
+    loadTierBadges: (tierBadges)->
+      self = this
+      angular.forEach(tierBadges, (tierBadge, index)->
+        if (self.availableBadges[tierBadge.badge_id])
+          self.loadTierBadge(tierBadge)
+      )
   ]

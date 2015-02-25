@@ -33,5 +33,4 @@
     createParams: ()->
       tier_id: @tier.id,
       badge_id: @badge.id
-
 ]
