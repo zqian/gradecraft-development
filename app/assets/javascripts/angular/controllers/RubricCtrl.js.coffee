@@ -67,7 +67,8 @@
     )
 
   $scope.newMetric = ()->
-    $scope.metrics.push new(MetricPrototype)
+    m = new MetricPrototype(null, $scope)
+    $scope.metrics.push m
 
   $scope.getNewMetric = ()->
     $scope.newerMetric = Restangular.one('metrics', 'new.json').getList().then ()->
