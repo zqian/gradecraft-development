@@ -1,44 +1,44 @@
 @gradecraft.factory 'MetricPrototype', ['$http', 'Restangular', 'TierPrototype', 'MetricBadgePrototype', ($http, Restangular, TierPrototype, MetricBadgePrototype) ->
   class MetricPrototype
     constructor: (attrs={}, $scope)->
-      this.$scope = $scope
-      this.tiers = []
-      this.badges = {}
-      # this.availableBadges = angular.copy($scope.courseBadges)
-      # this.selectedBadge = ""
-      this.id = if attrs.id then attrs.id else null
-      this.fullCreditTier = null
-      this.addTiers(attrs["tiers"]) if attrs["tiers"] #add tiers if passed on init
-      # this.loadMetricBadges(attrs["metric_badges"]) if attrs["metric_badges"] #add badges if passed on init
-      this.name = if attrs.name then attrs.name else ""
-      this.rubricId = if attrs.rubric_id then attrs.rubric_id else this.$scope.rubricId
-      if this.id
-        this.max_points = if attrs.max_points then attrs.max_points else 0
+      @$scope = $scope
+      @tiers = []
+      @badges = {}
+      # @availableBadges = angular.copy($scope.courseBadges)
+      # @selectedBadge = ""
+      @id = if attrs.id then attrs.id else null
+      @fullCreditTier = null
+      @addTiers(attrs["tiers"]) if attrs["tiers"] #add tiers if passed on init
+      # @loadMetricBadges(attrs["metric_badges"]) if attrs["metric_badges"] #add badges if passed on init
+      @name = if attrs.name then attrs.name else ""
+      @rubricId = if attrs.rubric_id then attrs.rubric_id else @$scope.rubricId
+      if @id
+        @max_points = if attrs.max_points then attrs.max_points else 0
       else
-        this.max_points = if attrs.max_points then attrs.max_points else null
+        @max_points = if attrs.max_points then attrs.max_points else null
 
-      this.description = if attrs.description then attrs.description else ""
-      this.hasChanges = false
+      @description = if attrs.description then attrs.description else ""
+      @hasChanges = false
 
       ## graderubric
-      this.selectedTier = null
+      @selectedTier = null
       
       if $scope.rubricGrades
-        this.rubricGrade = $scope.rubricGrades[this.id]
+        @rubricGrade = $scope.rubricGrades[@id]
 
-      if this.rubricGrade
-        this.rubricGradeTierId = this.rubricGrade.tier_id
+      if @rubricGrade
+        @rubricGradeTierId = @rubricGrade.tier_id
       else
-        this.rubricGradeTierId = null
+        @rubricGradeTierId = null
 
-      if this.rubricGrade
-        this.comments = this.rubricGrade.comments
+      if @rubricGrade
+        @comments = @rubricGrade.comments
       else
-        this.comments = ""
+        @comments = ""
 
-      # alert(this.selectedTier.id)
+      # alert(@selectedTier.id)
       # would this always have an id?
-      #this.max_points = if attrs.max_points then attrs.max_points else 0
+      #@max_points = if attrs.max_points then attrs.max_points else 0
     alert: ()->
       alert("snakes!")    
     addTier: (attrs={})->
@@ -53,11 +53,11 @@
       # addTier: (attrs={})->
       #   self = this
       #   newTier = new TierPrototype(self, attrs, $scope)
-      #   this.tiers.splice(-1, 0, newTier)    
+      #   @tiers.splice(-1, 0, newTier)    
       # loadTier: (attrs={})->
       #   self = this
       #   newTier = new TierPrototype(self, attrs, $scope)
-      #   this.tiers.push newTier
+      #   @tiers.push newTier
       # addTiers: (tiers)->
       #   self = this
       #   angular.forEach(tiers, (tier,index)->
@@ -91,7 +91,7 @@
       )
 
     index: ()->
-      this.order()
+      @order()
     createRubricGrade: ()->
       self = this
       $http.post("/rubric_grades.json", self.rubricGradeParams()).success(
@@ -99,15 +99,15 @@
       .error(
       )
     gradeWithTier: (tier)->
-      if this.isUsingTier(tier)
-        this.selectedTier = null
+      if @isUsingTier(tier)
+        @selectedTier = null
       else
-        this.selectedTier = tier
+        @selectedTier = tier
     isUsingTier: (tier)->
-      this.selectedTier == tier
+      @selectedTier == tier
     rubricGradeParams: ()->
       metric = this
-      tier = this.selectedTier
+      tier = @selectedTier
       {
         metric_name: metric.name,
         metric_description: metric.description,
@@ -152,19 +152,19 @@
       badgeIds
 
     isNew: ()->
-      this.id is null
+      @id is null
     isSaved: ()->
-      this.id != null
+      @id != null
     change: ()->
       self = this
-      if this.fullCreditTier
-        this.updateFullCreditTier()
-      if this.isSaved()
+      if @fullCreditTier
+        @updateFullCreditTier()
+      if @isSaved()
         self.hasChanges = true
     updateFullCreditTier: ()->
-      this.tiers[0].points = this.max_points
+      @tiers[0].points = @max_points
     resetChanges: ()->
-      this.hasChanges = false
+      @hasChanges = false
     params: ()->
       self = this
       {
@@ -181,7 +181,7 @@
       self.$scope.metrics.splice(index,1)
     create: ()->
       self = this
-      Restangular.all('metrics').post(this.params())
+      Restangular.all('metrics').post(@params())
         .then (response)->
           metric = response.existing_metric
           self.id = metric.id
@@ -190,14 +190,14 @@
 
     modify: (form)->
       if form.$valid
-        if this.isNew()
-          this.create()
+        if @isNew()
+          @create()
         else
-          this.update()
+          @update()
 
     update: ()->
       self = this
-      if this.hasChanges
+      if @hasChanges
         Restangular.one('metrics', self.id).customPUT(self.params())
           .then(
             ()-> , #success
@@ -207,7 +207,7 @@
 
     delete: (index)->
       self = this
-      if this.isSaved()
+      if @isSaved()
         if confirm("Are you sure you want to delete this metric? Deleting this metric will delete its tiers as well.")
           $http.delete("/metrics/#{self.id}").success(
             (data,status)->

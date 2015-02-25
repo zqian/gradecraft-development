@@ -21,26 +21,26 @@
       @resetChanges()
 
     isNew: ()->
-      this.id is null
+      @id is null
     isSaved: ()->
-      this.id > 0
+      @id > 0
     change: ()->
       self = this
-      if this.isSaved()
+      if @isSaved()
         self.hasChanges = true
     alert: ()->
       alert("snakes!")        
     resetChanges: ()->
-      this.hasChanges = false
+      @hasChanges = false
     params: ()->
-      metric_id: this.metric_id,
-      name: this.name,
-      points: this.points,
-      description: this.description
+      metric_id: @metric_id,
+      name: @name,
+      points: @points,
+      description: @description
     metricName: ()->
-      alert this.metric.name
+      alert @metric.name
     removeFromMetric: (index)->
-      this.metric.tiers.splice(index,1)
+      @metric.tiers.splice(index,1)
     
     ##grade rubric ctrl
     # loadTierBadge: (tierBadge)->
@@ -71,7 +71,7 @@
     addBadge: (attrs={})->
       self = this
       newBadge = new TierBadgePrototype(self, attrs)
-      this.badges.splice(-1, 0, newBadge)
+      @badges.splice(-1, 0, newBadge)
     addBadges: (tiers)->
       self = this
       angular.forEach(badges, (badge,index)->
@@ -97,16 +97,16 @@
         )
 
     resetChanges: ()->
-      this.hasChanges = false
+      @hasChanges = false
     editBadges: ()->
-      this.editingBadges = true
+      @editingBadges = true
     closeBadges: ()->
-      this.editingBadges = false
+      @editingBadges = false
     params: ()->
-      metric_id: this.metric_id,
-      name: this.name,
-      points: this.points,
-      description: this.description
+      metric_id: @metric_id,
+      name: @name,
+      points: @points,
+      description: @description
     create: ()->
       self = this
       Restangular.all('tiers').post(self.params())
@@ -118,13 +118,13 @@
 
     modify: (form)->
       if form.$valid
-        if this.isNew()
-          this.create()
+        if @isNew()
+          @create()
         else
-          this.update()
+          @update()
 
     update: ()->
-      if this.hasChanges
+      if @hasChanges
         self = this
         Restangular.one('tiers', self.id).customPUT(self.params())
           .then(
@@ -134,11 +134,11 @@
           self.resetChanges()
 
     metricName: ()->
-      alert this.metric.name
+      alert @metric.name
 
     delete: (index)->
       self = this
-      if this.isSaved()
+      if @isSaved()
         if confirm("Are you sure you want to delete this tier?")
           $http.delete("/tiers/#{self.id}").success(
             (data,status)->
@@ -152,5 +152,5 @@
       else
         self.removeFromMetric(index)
     removeFromMetric: (index)->
-      this.metric.tiers.splice(index,1) 
+      @metric.tiers.splice(index,1) 
 ]
