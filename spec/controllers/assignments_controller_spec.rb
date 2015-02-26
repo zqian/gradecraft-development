@@ -4,10 +4,10 @@ describe AssignmentsController do
 
   context "as a student" do
     before do
-      @course = create(:course)
-      @user = create(:user)
-      @user.courses << @course
-      login_user
+      @course = create(:course_accepting_groups)
+      @student = create(:user)
+      @student.courses << @course
+      login_user(@student)
       session[:course_id] = @course.id
       allow(EventLogger).to receive(:perform_async).and_return(true)
     end
@@ -34,88 +34,105 @@ describe AssignmentsController do
       end
 
       it "assigns groups" do
-        pending
-        # @groups = @assignment.groups
+        group = create(:group, course: @course)
+        group.assignments << @assignment
         get :show, {:id => @assignment.id}
-        assigns(:groups).should eq(@assignment.groups)
+        assigns(:groups).should eq([group])
       end
 
       it "assigns assignment_grades_by_student_id" do
-        pending
-        #@assignment_grades_by_student_id = current_course_data.assignment_grades(@assignment)
+        grade = create(:grade, assignment: @assignment, student: @student)
         get :show, {:id => @assignment.id}
+        assigns(:assignment_grades_by_student_id).should eq({@student.id => grade})
       end
 
       describe "with team id in params" do
         it "assigns team and students for team" do
-          pending
-          # @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
-          # @students = current_course.students_being_graded_by_team(@team)
-          get :show, {:id => @assignment.id}
+          other_student = create(:user) # verify only students on team assigned as @students
+          other_student.courses << @course
+          team = create(:team, course: @course)
+          team.students << @student
+
+          get :show, {:id => @assignment.id, :team_id => team.id}
+          assigns(:team).should eq(team)
+          assigns(:students).should eq([@student])
         end
 
         it "assigns all team students auditing as auditing" do
-          pending
+          other_student = create(:user) # verify only auditing students on team assigned as @auditing
+          other_student.courses << @course
+          team = create(:team, course: @course)
+          team.students << @student
+          @student.course_memberships.first.update(auditing: true)
+          other_student.course_memberships.first.update(auditing: true)
+
+          get :show, {:id => @assignment.id, :team_id => team.id}
+          assigns(:auditing).should eq([@student])
         end
       end
 
       describe "with no team id in params" do
         it "assigns all students if no team supplied" do
+          other_student = create(:user) # verify non-team members also assigned as @students
+          other_student.courses << @course
+          team = create(:team, course: @course)
+          team.students << @student
+
           get :show, {:id => @assignment.id}
-          assigns(:students).should eq([@user])
+          assigns(:students).should include(@student)
+          assigns(:students).should include(other_student)
         end
 
         it "assigns all auditing students as auditing" do
-          @user.course_memberships.first.update(auditing: true)
+          @student.course_memberships.first.update(auditing: true)
           get :show, {:id => @assignment.id}
-          assigns(:auditing).should eq([@user])
+          assigns(:auditing).should eq([@student])
         end
       end
 
       it "assigns the rubric as rubric" do
         rubric = create(:rubric_with_metrics, assignment: @assignment)
-
         get :show, {:id => @assignment.id}
         assigns(:rubric).should eq(rubric)
         assigns(:metrics).should eq(rubric.metrics)
       end
 
-      it "assigns course badges" do
-        pending
-        #@course_badges = serialized_course_badges
+      it "assigns course badges as JSON using CourseBadgeSerializer" do
+        badge = create(:badge, course: @course)
         get :show, {:id => @assignment.id}
-        assigns(:course_badges).should eq()
+        assigns(:course_badges).should eq(ActiveModel::ArraySerializer.new([badge], each_serializer: CourseBadgeSerializer).to_json)
       end
 
-      it "assigns assignment score levels" do
-        pending
-        #@assignment_score_levels = @assignment.assignment_score_levels.order_by_value
+      it "assigns assignment score levels ordered by value" do
+        assignment_score_level_second = create(:assignment_score_level, assignment: @assignment, value: "1000")
+        assignment_score_level_first = create(:assignment_score_level, assignment: @assignment, value: "100")
         get :show, {:id => @assignment.id}
-        assigns(:assignment_score_levels).should eq()
+        assigns(:assignment_score_levels).should eq([assignment_score_level_first,assignment_score_level_second])
       end
 
       it "assigns student ids" do
         get :show, {:id => @assignment.id}
-        assigns(:course_student_ids).should eq([@user.id])
+        assigns(:course_student_ids).should eq([@student.id])
       end
 
       it "assigns data for displaying student grading distribution" do
-        pending
-        # add submissions, grade some
+        pending "need to create a scored grade"
+        ungraded_submission = create(:submission, assignment: @assignment)
+        student_submission = create(:graded_submission, assignment: @assignment, student: @student)
+        @assignment.submissions << [student_submission, ungraded_submission]
         get :show, {:id => @assignment.id}
-        assigns(:submissions_count).should eq(@assignment.submissions.count)
-        assigns(:ungraded_submissions_count).should eq(@assignment.ungraded_submissions.count)
-        assigns(:ungraded_percentage).should eq(@assignment.ungraded_submissions.count / @assignment.submissions.count)
-        assigns(:graded_count).should eq(@assignment.submissions.count - @assignment.ungraded_submissions.count)
+        assigns(:submissions_count).should eq(2)
+        assigns(:ungraded_submissions_count).should eq(1)
+        assigns(:ungraded_percentage).should eq(1/2)
+        assigns(:graded_count).should eq(1)
       end
 
       # GET show, student specific assignments:
 
       it "assigns grades for assignment" do
-        pending
-        # add a grade for student submission
+        grade = create(:grade, student: @student, assignment: @assignment)
         get :show, {:id => @assignment.id}
-        assigns(:grades_for_assignment).should eq(@assignment.grades_for_assignment(@user))
+        assigns(:grades_for_assignment).should eq(@assignment.grades_for_assignment(@student))
       end
 
       it "assigns rubric grades" do
@@ -131,19 +148,13 @@ describe AssignmentsController do
         assigns(:comments_by_metric_id).should eq()
       end
 
-      it "assigns comments by metric id" do
-        pending
-        get :show, {:id => @assignment.id}
-        assigns(:comments_by_metric_id).should eq()
-      end
-
       it "assigns group if student is in a group" do
-        pending
-        # if @assignment.has_groups? && current_student.group_for_assignment(@assignment).present?
-        #   @group = current_student.group_for_assignment(@assignment)
-        # end
+        @assignment.update(grade_scope: "Group")
+        group = create(:group, course: @course)
+        group.assignments << @assignment
+        group.students << @student
         get :show, {:id => @assignment.id}
-        assigns(:group).should eq(@user.group_for_assignment(@assignment))
+        assigns(:group).should eq(group)
       end
     end
 
@@ -212,10 +223,10 @@ describe AssignmentsController do
   context "as a professor" do
     before do
       @course = create(:course)
-      @user = create(:user)
-      @user.courses << @course
-      @membership = CourseMembership.where(user: @user, course: @course).first.update(role: "professor")
-      login_user
+      @professor = create(:user)
+      @professor.courses << @course
+      @membership = CourseMembership.where(user: @professor, course: @course).first.update(role: "professor")
+      login_user(@professor)
       session[:course_id] = @course.id
       allow(EventLogger).to receive(:perform_async).and_return(true)
     end
