@@ -6,7 +6,6 @@ FactoryGirl.define do
     factory :course_accepting_groups do
       min_group_size 2
       max_group_size 10
-      group_setting true
     end
   end
 end
