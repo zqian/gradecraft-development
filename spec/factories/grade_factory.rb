@@ -1,9 +1,12 @@
 FactoryGirl.define do
   factory :grade do
-    raw_score { rand(200) + 100 }
-    association :student, factory: :user
-    association :assignment
-    association :assignment_type
     association :course
+    association :assignment
+    association :student, factory: :user
+
+    factory :scored_grade do
+      #TODO: add minimum requirements to pass submission.graded?
+      score { Faker::Number.number(5) }
+    end
   end
 end

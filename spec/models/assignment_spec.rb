@@ -21,8 +21,8 @@ describe Assignment do
   it { should respond_to("assignment_type_id")}
   it { should respond_to("grade_scheme_id")}
   it { should respond_to("grade_scope")}
-  it { should respond_to("close_time")}
-  it { should respond_to("open_time")}
+  it { should respond_to("close_time")} #TODO delete and confirm, now "due_at"
+  it { should respond_to("open_time")} #TODO delete and confirm, now "open_at"
   it { should respond_to("required")}
   it { should respond_to("accepts_submissions")}
   it { should respond_to("student_logged")}
@@ -71,4 +71,9 @@ describe Assignment do
     expect(build(:assignment, assignment_type: nil)).to have(1).errors_on(:assignment_type_id)
   end
 
+  it "has optional dates associated with it" do
+    pending
+    #TODO open_at, due_at, accepted_until business logic
+    #TODO remove open_time, close_time
+  end
 end
