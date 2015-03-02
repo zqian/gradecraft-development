@@ -114,7 +114,7 @@ class AssignmentsController < ApplicationController
     if session[:return_to].present?
       redirect_to session[:return_to]
     else
-      redirect_to assignments
+      redirect_to assignments #TODO change to assignments_path
     end
   end
 
@@ -131,7 +131,6 @@ class AssignmentsController < ApplicationController
         @assignment.assignment_files.new(file: af, filename: af.original_filename)
       end
     end
-
     respond_to do |format|
       if @assignment.save
         set_assignment_weights
@@ -173,6 +172,8 @@ class AssignmentsController < ApplicationController
 
   def sort
     params[:"assignment"].each_with_index do |id, index|
+      # TODO: change to:
+      #current_course.assignments.update(id, position: index + 1)
       current_course.assignments.update_all({position: index+1}, {id: id})
     end
     render nothing: true

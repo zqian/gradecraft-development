@@ -419,47 +419,49 @@ describe AssignmentsController do
 
     describe "GET copy" do
       it "assigns title and assignments" do
-        pending
+        pending "copy fails at assignments, change to assignments_path"
         get :copy, {:id => @assignment.id}
         response.should render_template(:copy)
-
-        # session[:return_to] = request.referer
-        # @assignment = current_course.assignments.find(params[:id])
-        # new_assignment = @assignment.dup
-        # new_assignment.name.prepend("Copy of ")
-        # new_assignment.save
-        # if @assignment.assignment_score_levels.present?
-        #   @assignment.assignment_score_levels.each do |asl|
-        #     new_asl = asl.dup
-        #     new_asl.assignment_id = new_assignment.id
-        #     new_asl.save
-        #   end
-        # end
-        # if session[:return_to].present?
-        #   redirect_to session[:return_to]
-        # else
-        #   redirect_to assignments
-        # end
       end
     end
 
+    describe "POST create" do
+      it "creates the assignment with valid attributes"  do
+        params = attributes_for(:assignment)
+        params[:assignment_type_id] = @assignment_type
+        expect{ post :create, { :assignment => params } }.to change(Assignment,:count).by(1)
+      end
 
-    describe "GET create" do
-      it "assigns title and assignments" do
+      it "manages file uploads" do
         pending
-        get :create
+      end
+
+      it "redirects to new from with invalid attributes" do
+        expect{ post :create, assignment: attributes_for(:assignment, name: nil) }.to_not change(Assignment,:count)
       end
     end
+
     describe "GET update" do
-      it "assigns title and assignments" do
-        pending
-        get :update
+      it "updates the assignment" do
+        params = { name: "new name" }
+        post :update, id: @assignment.id, :assignment => params
+        @assignment.reload
+        response.should redirect_to(assignments_path)
+        @assignment.name.should eq("new name")
       end
     end
+
     describe "GET sort" do
-      it "assigns title and assignments" do
-        pending
-        get :sort
+      it "sorts the assignemts by params" do
+        @second_assignment = create(:assignment, assignment_type: @assignment_type)
+        @course.assignments << @second_assignment
+        params = [@second_assignment.id, @assignment.id]
+        post :sort, :assignment => params
+
+        @assignment.reload
+        @second_assignment.reload
+        @assignment.position.should eq(2)
+        @second_assignment.position.should eq(1)
       end
     end
     describe "GET update_rubrics" do
