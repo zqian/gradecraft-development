@@ -1,5 +1,5 @@
 class Group < ActiveRecord::Base
-  
+
   APPROVED_STATUSES = ['Pending', 'Approved', 'Rejected']
 
   attr_accessible :name, :approved, :assignment_id, :assignment_ids, :student_ids,
@@ -70,6 +70,7 @@ class Group < ActiveRecord::Base
 
 
   #Checking to make sure any constraints the instructor has set up around min/max group members are honored
+  #TODO verify that the course accepts groups? Otherwise comparison with nil fails
   def min_group_number_met
     if self.students.to_a.count < course.min_group_size
       errors.add :base, "You don't have enough group members."
@@ -92,7 +93,7 @@ class Group < ActiveRecord::Base
   def unique_assignment_per_group_membership
     assignments.each do |a|
       students.each do |s|
-        if s.group_for_assignment(a).present? && s.group_for_assignment(a).id != self.id 
+        if s.group_for_assignment(a).present? && s.group_for_assignment(a).id != self.id
           errors.add :base, "#{s.name} is already working on this with another #{(course.group_term)}."
         end
       end
@@ -100,6 +101,7 @@ class Group < ActiveRecord::Base
   end
 
   def cache_associations
+    # TODO: no method assignment for group!
     self.course_id ||= assignment.try(:course_id)
   end
 end
