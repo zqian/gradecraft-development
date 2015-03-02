@@ -42,13 +42,12 @@
     alert: ()->
       alert("snakes!")    
     addTier: (attrs={})->
-      self = this
-      newTier = new TierPrototype(self, attrs, self.$scope)
-      self.tiers.push newTier
-      if self.rubricGradeTierId and self.rubricGradeTierId == newTier.id
+      newTier = new TierPrototype(@, attrs, @$scope)
+      @tiers.push newTier
+      if @rubricGradeTierId and @rubricGradeTierId == newTier.id
         # alert(self.rubricGradeTierId)
         # alert(newTier.id)
-        self.selectedTier = newTier
+        @selectedTier = newTier
     #what is different here? // from GradeRubric
       # addTier: (attrs={})->
       #   self = this
@@ -65,39 +64,31 @@
       #   )
 
     addTiers: (tiers)->
-      self = this
-      angular.forEach(tiers, (tier,index)->
-        self.addTier(tier)
+      angular.forEach(tiers, (tier,index)=>
+        @addTier(tier)
       )
     resourceUrl: ()->
       "/metrics/#{self.id}"
     order: ()->
-      self = this
-      jQuery.inArray(this, self.$scope.metrics)
+      jQuery.inArray(this, @$scope.metrics)
 
     loadMetricBadge: (metricBadge)->
-      self = this
-      courseBadge = self.availableBadges[metricBadge.badge_id]
-      loadedBadge = new MetricBadgePrototype(self, angular.copy(courseBadge))
-      self.badges[courseBadge.id] = loadedBadge # add metric badge to metric
-      delete self.availableBadges[courseBadge.id] # remove badge from available badges on metric
+      courseBadge = @availableBadges[metricBadge.badge_id]
+      loadedBadge = new MetricBadgePrototype(@, angular.copy(courseBadge))
+      @badges[courseBadge.id] = loadedBadge # add metric badge to metric
+      delete @availableBadges[courseBadge.id] # remove badge from available badges on metric
 
     # Badges
     loadMetricBadges: (metricBadges)->
-      self = this
-      angular.forEach(metricBadges, (metricBadge, index)->
-        if (self.availableBadges[metricBadge.badge_id])
-          self.loadMetricBadge(metricBadge)
+      angular.forEach(metricBadges, (metricBadge, index)=>
+        if (@availableBadges[metricBadge.badge_id])
+          @loadMetricBadge(metricBadge)
       )
 
     index: ()->
       @order()
     createRubricGrade: ()->
-      self = this
-      $http.post("/rubric_grades.json", self.rubricGradeParams()).success(
-      )
-      .error(
-      )
+      $http.post("/rubric_grades.json", @rubricGradeParams()).success().error()
     gradeWithTier: (tier)->
       if @isUsingTier(tier)
         @selectedTier = null
@@ -106,47 +97,39 @@
     isUsingTier: (tier)->
       @selectedTier == tier
     rubricGradeParams: ()->
-      metric = this
-      tier = @selectedTier
       {
-        metric_name: metric.name,
-        metric_description: metric.description,
-        max_points: metric.max_points,
-        order: metric.order,
-        tier_name: tier.name,
-        tier_description: tier.description,
-        points: tier.points,
+        metric_name: @name,
+        metric_description: @description,
+        max_points: @max_points,
+        order: @order,
+        tier_name: @selectedTier.name,
+        tier_description: @selectedTier.description,
+        points: @selectedTier.points,
         submission_id: submission_id,
-        metric_id: metric.id,
-        tier_id: tier.id,
-        comments: metric.comments
+        metric_id: @id,
+        tier_id: @selectedTier.id,
+        comments: @comments
       }
     selectBadge: ()->
-      self = this
-      newBadge = new MetricBadgePrototype(self, angular.copy(self.selectedBadge))
-      self.badges[newBadge.badge.id] = newBadge # add metric badge to metric
-      delete self.availableBadges[self.selectedBadge.id] # remove badge from available badges on metric
-      self.selectedBadge = "" # reset selected badge
+      newBadge = new MetricBadgePrototype(@, angular.copy(@selectedBadge))
+      @badges[newBadge.badge.id] = newBadge # add metric badge to metric
+      delete @availableBadges[@selectedBadge.id] # remove badge from available badges on metric
+      @selectedBadge = "" # reset selected badge
 
-    deleteMetricBadge: (badge)->
-      self = this
-      metricBadge = badge 
-
+    deleteMetricBadge: (metricBadge)->
       if confirm("Are you sure you want to delete this badge from the metric?")
         $http.delete("/metric_badges/#{metricBadge.id}").success(
-          (data,status)->
-            self.availableBadges[metricBadge.badge.id] = angular.copy(self.$scope.courseBadges[metricBadge.badge.id])
-            delete self.badges[metricBadge.badge.id]
-        )
-        .error((err)->
+          (data,status)=>
+            @availableBadges[metricBadge.badge.id] = angular.copy(@$scope.courseBadges[metricBadge.badge.id])
+            delete @badges[metricBadge.badge.id]
+        ).error((err)->
           alert("delete failed!")
         )
 
     badgeIds: ()->
       # distill ids for all badges
-      self = this
       badgeIds = []
-      angular.forEach(self.badges, (badge, index)->
+      angular.forEach(@badges, (badge, index)->
         badgeIds.push(badge.id)
       )
       badgeIds
@@ -156,37 +139,33 @@
     isSaved: ()->
       @id != null
     change: ()->
-      self = this
       if @fullCreditTier
         @updateFullCreditTier()
       if @isSaved()
-        self.hasChanges = true
+        @hasChanges = true
     updateFullCreditTier: ()->
       @tiers[0].points = @max_points
     resetChanges: ()->
       @hasChanges = false
     params: ()->
-      self = this
       {
-        name: self.name,
-        max_points: self.max_points,
-        order: self.order(),
-        description: self.description,
-        rubric_id: self.rubricId
+        name: @name,
+        max_points: @max_points,
+        order: @order(),
+        description: @description,
+        rubric_id: @rubricId
       }
     destroy: ()->
 
     remove:(index)->
-      self = this
-      self.$scope.metrics.splice(index,1)
+      @$scope.metrics.splice(index,1)
     create: ()->
-      self = this
       Restangular.all('metrics').post(@params())
-        .then (response)->
+        .then (response)=>
           metric = response.existing_metric
-          self.id = metric.id
-          self.$scope.countSavedMetric()
-          self.addTiers(metric.tiers)
+          @id = metric.id
+          @$scope.countSavedMetric()
+          @addTiers(metric.tiers)
 
     modify: (form)->
       if form.$valid
@@ -196,26 +175,24 @@
           @update()
 
     update: ()->
-      self = this
       if @hasChanges
-        Restangular.one('metrics', self.id).customPUT(self.params())
+        Restangular.one('metrics', @id).customPUT(@params())
           .then(
             ()-> , #success
             ()-> # failure
           )
-          self.resetChanges()
+          @resetChanges()
 
     delete: (index)->
-      self = this
       if @isSaved()
         if confirm("Are you sure you want to delete this metric? Deleting this metric will delete its tiers as well.")
-          $http.delete("/metrics/#{self.id}").success(
-            (data,status)->
-              self.remove(index)
+          $http.delete("/metrics/#{@id}").success(
+            (data,status)=>
+              @remove(index)
           )
           .error((err)->
             alert("delete failed!")
           )
       else
-        self.remove(index)            
+        @remove(index)            
 ]  
