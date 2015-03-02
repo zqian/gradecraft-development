@@ -16,16 +16,13 @@
         @create()
  
     create: ()->
-      self = @
-
       $http.post("/tier_badges", @createParams()).success(
-        (data,status)->
-          self.id = data.existing_tier_badge.id
-          self.tier.badges[self.badge_id] = self # add tier badge to tier
-          delete self.tier.availableBadges[self.badge_id] # remove badge from available badges on tier
+        (data,status)=>
+          @id = data.existing_tier_badge.id
+          @tier.badges[@badge_id] = @ # add tier badge to tier
+          delete @tier.availableBadges[@badge_id] # remove badge from available badges on tier
           #self.selectedBadge = "" # reset selected badge
-      )
-      .error((err)->
+      ).error((err)->
         alert("create failed!")
         return false
       )
