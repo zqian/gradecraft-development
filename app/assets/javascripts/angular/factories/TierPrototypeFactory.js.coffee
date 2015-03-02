@@ -25,9 +25,8 @@
     isSaved: ()->
       @id > 0
     change: ()->
-      self = this
       if @isSaved()
-        self.hasChanges = true
+        @hasChanges = true
     alert: ()->
       alert("snakes!")        
     resetChanges: ()->
@@ -52,47 +51,37 @@
 
     ##rubric ctrl  
     loadTierBadge: (tierBadge)->
-      self = this
-      courseBadge = self.availableBadges[tierBadge.badge_id]
-      loadedBadge = new TierBadgePrototype(self, angular.copy(courseBadge))
+      courseBadge = @availableBadges[tierBadge.badge_id]
+      loadedBadge = new TierBadgePrototype(@, angular.copy(courseBadge))
       loadedBadge.id = tierBadge.id
-      self.badges[courseBadge.id] = loadedBadge # add tier badge to tier
-      delete self.availableBadges[courseBadge.id] # remove badge from available badges on tier
+      @badges[courseBadge.id] = loadedBadge # add tier badge to tier
+      delete @availableBadges[courseBadge.id] # remove badge from available badges on tier
       
     # Badges
     loadTierBadges: (tierBadges)->
-      self = this
-      angular.forEach(tierBadges, (tierBadge, index)->
-        if (self.availableBadges[tierBadge.badge_id])
-          self.loadTierBadge(tierBadge)
+      angular.forEach(tierBadges, (tierBadge, index)=>
+        if (@availableBadges[tierBadge.badge_id])
+          @loadTierBadge(tierBadge)
       )
     #rubric ctrl
     # Badges
     addBadge: (attrs={})->
-      self = this
-      newBadge = new TierBadgePrototype(self, attrs)
+      newBadge = new TierBadgePrototype(@, attrs)
       @badges.splice(-1, 0, newBadge)
     addBadges: (tiers)->
-      self = this
-      angular.forEach(badges, (badge,index)->
-        self.loadBadge(badge)
+      angular.forEach(badges, (badge,index)=>
+        @loadBadge(badge)
       )
-
     selectBadge: ()->
-      self = this
-      newBadge = new TierBadgePrototype(self, angular.copy(self.selectedBadge), {create: true})
+      newBadge = new TierBadgePrototype(@, angular.copy(@selectedBadge), {create: true})
 
-    deleteTierBadge: (badge)->
-      self = this
-      tierBadge = badge 
-
+    deleteTierBadge: (tierBadge)->
       if confirm("Are you sure you want to delete this badge from the tier?")
         $http.delete("/tier_badges/#{tierBadge.id}").success(
-          (data,status)->
-            self.availableBadges[tierBadge.badge.id] = angular.copy(self.$scope.courseBadges[tierBadge.badge.id])
-            delete self.badges[tierBadge.badge.id]
-        )
-        .error((err)->
+          (data,status)=>
+            @availableBadges[tierBadge.badge.id] = angular.copy(@$scope.courseBadges[tierBadge.badge.id])
+            delete @badges[tierBadge.badge.id]
+        ).error((err)->
           alert("delete failed!")
         )
 
@@ -108,14 +97,12 @@
       points: @points,
       description: @description
     create: ()->
-      self = this
-      Restangular.all('tiers').post(self.params())
+      Restangular.all('tiers').post(@params())
         .then(
-          (response)-> #success
-            self.id = response.id
+          (response)=> #success
+            @id = response.id
           (response)-> #error
         )
-
     modify: (form)->
       if form.$valid
         if @isNew()
@@ -125,24 +112,20 @@
 
     update: ()->
       if @hasChanges
-        self = this
-        Restangular.one('tiers', self.id).customPUT(self.params())
+        Restangular.one('tiers', @id).customPUT(@params())
           .then(
             ()-> #success
             ()-> #failure
           )
-          self.resetChanges()
-
+          @resetChanges()
     metricName: ()->
       alert @metric.name
-
     delete: (index)->
-      self = this
       if @isSaved()
         if confirm("Are you sure you want to delete this tier?")
-          $http.delete("/tiers/#{self.id}").success(
-            (data,status)->
-              self.removeFromMetric(index)
+          $http.delete("/tiers/#{@id}").success(
+            (data,status)=>
+              @removeFromMetric(index)
               return true
           )
           .error((err)->
@@ -150,7 +133,7 @@
             return false
           )
       else
-        self.removeFromMetric(index)
+        @removeFromMetric(index)
     removeFromMetric: (index)->
       @metric.tiers.splice(index,1) 
 ]

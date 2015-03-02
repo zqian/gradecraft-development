@@ -68,7 +68,7 @@
         @addTier(tier)
       )
     resourceUrl: ()->
-      "/metrics/#{self.id}"
+      "/metrics/#{@id}"
     order: ()->
       jQuery.inArray(this, @$scope.metrics)
 
