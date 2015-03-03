@@ -80,7 +80,7 @@
                     %ul.button-group.center.radius
                       - if current_user_is_student?
                         - if current_student_data.grade_released_for_assignment?(assignment)
-                          %li= link_to "See Results", assignment_grade_path(assignment, :student_id => current_student, :anchor => "tabt4"), :class => "button"
+                          %li= link_to "See Results", assignment_path(assignment, :anchor => "fndtn-tabt4"), :class => "button"
                         - if assignment.has_groups?
                           - if current_student.group_for_assignment(assignment).present?
                             %li= link_to "See Group", group_path(current_student.group_for_assignment(assignment)), :class => "button"
