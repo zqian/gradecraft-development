@@ -1,11 +1,11 @@
 @gradecraft.controller 'GradeRubricCtrl', ['$scope', 'Restangular', 'CourseBadgePrototype', 'MetricBadgePrototype', 'RubricGradePrototype', '$http', ($scope, Restangular, CourseBadgePrototype, MetricBadgePrototype, RubricGradePrototype, $http) -> 
-
+  
   $scope.metrics = []
   $scope.courseBadges = {}
   $scope.rubricGrades = {} # index in hash with metric_id as key
   $scope.gsiGradeStatuses = ["In Progress", "Graded"]
   $scope.professorGradeStatuses = ["In Progress", "Graded", "Released"]
-
+  
   $scope.pointsPossible = 0
   $scope.pointsGiven = 0
 
