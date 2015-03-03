@@ -31,7 +31,7 @@
       .clear
 
     .panel
-      .small-12.columns.panel
+      .small-12
         %h4.uppercase Attachments
         = f.simple_fields_for :grade_files, @grade.grade_files.new do |gf|
           = gf.file_field :file, :multiple => true
