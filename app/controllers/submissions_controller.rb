@@ -73,7 +73,7 @@ class SubmissionsController < ApplicationController
     respond_to do |format|
       if @submission.save
         if current_user_is_student?
-          format.html { redirect_to assignment_grade_path(@assignment, :student_id => current_user), notice: "#{@assignment.name} was successfully submitted." }
+          format.html { redirect_to assignment_path(@assignment, :anchor => "fndtn-tabt3"), notice: "#{@assignment.name} was successfully submitted." }
           format.json { render json: @assignment, status: :created, location: @assignment }
         else
           format.html { redirect_to session.delete(:return_to), notice: "#{@assignment.name} was successfully submitted." }
