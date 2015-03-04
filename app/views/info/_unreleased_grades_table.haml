@@ -28,7 +28,7 @@
             %th{:scope => "col"} Feedback
             %th{:scope => "col", "data-dynatable-no-sort" => "true", :style => "min-width: 200px"}
               %span.sr-only Actions
-            %th.center{:scope => "col", "data-dynatable-no-sort" => "true", :style => "min-width: 250px"}
+            %th.center{:scope => "col", "data-dynatable-no-sort" => "true", :width => "15%" }
               %span.sr-only Check/Uncheck
               .button-bar
                 %ul.button-group.right.radius
@@ -61,9 +61,9 @@
                       %a{:href => "#{edit_assignment_grade_path(:assignment_id => assignment.id)}?student_id=#{g.student_id}", :class => "button"}
                         Edit
                         %span.sr-only record for #{g.student.try(:first_name)} #{g.student.try(:last_name)}
-              %td
+              %td.center
                 %label
-                  .center= check_box_tag "grade_ids[]", g.id
+                  = check_box_tag "grade_ids[]", g.id
                   .sr-only
                     Check/Uncheck #{g.student.try(:first_name)} #{g.student.try(:last_name)}
 
