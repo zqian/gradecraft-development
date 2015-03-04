@@ -65,6 +65,14 @@ class Team < ActiveRecord::Base
     end
   end
 
+  def update_ranks
+    @teams = current_course.teams
+    rank_index = @teams.pluck(:scores).uniq.sort.index(team.score) 
+    @teams.each do |team|
+      team.rank = rank_index.index(team.score)
+    end
+  end
+
   #Summing all of the points the team has earned across their challenges
   def challenge_grade_score
     challenge_grades.sum('score') || 0
