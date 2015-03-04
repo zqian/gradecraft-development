@@ -19,7 +19,7 @@
 
     = render 'groups_table', :course => current_course, :groups => @pending_groups
 
-    .clearfix
+    .clear
 
   - if @rejected_groups.present?
 
@@ -27,7 +27,7 @@
 
     = render 'groups_table', :course => current_course, :groups => @rejected_groups
 
-    .clearfix
+    .clear
 
   - if @approved_groups.present?
     

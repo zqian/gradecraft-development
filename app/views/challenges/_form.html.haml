@@ -38,7 +38,7 @@
         = f.label :point_total
         = f.text_field :point_total, data: {autonumeric: true, "m-dec" => "0"}
 
-      .clearfix
+      .clear
 
       .small-12.large-6.columns
         = f.input :open_at, as: :string, :input_html => { :class => 'datetimepicker', :value => @challenge.try(:open_at) }

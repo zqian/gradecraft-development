@@ -1,7 +1,7 @@
 = render 'assignment_guidelines'
 
 %hr
-.clearfix
+.clear
 
 = simple_form_for([@assignment, @submission]) do |f|
   - if @assignment.has_groups? && current_user_is_student?

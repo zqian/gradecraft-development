@@ -5,8 +5,8 @@ function addCommas(i){
 };
 
 function isStaff(){
-  return !!$(".staff").length
-}
+  return !!$(".staff").length;
+};
 
 var chartOptions = {
   chart: {
