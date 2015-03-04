@@ -49,8 +49,8 @@
   line-height: 2rem !important
 
 .top-bar-section ul ul.dropdown.classInfo
-  width: 20rem
-
+  width: 20rem !important
+ 
   li
     margin-bottom: .5rem
     &.leader-list
@@ -71,15 +71,11 @@
   .top-bar-section ul ul.dropdown a, .top-bar-section ul ul.dropdown a:hover
     color:  $secondary-color, 15%
 
-  .top-bar-section ul ul.dropdown a:hover
-    color: $primary-color-3
-    background-color: transparent !important
-
 /** Styling the tagline **/
 /** Foundation requires that the items in the menu bar be links, and since the **/
 /** tagline doesn't actually link anywhere we're disabling the perception of the link **/
-.top-bar-section .left a, .top-bar-section .left li a:hover
-  color: $primary-color-3
+.top-bar-section .tagline a, .top-bar-section .tagline li a:hover
+  color: $primary-color-3 !important
   margin-top: 1px
   height: 1rem
   position: relative

@@ -125,7 +125,7 @@ class SubmissionsController < ApplicationController
     respond_to do |format|
       if @submission.update_attributes(params[:submission])
         if current_user_is_student?
-          format.html { redirect_to assignment_grade_path(@assignment, :student_id => current_user), notice: "Your submission for #{@assignment.name} was successfully updated." }
+          format.html { redirect_to assignment_path(@assignment, :anchor => "fndtn-tabt3"), notice: "Your submission for #{@assignment.name} was successfully updated." }
           format.json { render json: @assignment, status: :created, location: @assignment }
           #NotificationMailer.revised_submission(@submission.id).deliver
         else

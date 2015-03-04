@@ -288,8 +288,8 @@ class Assignment < ActiveRecord::Base
 
   #Finding what grade level was earned for a particular assignment
   def grade_level(grade)
-    score_levels.each do |score_level|
-      return score_level.name if grade.raw_score == score_level.value
+    assignment_score_levels.each do |assignment_score_level|
+      return assignment_score_level.name if grade.raw_score == assignment_score_level.value
     end
     nil
   end

@@ -3,7 +3,7 @@ class StudentsController < ApplicationController
 
   respond_to :html, :json
 
-  before_filter :ensure_staff?, :except=> [:timeline, :predictor, :course_progress, :badges, :teams, :syllabus]
+  before_filter :ensure_staff?, :except=> [:timeline, :predictor, :course_progress, :badges, :teams, :syllabus, :autocomplete_student_name]
 
   #Lists all students in the course, broken out by those being graded and auditors
   def index
@@ -93,9 +93,8 @@ class StudentsController < ApplicationController
 
   # AJAX endpoint for student name search
   def autocomplete_student_name
-    return [] unless current_user_is_staff?
     students = current_course.students
-    students.map! do |u|
+    students.map do |u|
       { :name => [u.first_name, u.last_name].join(' '), :id => u.id }
     end
     render json: students

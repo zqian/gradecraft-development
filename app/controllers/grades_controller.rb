@@ -92,7 +92,7 @@ class GradesController < ApplicationController
         redirect_to @assignment
       end
     else
-      redirect_to edit_grade_path(@grade), notice: "#{@assignment.name} was not successfully submitted! Please try again."
+      redirect_to edit_assignment_grade_path(@assignment, @grade), notice: "#{@assignment.name} was not successfully submitted! Please try again."
     end
   end
 
@@ -292,8 +292,8 @@ class GradesController < ApplicationController
 
     create_missing_grades # create grade objects for the student/assignment pair unless present
 
-    @grades.sort_by! { |grade| [ grade.student.last_name, grade.student.first_name ] }
-    @auditor_grades.sort_by! { |grade| [ grade.student.last_name, grade.student.first_name ] }
+    @grades.sort_by { |grade| [ grade.student.last_name, grade.student.first_name ] }
+    @auditor_grades.sort_by{ |grade| [ grade.student.last_name, grade.student.first_name ] }
   end
 
   private

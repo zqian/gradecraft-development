@@ -40,7 +40,7 @@
                           = "See Submission"
                           - if ug.submission_files.present?
                             %i.fi-paperclip
-                      %li= link_to 'Grade', edit_assignment_grade_path("assignment_id"=>assignment.id, :student_id => ug.student.try(:id)), :class => "button"
+                      %li= link_to 'Grade', edit_assignment_grade_path(:assignment_id => assignment.id, :student_id => ug.student.try(:id)), :class => "button"
               - elsif ug.assignment.has_groups?
                 %td= link_to ug.group.try(:name), group_path(ug.group)
                 %td

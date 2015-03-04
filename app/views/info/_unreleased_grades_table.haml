@@ -58,7 +58,7 @@
                         See Grade
                         %span.sr-only for #{g.student.try(:first_name)} #{g.student.try(:last_name)}
                     %li
-                      %a{:href => "#{edit_assignment_grade_path("assignment_id"=>assignment.id)}?student_id=#{g.student_id}", :class => "button"}
+                      %a{:href => "#{edit_assignment_grade_path(:assignment_id => assignment.id)}?student_id=#{g.student_id}", :class => "button"}
                         Edit
                         %span.sr-only record for #{g.student.try(:first_name)} #{g.student.try(:last_name)}
               %td
