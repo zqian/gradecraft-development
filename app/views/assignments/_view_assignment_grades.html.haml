@@ -37,4 +37,7 @@
         - else
           = render "grades/individual_show"
       .content#tabt5
-        = render "grades/student_analytics"
+        - if @assignment.has_groups?
+          = render "grades/group_analytics"
+        - else
+          = render "grades/student_analytics"
