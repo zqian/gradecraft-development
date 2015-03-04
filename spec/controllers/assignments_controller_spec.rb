@@ -27,7 +27,7 @@ describe AssignmentsController do
       end
 
       it "returns the assignment show page" do
-        get :show, {:id => @assignment.id}
+        get :show, :id => @assignment.id
         assigns(:assignment).should eq(@assignment)
         assigns(:assignment_type).should eq(@assignment.assignment_type)
         assigns(:title).should eq(@assignment.name)
@@ -37,13 +37,13 @@ describe AssignmentsController do
       it "assigns groups" do
         group = create(:group, course: @course)
         group.assignments << @assignment
-        get :show, {:id => @assignment.id}
+        get :show, :id => @assignment.id
         assigns(:groups).should eq([group])
       end
 
       it "assigns assignment_grades_by_student_id" do
         grade = create(:grade, assignment: @assignment, student: @student)
-        get :show, {:id => @assignment.id}
+        get :show, :id => @assignment.id
         assigns(:assignment_grades_by_student_id).should eq({@student.id => grade})
       end
 
@@ -85,40 +85,40 @@ describe AssignmentsController do
           team = create(:team, course: @course)
           team.students << @student
 
-          get :show, {:id => @assignment.id}
+          get :show, :id => @assignment.id
           assigns(:students).should include(@student)
           assigns(:students).should include(other_student)
         end
 
         it "assigns all auditing students as auditing" do
           @student.course_memberships.first.update(auditing: true)
-          get :show, {:id => @assignment.id}
+          get :show, :id => @assignment.id
           assigns(:auditing).should eq([@student])
         end
       end
 
       it "assigns the rubric as rubric" do
         rubric = create(:rubric_with_metrics, assignment: @assignment)
-        get :show, {:id => @assignment.id}
+        get :show, :id => @assignment.id
         assigns(:rubric).should eq(rubric)
         assigns(:metrics).should eq(rubric.metrics)
       end
 
       it "assigns course badges as JSON using CourseBadgeSerializer" do
         badge = create(:badge, course: @course)
-        get :show, {:id => @assignment.id}
+        get :show, :id => @assignment.id
         assigns(:course_badges).should eq(ActiveModel::ArraySerializer.new([badge], each_serializer: CourseBadgeSerializer).to_json)
       end
 
       it "assigns assignment score levels ordered by value" do
         assignment_score_level_second = create(:assignment_score_level, assignment: @assignment, value: "1000")
         assignment_score_level_first = create(:assignment_score_level, assignment: @assignment, value: "100")
-        get :show, {:id => @assignment.id}
+        get :show, :id => @assignment.id
         assigns(:assignment_score_levels).should eq([assignment_score_level_first,assignment_score_level_second])
       end
 
       it "assigns student ids" do
-        get :show, {:id => @assignment.id}
+        get :show, :id => @assignment.id
         assigns(:course_student_ids).should eq([@student.id])
       end
 
@@ -127,7 +127,7 @@ describe AssignmentsController do
         ungraded_submission = create(:submission, assignment: @assignment)
         student_submission = create(:graded_submission, assignment: @assignment, student: @student)
         @assignment.submissions << [student_submission, ungraded_submission]
-        get :show, {:id => @assignment.id}
+        get :show, :id => @assignment.id
         assigns(:submissions_count).should eq(2)
         assigns(:ungraded_submissions_count).should eq(1)
         assigns(:ungraded_percentage).should eq(1/2)
@@ -138,22 +138,22 @@ describe AssignmentsController do
 
       it "assigns grades for assignment" do
         grade = create(:grade, student: @student, assignment: @assignment)
-        get :show, {:id => @assignment.id}
+        get :show, :id => @assignment.id
         assigns(:grades_for_assignment).should eq(@assignment.grades_for_assignment(@student))
       end
 
       it "assigns rubric grades" do
         pending
         rubric = create(:rubric_with_metrics, assignment: @assignment)
-        # Test for this line:
+        # TODO: Test for this line:
         # @rubric_grades = RubricGrade.joins("left outer join submissions on submissions.id = rubric_grades.submission_id").where(student_id: current_user[:id]).where(assignment_id: params[:id])
-        get :show, {:id => @assignment.id}
+        get :show, :id => @assignment.id
         assigns(:rubric_grades).should eq("?")
       end
 
       it "assigns comments by metric id" do
         pending
-        get :show, {:id => @assignment.id}
+        get :show, :id => @assignment.id
         assigns(:comments_by_metric_id).should eq("?")
       end
 
@@ -162,7 +162,7 @@ describe AssignmentsController do
         group = create(:group, course: @course)
         group.assignments << @assignment
         group.students << @student
-        get :show, {:id => @assignment.id}
+        get :show, :id => @assignment.id
         assigns(:group).should eq(group)
       end
     end
@@ -217,7 +217,6 @@ describe AssignmentsController do
         :destroy,
         :export_grades,
         :email_based_grade_import,
-        :name_based_grade_import,
         :username_based_grade_import,
         :update_rubrics,
         :rubric_grades_review
@@ -271,7 +270,7 @@ describe AssignmentsController do
     describe "GET show" do
 
       it "returns the assignment show page" do
-        get :show, {:id => @assignment.id}
+        get :show, :id => @assignment.id
         assigns(:assignment).should eq(@assignment)
         assigns(:assignment_type).should eq(@assignment.assignment_type)
         assigns(:title).should eq(@assignment.name)
@@ -281,13 +280,13 @@ describe AssignmentsController do
       it "assigns groups" do
         group = create(:group, course: @course)
         group.assignments << @assignment
-        get :show, {:id => @assignment.id}
+        get :show, :id => @assignment.id
         assigns(:groups).should eq([group])
       end
 
       it "assigns assignment_grades_by_student_id" do
         grade = create(:grade, assignment: @assignment, student: @student)
-        get :show, {:id => @assignment.id}
+        get :show, :id => @assignment.id
         assigns(:assignment_grades_by_student_id).should eq({@student.id => grade})
       end
 
@@ -329,40 +328,40 @@ describe AssignmentsController do
           team = create(:team, course: @course)
           team.students << @student
 
-          get :show, {:id => @assignment.id}
+          get :show, :id => @assignment.id
           assigns(:students).should include(@student)
           assigns(:students).should include(other_student)
         end
 
         it "assigns all auditing students as auditing" do
           @student.course_memberships.first.update(auditing: true)
-          get :show, {:id => @assignment.id}
+          get :show, :id => @assignment.id
           assigns(:auditing).should eq([@student])
         end
       end
 
       it "assigns the rubric as rubric" do
         rubric = create(:rubric_with_metrics, assignment: @assignment)
-        get :show, {:id => @assignment.id}
+        get :show, :id => @assignment.id
         assigns(:rubric).should eq(rubric)
         assigns(:metrics).should eq(rubric.metrics)
       end
 
       it "assigns course badges as JSON using CourseBadgeSerializer" do
         badge = create(:badge, course: @course)
-        get :show, {:id => @assignment.id}
+        get :show, :id => @assignment.id
         assigns(:course_badges).should eq(ActiveModel::ArraySerializer.new([badge], each_serializer: CourseBadgeSerializer).to_json)
       end
 
       it "assigns assignment score levels ordered by value" do
         assignment_score_level_second = create(:assignment_score_level, assignment: @assignment, value: "1000")
         assignment_score_level_first = create(:assignment_score_level, assignment: @assignment, value: "100")
-        get :show, {:id => @assignment.id}
+        get :show, :id => @assignment.id
         assigns(:assignment_score_levels).should eq([assignment_score_level_first,assignment_score_level_second])
       end
 
       it "assigns student ids" do
-        get :show, {:id => @assignment.id}
+        get :show, :id => @assignment.id
         assigns(:course_student_ids).should eq([@student.id])
       end
 
@@ -371,7 +370,7 @@ describe AssignmentsController do
         ungraded_submission = create(:submission, assignment: @assignment)
         student_submission = create(:graded_submission, assignment: @assignment, student: @student)
         @assignment.submissions << [student_submission, ungraded_submission]
-        get :show, {:id => @assignment.id}
+        get :show, :id => @assignment.id
         assigns(:submissions_count).should eq(2)
         assigns(:ungraded_submissions_count).should eq(1)
         assigns(:ungraded_percentage).should eq(1/2)
@@ -382,7 +381,7 @@ describe AssignmentsController do
 
       it "assigns grades for assignment" do
         grade = create(:grade, student: @student, assignment: @assignment)
-        get :show, {:id => @assignment.id}
+        get :show, :id => @assignment.id
         assigns(:grades_for_assignment).should eq(@assignment.all_grades_for_assignment)
       end
     end
@@ -390,7 +389,7 @@ describe AssignmentsController do
     describe "GET guidelines" do
       it "assigns the assignment and associated rubric" do
         rubric = create(:rubric_with_metrics, assignment: @assignment)
-        get :guidelines, {:id => @assignment.id}
+        get :guidelines, :id => @assignment.id
         assigns(:assignment).should eq(@assignment)
         assigns(:title).should eq(@assignment.name)
         assigns(:rubric).should eq(@assignment.rubric)
@@ -410,7 +409,7 @@ describe AssignmentsController do
 
     describe "GET edit" do
       it "assigns title and assignments" do
-        get :edit, {:id => @assignment.id}
+        get :edit, :id => @assignment.id
         assigns(:title).should eq("Editing #{@assignment.name}")
         assigns(:assignment).should eq(@assignment)
         response.should render_template(:edit)
@@ -419,65 +418,181 @@ describe AssignmentsController do
 
     describe "GET copy" do
       it "assigns title and assignments" do
-        pending
-        get :copy, {:id => @assignment.id}
+        pending "copy fails at assignments, change to assignments_path"
+        get :copy, :id => @assignment.id
         response.should render_template(:copy)
-
-        # session[:return_to] = request.referer
-        # @assignment = current_course.assignments.find(params[:id])
-        # new_assignment = @assignment.dup
-        # new_assignment.name.prepend("Copy of ")
-        # new_assignment.save
-        # if @assignment.assignment_score_levels.present?
-        #   @assignment.assignment_score_levels.each do |asl|
-        #     new_asl = asl.dup
-        #     new_asl.assignment_id = new_assignment.id
-        #     new_asl.save
-        #   end
-        # end
-        # if session[:return_to].present?
-        #   redirect_to session[:return_to]
-        # else
-        #   redirect_to assignments
-        # end
       end
     end
 
+    describe "POST create" do
+      it "creates the assignment with valid attributes"  do
+        params = attributes_for(:assignment)
+        params[:assignment_type_id] = @assignment_type
+        expect{ post :create, :assignment => params }.to change(Assignment,:count).by(1)
+      end
 
-    describe "GET create" do
-      it "assigns title and assignments" do
-        pending
-        get :create
+      it "manages file uploads" do
+        params = attributes_for(:assignment)
+        params[:assignment_type_id] = @assignment_type
+        params.merge! :assignment_files_attributes => {"0" => {"file" => [fixture_file('test_file.txt', 'txt')]}}
+        post :create, :assignment => params
+        assignment = Assignment.where(name: params[:name]).first
+        expect assignment.assignment_files.count.should eq(1)
+      end
+
+      it "redirects to new from with invalid attributes" do
+        expect{ post :create, assignment: attributes_for(:assignment, name: nil) }.to_not change(Assignment,:count)
       end
     end
-    describe "GET update" do
-      it "assigns title and assignments" do
-        pending
-        get :update
+
+    describe "POST update" do
+      it "updates the assignment" do
+        params = { name: "new name" }
+        post :update, id: @assignment.id, :assignment => params
+        @assignment.reload
+        response.should redirect_to(assignments_path)
+        @assignment.name.should eq("new name")
+      end
+
+      it "manages file uploads" do
+        params = {:assignment_files_attributes => {"0" => {"file" => [fixture_file('test_file.txt', 'txt')]}}}
+        post :update, id: @assignment.id, :assignment => params
+        expect @assignment.assignment_files.count.should eq(1)
       end
     end
+
     describe "GET sort" do
-      it "assigns title and assignments" do
-        pending
-        get :sort
+      it "sorts the assignemts by params" do
+        @second_assignment = create(:assignment, assignment_type: @assignment_type)
+        @course.assignments << @second_assignment
+        params = [@second_assignment.id, @assignment.id]
+        post :sort, :assignment => params
+
+        @assignment.reload
+        @second_assignment.reload
+        @assignment.position.should eq(2)
+        @second_assignment.position.should eq(1)
       end
     end
+
     describe "GET update_rubrics" do
-      it "assigns title and assignments" do
-        pending
-        get :update_rubrics
+      it "assigns true or false to assignment use_rubric" do
+        @assignment.update(:use_rubric => false)
+        post :update_rubrics, :id => @assignment, :use_rubric => true
+        @assignment.reload
+        @assignment.use_rubric.should be_true
       end
     end
+
     describe "GET rubric_grades_review" do
-      it "assigns title and assignments" do
+      it "assigns attributes for display" do
+        group = create(:group, course: @course)
+        group.assignments << @assignment
+
+        get :rubric_grades_review, :id => @assignment
+        assigns(:title).should eq(@assignment.name)
+        assigns(:assignment).should eq(@assignment)
+        assigns(:groups).should eq([group])
+        response.should render_template(:rubric_grades_review)
+      end
+
+      it "assigns course badges as JSON using CourseBadgeSerializer" do
+        badge = create(:badge, course: @course)
+        get :rubric_grades_review, :id => @assignment.id
+        assigns(:course_badges).should eq(ActiveModel::ArraySerializer.new([badge], each_serializer: CourseBadgeSerializer).to_json)
+      end
+
+      it "assigns the rubric as rubric" do
+        rubric = create(:rubric_with_metrics, assignment: @assignment)
+        get :rubric_grades_review, :id => @assignment.id
+        assigns(:rubric).should eq(rubric)
+        assigns(:metrics).should eq(rubric.metrics)
+      end
+
+      it "assigns assignment score levels ordered by value" do
+        assignment_score_level_second = create(:assignment_score_level, assignment: @assignment, value: "1000")
+        assignment_score_level_first = create(:assignment_score_level, assignment: @assignment, value: "100")
+        get :rubric_grades_review, :id => @assignment.id
+        assigns(:assignment_score_levels).should eq([assignment_score_level_first,assignment_score_level_second])
+      end
+
+      it "assigns student ids" do
+        get :rubric_grades_review, :id => @assignment.id
+        assigns(:course_student_ids).should eq([@student.id])
+      end
+
+      it "assigns rubric grades" do
         pending
-        get :rubric_grades_review
+        rubric = create(:rubric_with_metrics, assignment: @assignment)
+        # TODO: Test for these lines:
+        # @rubric_grades = serialized_rubric_grades
+        # @viewable_rubric_grades = RubricGrade.where(assignment_id: @assignment.id)
+        get :rubric_grades_review, :id => @assignment.id
+        assigns(:rubric_grades).should eq("?")
+        assigns(:viewable_rubric_grades).should eq("?")
+      end
+
+      it "assigns comments by metric id" do
+        pending
+        get :rubric_grades_review, :id => @assignment.id
+        assigns(:comments_by_metric_id).should eq("?")
+      end
+
+      describe "with team id in params" do
+        it "assigns team and students for team" do
+          # we verify only students on team assigned as @students
+          other_student = create(:user)
+          other_student.courses << @course
+
+          team = create(:team, course: @course)
+          team.students << @student
+
+          get :rubric_grades_review, {:id => @assignment.id, :team_id => team.id}
+          assigns(:team).should eq(team)
+          assigns(:students).should eq([@student])
+        end
+
+        it "assigns all team students auditing as auditing" do
+          # we verify only auditing students on team assigned as @auditing
+          other_student = create(:user)
+          other_student.courses << @course
+
+          team = create(:team, course: @course)
+          team.students << @student
+          @student.course_memberships.first.update(auditing: true)
+          other_student.course_memberships.first.update(auditing: true)
+
+          get :rubric_grades_review, {:id => @assignment.id, :team_id => team.id}
+          assigns(:auditing).should eq([@student])
+        end
+      end
+
+      describe "with no team id in params" do
+        it "assigns all students if no team supplied" do
+          # we verify non-team members also assigned as @students
+          other_student = create(:user)
+          other_student.courses << @course
+
+          team = create(:team, course: @course)
+          team.students << @student
+
+          get :rubric_grades_review, :id => @assignment.id
+          assigns(:students).should include(@student)
+          assigns(:students).should include(other_student)
+        end
+
+        it "assigns all auditing students as auditing" do
+          @student.course_memberships.first.update(auditing: true)
+          get :rubric_grades_review, :id => @assignment.id
+          assigns(:auditing).should eq([@student])
+        end
       end
     end
+
+
     describe "GET destroy" do
-      it "assigns title and assignments" do
-        pending
-        get :destroy
+      it "destroys the assignment" do
+        expect{ get :destroy, :id => @assignment }.to change(Assignment,:count).by(-1)
       end
     end
 
@@ -493,28 +608,34 @@ describe AssignmentsController do
       end
     end
 
-     describe "GET email_based_grade_import" do
-      it "assigns title and assignments" do
-        pending
-        get :email_based_grade_import
+    describe "GET email_based_grade_import" do
+      context "with CSV format" do
+        it "returns sample csv data" do
+          grade = create(:grade, assignment: @assignment, student: @student, feedback: "good jorb!")
+          get :email_based_grade_import, :id => @assignment, :format => :csv
+          response.body.should eq("First Name,Last Name,Email,Score,Feedback\n#{@student.first_name},#{@student.last_name},#{@student.email},#{grade.score},#{grade.feedback}\n")
+        end
       end
     end
+
     describe "GET username_based_grade_import" do
-      it "assigns title and assignments" do
-        pending
-        get :username_based_grade_import
+      context "with CSV format" do
+        it "returns sample csv data" do
+          grade = create(:grade, assignment: @assignment, student: @student, feedback: "good jorb!")
+          get :username_based_grade_import, :id => @assignment, :format => :csv
+          response.body.should eq("First Name,Last Name,Username,Score,Feedback\n#{@student.first_name},#{@student.last_name},#{@student.username},#{grade.score},#{grade.feedback}\n")
+        end
       end
     end
-    describe "GET name_based_grade_import" do
-      it "assigns title and assignments" do
-        pending
-        get :name_based_grade_import
-      end
-    end
+
     describe "GET export_grades" do
-      it "assigns title and assignments" do
-        pending
-        get :export_grades
+      context "with CSV format" do
+        it "returns sample csv data" do
+          grade = create(:grade, assignment: @assignment, student: @student, feedback: "good jorb!")
+          submission = create(:submission, grade: grade, student: @student, assignment: @assignment)
+          get :export_grades, :id => @assignment, :format => :csv
+          response.body.should eq("First Name,Last Name,Uniqname,Score,Raw Score,Statement,Feedback\n#{@student.first_name},#{@student.last_name},#{@student.username},#{grade.score},#{grade.raw_score},\"#{submission.text_comment}\",#{grade.feedback}\n")
+        end
       end
     end
   end
