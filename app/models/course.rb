@@ -148,7 +148,7 @@ class Course < ActiveRecord::Base
   end
 
   def valuable_badges?
-    badges.any? { |badge| badge.point_total > 0 }
+    badges.any? { |badge| badge.point_total.present? && badge.point_total > 0 }
   end
 
   def has_groups?
