@@ -7,7 +7,14 @@
 //= require jquery
 //= require jquery-ui
 //= require jquery_ujs
+
 //= require foundation
+//= require foundation/foundation.dropdown
+//= require foundation/foundation.offcanvas
+//= require foundation/foundation.tab
+//= require foundation/foundation.topbar
+//= require foundation/foundation.tooltip
+
 //= require_self 
 //= require jquery.omniselect
 //= require autonumeric
