@@ -432,7 +432,7 @@ describe AssignmentsController do
       end
 
       it "manages file uploads" do
-        params = attributes_for(:assignment)
+        params = attributes_for(:assignment, name: "uniquely named assignment with file attached")
         params[:assignment_type_id] = @assignment_type
         params.merge! :assignment_files_attributes => {"0" => {"file" => [fixture_file('test_file.txt', 'txt')]}}
         post :create, :assignment => params
@@ -462,7 +462,7 @@ describe AssignmentsController do
     end
 
     describe "GET sort" do
-      it "sorts the assignmets by params" do
+      it "sorts the assignemts by params" do
         @second_assignment = create(:assignment, assignment_type: @assignment_type)
         @course.assignments << @second_assignment
         params = [@second_assignment.id, @assignment.id]
@@ -632,6 +632,14 @@ describe AssignmentsController do
       context "with CSV format" do
         it "returns sample csv data" do
           grade = create(:grade, assignment: @assignment, student: @student, feedback: "good jorb!")
+          submission = create(:submission, grade: grade, student: @student, assignment: @assignment)
+          get :export_grades, :id => @assignment, :format => :csv
+          response.body.should eq("First Name,Last Name,Uniqname,Score,Raw Score,Statement,Feedback\n#{@student.first_name},#{@student.last_name},#{@student.username},\"\",\"\",\"#{submission.text_comment}\",\"\"\n")
+        end
+
+        it "returns additional data when grade is instructor modified" do
+          pending "review this behaviour change"
+          grade = create(:grade, assignment: @assignment, student: @student, feedback: "good jorb!", instructor_modified: true)
           submission = create(:submission, grade: grade, student: @student, assignment: @assignment)
           get :export_grades, :id => @assignment, :format => :csv
           response.body.should eq("First Name,Last Name,Uniqname,Score,Raw Score,Statement,Feedback\n#{@student.first_name},#{@student.last_name},#{@student.username},#{grade.score},#{grade.raw_score},\"#{submission.text_comment}\",#{grade.feedback}\n")
