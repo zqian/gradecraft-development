@@ -20,7 +20,7 @@ gem 'canable'
 gem 'carrierwave'
 gem 'carrierwave_backgrounder'
 gem 'coffee-rails'
-gem "compass-rails", "~> 1.1.3"
+gem "compass-rails"
 gem 'dalli'
 gem 'dotenv-rails'
 gem 'fog'
