@@ -462,7 +462,7 @@ describe AssignmentsController do
     end
 
     describe "GET sort" do
-      it "sorts the assignemts by params" do
+      it "sorts the assignmets by params" do
         @second_assignment = create(:assignment, assignment_type: @assignment_type)
         @course.assignments << @second_assignment
         params = [@second_assignment.id, @assignment.id]
