@@ -44,8 +44,9 @@ RSpec.configure do |config|
 
   # Authentication with Sorcery
   # https://github.com/NoamB/sorcery/wiki/Testing-Rails
-  config.include Sorcery::TestHelpers::Rails#::Controller, type: :controller
-  #config.include Sorcery::TestHelpers::Rails::Integration, type: :feature
+  config.include Sorcery::TestHelpers::Rails::Controller, type: :controller
+  config.include Sorcery::TestHelpers::Rails::Integration, type: :feature
+
 
   config.filter_run focus: true
   config.run_all_when_everything_filtered = true
