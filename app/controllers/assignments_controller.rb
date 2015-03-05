@@ -171,9 +171,7 @@ class AssignmentsController < ApplicationController
 
   def sort
     params[:"assignment"].each_with_index do |id, index|
-      # TODO: change to:
-      #current_course.assignments.update(id, position: index + 1)
-      current_course.assignments.update_all({position: index+1}, {id: id})
+      current_course.assignments.update(id, position: index + 1)
     end
     render nothing: true
   end
