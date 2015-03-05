@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Notification email template</title>
+</head>
+
+<body bgcolor="#8d8e90">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#8d8e90">
+<tr>
+<td><table width="600" border="0" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF" align="center">
+<tr>
+<td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="30"></td>
+<td width="187"><a href= "http://yourlink" target="_blank"><img src="https://www.gradecraft.com/images/gradecraft_logo.png" width="207" border="0" alt=""/></a></td>
+<td width="393"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td height="46" align="right" valign="middle"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="67%" align="right"></td>
+<td width="29%" align="right"></td>
+<td width="4%">&nbsp;</td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td height="30"></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td align="center">&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="10%">&nbsp; </td>
+<td width="15%" align="left"> <img alt="Inner Eye" src="http://localhost:5000/uploads/badge/icon/2/zombie.png" width="60"></td>
+<td width="65%" align="left" valign="top"><font style="font-family: Helvetica, 'Times New Roman', Times, serif; color:#010101; font-size:24px"><strong>Congratulations #{ @user.first_name }!</strong></font><br /><br />
+<font style="font-family: Verdana, Geneva, sans-serif; color:#666766; font-size:13px; line-height:21px">                
+You've earned the <strong>#{ @earned_badge.badge.name } #{ @course.badge_term }</strong>. 
+
+- if @earned_badge.feedback.present?
+  %br
+  %p
+    <em> Your instructor said: </em>
+  %p= @earned_badge.feedback.html_safe
+
+%p Check out what other #{ @course.badge_term.pluralize } you can earn in #{ @course.name } <a href="https://www.gradecraft.com/my_badges">here</a>.
+
+Fondly,<br />
+GradeCraft</font></td>
+<td width="10%">&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td align="right" valign="top"><table width="108" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td><img src="http://localhost:5000/images/mo.png" width="108" style="display:block" border="0" alt=""/></td>
+</tr>
+<tr>
+<td align="center" valign="middle" bgcolor="#03bcda"><font style="font-family: Georgia, 'Times New Roman', Times, serif; color:#ffffff; font-size:14px"><em><a href="https://gradecraft.com" target="_blank" style="color:#ffffff; text-decoration: none">check your </a></em></font></td>
+</tr>
+<tr>
+<td align="center" valign="middle" bgcolor="#03bcda"><font style="font-family: Georgia, 'Times New Roman', Times, serif; color:#ffffff; font-size:15px"><strong><a href="https://gradecraft.com" target="_blank" style="color:#ffffff; text-decoration:none"><em>Progress</em></a></strong></font></td>
+</tr>
+<tr>
+<td height="10" align="center" valign="middle" bgcolor="#03bcda"> </td>
+</tr>
+</table></td>
+<td>&nbsp;</td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><img src="images/PROMO-GREEN2_07.jpg" width="598" height="7" style="display:block" border="0" alt=""/></td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="33%" align="right"><a href="https://www.facebook.com/gradecraft" target="_blank"><img src="http://localhost:5000/images/facebook500.png" alt="facebook" width="40" height="40" border="0" /></a></td>
+<td width="33%" align="center"><a href="https://twitter.com/gradecraft" target="_blank"><img src="http://localhost:5000/images/twitter.png" alt="twitter" width="40" height="40" border="0" /></a></td>
+<td width="33%" align="left"><a href="https://www.youtube.com/channel/UC5fz1gQxcOF9Rn1Qs_mq06g" target="_blank"><img src="http://localhost:5000/images/youtube.png" alt="linkedin" width="40" height="40" border="0" /></a></td>
+<td width="5%">&nbsp;</td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td align="center"><font style="font-family: Helvetica, Arial, sans-serif; color:#231f20; font-size:11px">&copy; 2012-15 Regents of The University of Michigan | <strong><a href= "mailto:help@gradecraft.com" style="color:#010203; text-decoration:none">help@gradecraft.com</a></strong></font></td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+</tr>
+</table></td>
+</tr>
+</table>
+</body>
+</html>
