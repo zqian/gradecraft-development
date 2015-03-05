@@ -61,7 +61,7 @@
     %a{:href => gradebook_path(format: 'csv')} <i class="fi-book"></i> Full Gradebook
   - if current_course.has_badges?
     %li
-      %a{:href => export_earned_badges_path(format: 'csv')} <i class="fi-book"></i> Awarded Badges
+      %a{:href => export_earned_badges_path(format: 'csv')} <i class="fi-book"></i> Awarded  #{current_course.badge_term.pluralize}
 
 
 %hr
