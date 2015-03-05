@@ -4,9 +4,6 @@ require 'spec_helper'
 describe "assignments/index" do
 
   before(:all) do
-    # may need to destroy models?
-    #Client.all.each {|c| c.destroy}
-
     @course = create(:course)
     @assignment_type_1 = create(:assignment_type, course: @course, max_value: 1000)
     @assignment_type_2 = create(:assignment_type, course: @course, max_value: 2000)
@@ -22,6 +19,7 @@ describe "assignments/index" do
   end
 
   it "renders successfully" do
+    render
     assert_select "h3", text: "Assignments", :count => 1
   end
 
