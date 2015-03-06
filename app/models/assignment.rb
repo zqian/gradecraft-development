@@ -354,7 +354,7 @@ class Assignment < ActiveRecord::Base
     CSV.generate(options) do |csv|
       csv << ["First Name", "Last Name", "Uniqname", "Score", "Raw Score", "Statement", "Feedback" ]
       self.grades.each do |grade|
-        if grade.instructor_modified?
+        if grade.instructor_modified? || grade.graded_or_released?
           csv << [grade.student.first_name, grade.student.last_name, grade.student.username, grade.student.grade_for_assignment(assignment).score, grade.student.grade_for_assignment(assignment).raw_score, grade.student.submission_for_assignment(assignment).try(:text_comment), grade.student.grade_for_assignment(assignment).try(:feedback) ]
         else
           csv << [grade.student.first_name, grade.student.last_name, grade.student.username, "", "", grade.student.submission_for_assignment(assignment).try(:text_comment), "" ]
