@@ -1,9 +1,9 @@
 @gradecraft.controller 'RubricCtrl', ['$scope', 'Restangular', 'MetricPrototype', 'CourseBadgePrototype', '$http', ($scope, Restangular, MetricPrototype, CourseBadgePrototype, $http) -> 
  # hide modal window by default
- $scope.modalShown = false
- $scope.toggleModal = ->
-   $scope.modalShown = not $scope.modalShown
-   return
+  $scope.modalShown = false
+  $scope.toggleModal = ->
+    $scope.modalShown = not $scope.modalShown
+    return
 
   INTEGER_REGEXP = /^\-?\d+$/
   Restangular.setRequestSuffix('.json')

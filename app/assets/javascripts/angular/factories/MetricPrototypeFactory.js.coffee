@@ -181,7 +181,7 @@
             ()-> , #success
             ()-> # failure
           )
-          @resetChanges()
+        @resetChanges()
 
     delete: (index)->
       if @isSaved()

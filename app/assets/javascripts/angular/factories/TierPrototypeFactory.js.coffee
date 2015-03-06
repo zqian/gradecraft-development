@@ -117,7 +117,7 @@
             ()-> #success
             ()-> #failure
           )
-          @resetChanges()
+        @resetChanges()
     metricName: ()->
       alert @metric.name
     delete: (index)->
