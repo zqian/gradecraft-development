@@ -147,7 +147,6 @@ ActiveRecord::Schema.define(version: 20150219225846) do
     t.boolean  "include_in_predictor",              default: true
     t.integer  "position"
     t.boolean  "include_in_to_do",                  default: true
-    t.boolean  "use_rubric",                        default: true
     t.string   "student_logged_button_text"
     t.string   "student_logged_revert_button_text"
     t.boolean  "use_rubric",                        default: true

@@ -16,7 +16,7 @@
                   %b= badge.name
                   %div= "#{points badge.point_total} points"
                   = hidden_field_tag badge.name, badge.point_total
-                .clearfix
+                .clear
             - else
               .badgeField.panel
                 .small-12.medium-5.columns
@@ -25,4 +25,4 @@
                   = badge.name
                   %b #{points badge.point_total} points
                   = check_box_tag badge.name, badge.point_total, false, :class => 'class-checkbox', :'data-assignment-type-id' => 'grades'
-                .clearfix
+                .clear

@@ -4,8 +4,6 @@ class User < ActiveRecord::Base
   include Canable::Cans
 
   before_validation :set_default_course
-  #TODO: is this necessory  we can remove test
-  #after_validation :cache_scores
 
   ROLES = %w(student professor gsi admin)
 

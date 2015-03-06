@@ -1,5 +1,5 @@
 = simple_form_for([@challenge, @challenge_grade]) do |f|
-  .panel
+  .small-12.panel
     .small-12.large-4.columns
       = f.association :team, :collection => @teams
 
@@ -14,7 +14,11 @@
         = f.select :status, Grade::STATUSES
         .form_label= "Can the #{term_for :team} see this grade?"
 
-    .small-12.columns.panel.callout
+    .clear
+
+  .small-12.columns.panel
+    %h4.uppercase Feedback
+    .textarea
       = f.bootsy_area :text_feedback
 
 

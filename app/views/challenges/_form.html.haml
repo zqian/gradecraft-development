@@ -38,7 +38,7 @@
         = f.label :point_total
         = f.text_field :point_total, data: {autonumeric: true, "m-dec" => "0"}
 
-      .clearfix
+      .clear
 
       .small-12.large-6.columns
         = f.input :open_at, as: :string, :input_html => { :class => 'datetimepicker', :value => @challenge.try(:open_at) }
@@ -67,7 +67,7 @@
                 = render 'challenge_score_level_fields', f: slf
         = link_to 'Add a Level', '#', class: 'add-challenge-score-level button radius'
 
-    .small-12.panel
+    .small-12.medium-8.panel
       %h4.uppercase Attachments
       = f.simple_fields_for :challenge_files, @challenge.challenge_files.new do |cf|
         = cf.file_field :file, :multiple => true

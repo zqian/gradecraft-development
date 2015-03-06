@@ -21,7 +21,7 @@
       = f.text_field :display_name
 
     - if current_user_is_admin?
-      .clearfix
+      .clear
 
       .small-12.medium-4.columns
         = f.label :password
@@ -30,7 +30,7 @@
         = f.label :password_confirmation
         = f.password_field :password_confirmation, :as => :password
 
-    .clearfix
+    .clear
 
   - if current_user_is_admin?
 
@@ -75,7 +75,7 @@
               %label.checkbox
                 = p.input :shared_badges, :label => "Sharing #{term_for :badges}"
                 .form_label This #{term_for :student}'s #{term_for :badges} will be displayed on a class leaderboard
-            .clearfix
+            .clear
 
   .button-bar
     %ul.button-group.radius.right

@@ -45,8 +45,10 @@ class AssignmentsController < ApplicationController
     @students = students
 
     @auditing = current_course.students_auditing.includes(:teams).where(user_search_options)
-    @rubric = @assignment.fetch_or_create_rubric
-    @metrics = @rubric.metrics
+    if @assignment.rubric.present?
+      @rubric = @assignment.fetch_or_create_rubric
+      @metrics = @rubric.metrics
+    end
     @course_badges = serialized_course_badges
     @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
     @course_student_ids = current_course.students.map(&:id)
@@ -114,7 +116,7 @@ class AssignmentsController < ApplicationController
     if session[:return_to].present?
       redirect_to session[:return_to]
     else
-      redirect_to assignments
+      redirect_to assignments #TODO change to assignments_path
     end
   end
 
@@ -125,13 +127,11 @@ class AssignmentsController < ApplicationController
     end
 
     @assignment = current_course.assignments.new(params[:assignment])
-
     if @assignment_files
       @assignment_files.each do |af|
         @assignment.assignment_files.new(file: af, filename: af.original_filename)
       end
     end
-
     respond_to do |format|
       if @assignment.save
         set_assignment_weights
@@ -173,7 +173,7 @@ class AssignmentsController < ApplicationController
 
   def sort
     params[:"assignment"].each_with_index do |id, index|
-      current_course.assignments.update_all({position: index+1}, {id: id})
+      current_course.assignments.update(id, position: index + 1)
     end
     render nothing: true
   end
@@ -258,30 +258,14 @@ class AssignmentsController < ApplicationController
   def email_based_grade_import
     @assignment = current_course.assignments.find(params[:id])
     respond_to do |format|
-      format.html
-      format.json { render json: @assignment }
       format.csv { send_data @assignment.email_based_grade_import(@assignment) }
-      format.xls { send_data @assignment.to_csv(col_sep: "\t") }
     end
   end
 
   def username_based_grade_import
     @assignment = current_course.assignments.find(params[:id])
     respond_to do |format|
-      format.html
-      format.json { render json: @assignment }
       format.csv { send_data @assignment.username_based_grade_import(@assignment) }
-      format.xls { send_data @assignment.to_csv(col_sep: "\t") }
-    end
-  end
-
-  def name_based_grade_import
-    @assignment = current_course.assignments.find(params[:id])
-    respond_to do |format|
-      format.html
-      format.json { render json: @assignment }
-      format.csv { send_data @assignment.name_based_grade_import(@assignment) }
-      format.xls { send_data @assignment.to_csv(col_sep: "\t") }
     end
   end
 
@@ -289,10 +273,7 @@ class AssignmentsController < ApplicationController
   def export_grades
     @assignment = current_course.assignments.find(params[:id])
     respond_to do |format|
-      format.html
-      format.json { render json: @assignment }
       format.csv { send_data @assignment.gradebook_for_assignment(@assignment) }
-      format.xls { send_data @assignment.to_csv(col_sep: "\t") }
     end
   end
 

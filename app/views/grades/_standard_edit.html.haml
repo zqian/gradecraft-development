@@ -10,7 +10,7 @@
     = hidden_field_tag :student_id, current_student.id
 
     .panel
-      .small-12.columns
+      .small-12.medium-4.columns
         = f.label :raw_score, "Raw Score (#{@assignment.point_total} points Possible)"
         - if @assignment.has_levels?
           = f.select :raw_score, @assignment_score_levels.map { |l| [l.formatted_name,l.value] }, :include_blank => true
@@ -18,20 +18,20 @@
           = f.text_field :raw_score, :default => @assignment.point_total, :label => "Score", :hint => "Total Assignment Points: #{ points @assignment.point_total }", data: {autonumeric: true, "m-dec" => "0"}
 
       - if @assignment.release_necessary?
-        .small-12.large-4.columns
+        .small-12.medium-4.columns
           = f.input :status,  as: :select, :collection => ["In Progress", "Graded", "Released"], :selected => @grade.status, :include_blank => true
           .form_label Can the student see this grade?
       - elsif @grade.status.blank?
         = f.hidden_field :status, value: 'Graded'
 
-      .small-12.columns
+      .small-12.columns.textarea
         = f.hidden_field :graded_by_id, :value => current_user.id
         = f.label :feedback
         = f.bootsy_area :feedback
       .clear
 
     .panel
-      .small-12.columns.panel
+      .small-12
         %h4.uppercase Attachments
         = f.simple_fields_for :grade_files, @grade.grade_files.new do |gf|
           = gf.file_field :file, :multiple => true

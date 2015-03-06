@@ -23,7 +23,7 @@
         - for grade in @grades
           = hidden_field_tag "grade_ids[]", grade.id
         .medium-3.right= f.input :status, :label => "Update Status to:", :as => :select, :collection => Grade::STATUSES
-        .clearfix
+        .clear
         .button-bar
           %ul.button-group.radius.right
             %li= f.button :submit, "Update Statuses"

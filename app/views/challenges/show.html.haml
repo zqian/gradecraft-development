@@ -88,7 +88,7 @@
                             = "for #{team.name}"
                   - else
                     .right
-                      %a{:href => new_challenge_challenge_grade_path("challenge_id"=>@challenge.id, :team_id => team.id), :class => 'button radius'}
+                      %a{:href => new_challenge_challenge_grade_path(:challenge_id => @challenge.id, :team_id => team.id), :class => 'button radius'}
                         Grade
                         %span.sr-only
                           = "for #{team.name}"

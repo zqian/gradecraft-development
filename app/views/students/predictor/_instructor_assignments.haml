@@ -20,7 +20,7 @@
       .small-12
         - assignments = assignment_type.assignments.sorted
         - assignments.each do |assignment|
-          .clearfix
+          .clear
           - if assignment.point_total > 0
             .assignment
               .small-12.medium-7.columns
@@ -51,4 +51,4 @@
                     %span.pScore= "0 "
                     %span.score-level-name
                     .slider{:id => "slider-#{assignment.id}", :max => current_student_data.point_total_for_assignment(assignment) , :value => "#{current_student_data.grade_for_assignment(assignment).score}", :'data-scorelevelvals' => "#{assignment.assignment_score_levels.map(&:value)}", :'data-scorelevelnames' => "#{assignment.assignment_score_levels.map(&:name)}", :'data-highlight' => "true"}
-              .clearfix
+              .clear

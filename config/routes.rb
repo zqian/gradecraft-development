@@ -23,7 +23,7 @@ GradeCraft::Application.routes.draw do
 
   #1. Analytics & Charts
   namespace :analytics do
-    root :to => :index
+    root action: :index
     get :staff
     get :students
     get :top_10
