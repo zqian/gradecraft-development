@@ -45,8 +45,10 @@ class AssignmentsController < ApplicationController
     @students = students
 
     @auditing = current_course.students_auditing.includes(:teams).where(user_search_options)
-    @rubric = @assignment.fetch_or_create_rubric
-    @metrics = @rubric.metrics
+    if @assignment.rubric.present?
+      @rubric = @assignment.fetch_or_create_rubric
+      @metrics = @rubric.metrics
+    end
     @course_badges = serialized_course_badges
     @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
     @course_student_ids = current_course.students.map(&:id)

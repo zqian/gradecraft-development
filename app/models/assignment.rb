@@ -46,9 +46,6 @@ class Assignment < ActiveRecord::Base
   #Preventing malicious content from being submitted
   before_save :clean_html
 
-  #Saving the course and the point total if possible
-  before_validation :cache_point_total
-
   # Check to make sure the assignment has a name before saving
   validates_presence_of :name
 
@@ -447,13 +444,6 @@ class Assignment < ActiveRecord::Base
   #Stripping the description of extra code
   def clean_html
     self.description = Sanitize.clean(description, Sanitize::Config::BASIC)
-  end
-
-  #Getting the point total from the assignment type if it's present
-  def cache_point_total
-    if assignment_type.present?
-      self.point_total = point_total
-    end
   end
 
   # Checking to see if the assignment point total has altered, and if it has resaving weights
