@@ -35,7 +35,9 @@
                 - elsif ! eb.student.earned_badges.where(:badge_id => @badge).present?
                   = ebf.hidden_field :_destroy, class: 'destroy'
                   = ebf.check_box :score, {}, @badge.point_total, nil
+      %br
 
-      .right.form_buttons
-        = f.button :submit, "Award", :class => "button radius"
-        = link_to 'Cancel', badges_path, :class => 'button transparent radius'
+      .button-bar
+        %ul.button-group.radius.right
+          %li= f.button :submit, "Award", :class => "button"
+          %li= link_to 'Cancel', badges_path, :class => "button"

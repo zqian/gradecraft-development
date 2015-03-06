@@ -21,7 +21,7 @@
         
         .collapse-hidden        
           .small-12.columns
-            .clearfix
+            .clear
             - assignments = assignment_type.assignments.sorted
             - assignments.each do |assignment|
               - if assignment.point_total > 0
@@ -56,4 +56,4 @@
                         %span.pScore= "0 "
                         %span.score-level-name 
                         .slider{:id => "slider-#{assignment.id}", :max => current_student_data.point_total_for_assignment(assignment) , :value => "#{current_student_data.grade_for_assignment(assignment).predicted_score}", :'data-scorelevelvals' => "#{assignment.assignment_score_levels.map(&:value)}", :'data-scorelevelnames' => "#{assignment.assignment_score_levels.map(&:name)}", :'data-highlight' => "true"}
-                  .clearfix
+                  .clear

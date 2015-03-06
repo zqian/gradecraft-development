@@ -46,9 +46,6 @@ class Assignment < ActiveRecord::Base
   #Preventing malicious content from being submitted
   before_save :clean_html
 
-  #Saving the course and the point total if possible
-  before_validation :cache_point_total
-
   # Check to make sure the assignment has a name before saving
   validates_presence_of :name
 
@@ -288,8 +285,8 @@ class Assignment < ActiveRecord::Base
 
   #Finding what grade level was earned for a particular assignment
   def grade_level(grade)
-    score_levels.each do |score_level|
-      return score_level.name if grade.raw_score == score_level.value
+    assignment_score_levels.each do |assignment_score_level|
+      return assignment_score_level.name if grade.raw_score == assignment_score_level.value
     end
     nil
   end
@@ -356,8 +353,12 @@ class Assignment < ActiveRecord::Base
   def gradebook_for_assignment(assignment, options = {})
     CSV.generate(options) do |csv|
       csv << ["First Name", "Last Name", "Uniqname", "Score", "Raw Score", "Statement", "Feedback" ]
-      course.students.each do |student|
-        csv << [student.first_name, student.last_name, student.username, student.grade_for_assignment(assignment).try(:score), student.grade_for_assignment(assignment).try(:raw_score), student.submission_for_assignment(assignment).try(:text_comment), student.grade_for_assignment(assignment).try(:feedback) ]
+      self.grades.each do |grade|
+        if grade.instructor_modified? || grade.graded_or_released?
+          csv << [grade.student.first_name, grade.student.last_name, grade.student.username, grade.student.grade_for_assignment(assignment).score, grade.student.grade_for_assignment(assignment).raw_score, grade.student.submission_for_assignment(assignment).try(:text_comment), grade.student.grade_for_assignment(assignment).try(:feedback) ]
+        else
+          csv << [grade.student.first_name, grade.student.last_name, grade.student.username, "", "", grade.student.submission_for_assignment(assignment).try(:text_comment), "" ]
+        end
       end
     end
   end
@@ -365,8 +366,12 @@ class Assignment < ActiveRecord::Base
   def email_based_grade_import(assignment, options = {})
     CSV.generate(options) do |csv|
       csv << ["First Name", "Last Name", "Email", "Score", "Feedback"]
-      course.students.each do |student|
-        csv << [student.first_name, student.last_name, student.email, student.grade_for_assignment(assignment).try(:score), student.grade_for_assignment(assignment).try(:feedback)]
+      self.grades.each do |grade|
+        if grade.instructor_modified? || grade.graded_or_released?
+          csv << [grade.student.first_name, grade.student.last_name, grade.student.email, grade.student.grade_for_assignment(assignment).score, grade.student.grade_for_assignment(assignment).try(:feedback) ]
+        else
+          csv << [grade.student.first_name, grade.student.last_name, grade.student.email, "", "" ]
+        end
       end
     end
   end
@@ -374,8 +379,12 @@ class Assignment < ActiveRecord::Base
   def username_based_grade_import(assignment, options = {})
     CSV.generate(options) do |csv|
       csv << ["First Name", "Last Name", "Username", "Score", "Feedback"]
-      course.students.each do |student|
-        csv << [student.first_name, student.last_name, student.username, student.grade_for_assignment(assignment).try(:score), student.grade_for_assignment(assignment).try(:feedback)]
+      self.grades.each do |grade|
+        if grade.instructor_modified? || grade.graded_or_released?
+          csv << [grade.student.first_name, grade.student.last_name, grade.student.username, grade.student.grade_for_assignment(assignment).score, grade.student.grade_for_assignment(assignment).try(:feedback) ]
+        else
+          csv << [grade.student.first_name, grade.student.last_name, grade.student.username, "", "" ]
+        end
       end
     end
   end
@@ -443,13 +452,6 @@ class Assignment < ActiveRecord::Base
   #Stripping the description of extra code
   def clean_html
     self.description = Sanitize.clean(description, Sanitize::Config::BASIC)
-  end
-
-  #Getting the point total from the assignment type if it's present
-  def cache_point_total
-    if assignment_type.present?
-      self.point_total = point_total
-    end
   end
 
   # Checking to see if the assignment point total has altered, and if it has resaving weights

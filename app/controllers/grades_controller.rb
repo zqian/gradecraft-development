@@ -38,10 +38,12 @@ class GradesController < ApplicationController
     @student = @grade.student
     @submission = @student.submission_for_assignment(@assignment)
     @title = "Editing #{current_student.name}'s Grade for #{@assignment.name}"
-    @rubric = @assignment.rubric
-    @rubric_grades = serialized_rubric_grades
-    @metrics = existing_metrics_as_json if @rubric
-    @course_badges = serialized_course_badges
+    if @assignment.rubric.present?
+      @rubric = @assignment.rubric
+      @rubric_grades = serialized_rubric_grades
+      @metrics = existing_metrics_as_json if @rubric
+      @course_badges = serialized_course_badges
+    end
     @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
   end
 
@@ -92,7 +94,7 @@ class GradesController < ApplicationController
         redirect_to @assignment
       end
     else
-      redirect_to edit_grade_path(@grade), notice: "#{@assignment.name} was not successfully submitted! Please try again."
+      redirect_to edit_assignment_grade_path(@assignment, @grade), notice: "#{@assignment.name} was not successfully submitted! Please try again."
     end
   end
 
@@ -292,8 +294,8 @@ class GradesController < ApplicationController
 
     create_missing_grades # create grade objects for the student/assignment pair unless present
 
-    @grades.sort_by! { |grade| [ grade.student.last_name, grade.student.first_name ] }
-    @auditor_grades.sort_by! { |grade| [ grade.student.last_name, grade.student.first_name ] }
+    @grades = @grades.sort_by { |grade| [ grade.student.last_name, grade.student.first_name ] }
+    @auditor_grades = @auditor_grades.sort_by { |grade| [ grade.student.last_name, grade.student.first_name ] }
   end
 
   private

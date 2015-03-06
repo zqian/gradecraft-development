@@ -41,12 +41,6 @@
           .form_label Do you want to use badges in your course?
 
       .small-12
-        %label.checkbox{ :for => "shared_badges"}
-          = f.input :shared_badges, :label => "Social Badges"
-          .form_label Can students can share badges with the class?
-
-
-      .small-12
         %label.checkbox{ :for => "teams_visible" }
           = f.label :teams_visible, "Section Leaderboard"
           = f.check_box :teams_visible, {"aria-describedby" => "txtSectionLeaderboard"}
@@ -173,7 +167,7 @@
       = f.number_field :max_group_size
 
 
-    .clearfix
+    .clear
 
   .panel
     %h4 GRADING PHILOSOPHY

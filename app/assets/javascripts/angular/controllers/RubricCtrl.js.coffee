@@ -1,18 +1,17 @@
 @gradecraft.controller 'RubricCtrl', ['$scope', 'Restangular', 'MetricBadgePrototype', 'CourseBadgePrototype', '$http', ($scope, Restangular, MetricBadgePrototype, CourseBadgePrototype, $http) -> 
-
-
- # hide modal window by default
- $scope.modalShown = false
- $scope.toggleModal = ->
-   $scope.modalShown = not $scope.modalShown
-   return
-
+  
+  # hide modal window by default
+  $scope.modalShown = false
+  $scope.toggleModal = ->
+    $scope.modalShown = not $scope.modalShown
+    return
+  
   INTEGER_REGEXP = /^\-?\d+$/
   Restangular.setRequestSuffix('.json')
   $scope.metrics = []
   $scope.courseBadges = {}
   $scope.savedMetricCount = 0
-
+  
   $scope.init = (rubricId, pointTotal, metrics, courseBadges)->
     $scope.rubricId = rubricId
     $scope.pointTotal = parseInt(pointTotal)
@@ -229,8 +228,8 @@
             ()-> , #success
             ()-> # failure
           )
-          self.resetChanges()
-
+        self.resetChanges()
+      
     delete: (index)->
       self = this
       if this.isSaved()
@@ -382,7 +381,7 @@
             ()-> #success
             ()-> #failure
           )
-          self.resetChanges()
+        self.resetChanges()
 
      metricName: ()->
        alert this.metric.name
