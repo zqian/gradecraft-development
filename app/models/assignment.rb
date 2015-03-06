@@ -366,8 +366,12 @@ class Assignment < ActiveRecord::Base
   def email_based_grade_import(assignment, options = {})
     CSV.generate(options) do |csv|
       csv << ["First Name", "Last Name", "Email", "Score", "Feedback"]
-      course.students.each do |student|
-        csv << [student.first_name, student.last_name, student.email, student.grade_for_assignment(assignment).try(:score), student.grade_for_assignment(assignment).try(:feedback)]
+      self.grades.each do |grade|
+        if grade.instructor_modified? || grade.graded_or_released?
+          csv << [grade.student.first_name, grade.student.last_name, grade.student.email, grade.student.grade_for_assignment(assignment).score, grade.student.grade_for_assignment(assignment).try(:feedback) ]
+        else
+          csv << [grade.student.first_name, grade.student.last_name, grade.student.email, "", "" ]
+        end
       end
     end
   end
@@ -375,8 +379,12 @@ class Assignment < ActiveRecord::Base
   def username_based_grade_import(assignment, options = {})
     CSV.generate(options) do |csv|
       csv << ["First Name", "Last Name", "Username", "Score", "Feedback"]
-      course.students.each do |student|
-        csv << [student.first_name, student.last_name, student.username, student.grade_for_assignment(assignment).try(:score), student.grade_for_assignment(assignment).try(:feedback)]
+      self.grades.each do |grade|
+        if grade.instructor_modified? || grade.graded_or_released?
+          csv << [grade.student.first_name, grade.student.last_name, grade.student.username, grade.student.grade_for_assignment(assignment).score, grade.student.grade_for_assignment(assignment).try(:feedback) ]
+        else
+          csv << [grade.student.first_name, grade.student.last_name, grade.student.username, "", "" ]
+        end
       end
     end
   end
