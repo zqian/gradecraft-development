@@ -432,11 +432,12 @@ describe AssignmentsController do
       end
 
       it "manages file uploads" do
-        params = attributes_for(:assignment, name: "uniquely named assignment with file attached")
+        Assignment.delete_all
+        params = attributes_for(:assignment)
         params[:assignment_type_id] = @assignment_type
         params.merge! :assignment_files_attributes => {"0" => {"file" => [fixture_file('test_file.txt', 'txt')]}}
         post :create, :assignment => params
-        assignment = Assignment.where(name: params[:name]).first
+        assignment = Assignment.where(name: params[:name]).last
         expect assignment.assignment_files.count.should eq(1)
       end
 

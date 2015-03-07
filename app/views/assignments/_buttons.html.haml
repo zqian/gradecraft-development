@@ -21,7 +21,7 @@
         %i.fi-upload
         Import Grades
     %li
-      %a{:href => export_grades_assignment_path(format: 'csv') }
+      %a{:href => export_grades_assignment_path(@assignment, format: 'csv') }
         %i.fi-page-export-csv
         Download Grades
     %li
@@ -30,7 +30,7 @@
         - if @assignment.rubric and @assignment.rubric.designed?
           Edit Rubric
         - else
-          Create Rubric 
+          Create Rubric
 
     - if @assignment.rubric and @assignment.rubric.designed?
       %li.loading(ng-cloak ng-hide="window.angular")
