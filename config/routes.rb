@@ -191,6 +191,7 @@ GradeCraft::Application.routes.draw do
   get 'gradebook' => 'info#gradebook'
   get 'final_grades' => 'info#final_grades'
   get 'research_gradebook' => 'info#research_gradebook'
+  get 'export_earned_badges' => 'courses#export_earned_badges'
 
   #8. Groups
   resources :groups do

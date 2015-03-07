@@ -322,6 +322,25 @@ class Course < ActiveRecord::Base
     end
   end
 
+  #all awarded badges for a single course
+  def earned_badges_for_course
+    CSV.generate do |csv|
+      csv << ["First Name", "Last Name", "Uniqname", "Email", "Badge ID", "Badge Name", "Feedback", "Awarded Date" ]
+      earned_badges.each do |earned_badge|
+        csv << [
+          earned_badge.student.first_name, 
+          earned_badge.student.last_name, 
+          earned_badge.student.username, 
+          earned_badge.student.email, 
+          earned_badge.badge.id, 
+          earned_badge.badge.name,
+          earned_badge.feedback, 
+          earned_badge.created_at
+        ]
+      end
+    end
+  end
+
   #badges
   def course_badge_count
    badges.count

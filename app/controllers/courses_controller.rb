@@ -187,4 +187,12 @@ class CoursesController < ApplicationController
       @events = @course.assignments.timelineable
     end
   end
+
+  def export_earned_badges
+    @course = current_course
+    respond_to do |format|
+      format.csv { send_data @course.earned_badges_for_course }
+    end
+  end
+
 end
