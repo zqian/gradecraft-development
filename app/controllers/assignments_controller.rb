@@ -76,13 +76,6 @@ class AssignmentsController < ApplicationController
     render :detailed_grades if params[:detailed]
   end
 
-  def guidelines
-    @assignment = current_course.assignments.find(params[:id])
-    @title = @assignment.name
-    @rubric = @assignment.fetch_or_create_rubric
-    @metrics = @rubric.metrics
-  end
-
   # TODO: verify not used and remove
   def rules
     @assignment = current_course.assignments.find(params[:id])

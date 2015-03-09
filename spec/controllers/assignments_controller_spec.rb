@@ -167,21 +167,6 @@ describe AssignmentsController do
       end
     end
 
-    describe "GET guidelines" do
-      it "assigns the assignment and associated rubric" do
-        assignment = create(:assignment)
-        @course.assignments << assignment
-        rubric = create(:rubric_with_metrics, assignment: assignment)
-
-        get :guidelines, {:id => assignment.id}
-        assigns(:assignment).should eq(assignment)
-        assigns(:title).should eq(assignment.name)
-        assigns(:rubric).should eq(assignment.rubric)
-        assigns(:metrics).should eq(assignment.rubric.metrics)
-        response.should render_template(:guidelines)
-      end
-    end
-
     describe "GET feed" do
       it "returns a calendar event" do
         assignment_type = create(:assignment_type, course: @course)
@@ -383,18 +368,6 @@ describe AssignmentsController do
         grade = create(:grade, student: @student, assignment: @assignment)
         get :show, :id => @assignment.id
         assigns(:grades_for_assignment).should eq(@assignment.all_grades_for_assignment)
-      end
-    end
-
-    describe "GET guidelines" do
-      it "assigns the assignment and associated rubric" do
-        rubric = create(:rubric_with_metrics, assignment: @assignment)
-        get :guidelines, :id => @assignment.id
-        assigns(:assignment).should eq(@assignment)
-        assigns(:title).should eq(@assignment.name)
-        assigns(:rubric).should eq(@assignment.rubric)
-        assigns(:metrics).should eq(@assignment.rubric.metrics)
-        response.should render_template(:guidelines)
       end
     end
 
