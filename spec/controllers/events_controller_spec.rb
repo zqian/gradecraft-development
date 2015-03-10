@@ -38,7 +38,6 @@ describe EventsController do
       pending
       event = create(:event)
       allow(EventLogger).to receive(:perform_async).and_return(true)
-      require 'pry'; binding.pry
       get :index
       assigns(:events).should eq([event])
     end
