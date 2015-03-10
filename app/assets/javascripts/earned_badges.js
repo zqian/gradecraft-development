@@ -6,6 +6,9 @@ $(document).ready(function() {
   });
 
   $('.sort-badges').sortable({
+  	start: function(event, ui){
+  		$(ui.item).addClass('dragBadge');
+  	},
 	update: function (){
 	  $.ajax({
         url: '/badges/sort',
