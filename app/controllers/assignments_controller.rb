@@ -270,6 +270,11 @@ class AssignmentsController < ApplicationController
     end
   end
 
+  def export_submissions
+    @assignment = current_course.assignments.find(params[:id])
+    # action: download all submissions
+  end
+
   private
 
   def find_or_create_assignment_rubric
