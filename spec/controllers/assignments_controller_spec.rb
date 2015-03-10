@@ -614,6 +614,12 @@ describe AssignmentsController do
         it "returns sample csv data" do
           grade = create(:grade, assignment: @assignment, student: @student, feedback: "good jorb!")
           get :email_based_grade_import, :id => @assignment, :format => :csv
+          response.body.should eq("First Name,Last Name,Email,Score,Feedback\n#{@student.first_name},#{@student.last_name},#{@student.email},\"\",\"\"\n")
+        end
+
+        it "returns additional data when grade is instructor modified" do
+          grade = create(:grade, assignment: @assignment, student: @student, feedback: "good jorb!", instructor_modified: true)
+          get :email_based_grade_import, :id => @assignment, :format => :csv
           response.body.should eq("First Name,Last Name,Email,Score,Feedback\n#{@student.first_name},#{@student.last_name},#{@student.email},#{grade.score},#{grade.feedback}\n")
         end
       end
@@ -623,6 +629,12 @@ describe AssignmentsController do
       context "with CSV format" do
         it "returns sample csv data" do
           grade = create(:grade, assignment: @assignment, student: @student, feedback: "good jorb!")
+          get :username_based_grade_import, :id => @assignment, :format => :csv
+          response.body.should eq("First Name,Last Name,Username,Score,Feedback\n#{@student.first_name},#{@student.last_name},#{@student.username},\"\",\"\"\n")
+        end
+
+        it "returns additional data when grade is instructor modified" do
+          grade = create(:grade, assignment: @assignment, student: @student, feedback: "good jorb!", instructor_modified: true)
           get :username_based_grade_import, :id => @assignment, :format => :csv
           response.body.should eq("First Name,Last Name,Username,Score,Feedback\n#{@student.first_name},#{@student.last_name},#{@student.username},#{grade.score},#{grade.feedback}\n")
         end
@@ -639,7 +651,6 @@ describe AssignmentsController do
         end
 
         it "returns additional data when grade is instructor modified" do
-          pending "review this behaviour change"
           grade = create(:grade, assignment: @assignment, student: @student, feedback: "good jorb!", instructor_modified: true)
           submission = create(:submission, grade: grade, student: @student, assignment: @assignment)
           get :export_grades, :id => @assignment, :format => :csv
