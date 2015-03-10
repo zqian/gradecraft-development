@@ -272,7 +272,9 @@ class AssignmentsController < ApplicationController
 
   def export_submissions
     @assignment = current_course.assignments.find(params[:id])
-    # action: download all submissions
+    respond_to do |format|
+      format.csv { send_data @assignment.submissions_for_assignment() }
+    end
   end
 
   private

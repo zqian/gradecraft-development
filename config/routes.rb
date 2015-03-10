@@ -65,6 +65,7 @@ GradeCraft::Application.routes.draw do
       get 'group_grade' => 'grades#group_edit', as: :group_grade
       put 'group_grade' => 'grades#group_update'
       get 'export_grades'
+      get 'export_submissions'
       get 'email_based_grade_import' => 'assignments#email_based_grade_import'
       get 'username_based_grade_import' => 'assignments#username_based_grade_import'
       get 'name_based_grade_import' => 'assignments#name_based_grade_import'
