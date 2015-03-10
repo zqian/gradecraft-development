@@ -258,14 +258,14 @@ class AssignmentsController < ApplicationController
   def email_based_grade_import
     @assignment = current_course.assignments.find(params[:id])
     respond_to do |format|
-      format.csv { send_data @assignment.email_based_grade_import(@assignment) }
+      format.csv { send_data @assignment.email_based_grade_import }
     end
   end
 
   def username_based_grade_import
     @assignment = current_course.assignments.find(params[:id])
     respond_to do |format|
-      format.csv { send_data @assignment.username_based_grade_import(@assignment) }
+      format.csv { send_data @assignment.username_based_grade_import }
     end
   end
 
@@ -273,7 +273,7 @@ class AssignmentsController < ApplicationController
   def export_grades
     @assignment = current_course.assignments.find(params[:id])
     respond_to do |format|
-      format.csv { send_data @assignment.gradebook_for_assignment(@assignment) }
+      format.csv { send_data @assignment.gradebook_for_assignment }
     end
   end
 
