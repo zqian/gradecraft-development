@@ -51,10 +51,8 @@
                 %td#earned_badges{"data-title" => "Badges"}
                   - if @earned_badges_by_student_id[student.id]
                     - @earned_badges_by_student_id[student.id].each do |badge|
-                      %img.has-tip{:src => badge.icon, :alt => badge.name, :width => "20", :title => badge.name, :data => {'tooltip' => true}}
-                %td{:style => "display: none"}
-                  - if @earned_badges_by_student_id[student.id]
-                    = @earned_badges_by_student_id[student.id].size
+                      %img{:src => badge.icon, :alt => badge.name, :width => "20", :title => badge.name}
+                      //%img.has-tip{:src => badge.icon, :alt => badge.name, :width => "20", :title => badge.name, :data => {'tooltip' => 'true'}, 'aria-haspopup' => 'true' }
               %td{"data-title" => "Options"}
                 .button-bar
                   %ul.button-group.radius.right

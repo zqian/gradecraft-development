@@ -37,10 +37,10 @@ $badass_blue: #269ECC;
 $badge_blue: #009BD6;
 $badge_green: #54B141;
 $badge_green_border: #439A31;
+$global-radius: 5px;
 
 @mixin transition($property, $duration) {
   -webkit-transition: $property $duration;
-  -moz-transition: $property $duration;
   -ms-transition: $property $duration;
   -o-transition: $property $duration;
   transition: $property $duration;

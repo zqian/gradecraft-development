@@ -7,6 +7,7 @@
       = current_course.try(:name) || 'GradeCraft'
     = stylesheet_link_tag "application", :media => "all", media: "all"
     = javascript_include_tag "vendor/modernizr"
+    //= javascript_include_tag "application", 'data-turbolinks-track' => true 
     = csrf_meta_tags
     = yield(:head)
 
