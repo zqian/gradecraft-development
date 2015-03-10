@@ -76,4 +76,65 @@ describe Assignment do
     #TODO open_at, due_at, accepted_until business logic
     #TODO remove open_time, close_time
   end
+
+  describe "gradebook for assignment" do
+    it "returns sample csv data, including ungraded students" do
+      course = create(:course)
+      course.assignments << @assignment
+      student = create(:user)
+      student.courses << course
+      submission = create(:submission, student: student, assignment: @assignment)
+      @assignment.gradebook_for_assignment.should eq("First Name,Last Name,Uniqname,Score,Raw Score,Statement,Feedback\n#{student.first_name},#{student.last_name},#{student.username},\"\",\"\",\"#{submission.text_comment}\",\"\"\n")
+    end
+
+    it "also returns grade fields with instructor modified grade" do
+      course = create(:course)
+      course.assignments << @assignment
+      student = create(:user)
+      student.courses << course
+      grade = create(:grade, assignment: @assignment, student: student, feedback: "good jorb!", instructor_modified: true)
+      submission = create(:submission, grade: grade, student: student, assignment: @assignment)
+      @assignment.gradebook_for_assignment.should eq("First Name,Last Name,Uniqname,Score,Raw Score,Statement,Feedback\n#{student.first_name},#{student.last_name},#{student.username},0,0,\"#{submission.text_comment}\",good jorb!\n")
+    end
+  end
+
+  describe "email based grade import" do
+    it "returns sample csv data, including ungraded students" do
+      course = create(:course)
+      course.assignments << @assignment
+      student = create(:user)
+      student.courses << course
+      @assignment.email_based_grade_import.should eq("First Name,Last Name,Email,Score,Feedback\n#{student.first_name},#{student.last_name},#{student.email},\"\",\"\"\n")
+    end
+
+    it "also returns grade fields with instructor modified grade" do
+      course = create(:course)
+      course.assignments << @assignment
+      student = create(:user)
+      student.courses << course
+      grade = create(:grade, assignment: @assignment, student: student, feedback: "good jorb!", instructor_modified: true)
+      submission = create(:submission, grade: grade, student: student, assignment: @assignment)
+      @assignment.email_based_grade_import.should eq("First Name,Last Name,Email,Score,Feedback\n#{student.first_name},#{student.last_name},#{student.email},#{grade.score},#{grade.feedback}\n")
+    end
+  end
+
+  describe "username based grade import" do
+    it "returns sample csv data, including ungraded students" do
+      course = create(:course)
+      course.assignments << @assignment
+      student = create(:user)
+      student.courses << course
+      @assignment.username_based_grade_import.should eq("First Name,Last Name,Username,Score,Feedback\n#{student.first_name},#{student.last_name},#{student.username},\"\",\"\"\n")
+    end
+
+    it "also returns grade fields with instructor modified grade" do
+      course = create(:course)
+      course.assignments << @assignment
+      student = create(:user)
+      student.courses << course
+      grade = create(:grade, assignment: @assignment, student: student, feedback: "good jorb!", instructor_modified: true)
+      submission = create(:submission, grade: grade, student: student, assignment: @assignment)
+      @assignment.username_based_grade_import.should eq("First Name,Last Name,Username,Score,Feedback\n#{student.first_name},#{student.last_name},#{student.username},#{grade.score},#{grade.feedback}\n")
+    end
+  end
 end
