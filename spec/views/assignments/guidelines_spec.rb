@@ -11,7 +11,7 @@ class MockCurrentStudent
   end
 end
 
-describe "assignments/guidelines" do
+describe "assignments/_guidelines" do
 
   before(:all) do
     @course = create(:course)
