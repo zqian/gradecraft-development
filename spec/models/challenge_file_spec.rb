@@ -61,9 +61,9 @@ describe ChallengeFile do
     expect @challenge_file.url.should =~ /.*\/uploads\/challenge_file\/file\/#{@challenge_file.id}\/\d+_test_image\.jpg/
   end
 
-  it "removes spaces from file names on save" do
-    @challenge_file.file = fixture_file('Spaces In Name.jpg', 'img/jpg')
+  it "shortens and removes non-word characters from file names on save" do
+    @challenge_file.file = fixture_file('Too long, strange characters, and Spaces (In) Name.jpg', 'img/jpg')
     @challenge.save!
-    expect @challenge_file.url.should =~ /.*\/uploads\/challenge_file\/file\/#{@challenge_file.id}\/\d+_spaces_in_name\.jpg/
+    expect @challenge_file.url.should =~ /.*\/uploads\/challenge_file\/file\/#{@challenge_file.id}\/\d+_too_long__strange_characters__and_spaces_\.jpg/
   end
 end

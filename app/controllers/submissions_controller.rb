@@ -66,7 +66,7 @@ class SubmissionsController < ApplicationController
     @submission.student = current_student if current_user_is_student?
     if @submission_files
       @submission_files.each do |sf|
-        @submission.submission_files.new(file: sf, filename: sf.original_filename)
+        @submission.submission_files.new(file: sf, filename: sf.original_filename[0..49])
       end
     end
 
@@ -118,7 +118,7 @@ class SubmissionsController < ApplicationController
 
     if @submission_files
       @submission_files.each do |sf|
-        @submission.submission_files.new(file: sf, filename: sf.original_filename)
+        @submission.submission_files.new(file: sf, filename: sf.original_filename[0..49])
       end
     end
 
@@ -134,7 +134,7 @@ class SubmissionsController < ApplicationController
       elsif @submission.errors[:link].any?
         format.html { redirect_to edit_assignment_submission_path(@assignment, @submission), notice: "Please provide a valid link for #{@assignment.name} submissions." }
       else
-        format.html { redirect_to edit_assignment_submission_path(@assignment, @submission), notice: "#{@assignment.name} was not successfully submitted! Please try again." }
+        format.html { redirect_to edit_assignment_submission_path(@assignment, @submission), alert: "#{@assignment.name} was not successfully submitted! Please try again." }
         format.json { render json: @submission.errors, status: :unprocessable_entity }
       end
     end

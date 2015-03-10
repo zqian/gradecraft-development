@@ -45,7 +45,7 @@ class BadgesController < ApplicationController
 
     if @badge_files
       @badge_files.each do |af|
-        @badge.badge_files.new(file: af, filename: af.original_filename)
+        @badge.badge_files.new(file: af, filename: af.original_filename[0..49])
       end
     end
 
@@ -73,7 +73,7 @@ class BadgesController < ApplicationController
 
     if @badge_files
       @badge_files.each do |af|
-        @badge.badge_files.new(file: af, filename: af.original_filename)
+        @badge.badge_files.new(file: af, filename: af.original_filename[0..49])
       end
     end
 

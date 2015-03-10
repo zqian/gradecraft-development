@@ -129,7 +129,7 @@ class AssignmentsController < ApplicationController
     @assignment = current_course.assignments.new(params[:assignment])
     if @assignment_files
       @assignment_files.each do |af|
-        @assignment.assignment_files.new(file: af, filename: af.original_filename)
+        @assignment.assignment_files.new(file: af, filename: af.original_filename[0..49])
       end
     end
     respond_to do |format|
@@ -154,7 +154,7 @@ class AssignmentsController < ApplicationController
 
     if @assignment_files
       @assignment_files.each do |af|
-        @assignment.assignment_files.new(file: af, filename: af.original_filename)
+        @assignment.assignment_files.new(file: af, filename: af.original_filename[0..49])
       end
     end
 

@@ -33,7 +33,7 @@ class ChallengesController < ApplicationController
 
     if @challenge_files
       @challenge_files.each do |cf|
-        @challenge.challenge_files.new(file: cf, filename: cf.original_filename)
+        @challenge.challenge_files.new(file: cf, filename: cf.original_filename[0..49])
       end
     end
 
@@ -60,7 +60,7 @@ class ChallengesController < ApplicationController
 
     if @challenge_files
       @challenge_files.each do |cf|
-        @challenge.challenge_files.new(file: cf, filename: cf.original_filename)
+        @challenge.challenge_files.new(file: cf, filename: cf.original_filename[0..49])
       end
     end
 

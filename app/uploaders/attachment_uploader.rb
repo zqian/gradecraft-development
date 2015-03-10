@@ -38,6 +38,6 @@ class AttachmentUploader < CarrierWave::Uploader::Base
 
   def tokenized_name
     var = :"@#{mounted_as}_secure_token"
-    model.instance_variable_get(var) || model.instance_variable_set(var, "#{Time.now.to_i}_#{file.basename.gsub(/\s/, "_").downcase}")
+    model.instance_variable_get(var) || model.instance_variable_set(var, "#{Time.now.to_i}_#{file.basename.gsub(/\W+/, "_").downcase[0..40]}")
   end
 end

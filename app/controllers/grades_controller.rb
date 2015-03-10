@@ -81,7 +81,7 @@ class GradesController < ApplicationController
 
     if @grade_files
       @grade_files.each do |gf|
-        @grade.grade_files.new(file: gf, filename: gf.original_filename)
+        @grade.grade_files.new(file: gf, filename: gf.original_filename[0..49])
       end
     end
 
@@ -117,7 +117,7 @@ class GradesController < ApplicationController
     delete_existing_earned_badges_for_metrics # if earned_badges_exist? # destroy earned_badges where assignment_id and student_id match
     create_earned_tier_badges if params[:tier_badges]# create_earned_tier_badges
 
-    
+
     GradeUpdater.perform_async([@grade.id]) if @grade.graded_or_released?
 
     respond_to do |format|
@@ -283,9 +283,9 @@ class GradesController < ApplicationController
     @title = "Quick Grade #{@assignment.name}"
     @assignment_type = @assignment.assignment_type
     @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
-    
+
     @team = current_course.teams.find_by(team_params) if params[:team_id]
-    
+
     @students = current_course.students_being_graded.includes(:teams).where(team_params)
     @auditors = current_course.students_auditing.includes(:teams).where(team_params)
 
@@ -303,7 +303,7 @@ class GradesController < ApplicationController
     def team_params
       @team_params ||= params[:team_id] ? { id: params[:team_id] } : {}
     end
-    
+
     def mass_edit_student_ids
       @mass_edit_student_ids ||= @students.pluck(:id)
     end
