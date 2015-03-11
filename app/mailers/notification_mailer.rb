@@ -71,7 +71,8 @@ class NotificationMailer < ActionMailer::Base
     @user = @grade.student
     @course = @grade.course
     @assignment = @grade.assignment
-    mail(:to => @user.email, :subject => "#{@course.courseno} - #{@assignment.name} Graded") do |format|
+    mail(:to => @user.email, 
+      :subject => "#{@course.courseno} - #{@assignment.name} Graded") do |format|
       format.text
       format.html
     end
