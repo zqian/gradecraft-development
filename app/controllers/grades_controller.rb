@@ -385,6 +385,8 @@ class GradesController < ApplicationController
 
   # Changing the status of a grade - allows instructors to review "Graded" grades, before they are "Released" to students
   def edit_status
+    session[:return_to] = request.referer
+
     @assignment = current_course.assignments.find(params[:id])
     @title = "#{@assignment.name} Grade Statuses"
     @grades = @assignment.grades.find(params[:grade_ids])
@@ -401,8 +403,14 @@ class GradesController < ApplicationController
 
     GradeUpdater.perform_async(grade_ids)
 
+    if session[:return_to].present?
+      redirect_to session[:return_to]
+    else
+      redirect_to @assignment
+    end
+
     flash[:notice] = "Updated Grades!"
-    redirect_to assignment_path(@assignment)
+    
   end
 
   #upload grades for an assignment
