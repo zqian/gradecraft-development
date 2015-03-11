@@ -73,12 +73,14 @@
         = cf.file_field :file, :multiple => true
       - if @challenge.challenge_files.exists?
         %h5.bold Uploaded files
-        %ul#uploaded_files
+        %ul.uploaded-files
           - @challenge.challenge_files.each do |cf|
             - next if cf.new_record?
             %li
               - if cf.file_processing
-                = "#{cf.filename} (upload in progress...)"
+                = "#{cf.filename}"
+                %span.has-tip{:title => "Refresh page to confirm upload has completed", :data => {'tooltip' => true}}
+                  = "(upload in progress)"
               - else
                 = link_to cf.filename, cf.url, :target => "_blank"
                 = link_to "(Remove)", remove_uploads_path({ :model => "ChallengeFile", :challenge_id => @challenge.id, :upload_id => cf.id } )

@@ -31,11 +31,13 @@
     - if current_student.submission_for_assignment(@assignment).submission_files.present?
       %p
         %span.smallcaps Attachments:
-        %ul
+        %ul.uploaded-files
           - current_student.submission_for_assignment(@assignment).submission_files.each do |sf|
             %li
               - if sf.file_processing
-                = "#{sf.filename} (upload in progress...)"
+                = "#{sf.filename}"
+                %span.has-tip{:title => "Refresh page to confirm upload has completed", :data => {'tooltip' => true}}
+                  = "(upload in progress)"
               - else
                 = link_to sf.filename, sf.url
 
@@ -74,11 +76,13 @@
     - if @group.submission_for_assignment(@assignment).submission_files.present?
       %p
         %span.smallcaps Attachments:
-        %ul
+        %ul.uploaded-files
           - @group.submission_for_assignment(@assignment).submission_files.each do |sf|
             %li
               - if sf.file_processing
-                = "#{sf.filename} (upload in progress...)"
+                = "#{sf.filename}"
+                %span.has-tip{:title => "Refresh page to confirm upload has completed", :data => {'tooltip' => true}}
+                  = "(upload in progress)"
               - else
                 = link_to sf.filename, sf.url
 
