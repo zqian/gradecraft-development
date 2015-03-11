@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Badge Award Email Template</title>
+<title>New Grade Released Email Template</title>
 <style type="text/css">
 * {
 margin: 0;
@@ -149,24 +149,15 @@ width: 100%;
 <p align="center">
 <a href= "http://gradecraft.com" target="_blank"><img src="https://www.gradecraft.com/images/gradecraft_logo.png" width="207" border="0" alt="" /></a>
 </p>
-<h2 align="center"><strong>Congratulations #{ @user.first_name }!</strong></h2>
+<h2 align="center"><strong>You've got a new grade!</strong></h2>
 <p align="center">
 <img src="#{@earned_badge.badge.icon}" width="150"/>
 </p>
-<h3 align="center">You've earned the <strong>#{ @earned_badge.badge.name }</strong> #{ @course.badge_term }. </h3>
-<p align="center">
-- if @earned_badge.feedback.present?
-  <br />
-  <em> Your instructor said: </em>
-  <p>
-  <div align="center">
-  = @earned_badge.feedback.html_safe
-  </div>
-  </p>
+<h3 align="center">You can now check your grade for <strong>#{ @@assignment.name }</strong>. </h3>
 <p>
 <hr />
 </p>
-<p align="center"> Check out what other #{ @course.badge_term.pluralize.downcase } you can earn in #{ @course.name } <a href="https://www.gradecraft.com/my_badges">here</a>.</p>
+<p align="center"> Don't forget to update your plan for the semester by checking your <a href="https://www.gradecraft.com/predictor">grade predictor </a>.</p>
 
 <hr />
 </td>
