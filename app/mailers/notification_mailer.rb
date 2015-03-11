@@ -23,7 +23,20 @@ class NotificationMailer < ActionMailer::Base
     @user = @submission.student
     @course = @submission.course
     @assignment = @submission.assignment
-    mail(:to => "#{@user[:email]}", :subject => "#{@course[:courseno]} - #{@assignment.name} Submitted") do |format|
+    mail(:to => @user.email, 
+      :subject => "#{@course.courseno} - #{@assignment.name} Submitted") do |format|
+      format.text
+      format.html
+    end
+  end
+
+  def updated_submission(submission_id)
+    @submission = Submission.find submission_id
+    @user = @submission.student
+    @course = @submission.course
+    @assignment = @submission.assignment
+    mail(:to => @user.email, 
+      :subject => "#{@course.courseno} - #{@assignment.name} Submission Updated") do |format|
       format.text
       format.html
     end
@@ -58,7 +71,8 @@ class NotificationMailer < ActionMailer::Base
     @user = @grade.student
     @course = @grade.course
     @assignment = @grade.assignment
-    mail(:to => @user.email, :subject => "#{@course.courseno} - #{@assignment.name} Graded") do |format|
+    mail(:to => @user.email, 
+      :subject => "#{@course.courseno} - #{@assignment.name} Graded") do |format|
       format.text
       format.html
     end

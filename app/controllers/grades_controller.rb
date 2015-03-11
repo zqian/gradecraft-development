@@ -87,7 +87,6 @@ class GradesController < ApplicationController
 
     if @grade.update_attributes params[:grade].merge(instructor_modified: true)
       GradeUpdater.perform_async([@grade.id]) if @grade.graded_or_released?
-
       if session[:return_to].present?
         redirect_to session[:return_to]
       else

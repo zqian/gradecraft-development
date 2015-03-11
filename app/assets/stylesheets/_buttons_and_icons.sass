@@ -52,7 +52,8 @@ ul.button-group.context_menu
 
   li a
     display: block
-    padding: .6rem
+    padding: .5rem
+    font-size: 1rem
 
   li a:hover
     @include linear-gradient(#385b83, #264971)
@@ -101,6 +102,9 @@ ul.button-group.context_menu
     @include linear-gradient($dark_green + #333, $dark_green)
     border-top-right-radius: $global-radius
     border-bottom-right-radius: $global-radius
+
+.dragBadge img.badge-icon
+  max-width: 100px
 
 /* Responsive outer container */ 
 @media (max-width: 1270px) 

@@ -60,7 +60,6 @@ GradeCraft::Application.routes.draw do
       get 'weights' => 'assignment_weights#mass_edit', :as => :mass_edit_weights
     end
     member do
-      get 'guidelines'
       get 'mass_grade' => 'grades#mass_edit', as: :mass_grade
       put 'mass_grade' => 'grades#mass_update'
       get 'group_grade' => 'grades#group_edit', as: :group_grade
