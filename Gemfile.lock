@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/wandenberg/moped.git
+  remote: https://github.com/wandenberg/moped.git
   revision: 4807c92f85cd97f4519fe0d6667c12ff9588ff60
   branch: operation_timeout
   specs:
