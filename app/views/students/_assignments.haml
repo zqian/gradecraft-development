@@ -105,6 +105,8 @@
                             %li= link_to "Edit Grade", group_grade_assignment_path(assignment, :group_id => current_student.group_for_assignment(assignment)), :class => 'button'
                           - else
                             %li= link_to 'Grade', group_grade_assignment_path(assignment, :group_id => current_student.group_for_assignment(assignment)), :class => 'button'
+                        - if assignment.accepts_submissions?
+                          = render "students/submissions", assignment: assignment
 
 - if current_course.team_challenges? && current_course.team_score_average?
 
