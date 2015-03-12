@@ -51,12 +51,14 @@
           = bf.file_field :file, :multiple => true
         - if @badge.badge_files.exists?
           %h5.bold Uploaded files
-          %ul#uploaded_files
+          %ul.uploaded-files
             - @badge.badge_files.each do |bf|
               - next if bf.new_record?
               %li
                 - if bf.file_processing
-                  = "#{bf.filename} (upload in progress...)"
+                  = "#{bf.filename}"
+                  %span.has-tip{:title => "Refresh page to confirm upload has completed", :data => {'tooltip' => true}}
+                    = "(upload in progress)"
                 - else
                   = link_to bf.filename, bf.url, :target => "_blank"
                   = link_to "(Remove)", remove_uploads_path({ :model => "BadgeFile", :badge_id => @badge.id, :upload_id => bf.id } )
