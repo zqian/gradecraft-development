@@ -284,7 +284,7 @@ class GradesController < ApplicationController
     @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
 
     @team = current_course.teams.find_by(team_params) if params[:team_id]
-
+    
     @students = current_course.students_being_graded.includes(:teams).where(team_params)
     @auditors = current_course.students_auditing.includes(:teams).where(team_params)
 
