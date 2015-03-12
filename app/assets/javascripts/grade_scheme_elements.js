@@ -18,7 +18,11 @@
     $link.prev('input.destroy').val(true);
     var fieldset = $link.closest('fieldset.element');
     fieldset.hide();
-    fieldset.find('input').remove();
+    fieldset.find('input').not('.destroy', '.hidden').each(function(i, value){
+      if(value.value === "") {
+        value.remove();
+      }
+    });
     return false;
   };
 
