@@ -34,12 +34,12 @@
         %ul.uploaded-files
           - current_student.submission_for_assignment(@assignment).submission_files.each do |sf|
             %li
-              - if sf.file_processing
-                = "#{sf.filename}"
-                %span.has-tip{:title => "Refresh page to confirm upload has completed", :data => {'tooltip' => true}}
-                  = "(upload in progress)"
-              - else
-                = link_to sf.filename, sf.url
+              / - if sf.file_processing
+              /   = "#{sf.filename}"
+              /   %span.has-tip{:title => "Refresh page to confirm upload has completed", :data => {'tooltip' => true}}
+              /     = "(upload in progress)"
+              / - else
+              = link_to sf.filename, sf.url
 
 
     - if current_student.submission_for_assignment(@assignment).text_comment?
