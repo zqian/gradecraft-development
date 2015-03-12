@@ -21,13 +21,13 @@
         %ul.uploaded-files
           - current_student.submission_for_assignment(@assignment).submission_files.each do |sf|
             %li
-              - if sf.file_processing
-                = "#{sf.filename}"
-                %span.has-tip{:title => "Refresh page to confirm upload has completed", :data => {'tooltip' => true}}
-                  = "(upload in progress)"
-              - else
-                = link_to sf.filename, sf.url, :target => "_blank"
-                = link_to "(Remove)", remove_uploads_path({ :model => "SubmissionFile", :assignment_id => @assignment.id, :upload_id => sf.id } )
+              / - if sf.file_processing
+              /   = "#{sf.filename}"
+              /   %span.has-tip{:title => "Refresh page to confirm upload has completed", :data => {'tooltip' => true}}
+              /     = "(upload in progress)"
+              / - else
+              = link_to sf.filename, sf.url, :target => "_blank"
+              = link_to "(Remove)", remove_uploads_path({ :model => "SubmissionFile", :assignment_id => @assignment.id, :upload_id => sf.id } )
 
   - if @assignment.accepts_links
     .small-12.panel
