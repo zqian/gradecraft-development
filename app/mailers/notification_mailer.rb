@@ -6,7 +6,6 @@ class NotificationMailer < ActionMailer::Base
     @course = course_info
     mail(:to => 'cholma@umich.edu', :subject => 'Unknown LTI user/course') do |format|
       format.text
-      format.html
     end
   end
 
@@ -14,9 +13,27 @@ class NotificationMailer < ActionMailer::Base
     @user = user_info
     mail(:to => 'cholma@umich.edu', :subject => 'Unknown Kerberos user') do |format|
       format.text
-      format.html
     end
   end
+  
+  def grade_export(course,user,csv_data)
+    @user = user
+    @course = course
+    attachments["#{course.id}.csv"] = {:mime_type => 'text/csv',:content => csv_data }
+    mail(:to =>  @user.email, :bcc=>"admin@gradecraft.com", :subject => "#{course.name} grade export is attached") do |format|
+      format.text
+    end
+  end
+
+  def gradebook_export(course,user,csv_data)
+    @user = user
+    @course = course
+    attachments["#{course.id}.csv"] = {:mime_type => 'text/csv',:content => csv_data }
+    mail(:to =>  @user.email, :bcc=>"admin@gradecraft.com", :subject => "#{course.name} grade export is attached") do |format|
+      format.text
+    end
+  end
+
 
   def successful_submission(submission_id)
     @submission = Submission.find submission_id
@@ -124,25 +141,4 @@ class NotificationMailer < ActionMailer::Base
       format.html
     end
   end
-
-  def grade_export(course,user,csv_data)
-    @user = user
-    @course = course
-    attachments["#{course.id}.csv"] = {:mime_type => 'text/csv',:content => csv_data }
-    mail(:to =>  @user.email, :bcc=>"admin@gradecraft.com", :subject => "#{course.name} grade export is attached") do |format|
-      format.text
-      format.html
-    end
-  end
-
-  def gradebook_export(course,user,csv_data)
-    @user = user
-    @course = course
-    attachments["#{course.id}.csv"] = {:mime_type => 'text/csv',:content => csv_data }
-    mail(:to =>  @user.email, :bcc=>"admin@gradecraft.com", :subject => "#{course.name} grade export is attached") do |format|
-      format.text
-      format.html
-    end
-  end
-
 end
