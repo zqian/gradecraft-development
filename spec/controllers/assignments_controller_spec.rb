@@ -612,15 +612,17 @@ describe AssignmentsController do
       end
     end
 
-    describe "GET export_submissions" do
+    describe "GET export_submissions", focus: true do
       context "with CSV format" do
-        it "returns a csv for grade importing" do
-          # second_student = create(:user)
-          # second_student.courses << @course
-          # submission = create(:submission, student: @student, assignment: @assignment, text_comment: "a submission with a text comment")
+        it "returns a zip directory" do
           get :export_submissions, :id => @assignment, :format => :csv
-          response.body.should eq("First Name,Last Name,Username,Score,Feedback\n#{@student.first_name},#{@student.last_name},#{@student.username},\"\",\"\"\n")
+          response.content_type.should eq("application/zip")
         end
+
+        # it "returns a csv for grade importing" do
+        #   get :export_submissions, :id => @assignment, :format => :csv
+        #   response.body.should eq("First Name,Last Name,Username,Score,Feedback\n#{@student.first_name},#{@student.last_name},#{@student.username},\"\",\"\"\n")
+        # end
       end
     end
   end

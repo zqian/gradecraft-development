@@ -1,5 +1,7 @@
 class AssignmentsController < ApplicationController
 
+  include ZipDownloads
+
   before_filter :ensure_staff?, :except => [:feed, :show, :index, :guidelines]
 
   respond_to :html, :json
@@ -271,9 +273,53 @@ class AssignmentsController < ApplicationController
   end
 
   def export_submissions
+
     @assignment = current_course.assignments.find(params[:id])
     respond_to do |format|
-      format.csv { send_data @assignment.submissions_for_assignment() }
+      format.csv do
+
+        temp_zip = Tempfile.new('submission_download.zip')
+        temp_dir = Dir.mktmpdir
+
+        begin
+
+          File.open( "#{temp_dir}/username_based_grade_import.csv",'w' ) do |f|
+            f.puts @assignment.submissions_for_assignment
+          end
+
+          current_course.students.each do |student|
+            student_dir = File.join(temp_dir, "#{student.last_name}_#{student.first_name}")
+            Dir.mkdir(student_dir)
+            File.open(File.join(student_dir, "sample_student"),'w' ) do |f|
+              f.puts "This is a submission from #{student.last_name}, #{student.first_name}"
+            end
+          end
+
+          #Initialize the temp file as a zip file
+          Zip::OutputStream.open(temp_zip) { |zos| }
+
+          zf = ZipDownloads::ZipFileGenerator.new(temp_dir, temp_zip)
+          zf.write
+
+          # Zip::File.open(temp_zip.path, Zip::File::CREATE) do |zip|
+          #   #Put files in here
+          #   zip.add("tempdir", "#{temp_dir}")
+          # end
+
+          #Read the binary data from the file
+          zip_data = File.read(temp_zip.path)
+
+          #Send the data to the browser as an attachment
+          #We do not send the file directly because it will
+          #get deleted before rails actually starts sending it
+          send_data(zip_data, :type => 'application/zip', :filename => "#{@assignment.name}.zip")
+        ensure
+          #Close and delete the temp file
+          temp_zip.close
+          temp_zip.unlink
+          FileUtils.remove_entry_secure temp_dir
+        end
+      end
     end
   end
 
