@@ -273,6 +273,7 @@ class AssignmentsController < ApplicationController
   end
 
   def export_submissions
+    require 'open-uri'
 
     @assignment = current_course.assignments.find(params[:id])
     respond_to do |format|
@@ -283,15 +284,29 @@ class AssignmentsController < ApplicationController
 
         begin
 
-          File.open( "#{temp_dir}/username_based_grade_import.csv",'w' ) do |f|
+          open( "#{temp_dir}/username_based_grade_import.csv",'w' ) do |f|
             f.puts @assignment.submissions_for_assignment
           end
 
           current_course.students.each do |student|
-            student_dir = File.join(temp_dir, "#{student.last_name}_#{student.first_name}")
-            Dir.mkdir(student_dir)
-            File.open(File.join(student_dir, "sample_student"),'w' ) do |f|
-              f.puts "This is a submission from #{student.last_name}, #{student.first_name}"
+            if submission = student.submission_for_assignment(@assignment)
+              student_dir = File.join(temp_dir, "#{student.last_name}_#{student.first_name}")
+              Dir.mkdir(student_dir)
+              open(File.join(student_dir, "#{student.last_name}_#{student.first_name}_submission.txt"),'w' ) do |f|
+                f.puts "Submission items from #{student.last_name}, #{student.first_name}\n"
+                f.puts "text comment: #{submission.text_comment}"
+                f.puts "link: #{submission.link}\n"
+                if submission.submission_files
+                  #list the files as links:
+                  f.puts "\nlinks to submitted files: \n"
+                  submission.submission_files.each do |submission_file|
+                    f.puts "link: #{submission_file.url}\n"
+                  end
+                  #add the files into the directory
+                  contents  = open('submission_file.url') {|sf| sf.read }
+                  open(File.join(student_dir, "#{student.last_name}_#{student.first_name}_submission.txt"),'w' )
+                end
+              end
             end
           end
 
