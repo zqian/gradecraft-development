@@ -66,6 +66,7 @@ class AnalyticsController < ApplicationController
     data = CourseLogin.data(@granularity, @range, {course_id: current_course.id})
 
     data[:lookup_keys] = ['{{t}}.average']
+
     data.decorate! do |result|
       result[:name] = "Average #{data[:granularity]} login frequency"
       # Get frequency
@@ -81,6 +82,7 @@ class AnalyticsController < ApplicationController
     data = CourseRoleLogin.data(@granularity, @range, {course_id: current_course.id, role_group: params[:role_group]})
 
     data[:lookup_keys] = ['{{t}}.average']
+
     data.decorate! do |result|
       result[:name] = "Average #{data[:granularity]} login frequency"
       # Get frequency
