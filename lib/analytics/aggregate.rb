@@ -216,11 +216,12 @@ module Analytics::Aggregate
       else
         keys = @increment_keys.keys.map { |k| sprintf( k, select_keys.merge(granular_key: granularity) ).to_sym }
       end
-
+      binding.remote_pry
       results = self.
         in(scope).
         where('$or' => keys.map{ |k| {k => { '$exists' => true}} }).
-        only(*@scope_by, *keys).to_a
+        only(granularity, *@scope_by, *keys).
+        to_a
 
       return Analytics::Data.new(
         granularity,
