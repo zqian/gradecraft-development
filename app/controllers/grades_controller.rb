@@ -283,8 +283,7 @@ class GradesController < ApplicationController
     @assignment_type = @assignment.assignment_type
     @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
 
-    
-    if params[:team_id]
+    if params[:team_id].present?
       @team = current_course.teams.find_by(team_params)
       @students = current_course.students_being_graded.joins(:teams).where(:teams => team_params) 
       @auditors = current_course.students_auditing.joins(:teams).where(:teams => team_params)           
