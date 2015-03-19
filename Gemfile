@@ -70,13 +70,6 @@ group :development do
   gem 'rubystats'
   gem 'spring'
   gem 'byebug'
-  gem 'pry-remote'
-  gem 'pry-stack_explorer'
-  gem 'pry-debugger'
-end
-
-group :development, :test do
-  gem 'pry'
 end
 
 group :test do
@@ -87,6 +80,7 @@ group :test do
   gem 'selenium-webdriver'
   gem 'factory_girl_rails', '~> 4.5.0'
   gem 'rspec-rails', '~> 2.14.0'
+  gem 'pry'
 end
 
 group :tasks do
