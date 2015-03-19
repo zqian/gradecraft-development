@@ -69,14 +69,15 @@ group :development do
   gem 'rack-mini-profiler', require: false
   gem 'rubystats'
   gem 'spring'
-  gem 'byebug'  
-  gem 'pry-remote'
-  gem 'pry-stack_explorer'
-  gem 'pry-debugger'
 end
 
 group :development, :test do
   gem 'pry'
+  gem 'byebug'
+  gem 'pry' 
+  gem 'pry-remote' 
+  gem 'pry-stack_explorer' 
+  gem 'pry-debugger' 
 end
 
 group :test do
