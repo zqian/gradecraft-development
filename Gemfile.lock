@@ -520,7 +520,7 @@ DEPENDENCIES
   launchy
   letter_opener
   mini_magick
-  mongoid
+  mongoid (~> 4.0.2)
   moped (= 2.0.4)!
   newrelic_rpm
   ng-rails-csrf
