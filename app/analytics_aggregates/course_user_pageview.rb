@@ -6,7 +6,7 @@ class CourseUserPageview
   field :user_id, type: Integer
   field :pages, type: Hash
 
-  scope_by :course_id, :user_id
+  scope_by :course_id, :user_id, :pages
 
   increment_keys "pages.%{page}.%{granular_key}" => 1,
                  "pages._all.%{granular_key}" => 1

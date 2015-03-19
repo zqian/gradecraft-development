@@ -15,6 +15,7 @@ class CourseUserAggregateExport
       hash
     end
     @user_pageviews = loaded_data[:user_pageviews].inject(Hash.new(0)) do |hash, pageview|
+      # CourseUserPageview must have `scope_by :pages` for this to work w/ mongoid > 4.0.0
       hash[pageview.user_id] = pageview.pages["_all"]["all_time"]
       hash
     end
