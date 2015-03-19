@@ -150,7 +150,6 @@ class Grade < ActiveRecord::Base
     end
   end
 
-
   private
 
   def clean_html
