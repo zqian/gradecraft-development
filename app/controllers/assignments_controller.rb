@@ -294,17 +294,24 @@ class AssignmentsController < ApplicationController
               Dir.mkdir(student_dir)
               open(File.join(student_dir, "#{student.last_name}_#{student.first_name}_submission.txt"),'w' ) do |f|
                 f.puts "Submission items from #{student.last_name}, #{student.first_name}\n"
-                f.puts "text comment: #{submission.text_comment}"
-                f.puts "link: #{submission.link}\n"
+                f.puts "\ntext comment: #{submission.text_comment}\n" if submission.text_comment.present?
+                f.puts "\nlink: #{submission.link }\n" if submission.link.present?
                 if submission.submission_files
                   #list the files as links:
                   f.puts "\nlinks to submitted files: \n"
                   submission.submission_files.each do |submission_file|
-                    f.puts "link: #{submission_file.url}\n"
+                    f.puts "     #{submission_file.url}\n"
+
+                    if Rails.env.development?
+                      contents  = open(File.join(Rails.root,'public',submission_file.url)) {|sf| sf.read }
+                    else
+                      contents  = open(submission_file.url) {|sf| sf.read }
+                    end
+                    #add the files into the directory
+                    open(File.join(student_dir, "#{submission_file.file.path.split('/').last}"),'w' ) do |f|
+                      f.puts contents
+                    end
                   end
-                  #add the files into the directory
-                  contents  = open('submission_file.url') {|sf| sf.read }
-                  open(File.join(student_dir, "#{student.last_name}_#{student.first_name}_submission.txt"),'w' )
                 end
               end
             end

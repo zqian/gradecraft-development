@@ -15,6 +15,10 @@
           %i.fi-check
           Quick Grade
     %li
+      %a{:href => export_submissions_assignment_path(@assignment, format: 'csv') }
+        %i.fi-download
+        Download Submissions
+    %li
       %a{:href => import_grades_assignment_path(@assignment) }
         %i.fi-upload
         Import Grades
