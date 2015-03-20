@@ -15,7 +15,10 @@
         - if @assignment.has_levels?
           = f.select :raw_score, @assignment_score_levels.map { |l| [l.formatted_name,l.value] }, :include_blank => true
         - else
-          = f.text_field :raw_score, :default => @assignment.point_total, :label => "Score", :hint => "Total Assignment Points: #{ points @assignment.point_total }", data: {autonumeric: true, "m-dec" => "0"}
+          - if @grade.instructor_modified || @grade.status.present?
+            = f.text_field :raw_score, :default => @assignment.point_total, :label => "Score", :hint => "Total Assignment Points: #{ points @assignment.point_total }", data: {autonumeric: true, "m-dec" => "0"}
+          - else
+            = f.text_field :raw_score, :value => nil, :label => "Score", :hint => "Total Assignment Points: #{ points @assignment.point_total }", data: {autonumeric: true, "m-dec" => "0"}
 
       - if @assignment.release_necessary?
         .small-12.medium-4.columns
@@ -37,12 +40,14 @@
           = gf.file_field :file, :multiple => true
         - if @grade.grade_files.exists?
           %h5.bold Uploaded files
-          %ul#uploaded_files
+          %ul.uploaded-files
             - @grade.grade_files.each do |gf|
               - next if gf.new_record?
               %li
-                - if gf.file_processing
-                  = "#{gf.filename} (upload in progress...)"
+                - if ! gf.file_processing
+                  = "#{gf.filename}"
+                  %span.has-tip{:title => "Refresh page to confirm upload has completed", :data => {'tooltip' => true}}
+                    = "(upload in progress)"
                 - else
                   = link_to gf.filename, gf.url, :target => "_blank"
                   = link_to "(Remove)", remove_uploads_path({ :model => "GradeFile", :grade_id => @grade.id, :upload_id => gf.id } )

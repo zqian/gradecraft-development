@@ -192,12 +192,14 @@
         = af.file_field :file, :multiple => true
       - if @assignment.assignment_files.exists?
         %h5.bold Uploaded files
-        %ul#uploaded_files
+        %ul.uploaded-files
           - @assignment.assignment_files.each do |af|
             - next if af.new_record?
             %li
               - if af.file_processing
-                = "#{af.filename} (upload in progress...)"
+                = "#{af.filename}"
+                %span.has-tip{:title => "Refresh page to confirm upload has completed", :data => {'tooltip' => true}}
+                  = "(upload in progress)"
               - else
                 = link_to af.filename, af.url, :target => "_blank"
                 = link_to "(Remove)", remove_uploads_path({ :model => "AssignmentFile", :assignment_id => @assignment.id, :upload_id => af.id } )

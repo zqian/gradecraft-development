@@ -283,10 +283,14 @@ class GradesController < ApplicationController
     @assignment_type = @assignment.assignment_type
     @assignment_score_levels = @assignment.assignment_score_levels.order_by_value
 
-    @team = current_course.teams.find_by(team_params) if params[:team_id]
-
-    @students = current_course.students_being_graded.includes(:teams).where(team_params)
-    @auditors = current_course.students_auditing.includes(:teams).where(team_params)
+    if params[:team_id].present?
+      @team = current_course.teams.find_by(team_params)
+      @students = current_course.students_being_graded.joins(:teams).where(:teams => team_params) 
+      @auditors = current_course.students_auditing.joins(:teams).where(:teams => team_params)           
+    else
+      @students = current_course.students_being_graded
+      @auditors = current_course.students_auditing
+    end    
 
     @grades = Grade.where(student_id: mass_edit_student_ids, assignment_id: @assignment[:id] ).includes(:student,:assignment)
     @auditor_grades = Grade.where(student_id: mass_edit_auditor_ids, assignment_id: @assignment[:id] ).includes(:student,:assignment)
@@ -303,7 +307,7 @@ class GradesController < ApplicationController
       @team_params ||= params[:team_id] ? { id: params[:team_id] } : {}
     end
 
-    def mass_edit_student_ids
+    def mass_edit_student_ids      
       @mass_edit_student_ids ||= @students.pluck(:id)
     end
 
