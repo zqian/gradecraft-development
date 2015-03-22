@@ -136,7 +136,7 @@ class UsersController < ApplicationController
     q = params[:user][:name]
     @users = current_course.users.where("name LIKE ?","%#{q}%")
   end
-
+  
   private
 
   def increment_predictor_views

@@ -159,6 +159,14 @@ class StudentsController < ApplicationController
     @grades = current_student.grades.where(:course_id => current_course)
   end
 
+  def recalculate
+    session[:return_to] = request.referer
+    @student = current_course.students.find_by(id: params[:student_id])
+    ScoreRecalculator.perform_async(@student.id, current_course.id)
+    flash[:notice]="Your request to recalculate #{@student.name}'s grade is being processed. Check back shortly!"
+    redirect_to session[:return_to]
+  end
+
   
   protected
 

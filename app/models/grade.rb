@@ -150,6 +150,10 @@ class Grade < ActiveRecord::Base
     end
   end
 
+  def altered?
+    self.score_changed? == true
+  end
+
   private
 
   def clean_html

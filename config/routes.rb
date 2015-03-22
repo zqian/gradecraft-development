@@ -268,6 +268,7 @@ GradeCraft::Application.routes.draw do
     get :predictor
     get :course_progress
     get :teams
+    get :recalculate
     collection do
       get :leaderboard
       get :choices

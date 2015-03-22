@@ -16,6 +16,8 @@
 
     %h5
       = "Last activity: #{current_student.try(:last_activity_at) || "(never)"} "
+    - if current_user_is_admin?
+      = link_to "Recalculate Score", student_recalculate_path(:student_id => current_student.id), :class => "button radius"
 
   - if current_course.student_weighted?
     .panel.radius= render 'students/sidebar/sidebar_assignment_weights'
