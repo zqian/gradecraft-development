@@ -13,6 +13,10 @@
           = "Released"
         - elsif grade.is_graded?
           = "Graded"
+    - if @assignment.accepts_submissions?
+      %td 
+        - if submission.present?
+          %i.fi-check
     %td
       - if @assignment.accepts_submissions?
         - student.submissions.where(:assignment_id => @assignment).each do |submission|
