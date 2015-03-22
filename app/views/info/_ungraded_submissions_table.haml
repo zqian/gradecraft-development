@@ -16,6 +16,7 @@
           - if assignment.is_individual?
             %th{:scope => "col", :width => "7%"} First Name
             %th{:scope => "col", :width => "7%"} Last Name
+            %th Date Submitted
             - if current_course.has_teams?
               %th{:scope => "col", :width => "15%"}= "#{term_for :team}"
           - elsif assignment.has_groups?
@@ -29,6 +30,7 @@
               - if ug.assignment.is_individual?
                 %td= link_to ug.student.try(:first_name), student_path(ug.student)
                 %td= link_to ug.student.try(:last_name), student_path(ug.student)
+                %td= ug.updated_at
                 %td
                   - if current_course.has_teams? && ug.student.present? && ug.student.team_for_course(current_course).present?
                     = link_to ug.student.team_for_course(current_course).try(:name), ug.student.team_for_course(current_course)
@@ -43,6 +45,7 @@
                       %li= link_to 'Grade', edit_assignment_grade_path(:assignment_id => assignment.id, :student_id => ug.student.try(:id)), :class => "button"
               - elsif ug.assignment.has_groups?
                 %td= link_to ug.group.try(:name), group_path(ug.group)
+                %td= ug.updated_at
                 %td
                   .button-bar
                     %ul.button-group.right.radius
