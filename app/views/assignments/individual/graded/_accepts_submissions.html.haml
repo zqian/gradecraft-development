@@ -14,6 +14,7 @@
           %a{:href => edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'}
             Edit Grade
             %span.sr-only for #{student.first_name} #{student.last_name}
+        %li= link_to "Delete", remove_grades_assignment_path(:grade_id => grade.id, :assignment_id => @assignment.id), :class => 'button', :method => :post
   - elsif submission
     .button-bar
       - if submission.submission_files.present?

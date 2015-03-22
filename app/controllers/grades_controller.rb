@@ -33,7 +33,6 @@ class GradesController < ApplicationController
   def edit
     session[:return_to] = request.referer
     redirect_to @assignment and return unless current_student.present?
-    # @grade = Grade.where(student_id: current_student[:id], assignment_id: @assignment[:id]).first
     @grade = current_student_data.grade_for_assignment(@assignment)
     @student = @grade.student
     @submission = @student.submission_for_assignment(@assignment)
@@ -345,8 +344,13 @@ class GradesController < ApplicationController
   def mass_update
     @assignment = current_course.assignments.find(params[:id])
     if @assignment.update_attributes(params[:assignment])
-      GradeUpdater.perform_async(params[:assignment].find_all_values_for(:id))
-
+      grade_ids = []
+      @assignment.grades.each do |grade|
+        if grade.graded_or_released?
+          grade_ids << grade.id
+        end
+      end
+      MultipleGradeUpdater.perform_async(grade_ids)
       if !params[:team_id].blank?
         redirect_to assignment_path(@assignment, :team_id => params[:team_id])
       else

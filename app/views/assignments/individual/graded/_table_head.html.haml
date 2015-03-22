@@ -11,6 +11,8 @@
 
   - if @assignment.release_necessary?
     %th{:scope => "col"} Status
+  - if @assignment.accepts_submissions?
+    %th{:scope => "col"} Submitted?
 
   %th.center
   - if @assignment.release_necessary?

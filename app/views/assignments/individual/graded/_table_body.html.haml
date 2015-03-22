@@ -17,6 +17,11 @@
     - if @assignment.release_necessary?
       %td= grade.status
 
+    - if @assignment.accepts_submissions?
+      %td 
+        - if student.submission_for_assignment(@assignment).present?
+          %i.fi-check
+
     %td
       - if @assignment.accepts_submissions?
         = render "assignments/individual/graded/accepts_submissions", student: student, grade: grade

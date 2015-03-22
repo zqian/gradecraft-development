@@ -57,16 +57,22 @@
           %th First Name
           %th Last Name
           - current_course.assignment_types.each do |at|
-            %th
-              = at.name
+            %th= "#{at.name} Score"
+            - if at.student_weightable?
+              %th= "#{at.name} Weighted Value"
+            %th= "#{at.name} Grade Count"
+
+            
       %tbody
         - current_course.students.each do |student|
           %tr
             %td= link_to student.first_name, student_path(student)
             %td= link_to student.last_name, student_path(student)
             - current_course.assignment_types.each do |at|
+              %td= at.score_for_student(student)
+              - if at.student_weightable?
+                %td= "[#{ at.raw_score_for_student(student)}]"
+                %span.sr-only= at.name
               %td
-                = points at.score_for_student(student)
-                - if at.student_weightable?
-                  = "[#{ at.raw_score_for_student(student)}]"
-                  %span.sr-only= at.name
+                = at.grades.where(:student_id => student.id).graded_or_released.count
+                = "(#{at.grades.where(:student_id => student.id).graded_or_released.positive.count })"

@@ -146,9 +146,9 @@ class SubmissionsController < ApplicationController
     @submission = current_course.submissions.find(params[:id])
     @submission.destroy
     respond_to do |format|
-      format.html { redirect_to assignment_submissions_path(@assignment) }
-      format.json { head :ok }
+      format.html { redirect_to assignment_path(@assignment) }
     end
+    flash[:notice] = "Submission deleted"
   end
 
 end
