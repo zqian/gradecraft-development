@@ -31,6 +31,8 @@
           Create Rubric
 
     - if @assignment.rubric and @assignment.rubric.designed?
+      - if @assignment.grades.instructor_modified.present?
+        %li= link_to "Review Grades", rubric_grades_review_assignment_path(@assignment)
       %li.loading(ng-cloak ng-hide="window.angular")
         %a(ng-click="")
           %i.fi-list-thumbnails
