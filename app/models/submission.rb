@@ -26,7 +26,7 @@ class Submission < ActiveRecord::Base
   scope :ungraded, -> { where('NOT EXISTS(SELECT 1 FROM grades WHERE submission_id = submissions.id OR (assignment_id = submissions.assignment_id AND student_id = submissions.student_id) AND (status = ? OR status = ?))', "Graded", "Released") }
   scope :graded, -> { where(:grade) }
   scope :resubmitted, -> { where('EXISTS(SELECT 1 FROM grades WHERE (assignment_id = submissions.assignment_id AND student_id = submissions.student_id) AND (updated_at < submissions.updated_at) AND (status = ? OR status = ?))', "Graded", "Released") }
-  
+
 
   before_validation :cache_associations
 
@@ -88,6 +88,12 @@ class Submission < ActiveRecord::Base
   # Checking to see if a submission was turned in late
   def late?
     created_at > self.assignment.due_at if self.assignment.due_at.present?
+  end
+
+  # has more than one submission_file, or more than one of: submission_file, text_comment, link
+  def has_multiple_components?
+    return true if (submission_files.count > 1) || ([submission_files, link, text_comment].inject(0) { |sum, item| item.present? ? sum + 1 : sum } > 1)
+    false
   end
 
   private

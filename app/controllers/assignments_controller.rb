@@ -290,27 +290,30 @@ class AssignmentsController < ApplicationController
 
           current_course.students.each do |student|
             if submission = student.submission_for_assignment(@assignment)
-              student_dir = File.join(temp_dir, "#{student.last_name}_#{student.first_name}")
-              Dir.mkdir(student_dir)
-              open(File.join(student_dir, "#{student.last_name}_#{student.first_name}_submission.txt"),'w' ) do |f|
-                f.puts "Submission items from #{student.last_name}, #{student.first_name}\n"
-                f.puts "\ntext comment: #{submission.text_comment}\n" if submission.text_comment.present?
-                f.puts "\nlink: #{submission.link }\n" if submission.link.present?
-                if submission.submission_files
-                  #list the files as links:
-                  f.puts "\nlinks to submitted files: \n"
-                  submission.submission_files.each do |submission_file|
-                    f.puts "     #{submission_file.url}\n"
+              if submission.has_multiple_components?
+                student_dir = File.join(temp_dir, "#{student.last_name}_#{student.first_name}")
+                Dir.mkdir(student_dir)
+              else
+                student_dir = temp_dir
+              end
 
-                    if Rails.env.development?
-                      contents  = open(File.join(Rails.root,'public',submission_file.url)) {|sf| sf.read }
-                    else
-                      contents  = open(submission_file.url) {|sf| sf.read }
-                    end
-                    #add the files into the directory
-                    open(File.join(student_dir, "#{submission_file.file.path.split('/').last}"),'w' ) do |f|
-                      f.puts contents
-                    end
+              if submission.text_comment.present? or submission.link.present?
+                open(File.join(student_dir, "#{student.last_name}_#{student.first_name}_submission.txt"),'w' ) do |f|
+                  f.puts "Submission items from #{student.last_name}, #{student.first_name}\n"
+                  f.puts "\ntext comment: #{submission.text_comment}\n" if submission.text_comment.present?
+                  f.puts "\nlink: #{submission.link }\n" if submission.link.present?
+                end
+              end
+
+              if submission.submission_files
+                submission.submission_files.each_with_index do |submission_file, i|
+                  if Rails.env.development?
+                    contents  = open(File.join(Rails.root,'public',submission_file.url)) {|sf| sf.read }
+                  else
+                    contents  = open(submission_file.url) {|sf| sf.read }
+                  end
+                  open(File.join(student_dir, "#{student.last_name}_#{student.first_name}_#{@assignment.name.gsub(/\W+/, "_").downcase[0..20]}-#{i + 1}.#{submission_file.file.file.extension}"),'w' ) do |f|
+                    f.puts contents
                   end
                 end
               end
