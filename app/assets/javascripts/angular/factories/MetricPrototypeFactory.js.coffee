@@ -27,7 +27,6 @@
       if @rubricGrade
         @rubricGradeTierId = @rubricGrade.tier_id
       else
-        alert("no rubric grade!!")
         @rubricGradeTierId = null
 
       if @rubricGrade
@@ -43,7 +42,6 @@
       newTier = new TierPrototype(@, attrs, @$scope)
       @tiers.push newTier
       if @rubricGradeTierId and @rubricGradeTierId == newTier.id
-        alert("selected!")
         @selectedTier = newTier
 
     addTiers: (tiers)->
