@@ -46,7 +46,7 @@
 
   .small-12.columns
     - if @assignment.rubric and @assignment.rubric.designed?
-      - @students.each do |student|
+      - @students.sort_by { |student| [ student.last_name, student.first_name ] }.each do |student|
         .small-12.columns
           - if student.grade_for_assignment(@assignment).present? && student.grade_for_assignment(@assignment).instructor_modified?
             %h4.uppercase= student.name

@@ -15,15 +15,5 @@
     %br
 
   .small-12.columns
-    %dl.tabs{:data => {'tab' => true}}
-      %dd.active
-        %a{ "href" => "#tabt1"} #{term_for :team} Leaderboard
-      %dd
-        %a{ "href" => "#tabt2"} #{term_for :teams} Stats
-
-  .small-12.columns
-    .tabs-content
-      .content#tabt1.active
-        = render "leaderboard"
-      .content#tabt2{:style => "overflow: auto"}
-        = render "stats"
+    = render "leaderboard"
+    = render "stats"
