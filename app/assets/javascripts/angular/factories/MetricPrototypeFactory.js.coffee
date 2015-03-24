@@ -4,12 +4,8 @@
       @$scope = $scope
       @tiers = []
       @badges = {}
-      # @availableBadges = angular.copy($scope.courseBadges)
-      # @selectedBadge = ""
       @id = if attrs.id then attrs.id else null
       @fullCreditTier = null
-      @addTiers(attrs["tiers"]) if attrs["tiers"] #add tiers if passed on init
-      # @loadMetricBadges(attrs["metric_badges"]) if attrs["metric_badges"] #add badges if passed on init
       @name = if attrs.name then attrs.name else ""
       @rubricId = if attrs.rubric_id then attrs.rubric_id else @$scope.rubricId
       if @id
@@ -23,9 +19,11 @@
       ## graderubric
       @selectedTier = null
       
-      if $scope.rubricGrades
-        @rubricGrade = $scope.rubricGrades[@id]
+      # look for a rubric grade by metric_id if there are rubric grades present
+      if @$scope.rubricGrades
+        @rubricGrade = @$scope.rubricGrades[@id]
 
+      # if there are rubric grades, select the 
       if @rubricGrade
         @rubricGradeTierId = @rubricGrade.tier_id
       else
@@ -36,32 +34,15 @@
       else
         @comments = ""
 
-      # alert(@selectedTier.id)
+      @addTiers(attrs["tiers"]) if attrs["tiers"] #add tiers if passed on init
       # would this always have an id?
-      #@max_points = if attrs.max_points then attrs.max_points else 0
     alert: ()->
       alert("snakes!")    
     addTier: (attrs={})->
       newTier = new TierPrototype(@, attrs, @$scope)
       @tiers.push newTier
       if @rubricGradeTierId and @rubricGradeTierId == newTier.id
-        # alert(self.rubricGradeTierId)
-        # alert(newTier.id)
         @selectedTier = newTier
-    #what is different here? // from GradeRubric
-      # addTier: (attrs={})->
-      #   self = this
-      #   newTier = new TierPrototype(self, attrs, $scope)
-      #   @tiers.splice(-1, 0, newTier)    
-      # loadTier: (attrs={})->
-      #   self = this
-      #   newTier = new TierPrototype(self, attrs, $scope)
-      #   @tiers.push newTier
-      # addTiers: (tiers)->
-      #   self = this
-      #   angular.forEach(tiers, (tier,index)->
-      #     self.loadTier(tier)
-      #   )
 
     addTiers: (tiers)->
       angular.forEach(tiers, (tier,index)=>

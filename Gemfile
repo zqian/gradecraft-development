@@ -73,11 +73,10 @@ end
 
 group :development, :test do
   gem 'pry'
-  gem 'byebug'
-  gem 'pry' 
-  gem 'pry-remote' 
-  gem 'pry-stack_explorer' 
-  gem 'pry-debugger' 
+  gem 'byebug'  
+  gem 'pry-remote'
+  gem 'pry-stack_explorer'
+  gem 'pry-byebug'
 end
 
 group :test do
