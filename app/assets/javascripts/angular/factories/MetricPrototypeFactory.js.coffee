@@ -6,7 +6,6 @@
       @badges = {}
       @id = if attrs.id then attrs.id else null
       @fullCreditTier = null
-      @addTiers(attrs["tiers"]) if attrs["tiers"] #add tiers if passed on init
       @name = if attrs.name then attrs.name else ""
       @rubricId = if attrs.rubric_id then attrs.rubric_id else @$scope.rubricId
       if @id
@@ -28,6 +27,7 @@
       if @rubricGrade
         @rubricGradeTierId = @rubricGrade.tier_id
       else
+        alert("no rubric grade!!")
         @rubricGradeTierId = null
 
       if @rubricGrade
@@ -35,7 +35,7 @@
       else
         @comments = ""
 
-      # alert(@selectedTier.id)
+      @addTiers(attrs["tiers"]) if attrs["tiers"] #add tiers if passed on init
       # would this always have an id?
     alert: ()->
       alert("snakes!")    
@@ -43,6 +43,7 @@
       newTier = new TierPrototype(@, attrs, @$scope)
       @tiers.push newTier
       if @rubricGradeTierId and @rubricGradeTierId == newTier.id
+        alert("selected!")
         @selectedTier = newTier
 
     addTiers: (tiers)->
