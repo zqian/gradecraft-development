@@ -1,4 +1,4 @@
-- @auditing.each do |student|
+- @auditors.each do |student|
   - grade = current_course_data.grade_for_student_and_assignment(student, @assignment)
   %tr
     %td= link_to student.first_name, student_path(student)
@@ -14,7 +14,7 @@
         - elsif grade.is_graded?
           = "Graded"
     - if @assignment.accepts_submissions?
-      %td 
+      %td
         - if submission.present?
           %i.fi-check
     %td
@@ -27,7 +27,7 @@
               %ul.button-group.radius.right
                 %li= link_to "See Grade", assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
                 %li= link_to "Edit Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
-                
+
           - elsif submission
             .button-bar
               - if submission.submission_files.present?

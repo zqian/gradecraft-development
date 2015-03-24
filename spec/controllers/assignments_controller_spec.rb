@@ -61,7 +61,7 @@ describe AssignmentsController do
           assigns(:students).should eq([@student])
         end
 
-        it "assigns all team students auditing as auditing" do
+        it "assigns all team students auditing as auditors" do
           # we verify only auditing students on team assigned as @auditing
           other_student = create(:user)
           other_student.courses << @course
@@ -72,7 +72,7 @@ describe AssignmentsController do
           other_student.course_memberships.first.update(auditing: true)
 
           get :show, {:id => @assignment.id, :team_id => team.id}
-          assigns(:auditing).should eq([@student])
+          assigns(:auditors).should eq([@student])
         end
       end
 
@@ -90,10 +90,10 @@ describe AssignmentsController do
           assigns(:students).should include(other_student)
         end
 
-        it "assigns all auditing students as auditing" do
+        it "assigns all auditing students as auditors" do
           @student.course_memberships.first.update(auditing: true)
           get :show, :id => @assignment.id
-          assigns(:auditing).should eq([@student])
+          assigns(:auditors).should eq([@student])
         end
       end
 
@@ -289,7 +289,7 @@ describe AssignmentsController do
           assigns(:students).should eq([@student])
         end
 
-        it "assigns all team students auditing as auditing" do
+        it "assigns all team students auditing as auditors" do
           # we verify only auditing students on team assigned as @auditing
           other_student = create(:user)
           other_student.courses << @course
@@ -300,7 +300,7 @@ describe AssignmentsController do
           other_student.course_memberships.first.update(auditing: true)
 
           get :show, {:id => @assignment.id, :team_id => team.id}
-          assigns(:auditing).should eq([@student])
+          assigns(:auditors).should eq([@student])
         end
       end
 
@@ -318,10 +318,10 @@ describe AssignmentsController do
           assigns(:students).should include(other_student)
         end
 
-        it "assigns all auditing students as auditing" do
+        it "assigns all auditing students as auditors" do
           @student.course_memberships.first.update(auditing: true)
           get :show, :id => @assignment.id
-          assigns(:auditing).should eq([@student])
+          assigns(:auditors).should eq([@student])
         end
       end
 
@@ -526,7 +526,7 @@ describe AssignmentsController do
           assigns(:students).should eq([@student])
         end
 
-        it "assigns all team students auditing as auditing" do
+        it "assigns all team students auditing as auditors" do
           # we verify only auditing students on team assigned as @auditing
           other_student = create(:user)
           other_student.courses << @course
@@ -537,7 +537,7 @@ describe AssignmentsController do
           other_student.course_memberships.first.update(auditing: true)
 
           get :rubric_grades_review, {:id => @assignment.id, :team_id => team.id}
-          assigns(:auditing).should eq([@student])
+          assigns(:auditors).should eq([@student])
         end
       end
 
@@ -555,10 +555,10 @@ describe AssignmentsController do
           assigns(:students).should include(other_student)
         end
 
-        it "assigns all auditing students as auditing" do
+        it "assigns all auditing students as auditors" do
           @student.course_memberships.first.update(auditing: true)
           get :rubric_grades_review, :id => @assignment.id
-          assigns(:auditing).should eq([@student])
+          assigns(:auditors).should eq([@student])
         end
       end
     end
