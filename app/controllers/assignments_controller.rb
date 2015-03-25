@@ -1,5 +1,7 @@
 class AssignmentsController < ApplicationController
 
+  include ZipDownloads
+
   before_filter :ensure_staff?, :except => [:feed, :show, :index, :guidelines]
 
   respond_to :html, :json
@@ -264,6 +266,82 @@ class AssignmentsController < ApplicationController
     @assignment = current_course.assignments.find(params[:id])
     respond_to do |format|
       format.csv { send_data @assignment.gradebook_for_assignment }
+    end
+  end
+
+  def export_submissions
+    require 'open-uri'
+
+    @assignment = current_course.assignments.find(params[:id])
+    respond_to do |format|
+      format.csv do
+
+        temp_zip = Tempfile.new('submission_download.zip')
+        temp_dir = Dir.mktmpdir
+
+        begin
+
+          open( "#{temp_dir}/username_based_grade_import.csv",'w' ) do |f|
+            f.puts @assignment.submissions_for_assignment
+          end
+
+          current_course.students.each do |student|
+            if submission = student.submission_for_assignment(@assignment)
+              if submission.has_multiple_components?
+                student_dir = File.join(temp_dir, "#{student.last_name}_#{student.first_name}")
+                Dir.mkdir(student_dir)
+              else
+                student_dir = temp_dir
+              end
+
+              if submission.text_comment.present? or submission.link.present?
+                open(File.join(student_dir, "#{student.last_name}_#{student.first_name}_submission.txt"),'w' ) do |f|
+                  f.puts "Submission items from #{student.last_name}, #{student.first_name}\n"
+                  f.puts "\ntext comment: #{submission.text_comment}\n" if submission.text_comment.present?
+                  f.puts "\nlink: #{submission.link }\n" if submission.link.present?
+                end
+              end
+
+              if submission.submission_files
+                submission.submission_files.each_with_index do |submission_file, i|
+                  if Rails.env.development?
+                    contents  = open(File.join(Rails.root,'public',submission_file.url)) {|sf| sf.read }
+                  else
+                    contents  = open(submission_file.url) {|sf| sf.read }
+                  end
+                  open(File.join(student_dir, "#{student.last_name}_#{student.first_name}_#{@assignment.name.gsub(/\W+/, "_").downcase[0..20]}-#{i + 1}.#{submission_file.file.file.extension}"),'w' ) do |f|
+                    f.puts contents
+                  end
+                end
+              end
+            end
+          end
+
+          #Initialize the temp file as a zip file
+          Zip::OutputStream.open(temp_zip) { |zos| }
+
+          zf = ZipDownloads::ZipFileGenerator.new(temp_dir, temp_zip)
+          zf.write
+
+          # Zip::File.open(temp_zip.path, Zip::File::CREATE) do |zip|
+          #   #Put files in here
+          #   zip.add("tempdir", "#{temp_dir}")
+          # end
+
+          #Read the binary data from the file
+          zip_data = File.read(temp_zip.path)
+
+          #Send the data to the browser as an attachment
+          #We do not send the file directly because it will
+          #get deleted before rails actually starts sending it
+          send_data(zip_data, :type => 'application/zip', :filename => "#{@assignment.name}.zip")
+        ensure
+          #Close and delete the temp file
+          temp_zip.close
+          temp_zip.unlink
+          FileUtils.remove_entry_secure temp_dir
+        end
+      end
     end
   end
 
