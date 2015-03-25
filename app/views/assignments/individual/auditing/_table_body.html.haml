@@ -15,7 +15,7 @@
           = "Graded"
     - if @assignment.accepts_submissions?
       %td
-        - if submission.present?
+        - if student.submission_for_assignment(@assignment).present?
           %i.fi-check
     %td
       - if @assignment.accepts_submissions?
