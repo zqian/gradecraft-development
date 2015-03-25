@@ -278,11 +278,12 @@ class AssignmentsController < ApplicationController
     @assignment = current_course.assignments.find(params[:id])
     respond_to do |format|
       format.csv do
+        error_log = ""
 
         temp_zip = Tempfile.new('submission_download.zip')
         temp_dir = Dir.mktmpdir
 
-        begin
+        begin # ensure the temp file is closed and deleted
 
           open( "#{temp_dir}/username_based_grade_import.csv",'w' ) do |f|
             f.puts @assignment.submissions_for_assignment
@@ -307,16 +308,34 @@ class AssignmentsController < ApplicationController
 
               if submission.submission_files
                 submission.submission_files.each_with_index do |submission_file, i|
-                  if Rails.env.development?
-                    contents  = open(File.join(Rails.root,'public',submission_file.url)) {|sf| sf.read }
-                  else
-                    contents  = open(submission_file.url) {|sf| sf.read }
-                  end
-                  open(File.join(student_dir, "#{student.last_name}_#{student.first_name}_#{@assignment.name.gsub(/\W+/, "_").downcase[0..20]}-#{i + 1}.#{submission_file.file.file.extension}"),'w' ) do |f|
-                    f.puts contents
+
+                  begin
+                    if Rails.env.development?
+                      contents  = open(File.join(Rails.root,'public',submission_file.url)) {|sf| sf.read }
+                    else
+                      remote_file  = open(submission_file.url)
+                      remote_file.binmode
+                      contents = sf.read
+                    end
+                    open(File.join(student_dir, "#{student.last_name}_#{student.first_name}_#{@assignment.name.gsub(/\W+/, "_").downcase[0..20]}-#{i + 1}#{File.extname(submission_file.filename)}"),'w' ) do |f|
+                      f.puts contents
+                    end
+                  rescue OpenURI::HTTPError => e
+                    error_log += "\nInvalid link for file. Student: #{student.last_name}, #{student.first_name}}, submission-#{submission_file.id}: #{submission_file.filename}, error: #{e}\n"
+                  rescue Encoding::UndefinedConversionError => e
+                    error_log += "\nFile encoding error. Student: #{student.last_name}, #{student.first_name}}, submission-#{submission_file.id}: #{submission_file.filename}, error: #{e}\n"
+                  rescue Exception => e
+                    error_log += "\nError on file. Student: #{student.last_name}, #{student.first_name}}, submission-#{submission_file.id}: #{submission_file.filename}, error: #{e}\n"
                   end
                 end
               end
+            end
+          end
+
+          if ! error_log.empty?
+            open( "#{temp_dir}/Error_Log.txt",'w' ) do |f|
+              f.puts "Some errors occurred on download:\n\n"
+              f.puts error_log
             end
           end
 
@@ -326,11 +345,6 @@ class AssignmentsController < ApplicationController
           zf = ZipDownloads::ZipFileGenerator.new(temp_dir, temp_zip)
           zf.write
 
-          # Zip::File.open(temp_zip.path, Zip::File::CREATE) do |zip|
-          #   #Put files in here
-          #   zip.add("tempdir", "#{temp_dir}")
-          # end
-
           #Read the binary data from the file
           zip_data = File.read(temp_zip.path)
 
@@ -339,7 +353,7 @@ class AssignmentsController < ApplicationController
           #get deleted before rails actually starts sending it
           send_data(zip_data, :type => 'application/zip', :filename => "#{@assignment.name}.zip")
         ensure
-          #Close and delete the temp file
+          # close and delete the temp file
           temp_zip.close
           temp_zip.unlink
           FileUtils.remove_entry_secure temp_dir
