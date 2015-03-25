@@ -16,7 +16,7 @@
     - if @assignment.accepts_submissions?
       %td
         - if student.submission_for_assignment(@assignment).present?
-          %i.fi-check
+          = student.submission_for_assignment(@assignment).updated_at
     %td
       - if @assignment.accepts_submissions?
         - student.submissions.where(:assignment_id => @assignment).each do |submission|
