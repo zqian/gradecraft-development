@@ -67,7 +67,8 @@ namespace :analytics do
                   end
 
           attributes = {course_id: current_course.id, user_id: user.id, user_role: user.role(current_course), created_at: created_at}
-          EventLogger.perform_async(event, attributes.merge(data)) if data
+          Resque.enqueue(EventLogger, event, attributes.merge(data)) if data
+          #EventLogger.perform_async(event, attributes.merge(data)) if data
           puts "#{event}: #{attributes.merge(data)}" if data
           sleep(rand)
         end

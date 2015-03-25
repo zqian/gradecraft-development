@@ -1,7 +1,8 @@
 class GradeUpdater
-  include Sidekiq::Worker
+  @queue= :gradeupdater
 
-  def perform(grade_id)
+  def self.perform(grade_id)
+  	p "Starting GradeUpdater"
     grade = Grade.where(id: grade_id).includes(:assignment).load
     grade.cache_student_and_team_scores
     if grade.assignment.notify_released?

@@ -1,7 +1,8 @@
 class GradebookExporter
-  include Sidekiq::Worker
+  @queue= :gradebookexporter
 
-  def perform(user_id, course_id)
+  def self.perform(user_id, course_id)
+    p "Starting GradebookExporter"
     user = User.find(user_id)
     course = Course.find(course_id)
     if course.present? && user.present?

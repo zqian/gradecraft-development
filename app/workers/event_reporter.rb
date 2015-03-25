@@ -1,8 +1,8 @@
 class EventReporter
-  include Sidekiq::Worker
+  @queue= :eventreporter
 
-  def perform()
-
+  def self.perform()
+    p "Starting EventReporter"
 
 
     # run report for a single course

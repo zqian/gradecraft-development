@@ -1,7 +1,8 @@
 class MultipleGradeUpdater
-  include Sidekiq::Worker
+  @queue= :multiplegradeupdater
 
-  def perform(grade_ids)
+  def self.perform(grade_ids)
+    p "Starting MultipleGradeUpdater"
     grades = Grade.where(id: grade_ids).includes(:assignment).load
     grades.each do |grade|
       grade.cache_student_and_team_scores

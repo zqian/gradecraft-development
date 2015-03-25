@@ -1,7 +1,8 @@
 class ScoreRecalculator
-  include Sidekiq::Worker
+  @queue= :scorerecalculator
 
-  def perform(student_id, course_id)
+  def self.perform(student_id, course_id)
+  	p "Starting ScoreRecalculator"
     student = User.find(student_id)
     student.cache_course_score(course_id)
   end

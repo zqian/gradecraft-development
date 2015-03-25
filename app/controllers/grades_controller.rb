@@ -85,7 +85,8 @@ class GradesController < ApplicationController
     end
 
     if @grade.update_attributes params[:grade].merge(instructor_modified: true)
-      GradeUpdater.perform_async([@grade.id]) if @grade.graded_or_released?
+      Resque.enqueue(GradeUpdater, [@grade.id])if @grade.graded_or_released?
+      #GradeUpdater.perform_async([@grade.id]) if @grade.graded_or_released?
       if session[:return_to].present?
         redirect_to session[:return_to]
       else
@@ -115,8 +116,8 @@ class GradesController < ApplicationController
     delete_existing_earned_badges_for_metrics # if earned_badges_exist? # destroy earned_badges where assignment_id and student_id match
     create_earned_tier_badges if params[:tier_badges]# create_earned_tier_badges
 
-
-    GradeUpdater.perform_async([@grade.id]) if @grade.graded_or_released?
+    Resque.enqueue(GradeUpdater, [@grade.id]) if @grade.graded_or_released?
+    #GradeUpdater.perform_async([@grade.id]) if @grade.graded_or_released?
 
     respond_to do |format|
       format.json { render nothing: true }
@@ -247,7 +248,8 @@ class GradesController < ApplicationController
       @grade.status = "Graded"
       respond_to do |format|
         if @grade.save
-          GradeUpdater.perform_async([@grade.id])
+          Resque.enqueue(GradeUpdater, [@grade.id])
+          #GradeUpdater.perform_async([@grade.id])
           format.html { redirect_to syllabus_path, notice: 'Nice job! Thanks for logging your grade!' }
         else
           format.html { redirect_to syllabus_path, notice: "We're sorry, this grade could not be added." }
@@ -350,7 +352,8 @@ class GradesController < ApplicationController
           grade_ids << grade.id
         end
       end
-      MultipleGradeUpdater.perform_async(grade_ids)
+      Resque.enqueue(MultipleGradeUpdater, grade_ids)
+      #MultipleGradeUpdater.perform_async(grade_ids)
       if !params[:team_id].blank?
         redirect_to assignment_path(@assignment, :team_id => params[:team_id])
       else
@@ -386,7 +389,8 @@ class GradesController < ApplicationController
       grade_ids << grade.id
     end
 
-    GradeUpdater.perform_async(grade_ids)
+    Resque.enqueue(GradeUpdater, grade_ids)
+    #GradeUpdater.perform_async(grade_ids)
 
     respond_with @assignment
   end
@@ -408,8 +412,8 @@ class GradesController < ApplicationController
       grade.update_attributes!(params[:grade].reject { |k,v| v.blank? })
       grade_ids << grade.id
     end
-
-    GradeUpdater.perform_async(grade_ids)
+    Resque.enqueue(GradeUpdater, grade_ids)
+    #GradeUpdater.perform_async(grade_ids)
 
     if session[:return_to].present?
       redirect_to session[:return_to]
@@ -467,8 +471,8 @@ class GradesController < ApplicationController
           end
         end
       end
-
-    GradeUpdater.perform_async(grade_ids)
+    Resque.enqueue(GradeUpdater, grade_ids)
+    #GradeUpdater.perform_async(grade_ids)
 
     redirect_to assignment_path(@assignment), :notice => "Upload successful"
     end
@@ -515,8 +519,8 @@ class GradesController < ApplicationController
           end
         end
       end
-
-      GradeUpdater.perform_async(grade_ids)
+      Resque.enqueue(GradeUpdater, grade_ids)
+      #GradeUpdater.perform_async(grade_ids)
 
       redirect_to assignment_path(@assignment), :notice => "Upload successful"
     end

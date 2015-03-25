@@ -66,8 +66,9 @@ class InfoController < ApplicationController
 
   #grade index export
   def gradebook
-    session[:return_to] = request.referer  
-    GradebookExporter.perform_async(current_user.id, current_course.id)
+    session[:return_to] = request.referer
+    Resque.enqueue(GradebookExporter, current_user.id, current_course.id)  
+    #GradebookExporter.perform_async(current_user.id, current_course.id)
     flash[:notice]="Your request to export the gradebook for \"#{current_course.name}\" is currently being processed. We will email you the data shortly."
     redirect_to session[:return_to]
   end
@@ -81,7 +82,8 @@ class InfoController < ApplicationController
 
   #downloadable grades for course with  export
   def research_gradebook
-    GradeExporter.perform_async(current_user.id, current_course.id)
+    Resque.enqueue(GradeExporter, current_user.id, current_course.id)  
+    #GradeExporter.perform_async(current_user.id, current_course.id)
     flash[:notice]="Your request to export grade data from course \"#{current_course.name}\" is currently being processed. We will email you the data shortly."
     redirect_to courses_path
   end
