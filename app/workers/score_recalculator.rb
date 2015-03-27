@@ -3,7 +3,12 @@ class ScoreRecalculator
 
   def self.perform(student_id, course_id)
   	p "Starting ScoreRecalculator"
-    student = User.find(student_id)
-    student.cache_course_score(course_id)
+  	begin
+    	student = User.find(student_id)
+    	student.cache_course_score(course_id)
+    rescue Exception => e
+      puts e.message
+      puts e.backtrace.inspect
+	end
   end
 end
