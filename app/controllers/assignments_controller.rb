@@ -323,10 +323,10 @@ class AssignmentsController < ApplicationController
                         f.write stringIO.read
                       end
                     rescue OpenURI::HTTPError => e
-                      error_log += "\nInvalid link for file. Student: #{student.last_name}, #{student.first_name}}, submission-#{submission_file.id}: #{submission_file.filename}, error: #{e}\n"
+                      error_log += "\nInvalid link for file. Student: #{student.last_name}, #{student.first_name}}, submission_file-#{submission_file.id}: #{submission_file.filename}, error: #{e}\n"
                       FileUtils.remove_entry file_copy
                     rescue Exception => e
-                      error_log += "\nError on file. Student: #{student.last_name}, #{student.first_name}, submission-#{submission_file.id}: #{submission_file.filename}, error: #{e}\n"
+                      error_log += "\nError on file. Student: #{student.last_name}, #{student.first_name}, submission_file#{submission_file.id}: #{submission_file.filename}, error: #{e}\n"
                       FileUtils.remove_entry file_copy
                     end
                   end
@@ -336,27 +336,27 @@ class AssignmentsController < ApplicationController
           end
 
           if ! error_log.empty?
-            open( "#{temp_dir}/Error_Log.txt",'w' ) do |f|
-              f.puts "Some errors occurred on download:\n\n"
+            open( "#{temp_dir}/_error_Log.txt",'w' ) do |f|
+              f.puts "Some errors occurred on download:\n"
               f.puts error_log
             end
           end
 
-          #Initialize the temp file as a zip file
+          # Initialize the temp file as a zip file
           Zip::OutputStream.open(temp_zip) { |zos| }
 
           zf = ZipDownloads::ZipFileGenerator.new(temp_dir, temp_zip)
           zf.write
 
-          #Read the binary data from the file
+          # Read the binary data from the file
           zip_data = File.read(temp_zip.path)
 
-          #Send the data to the browser as an attachment
-          #We do not send the file directly because it will
-          #get deleted before rails actually starts sending it
+          # Send the data to the browser as an attachment
+          # We do not send the file directly because it will
+          # get deleted before rails actually starts sending it
           send_data(zip_data, :type => 'application/zip', :filename => "#{@assignment.name}.zip")
         ensure
-          # close and delete the temp file
+          # Close and delete the temp file
           temp_zip.close
           temp_zip.unlink
           FileUtils.remove_entry_secure temp_dir
