@@ -309,25 +309,22 @@ class AssignmentsController < ApplicationController
               if submission.submission_files
                 submission.submission_files.each_with_index do |submission_file, i|
 
-                  begin
-                    if Rails.env.development?
-                      contents  = open(File.join(Rails.root,'public',submission_file.url)) {|sf| sf.read }
-                      open(File.join(student_dir, "#{student.last_name}_#{student.first_name}_#{@assignment.name.gsub(/\W+/, "_").downcase[0..20]}-#{i + 1}#{File.extname(submission_file.filename)}"),'w' ) do |f|
-                        f.puts contents
-                      end
-                    else
+                  if Rails.env.development?
+                    contents  = open(File.join(Rails.root,'public',submission_file.url)) {|sf| sf.read }
+                    open(File.join(student_dir, "#{student.last_name}_#{student.first_name}_#{@assignment.name.gsub(/\W+/, "_").downcase[0..20]}-#{i + 1}#{File.extname(submission_file.filename)}"),'w' ) do |f|
+                      f.puts contents
+                    end
+                  else
+                    begin
                       open(File.join(student_dir, "#{student.last_name}_#{student.first_name}_#{@assignment.name.gsub(/\W+/, "_").downcase[0..20]}-#{i + 1}#{File.extname(submission_file.filename)}"),'w' ) do |f|
                         f.binmode
                         stringIO = open(submission_file.url)
+                        raise "Not a valid url" if stringIO.length == 0
                         f.write stringIO.read
                       end
+                    rescue Exception => e
+                      error_log += "\nError on file. Student: #{student.last_name}, #{student.first_name}, submission-#{submission_file.id}: #{submission_file.filename}, error: #{e}\n"
                     end
-                  rescue OpenURI::HTTPError => e
-                    error_log += "\nInvalid link for file. Student: #{student.last_name}, #{student.first_name}}, submission-#{submission_file.id}: #{submission_file.filename}, error: #{e}\n"
-                  rescue Encoding::UndefinedConversionError => e
-                    error_log += "\nFile encoding error. Student: #{student.last_name}, #{student.first_name}}, submission-#{submission_file.id}: #{submission_file.filename}, error: #{e}\n"
-                  rescue Exception => e
-                    error_log += "\nError on file. Student: #{student.last_name}, #{student.first_name}, submission-#{submission_file.id}: #{submission_file.filename}, error: #{e}\n"
                   end
                 end
               end
