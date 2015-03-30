@@ -275,11 +275,12 @@ class AssignmentsController < ApplicationController
     @assignment = current_course.assignments.find(params[:id])
     respond_to do |format|
       format.csv do
+        error_log = ""
 
         temp_zip = Tempfile.new('submission_download.zip')
         temp_dir = Dir.mktmpdir
 
-        begin
+        begin # ensure the temp file is closed and deleted
 
           open( "#{temp_dir}/username_based_grade_import.csv",'w' ) do |f|
             f.puts @assignment.submissions_for_assignment
@@ -304,39 +305,55 @@ class AssignmentsController < ApplicationController
 
               if submission.submission_files
                 submission.submission_files.each_with_index do |submission_file, i|
+
                   if Rails.env.development?
                     contents  = open(File.join(Rails.root,'public',submission_file.url)) {|sf| sf.read }
+                    open(File.join(student_dir, "#{student.last_name}_#{student.first_name}_#{@assignment.name.gsub(/\W+/, "_").downcase[0..20]}-#{i + 1}#{File.extname(submission_file.filename)}"),'w' ) do |f|
+                      f.puts contents
+                    end
                   else
-                    contents  = open(submission_file.url) {|sf| sf.read }
-                  end
-                  open(File.join(student_dir, "#{student.last_name}_#{student.first_name}_#{@assignment.name.gsub(/\W+/, "_").downcase[0..20]}-#{i + 1}.#{submission_file.file.file.extension}"),'w' ) do |f|
-                    f.puts contents
+                    begin
+                      file_copy = File.join(student_dir, "#{student.last_name}_#{student.first_name}_#{@assignment.name.gsub(/\W+/, "_").downcase[0..20]}-#{i + 1}#{File.extname(submission_file.filename)}")
+                      open(file_copy,'w' ) do |f|
+                        f.binmode
+                        stringIO = open(submission_file.url)
+                        f.write stringIO.read
+                      end
+                    rescue OpenURI::HTTPError => e
+                      error_log += "\nInvalid link for file. Student: #{student.last_name}, #{student.first_name}}, submission_file-#{submission_file.id}: #{submission_file.filename}, error: #{e}\n"
+                      FileUtils.remove_entry file_copy
+                    rescue Exception => e
+                      error_log += "\nError on file. Student: #{student.last_name}, #{student.first_name}, submission_file#{submission_file.id}: #{submission_file.filename}, error: #{e}\n"
+                      FileUtils.remove_entry file_copy
+                    end
                   end
                 end
               end
             end
           end
 
-          #Initialize the temp file as a zip file
+          if ! error_log.empty?
+            open( "#{temp_dir}/_error_Log.txt",'w' ) do |f|
+              f.puts "Some errors occurred on download:\n"
+              f.puts error_log
+            end
+          end
+
+          # Initialize the temp file as a zip file
           Zip::OutputStream.open(temp_zip) { |zos| }
 
           zf = ZipDownloads::ZipFileGenerator.new(temp_dir, temp_zip)
           zf.write
 
-          # Zip::File.open(temp_zip.path, Zip::File::CREATE) do |zip|
-          #   #Put files in here
-          #   zip.add("tempdir", "#{temp_dir}")
-          # end
-
-          #Read the binary data from the file
+          # Read the binary data from the file
           zip_data = File.read(temp_zip.path)
 
-          #Send the data to the browser as an attachment
-          #We do not send the file directly because it will
-          #get deleted before rails actually starts sending it
+          # Send the data to the browser as an attachment
+          # We do not send the file directly because it will
+          # get deleted before rails actually starts sending it
           send_data(zip_data, :type => 'application/zip', :filename => "#{@assignment.name}.zip")
         ensure
-          #Close and delete the temp file
+          # Close and delete the temp file
           temp_zip.close
           temp_zip.unlink
           FileUtils.remove_entry_secure temp_dir

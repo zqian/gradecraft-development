@@ -90,9 +90,8 @@ class Submission < ActiveRecord::Base
     created_at > self.assignment.due_at if self.assignment.due_at.present?
   end
 
-  # has more than one submission_file, or more than one of: submission_file, text_comment, link
   def has_multiple_components?
-    return true if (submission_files.count > 1) || ([submission_files, link, text_comment].inject(0) { |sum, item| item.present? ? sum + 1 : sum } > 1)
+    return true if (submission_files.count > 1) || (submission_files.present? && (link.present? || text_comment.present?))
     false
   end
 
