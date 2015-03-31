@@ -33,15 +33,15 @@ describe EventsController do
   # EventsController. Be sure to keep this updated too.
   let(:valid_session) { { "current_course" => @course} }
 
-  describe "GET index" do
-    it "assigns all events as @events" do
-      pending
-      event = create(:event)
-      allow(EventLogger).to receive(:perform_async).and_return(true)
-      get :index
-      assigns(:events).should eq([event])
-    end
-  end
+  # describe "GET index" do
+  #   it "assigns all events as @events" do
+  #     pending
+  #     event = create(:event)
+  #     allow(EventLogger).to receive(:perform_async).and_return(true)
+  #     get :index
+  #     assigns(:events).should eq([event])
+  #   end
+  # end
 
   describe "GET show" do
     it "assigns the requested event as @event" do
