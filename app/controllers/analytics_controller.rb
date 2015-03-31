@@ -182,7 +182,7 @@ class AnalyticsController < ApplicationController
     respond_to do |format|
       format.zip do
         export_dir = Dir.mktmpdir
-        export_zip "anayltics_export", export_dir do
+        export_zip "#{current_course.courseno}_anayltics_export_#{Time.now.strftime('%Y-%m-%d')}", export_dir do
 
           id = current_course.id
           events = Analytics::Event.where(:course_id => id)
