@@ -116,7 +116,6 @@ class GradesController < ApplicationController
     create_earned_tier_badges if params[:tier_badges]# create_earned_tier_badges
 
     Resque.enqueue(GradeUpdater, [@grade.id]) if @grade.is_released?
-    #GradeUpdater.perform_async([@grade.id]) if @grade.graded_or_released?
 
     respond_to do |format|
       format.json { render nothing: true }

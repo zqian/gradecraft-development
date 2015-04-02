@@ -84,7 +84,7 @@ describe Assignment do
       student = create(:user)
       student.courses << course
       submission = create(:submission, student: student, assignment: @assignment)
-      @assignment.gradebook_for_assignment.should eq("First Name,Last Name,Uniqname,Score,Raw Score,Statement,Feedback\n#{student.first_name},#{student.last_name},#{student.username},\"\",\"\",\"#{submission.text_comment}\",\"\"\n")
+      @assignment.gradebook_for_assignment.should eq("First Name,Last Name,Uniqname,Score,Raw Score,Statement,Feedback,Last Updated\n#{student.first_name},#{student.last_name},#{student.username},\"\",\"\",\"#{submission.text_comment}\",\"\"\n")
     end
 
     it "also returns grade fields with instructor modified grade" do
@@ -94,7 +94,7 @@ describe Assignment do
       student.courses << course
       grade = create(:grade, assignment: @assignment, student: student, feedback: "good jorb!", instructor_modified: true)
       submission = create(:submission, grade: grade, student: student, assignment: @assignment)
-      @assignment.gradebook_for_assignment.should eq("First Name,Last Name,Uniqname,Score,Raw Score,Statement,Feedback\n#{student.first_name},#{student.last_name},#{student.username},0,0,\"#{submission.text_comment}\",good jorb!\n")
+      @assignment.gradebook_for_assignment.should eq("First Name,Last Name,Uniqname,Score,Raw Score,Statement,Feedback,Last Updated\n#{student.first_name},#{student.last_name},#{student.username},0,0,\"#{submission.text_comment}\",good jorb!,\"#{grade.updated_at}\"\n")
     end
   end
 
