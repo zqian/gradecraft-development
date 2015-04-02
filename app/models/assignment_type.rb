@@ -98,7 +98,7 @@ class AssignmentType < ActiveRecord::Base
   end
 
   def score_for_student(student)
-    student.grades.where(:assignment_type => self).pluck('score').sum
+    student.grades.released.where(:assignment_type => self).pluck('score').sum
   end
 
   def raw_score_for_student(student)
