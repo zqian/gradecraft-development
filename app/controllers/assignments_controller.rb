@@ -257,7 +257,7 @@ class AssignmentsController < ApplicationController
   def username_based_grade_import
     @assignment = current_course.assignments.find(params[:id])
     respond_to do |format|
-      format.csv { send_data @assignment.username_based_grade_import(@students) }
+      format.csv { send_data @assignment.username_based_grade_import }
     end
   end
 
