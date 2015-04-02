@@ -23,7 +23,7 @@ class Course < ActiveRecord::Base
   end
 
   def students_being_graded_by_team(team)
-    User.students_being_graded(self,team)
+    User.alphabetical.students_being_graded(self,team)
   end
 
   def students_auditing
@@ -270,14 +270,14 @@ class Course < ActiveRecord::Base
       csv << assignment_names
       course.students.each do |student|
         student_data = []
-        student_data << student.first_name 
+        student_data << student.first_name
         student_data << student.last_name
         student_data << student.email
         student_data << student.username
         student_data << student.team_for_course(course).try(:name)
         course.assignments.sort_by { |assignment| assignment.created_at }.each do |a|
           student_data << a.grade_for_student(student).try(:raw_score)
-        end 
+        end
         csv << student_data
       end
     end
@@ -299,7 +299,7 @@ class Course < ActiveRecord::Base
       csv << assignment_names
       course.students.each do |student|
         student_data = []
-        student_data << student.first_name 
+        student_data << student.first_name
         student_data << student.last_name
         student_data << student.email
         student_data << student.username
@@ -307,7 +307,7 @@ class Course < ActiveRecord::Base
         course.assignments.sort_by { |assignment| assignment.created_at }.each do |a|
           student_data << a.grade_for_student(student).try(:raw_score)
           student_data << a.grade_for_student(student).try(:score)
-        end 
+        end
         csv << student_data
       end
     end
@@ -328,13 +328,13 @@ class Course < ActiveRecord::Base
       csv << ["First Name", "Last Name", "Uniqname", "Email", "Badge ID", "Badge Name", "Feedback", "Awarded Date" ]
       earned_badges.each do |earned_badge|
         csv << [
-          earned_badge.student.first_name, 
-          earned_badge.student.last_name, 
-          earned_badge.student.username, 
-          earned_badge.student.email, 
-          earned_badge.badge.id, 
+          earned_badge.student.first_name,
+          earned_badge.student.last_name,
+          earned_badge.student.username,
+          earned_badge.student.email,
+          earned_badge.badge.id,
           earned_badge.badge.name,
-          earned_badge.feedback, 
+          earned_badge.feedback,
           earned_badge.created_at
         ]
       end

@@ -364,10 +364,6 @@ class Assignment < ActiveRecord::Base
     end
   end
 
-  def submissions_for_assignment(options={})
-    username_based_grade_import
-  end
-
   def email_based_grade_import(options = {})
     CSV.generate(options) do |csv|
       csv << ["First Name", "Last Name", "Email", "Score", "Feedback"]
@@ -383,9 +379,11 @@ class Assignment < ActiveRecord::Base
   end
 
   def username_based_grade_import(options = {})
-    CSV.generate(options) do |csv|
+    students = options.fetch(:students, course.students.alphabetical)
+    csv_options = options.fetch(:csv, {})
+    CSV.generate(csv_options) do |csv|
       csv << ["First Name", "Last Name", "Username", "Score", "Feedback"]
-      course.students.alphabetical.each do |student|
+      students.each do |student|
         grade = student.grade_for_assignment(self)
         if grade and (grade.instructor_modified? || grade.graded_or_released?)
           csv << [student.first_name, student.last_name, student.username, student.grade_for_assignment(self).score, student.grade_for_assignment(self).try(:feedback) ]
