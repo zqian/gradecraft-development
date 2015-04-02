@@ -67,7 +67,7 @@ class SubmissionsController < ApplicationController
     if @submission_files
       @submission_files.each do |sf|
         if sf.size > MAX_UPLOAD_FILE_SIZE
-          return redirect_to new_assignment_submission_path(@assignment, @submission), alert: "#{@assignment.name} not saved! #{sf.original_filename} was larger than the maximum 40 MB file size."
+          return redirect_to new_assignment_submission_path(@assignment, @submission), alert: "#{@assignment.name} not saved! #{sf.original_filename} was larger than the maximum #{MAX_UPLOAD_READABLE} file size."
         end
         @submission.submission_files.new(file: sf, filename: sf.original_filename[0..49])
       end
@@ -122,7 +122,7 @@ class SubmissionsController < ApplicationController
     if @submission_files
       @submission_files.each do |sf|
         if sf.size > MAX_UPLOAD_FILE_SIZE
-          return redirect_to new_assignment_submission_path(@assignment, @submission), alert: "#{@assignment.name} not saved! #{sf.original_filename} was larger than the maximum 40 MB file size."
+          return redirect_to new_assignment_submission_path(@assignment, @submission), alert: "#{@assignment.name} not saved! #{sf.original_filename} was larger than the maximum #{MAX_UPLOAD_READABLE} file size."
         end
         @submission.submission_files.new(file: sf, filename: sf.original_filename[0..49])
       end
