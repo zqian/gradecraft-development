@@ -66,7 +66,7 @@ class SubmissionsController < ApplicationController
     @submission.student = current_student if current_user_is_student?
     if @submission_files
       @submission_files.each do |sf|
-        if sf.size > GradeCraft::Application.config.max_upload_file_size
+        if sf.size > MAX_UPLOAD_FILE_SIZE
           return redirect_to new_assignment_submission_path(@assignment, @submission), alert: "#{@assignment.name} not saved! #{sf.original_filename} was larger than the maximum 40 MB file size."
         end
         @submission.submission_files.new(file: sf, filename: sf.original_filename[0..49])
@@ -121,7 +121,7 @@ class SubmissionsController < ApplicationController
 
     if @submission_files
       @submission_files.each do |sf|
-        if sf.size > GradeCraft::Application.config.max_upload_file_size
+        if sf.size > MAX_UPLOAD_FILE_SIZE
           return redirect_to new_assignment_submission_path(@assignment, @submission), alert: "#{@assignment.name} not saved! #{sf.original_filename} was larger than the maximum 40 MB file size."
         end
         @submission.submission_files.new(file: sf, filename: sf.original_filename[0..49])

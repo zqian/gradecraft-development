@@ -17,7 +17,6 @@ module GradeCraft
     config.assets.paths << Rails.root.join("app", "assets", "fonts")
     config.filter_parameters += [:password]
     config.i18n.enforce_available_locales = true
-    config.max_upload_file_size = 40000000 # 40 MB
     config.generators do |g|
       g.integration_tool :mini_test
       g.orm :active_record
