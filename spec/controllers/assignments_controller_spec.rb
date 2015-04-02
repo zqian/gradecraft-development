@@ -2,15 +2,15 @@ require 'spec_helper'
 
 describe AssignmentsController do
 
-  # context "as a student" do
-  #   before do
-  #     @course = create(:course_accepting_groups)
-  #     @student = create(:user)
-  #     @student.courses << @course
-  #     login_user(@student)
-  #     session[:course_id] = @course.id
-  #     allow(EventLogger).to receive(:perform_async).and_return(true)
-  #   end
+  context "as a student" do
+    before do
+      @course = create(:course_accepting_groups)
+      @student = create(:user)
+      @student.courses << @course
+      login_user(@student)
+      session[:course_id] = @course.id
+      allow(EventLogger).to receive(:perform_async).and_return(true)
+    end
 
     describe "GET index" do
       it "redirects to syllabus path" do
@@ -214,22 +214,22 @@ describe AssignmentsController do
     end
   end
 
-  # context "as a professor" do
-  #   before do
-  #     @course = create(:course_accepting_groups)
-  #     @professor = create(:user)
-  #     @professor.courses << @course
-  #     @membership = CourseMembership.where(user: @professor, course: @course).first.update(role: "professor")
-  #     @assignment_type = create(:assignment_type, course: @course)
-  #     @assignment = create(:assignment, assignment_type: @assignment_type)
-  #     @course.assignments << @assignment
-  #     @student = create(:user)
-  #     @student.courses << @course
+  context "as a professor" do
+    before do
+      @course = create(:course_accepting_groups)
+      @professor = create(:user)
+      @professor.courses << @course
+      @membership = CourseMembership.where(user: @professor, course: @course).first.update(role: "professor")
+      @assignment_type = create(:assignment_type, course: @course)
+      @assignment = create(:assignment, assignment_type: @assignment_type)
+      @course.assignments << @assignment
+      @student = create(:user)
+      @student.courses << @course
 
-  #     login_user(@professor)
-  #     session[:course_id] = @course.id
-  #     allow(EventLogger).to receive(:perform_async).and_return(true)
-  #   end
+      login_user(@professor)
+      session[:course_id] = @course.id
+      allow(EventLogger).to receive(:perform_async).and_return(true)
+    end
 
     describe "GET index" do
       it "returns assignments for the current course" do
@@ -612,17 +612,12 @@ describe AssignmentsController do
       end
     end
 
-    describe "GET export_submissions", focus: true do
+    describe "GET export_submissions" do
       context "with CSV format" do
         it "returns a zip directory" do
           get :export_submissions, :id => @assignment, :format => :csv
           response.content_type.should eq("application/zip")
         end
-
-        # it "returns a csv for grade importing" do
-        #   get :export_submissions, :id => @assignment, :format => :csv
-        #   response.body.should eq("First Name,Last Name,Username,Score,Feedback\n#{@student.first_name},#{@student.last_name},#{@student.username},\"\",\"\"\n")
-        # end
       end
     end
   end
