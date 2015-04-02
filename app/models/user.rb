@@ -446,7 +446,7 @@ class User < ActiveRecord::Base
   def self.csv_for_course(course, options = {})
     CSV.generate(options) do |csv|
       csv << ["Email", "First Name", "Last Name", "Score", "Grade", "Earned Badge #", "GradeCraft ID"  ]
-      course.students.each do |student|
+      course.students.alphabetical.each do |student|
         csv << [ student.email, student.first_name, student.last_name, student.score_for_course(course), student.grade_level_for_course(course), student.earned_badges.count, student.id  ]
       end
     end
@@ -455,7 +455,7 @@ class User < ActiveRecord::Base
   def self.csv_roster_for_course(course, options = {})
     CSV.generate(options) do |csv|
       csv << ["GradeCraft ID, First Name", "Last Name", "Uniqname", "Score", "Grade", "Feedback", "Team"]
-      course.students.each do |student|
+      course.students.alphabetical.each do |student|
         csv << [student.id, student.first_name, student.last_name, student.username, "", "", "", student.team_for_course(course).try(:name) ]
       end
     end

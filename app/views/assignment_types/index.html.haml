@@ -60,7 +60,6 @@
             %th= "#{at.name} Score"
             - if at.student_weightable?
               %th= "#{at.name} Weighted Value"
-            %th= "#{at.name} Grade Count"
 
             
       %tbody
@@ -73,6 +72,25 @@
               - if at.student_weightable?
                 %td= "[#{ at.raw_score_for_student(student)}]"
                 %span.sr-only= at.name
-              %td
-                = at.grades.where(:student_id => student.id).graded_or_released.count
-                = "(#{at.grades.where(:student_id => student.id).graded_or_released.positive.count })"
+
+  %h4.subtitle= "#{term_for :student} Grade Counts"
+
+  .small-12.columns
+    %table.responsive.nofeatures_default_name_dynatable
+      %thead
+        %tr
+          %th First Name
+          %th Last Name
+          - current_course.assignment_types.each do |at|
+            %th= "#{at.name} Grade Count"
+            %th= "#{at.name} Grades > 0 Count"
+
+            
+      %tbody
+        - current_course.students.each do |student|
+          %tr
+            %td= link_to student.first_name, student_path(student)
+            %td= link_to student.last_name, student_path(student)
+            - current_course.assignment_types.each do |at|
+              %td= at.grades.where(:student_id => student.id).graded_or_released.count
+              %td= "#{at.grades.where(:student_id => student.id).graded_or_released.positive.count }"

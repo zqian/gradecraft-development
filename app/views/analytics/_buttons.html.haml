@@ -9,8 +9,7 @@
         %a{:href => analytics_staff_path }
           %i.fi-torso-business
           Staff Analytics
-      - if current_user_is_admin?
-        %li
-          %a{:href => analytics_export_path(format: 'zip')}
-            %i.fi-download
-            Download Analytics
+      %li
+        %a{:href => analytics_export_path(format: 'zip')}
+          %i.fi-download
+          Download Analytics

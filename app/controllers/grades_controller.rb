@@ -85,8 +85,7 @@ class GradesController < ApplicationController
     end
 
     if @grade.update_attributes params[:grade].merge(instructor_modified: true)
-      Resque.enqueue(GradeUpdater, [@grade.id])if @grade.graded_or_released?
-      #GradeUpdater.perform_async([@grade.id]) if @grade.graded_or_released?
+      Resque.enqueue(GradeUpdater, [@grade.id]) if @grade.is_released?
       if session[:return_to].present?
         redirect_to session[:return_to]
       else
@@ -116,8 +115,7 @@ class GradesController < ApplicationController
     delete_existing_earned_badges_for_metrics # if earned_badges_exist? # destroy earned_badges where assignment_id and student_id match
     create_earned_tier_badges if params[:tier_badges]# create_earned_tier_badges
 
-    Resque.enqueue(GradeUpdater, [@grade.id]) if @grade.graded_or_released?
-    #GradeUpdater.perform_async([@grade.id]) if @grade.graded_or_released?
+    Resque.enqueue(GradeUpdater, [@grade.id]) if @grade.is_released?
 
     respond_to do |format|
       format.json { render nothing: true }

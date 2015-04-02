@@ -7,11 +7,7 @@ class GradebookExporter
       user = User.find(user_id)
       course = Course.find(course_id)
       if course.present? && user.present?
-        if course.student_weighted?
-          csv_data = course.gradebook_for_course(course)
-        else
-          csv_data = course.multiplied_gradebook_for_course(course)
-        end
+        csv_data = course.gradebook_for_course(course)
         NotificationMailer.gradebook_export(course,user,csv_data).deliver
       end
     rescue Exception => e
