@@ -3,7 +3,9 @@
 
   %h3.pagetitle= @title
 
-  .small-12.right.medium-4.columns
+  .small-12.columns
+
+    = render 'submissions/assignment_guidelines'
 
   - if @rubric && @rubric.designed? and @assignment.use_rubric
     = render "rubric_edit"

@@ -26,7 +26,7 @@
       %ul
         - @student.submission_for_assignment(@assignment).submission_files.each do |sf|
           %li
-            = link_to sf.filename, sf.url
+            = link_to sf.filename, sf.url, :target => "_blank"
 
   - if @student.submission_for_assignment(@assignment).text_comment?
     %p
