@@ -39,7 +39,7 @@
               /   %span.has-tip{:title => "Refresh page to confirm upload has completed", :data => {'tooltip' => true}}
               /     = "(upload in progress)"
               / - else
-              = link_to sf.filename, sf.url
+              = link_to sf.filename, sf.url, :target => "_blank"
 
 
     - if current_student.submission_for_assignment(@assignment).text_comment?
@@ -84,7 +84,7 @@
                 %span.has-tip{:title => "Refresh page to confirm upload has completed", :data => {'tooltip' => true}}
                   = "(upload in progress)"
               - else
-                = link_to sf.filename, sf.url
+                = link_to sf.filename, sf.url, :target => "_blank"
 
     - if @group.submission_for_assignment(@assignment).text_comment?
       %p
