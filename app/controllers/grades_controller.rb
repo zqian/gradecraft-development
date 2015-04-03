@@ -469,8 +469,7 @@ class GradesController < ApplicationController
           end
         end
       end
-    Resque.enqueue(GradeUpdater, grade_ids)
-    #GradeUpdater.perform_async(grade_ids)
+    Resque.enqueue(MultipleGradeUpdater, grade_ids)
 
     redirect_to assignment_path(@assignment), :notice => "Upload successful"
     end
@@ -517,8 +516,7 @@ class GradesController < ApplicationController
           end
         end
       end
-      Resque.enqueue(GradeUpdater, grade_ids)
-      #GradeUpdater.perform_async(grade_ids)
+      Resque.enqueue(MultipleGradeUpdater, grade_ids)
 
       redirect_to assignment_path(@assignment), :notice => "Upload successful"
     end
