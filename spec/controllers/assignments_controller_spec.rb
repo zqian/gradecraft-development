@@ -613,9 +613,9 @@ describe AssignmentsController do
     end
 
     describe "GET export_submissions" do
-      context "with CSV format" do
+      context "with ZIP format" do
         it "returns a zip directory" do
-          get :export_submissions, :id => @assignment, :format => :csv
+          get :export_submissions, :id => @assignment, :format => :zip
           response.content_type.should eq("application/zip")
         end
       end
