@@ -351,7 +351,6 @@ class GradesController < ApplicationController
         end
       end
       Resque.enqueue(MultipleGradeUpdater, grade_ids)
-      #MultipleGradeUpdater.perform_async(grade_ids)
       if !params[:team_id].blank?
         redirect_to assignment_path(@assignment, :team_id => params[:team_id])
       else
@@ -388,7 +387,6 @@ class GradesController < ApplicationController
     end
 
     Resque.enqueue(GradeUpdater, grade_ids)
-    #GradeUpdater.perform_async(grade_ids)
 
     respond_with @assignment
   end
@@ -411,7 +409,6 @@ class GradesController < ApplicationController
       grade_ids << grade.id
     end
     Resque.enqueue(GradeUpdater, grade_ids)
-    #GradeUpdater.perform_async(grade_ids)
 
     if session[:return_to].present?
       redirect_to session[:return_to]
