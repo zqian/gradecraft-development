@@ -8,7 +8,7 @@
 //= require jquery-ui
 //= require jquery_ujs
 //= require foundation
-//= require_self 
+//= require_self
 //= require jquery.omniselect
 //= require autonumeric
 //= require bootsy
@@ -46,6 +46,7 @@
 //= require timelineJS/embed
 //= require timeline_settings
 //= require earned_badges
+//= require file_upload
 //= require highcharts
 //= require datetimepicker
 //= require select2
