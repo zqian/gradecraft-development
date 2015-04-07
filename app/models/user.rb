@@ -118,8 +118,8 @@ class User < ActiveRecord::Base
       end
       auth_hash['extra']['raw_info'].tap do |extra|
         if extra['tool_consumer_info_product_family_code'] == "sakai"
-          u.username = extra['ext_sakai_eid']
-          u.kerberos_uid = extra['ext_sakai_eid']
+          u.username = extra['lis_person_sourcedid']
+          u.kerberos_uid = extra['lis_person_sourcedid']
 
         elsif extra['tool_consumer_info_product_family_code'] == "canvas"
           u.username = extra['custom_canvas_user_login_id']
@@ -316,7 +316,7 @@ class User < ActiveRecord::Base
       .where(visible: true)
       .where("id not in (select distinct(badge_id) from earned_badges where earned_badges.student_id = ? and earned_badges.course_id = ? and earned_badges.student_visible = ?)", self[:id], course[:id], true)
   end
-  
+
   # badges that have not been marked 'visible' by the instructor, and for which
   # the student has earned a badge, but the badge has yet to be marked 'student_visible'
   def student_invisible_badges(course)
