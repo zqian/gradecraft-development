@@ -119,8 +119,8 @@ class User < ActiveRecord::Base
       end
       auth_hash['extra']['raw_info'].tap do |extra|
         if extra['tool_consumer_info_product_family_code'] == "sakai"
-          u.username = extra['ext_sakai_eid']
-          u.kerberos_uid = extra['ext_sakai_eid']
+          u.username = extra['lis_person_sourcedid']
+          u.kerberos_uid = extra['lis_person_sourcedid']
 
         elsif extra['tool_consumer_info_product_family_code'] == "canvas"
           u.username = extra['custom_canvas_user_login_id']
