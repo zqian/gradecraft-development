@@ -16,7 +16,7 @@ describe User do
       User.destroy_all
       student = create(:user, last_name: 'Zed')
       student2 = create(:user, last_name: 'Alpha')
-      User.alphabetical.all.should eq([student2,student])
+      User.all.should eq([student2,student])
     end
   end
 
