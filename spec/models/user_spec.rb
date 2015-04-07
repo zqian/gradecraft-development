@@ -11,6 +11,15 @@ describe User do
     @grade = create(:grade, assignment: @assignment, assignment_type: @assignment.assignment_type, course: @course, student: @student)
   end
 
+  context "ordering" do
+    it "should return users alphabetical by last name" do
+      User.destroy_all
+      student = create(:user, last_name: 'Zed')
+      student2 = create(:user, last_name: 'Alpha')
+      User.all.should eq([student2,student])
+    end
+  end
+
   context "earn_badges" do
     it "should be able to earn badges" do
       @badges = create_list(:badge, 2, course: @course)

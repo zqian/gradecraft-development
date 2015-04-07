@@ -23,7 +23,7 @@ class Course < ActiveRecord::Base
   end
 
   def students_being_graded_by_team(team)
-    User.alphabetical.students_being_graded(self,team)
+    User.students_being_graded(self,team)
   end
 
   def students_auditing

@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
 
   before_validation :set_default_course
 
+  default_scope { order('last_name ASC') }
+
   ROLES = %w(student professor gsi admin)
 
   class << self
@@ -51,7 +53,6 @@ class User < ActiveRecord::Base
 
   scope :order_by_high_score, -> { includes(:course_memberships).order 'course_memberships.score DESC' }
   scope :order_by_low_score, -> { includes(:course_memberships).order 'course_memberships.score ASC' }
-  scope :alphabetical , -> { order 'last_name ASC'}
 
   mount_uploader :avatar_file_name, AvatarUploader
 
@@ -316,7 +317,7 @@ class User < ActiveRecord::Base
       .where(visible: true)
       .where("id not in (select distinct(badge_id) from earned_badges where earned_badges.student_id = ? and earned_badges.course_id = ? and earned_badges.student_visible = ?)", self[:id], course[:id], true)
   end
-  
+
   # badges that have not been marked 'visible' by the instructor, and for which
   # the student has earned a badge, but the badge has yet to be marked 'student_visible'
   def student_invisible_badges(course)
@@ -446,7 +447,7 @@ class User < ActiveRecord::Base
   def self.csv_for_course(course, options = {})
     CSV.generate(options) do |csv|
       csv << ["Email", "First Name", "Last Name", "Score", "Grade", "Earned Badge #", "GradeCraft ID"  ]
-      course.students.alphabetical.each do |student|
+      course.students.each do |student|
         csv << [ student.email, student.first_name, student.last_name, student.score_for_course(course), student.grade_level_for_course(course), student.earned_badges.count, student.id  ]
       end
     end
@@ -455,7 +456,7 @@ class User < ActiveRecord::Base
   def self.csv_roster_for_course(course, options = {})
     CSV.generate(options) do |csv|
       csv << ["GradeCraft ID, First Name", "Last Name", "Uniqname", "Score", "Grade", "Feedback", "Team"]
-      course.students.alphabetical.each do |student|
+      course.students.each do |student|
         csv << [student.id, student.first_name, student.last_name, student.username, "", "", "", student.team_for_course(course).try(:name) ]
       end
     end
