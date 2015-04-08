@@ -1,6 +1,4 @@
 require 'application_responder'
-include ZipDownloads
-
 
 class ApplicationController < ActionController::Base
   self.responder = ApplicationResponder
@@ -10,6 +8,8 @@ class ApplicationController < ActionController::Base
   include CustomNamedRoutes
   include CurrentScopes
   include CourseTerms
+  include ZipUtils
+
   delegate :can_view?, :to => :current_user
   helper_method :can_view?
   hide_action :can_view?
@@ -78,30 +78,11 @@ class ApplicationController < ActionController::Base
   end
 
   def export_zip(export_name, temp_dir, &file_creation)
-
-    temp_zip = Tempfile.new('download.zip')
-
-    begin # ensure at the end that the temp file is closed and deleted
-
+    begin
       file_creation.call
-
-      # Initialize the temp file as a zip file
-      Zip::OutputStream.open(temp_zip) { |zos| }
-
-      zf = ZipDownloads::ZipFileGenerator.new(temp_dir, temp_zip)
-      zf.write
-
-      # Read the binary data from the file
-      zip_data = File.read(temp_zip.path)
-
-      # Send the data to the browser as an attachment
-      # We do not send the file directly because it will
-      # get deleted before rails actually starts sending it
-      send_data(zip_data, :type => 'application/zip', :filename => "#{export_name}.zip")
+      zip_data = ZipUtils::Zip.new(temp_dir)
+      send_data(zip_data.zipstring, :type => 'application/zip', :filename => "#{export_name}.zip")
     ensure
-      # Close and delete the temp file
-      temp_zip.close
-      temp_zip.unlink
       FileUtils.remove_entry_secure temp_dir
     end
   end
