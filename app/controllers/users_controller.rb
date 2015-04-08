@@ -29,7 +29,7 @@ class UsersController < ApplicationController
     @title = "Create a New User"
     @teams = current_course.teams
     @courses = Course.all
-    @user = current_course.users.new
+    @user = User.new
     respond_with @user
   end
 
@@ -53,7 +53,7 @@ class UsersController < ApplicationController
 
   def create
     @teams = current_course.teams
-    @user = current_course.users.new(params[:user])
+    @user = User.create(params[:user])
     if @user.save && @user.is_student?(current_course)
       redirect_to students_path, :notice => "#{term_for :student} #{@user.name} was successfully created!"
     elsif @user.save && @user.is_staff?(current_course)
