@@ -2247,5 +2247,7 @@
 $('.datetimepicker').datetimepicker({
 	controlType: 'select',
 	oneLine: true,
-	timeFormat: 'hh:mm tt'
+	pick12HourFormat: false,
+	dateFormat: 'MM dd yy -',
+	timeFormat: 'HH:mm'
 });
