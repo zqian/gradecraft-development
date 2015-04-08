@@ -27,7 +27,6 @@
 //= require ./angular/ui/sortable
 //= require ./angular/vendor/restangular.min
 //= require_tree ./angular
-//= require bootstrap-datetimepicker
 //= require gradecraft
 //= require preload_store
 //= require users
@@ -48,7 +47,6 @@
 //= require earned_badges
 //= require file_upload
 //= require highcharts
-//= require datetimepicker
 //= require select2
 //= require grade_distribution
 //= require jquery.ui.widget

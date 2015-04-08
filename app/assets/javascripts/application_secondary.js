@@ -1,6 +1,5 @@
 //= require earned_badges
 //= require highcharts
-//= require datetimepicker
 //= require select2
 //= require grade_distribution
 //= require jquery.ui.widget
