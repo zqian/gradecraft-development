@@ -318,13 +318,11 @@ class AssignmentsController < ApplicationController
                   else
                     begin
                       destination_file = File.join(student_dir, "#{student.last_name}_#{student.first_name}_#{@assignment.name.gsub(/\W+/, "_").downcase[0..20]}-#{i + 1}#{File.extname(submission_file.filename)}")
-                      FileUtils.cp submission_file.url, destination_file
+                      FileUtils.cp open(submission_file.url), destination_file
                     rescue OpenURI::HTTPError => e
-                      error_log += "\nInvalid link for file. Student: #{student.last_name}, #{student.first_name}}, submission_file-#{submission_file.id}: #{submission_file.filename}, error: #{e}\n"
-                      FileUtils.remove_entry destination_file
+                      error_log += "\nInvalid link for file. Student: #{student.last_name}, #{student.first_name}, submission_file-#{submission_file.id}: #{submission_file.filename}, error: #{e}\n"
                     rescue Exception => e
                       error_log += "\nError on file. Student: #{student.last_name}, #{student.first_name}, submission_file#{submission_file.id}: #{submission_file.filename}, error: #{e}\n"
-                      FileUtils.remove_entry destination_file
                     end
                   end
                 end
