@@ -56,6 +56,7 @@ $global-radius: 5px;
 }
 /* Importing supporting files. If you create a new css file you'll need to add it here.  */
 @import 'foundation_and_overrides';
+@import 'datepicker';
 @import 'sidebars';
 @import 'forms';
 @import 'tables';

@@ -57,6 +57,7 @@
 //= require jquery.collapse_storage
 //= require jquery.collapse_cookie_storage
 //= require utilities
+//= require datetimepicker
 //= require assignment-results-vis
 //= require top_ten
 //= require uploads
