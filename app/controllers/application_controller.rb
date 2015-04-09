@@ -77,6 +77,18 @@ class ApplicationController < ActionController::Base
     return not_authenticated unless current_user_is_admin?
   end
 
+  # To use: First create the temp directory you will be generating files in.
+  # A copy of the directory will be created as a zip download, and the tempdir
+  # will be deleted.
+  #
+  # example:
+  #   export_dir = Dir.mktmpdir
+  #   export_zip "my_zip", export_dir do
+  #     open( "#{export_dir}/my_file.txt",'w' ) do |f|
+  #       f.puts ...
+  #     end
+  #   end
+  #
   def export_zip(export_name, temp_dir, &file_creation)
     begin
       file_creation.call
