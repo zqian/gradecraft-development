@@ -203,31 +203,39 @@ namespace :analytics do
             puts "Exporting for course: #{id}"
             puts "Gathering data (this may take a minute)..."
 
-            events = Analytics::Event.where(:course_id => id)
-            predictor_events = Analytics::Event.where(:course_id => id, :event_type => "predictor")
-            user_pageviews = CourseUserPageview.data(:all_time, nil, {:course_id => id}, {:page => "_all"})
-            user_predictor_pageviews = CourseUserPagePageview.data(:all_time, nil, {:course_id => id, :page => "/dashboard#predictor"})
-            user_logins = CourseUserLogin.data(:all_time, nil, {:course_id => id})
+            %w"student professor gsi admin".each do |role|
+              role_subdir = File.join(course_export_dir,role.pluralize)
 
-            user_ids = events.collect(&:user_id).compact.uniq
-            assignment_ids = events.select { |event| event.respond_to? :assignment_id }.collect(&:assignment_id).compact.uniq
+              events = Analytics::Event.where(:course_id => id)
+              predictor_events = Analytics::Event.where(:course_id => id, :event_type => "predictor")
+              user_pageviews = CourseUserPageview.data(:all_time, nil, {:course_id => id}, {:page => "_all"})
+              user_predictor_pageviews = CourseUserPagePageview.data(:all_time, nil, {:course_id => id, :page => "/dashboard#predictor"})
+              user_logins = CourseUserLogin.data(:all_time, nil, {:course_id => id})
 
-            users = User.where(:id => user_ids).select(:id, :username)
-            assignments = Assignment.where(:id => assignment_ids).select(:id, :name)
+              user_ids = events.collect(&:user_id).compact.uniq
+              assignment_ids = events.select { |event| event.respond_to? :assignment_id }.collect(&:assignment_id).compact.uniq
 
-            data = {
-              :events => events,
-              :predictor_events => predictor_events,
-              :user_pageviews => user_pageviews[:results],
-              :user_predictor_pageviews => user_predictor_pageviews[:results],
-              :user_logins => user_logins[:results],
-              :users => users,
-              :assignments => assignments
-            }
+              users = User.where(:id => user_ids).select(:id, :username)
+              assignments = Assignment.where(:id => assignment_ids).select(:id, :name)
 
-            Analytics.configuration.exports[:course].each do |export|
-              puts "Generating report: #{export}"
-              export.new(data).generate_csv(course_export_dir)
+              data = {
+                :events => events,
+                :predictor_events => predictor_events,
+                :user_pageviews => user_pageviews[:results],
+                :user_predictor_pageviews => user_predictor_pageviews[:results],
+                :user_logins => user_logins[:results],
+                :users => users,
+                :assignments => assignments
+              }
+
+              Analytics.configuration.exports[:course].each do |export|
+                puts "Generating report: #{export}"
+                exp = export.new(data)
+                records = exp.filter_schema_records do |srs|
+                  srs.select {|sr| sr[:user_role] == role }
+                end
+                exp.generate_csv(role_subdir, nil, records)
+              end
             end
           end
         end

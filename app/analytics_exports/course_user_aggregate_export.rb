@@ -4,6 +4,7 @@ class CourseUserAggregateExport
   rows_by :users
 
   set_schema :username => :username,
+             :role => :user_role,
              :total_pageviews => :pageviews,
              :total_logins => :logins,
              :total_predictor_events => :predictor_events,
