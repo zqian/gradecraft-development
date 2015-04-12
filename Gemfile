@@ -59,7 +59,6 @@ gem 'uglifier'
 gem 'whenever'
 gem 'newrelic_rpm'
 gem 'sinatra', '>= 1.3.0', :require => nil
-gem 'rubyzip', '>= 1.0.0'
 
 group :development do
   gem 'haml-rails'
@@ -74,7 +73,7 @@ end
 
 group :development, :test do
   gem 'pry'
-  gem 'byebug'  
+  gem 'byebug'
   gem 'pry-remote'
   gem 'pry-stack_explorer'
   gem 'pry-byebug'
