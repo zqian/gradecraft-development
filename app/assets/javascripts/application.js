@@ -27,7 +27,6 @@
 //= require ./angular/ui/sortable
 //= require ./angular/vendor/restangular.min
 //= require_tree ./angular
-//= require bootstrap-datetimepicker
 //= require gradecraft
 //= require preload_store
 //= require users
@@ -48,7 +47,6 @@
 //= require earned_badges
 //= require file_upload
 //= require highcharts
-//= require datetimepicker
 //= require select2
 //= require grade_distribution
 //= require jquery.ui.widget
@@ -59,6 +57,7 @@
 //= require jquery.collapse_storage
 //= require jquery.collapse_cookie_storage
 //= require utilities
+//= require datetimepicker
 //= require assignment-results-vis
 //= require top_ten
 //= require uploads
