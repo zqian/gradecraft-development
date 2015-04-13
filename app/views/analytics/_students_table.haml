@@ -20,11 +20,11 @@
 
         - if course.has_teams?
           %td
-            - if student.team_for_course(course)
-              = link_to student.team_for_course(current_course).name, student.team_for_course(current_course)
+            - if student.team
+              = link_to student.team.name, student.team
           %td
-            - if student.team_for_course(course) && student.team_for_course(course).leaders.present?
+            - if student.team && student.team.leaders.present?
               %ul
-                - student.team_for_course(course).leaders.each do |leader|
+                - student.team.leaders.each do |leader|
                   %li= link_to leader.first_name, staff_path(leader)
         %td= student.try(:last_activity_at) || "(never)"

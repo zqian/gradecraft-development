@@ -40,7 +40,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  attr_accessor :remember_me, :password, :password_confirmation, :cached_last_login_at, :course_team_ids, :score
+  attr_accessor :remember_me, :password, :password_confirmation, :cached_last_login_at, :course_team_ids, :score, :team
   attr_accessible :username, :email, :password, :password_confirmation,
     :avatar_file_name, :first_name, :last_name, :rank, :user_id,
     :display_name, :private_display, :default_course_id, :last_activity_at,
@@ -430,6 +430,10 @@ class User < ActiveRecord::Base
 
   def team_for_course(course)
     teams.where(course_id: course).first
+  end
+
+  def load_team(course)
+    @team = @team || team_for_course(course)
   end
 
   #Auditing Course
