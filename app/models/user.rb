@@ -338,7 +338,7 @@ class User < ActiveRecord::Base
   end
 
   def grade_level_for_course(course)
-    Course.find(course.id).grade_level_for_score(cached_score_for_course(course))
+    @grade_level ||= Course.find(course.id).grade_level_for_score(cached_score_for_course(course))
   end
 
   def grade_letter_for_course(course)
