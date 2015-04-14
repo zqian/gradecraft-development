@@ -269,7 +269,7 @@ class User < ActiveRecord::Base
 
   #grabbing the stored score for the current course
   def cached_score_for_course(course)
-    course_memberships.where(:course_id => course).first.score || 0
+    @cached_score ||= course_memberships.where(:course_id => course).first.score || 0
   end
 
   #I think this may be a little bit faster - ch
