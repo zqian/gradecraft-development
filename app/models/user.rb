@@ -429,11 +429,11 @@ class User < ActiveRecord::Base
   end
 
   def team_for_course(course)
-    teams.where(course_id: course).first
+    @cached_team ||= teams.where(course_id: course).first
   end
 
   def load_team(course)
-    @team = @team || team_for_course(course)
+    @team ||= team_for_course(course)
   end
 
   #Auditing Course
