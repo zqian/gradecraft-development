@@ -25,6 +25,7 @@ module Analytics::Export
   def schema_records(records_set=nil)
     puts "  => generating schema records"
     recs = records_set || self.records
+
     Hash.new { |hash, key| hash[key] = [] }.tap do |h|
       total_records = recs.size
       all_elapsed = Benchmark.realtime do

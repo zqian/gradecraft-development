@@ -203,7 +203,7 @@ namespace :analytics do
             puts "Exporting for course: #{id}"
             puts "Gathering data (this may take a minute)..."
 
-            %w"student professor gsi admin".each do |role|
+            %w"student professor gsi admin total".each do |role|
               role_subdir = File.join(course_export_dir,role.pluralize)
 
               events = Analytics::Event.where(:course_id => id)
@@ -231,10 +231,11 @@ namespace :analytics do
               Analytics.configuration.exports[:course].each do |export|
                 puts "Generating report: #{export}"
                 exp = export.new(data)
-                records = exp.filter_schema_records do |srs|
-                  srs.select {|sr| sr[:user_role] == role }
+                if role == "total"
+                  exp.generate_csv(role_subdir)
+                else
+                  exp.generate_csv(role_subdir, nil, exp.schema_records_for_role(role))
                 end
-                exp.generate_csv(role_subdir, nil, records)
               end
             end
           end

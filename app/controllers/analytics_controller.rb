@@ -184,7 +184,7 @@ class AnalyticsController < ApplicationController
         export_dir = Dir.mktmpdir
         export_zip "#{current_course.courseno}_anayltics_export_#{Time.now.strftime('%Y-%m-%d')}", export_dir do
 
-          %w"student professor gsi admin".each do |role|
+          %w"student professor gsi admin total".each do |role|
             role_subdir = File.join(export_dir,role.pluralize)
             id = current_course.id
             events = Analytics::Event.where(:course_id => id)
@@ -204,11 +204,16 @@ class AnalyticsController < ApplicationController
               :user_pageviews => user_pageviews[:results],
               :user_predictor_pageviews => user_predictor_pageviews[:results],
               :user_logins => user_logins[:results],
-              :role => role,
+              :users => users,
               :assignments => assignments
             }
             Analytics.configuration.exports[:course].each do |export|
-              export.new(data).generate_csv(role_subdir)
+              exp = export.new(data)
+              if role == "total"
+                exp.generate_csv(role_subdir)
+              else
+                exp.generate_csv(role_subdir, nil, exp.schema_records_for_role(role))
+              end
             end
           end # each role
         end

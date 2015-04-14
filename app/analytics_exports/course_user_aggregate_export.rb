@@ -10,7 +10,15 @@ class CourseUserAggregateExport
              :total_predictor_events => :predictor_events,
              :total_predictor_sessions => :predictor_sessions
 
+  def schema_records_for_role(role)
+    self.schema_records records.select {|user| @roles[user.id] == role }
+  end
+
   def initialize(loaded_data)
+    @roles = loaded_data[:events].inject(Hash.new("")) do |hash, event|
+      hash[event.user_id] = event.user_role
+      hash
+    end
     @user_predictor_event_counts = loaded_data[:predictor_events].inject(Hash.new(0)) do |hash, predictor_event|
       hash[predictor_event.user_id] += 1
       hash
@@ -29,6 +37,10 @@ class CourseUserAggregateExport
       hash
     end
     super
+  end
+
+  def user_role(user, i)
+    @roles[user.id]
   end
 
   def pageviews(user, i)
