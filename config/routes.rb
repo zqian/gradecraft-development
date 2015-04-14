@@ -189,6 +189,7 @@ GradeCraft::Application.routes.draw do
   get 'earned_badges' => 'info#class_badges'
   get 'grading_status' => 'info#grading_status'
   get 'resubmissions' => 'info#resubmissions'
+  get 'ungraded_submissions' => 'info#ungraded_submissions'
   get 'gradebook' => 'info#gradebook'
   get 'final_grades' => 'info#final_grades'
   get 'research_gradebook' => 'info#research_gradebook'

@@ -26,7 +26,7 @@ class Submission < ActiveRecord::Base
   scope :ungraded, -> { where('NOT EXISTS(SELECT 1 FROM grades WHERE submission_id = submissions.id OR (assignment_id = submissions.assignment_id AND student_id = submissions.student_id) AND (status = ? OR status = ?))', "Graded", "Released") }
   scope :graded, -> { where(:grade) }
   scope :resubmitted, -> { where('EXISTS(SELECT 1 FROM grades WHERE (assignment_id = submissions.assignment_id AND student_id = submissions.student_id) AND (updated_at < submissions.updated_at) AND (status = ? OR status = ?))', "Graded", "Released") }
-
+  scope :date_submitted, -> { order('created_at ASC') }
 
   before_validation :cache_associations
 
