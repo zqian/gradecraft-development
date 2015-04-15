@@ -17,10 +17,16 @@
 %li
   = link_to raw('<i class="fi-flag"></i> Grading Status'), grading_status_path
 
-%li
-  %a{:href => resubmissions_path}
-    %i.fi-loop
-    = "Resubmissions"
+  %ul
+    %li
+      %a{:href => resubmissions_path}
+        %i.fi-loop
+        = "Resubmissions"
+    %li
+      %a{:href => ungraded_submissions_path}
+        %i.fi-safety-cone
+        = "Ungraded Submissions"
+
 
 - if current_course.student_weighted?
   %li
