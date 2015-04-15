@@ -119,6 +119,7 @@ GradeCraft::Application.routes.draw do
     end
     collection do
       post :sort
+      get 'export_all_scores'
     end
   end
 
