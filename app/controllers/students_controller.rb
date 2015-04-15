@@ -88,15 +88,18 @@ class StudentsController < ApplicationController
   #Displaying student profile to instructors
   def show
     self.current_student = current_course.students.where(id: params[:id]).first
+    @student = current_student
+    @student.load_team(current_course)
     @assignments = current_course.assignments.chronological.alphabetical
-    @assignment_type = current_course.assignment_types
+    # @assignment_type = current_course.assignment_types
+    @assignment_types = current_course.assignment_types.sorted
     if current_user_is_staff?
       @scores_for_current_course = current_student.scores_for_course(current_course)
     end
-    scores = []
-    current_course.assignment_types.each do |assignment_type|
-      scores << { data: [current_student.grades.released.where(assignment_type: assignment_type).score], name: assignment_type.name }
-    end
+    # scores = []
+    # current_course.assignment_types.each do |assignment_type|
+    #   scores << { data: [current_student.grades.released.where(assignment_type: assignment_type).score], name: assignment_type.name }
+    # end
   end
 
   # AJAX endpoint for student name search
