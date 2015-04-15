@@ -79,9 +79,7 @@ class CourseMembership < ActiveRecord::Base
   # sum of all challenge grades (same as assignments to grades) that belong to the team that you belong to
   def challenge_grade_score
     if user_course_team
-      ChallengeGrade
-        .where(team_id: user_course_team.id)
-        .sum(:score)
+      @challenge_grade_score ||= ChallengeGrade.where(team_id: user_course_team.id).sum(:score)
     else
       0
     end

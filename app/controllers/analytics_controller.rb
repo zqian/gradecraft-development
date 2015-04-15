@@ -27,6 +27,7 @@ class AnalyticsController < ApplicationController
     students = current_course.students_being_graded
     students.each do |s|
       s.score = s.cached_score_for_course(current_course)
+      s.load_team(current_course)
     end
     @students = students.to_a.sort_by {|student| student.score}.reverse
     if @students.length < 20

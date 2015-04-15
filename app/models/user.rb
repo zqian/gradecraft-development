@@ -40,7 +40,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  attr_accessor :remember_me, :password, :password_confirmation, :cached_last_login_at, :course_team_ids, :score
+  attr_accessor :remember_me, :password, :password_confirmation, :cached_last_login_at, :course_team_ids, :score, :team
   attr_accessible :username, :email, :password, :password_confirmation,
     :avatar_file_name, :first_name, :last_name, :rank, :user_id,
     :display_name, :private_display, :default_course_id, :last_activity_at,
@@ -269,7 +269,7 @@ class User < ActiveRecord::Base
 
   #grabbing the stored score for the current course
   def cached_score_for_course(course)
-    course_memberships.where(:course_id => course).first.score || 0
+    @cached_score ||= course_memberships.where(:course_id => course).first.score || 0
   end
 
   #I think this may be a little bit faster - ch
@@ -338,7 +338,7 @@ class User < ActiveRecord::Base
   end
 
   def grade_level_for_course(course)
-    Course.find(course.id).grade_level_for_score(cached_score_for_course(course))
+    @grade_level ||= Course.find(course.id).grade_level_for_score(cached_score_for_course(course))
   end
 
   def grade_letter_for_course(course)
@@ -429,7 +429,11 @@ class User < ActiveRecord::Base
   end
 
   def team_for_course(course)
-    teams.where(course_id: course).first
+    @cached_team ||= teams.where(course_id: course).first
+  end
+
+  def load_team(course)
+    @team ||= team_for_course(course)
   end
 
   #Auditing Course

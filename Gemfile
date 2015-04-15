@@ -69,6 +69,7 @@ group :development do
   gem 'rack-mini-profiler', require: false
   gem 'rubystats'
   gem 'spring'
+  gem 'meta_request'
 end
 
 group :development, :test do

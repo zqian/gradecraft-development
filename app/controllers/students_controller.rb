@@ -11,12 +11,20 @@ class StudentsController < ApplicationController
 
     if team_filter_active?
       # fetch user ids for all students in the active team
-      @students = graded_students_in_current_course_for_active_team.order(alpha_sort_order)
-      @auditing_students = auditing_students_in_current_course_for_active_team.order(alpha_sort_order)
+      @students = graded_students_in_current_course_for_active_team.order(alpha_sort_order).each do |s|
+        s.load_team(current_course)
+      end
+      @auditing_students = auditing_students_in_current_course_for_active_team.order(alpha_sort_order).each do |s|
+        s.load_team(current_course)
+      end
     else
       # fetch user ids for all students in the course, regardless of team
-      @students = graded_students_in_current_course.order(alpha_sort_order)
-      @auditing_students = auditing_students_in_current_course.order(alpha_sort_order)
+      @students = graded_students_in_current_course.order(alpha_sort_order).each do |s|
+        s.load_team(current_course)
+      end
+      @auditing_students = auditing_students_in_current_course.order(alpha_sort_order).each do |s|
+        s.load_team(current_course)
+      end
     end
     
     @student_ids = @students.collect {|s| s[:id] }
