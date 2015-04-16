@@ -1,7 +1,7 @@
 # encoding: utf-8
 require 'spec_helper'
 
-describe "assignments/edit" do
+describe "assignments/edit", focus: true do
 
   before(:all) do
     @course = create(:course)

@@ -5,7 +5,7 @@ class Assignment < ActiveRecord::Base
     :accepts_submissions_until, :points_predictor_display, :notify_released, :mass_grade_type, :assignment_type_id, :assignment_type,
     :include_in_timeline, :include_in_predictor, :include_in_to_do, :grades_attributes, :assignment_file_ids, :student_logged,
     :assignment_files_attributes, :assignment_file, :assignment_score_levels_attributes, :assignment_score_level, :score_levels_attributes,
-    :remove_media, :remove_thumbnail, :use_rubric, :resubmissions_allowed
+    :remove_media, :remove_thumbnail, :use_rubric, :resubmissions_allowed, :pass_fail
 
   belongs_to :course
   belongs_to :assignment_type, -> { order('order_placement ASC') }

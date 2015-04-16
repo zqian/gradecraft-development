@@ -23,9 +23,9 @@
   };
 
   if($('.assignment_options > input').is(':checked')) {
-    $('ul > .submit').show();    
+    $('ul > .submit').show();
   } else {
-    $('ul > .submit').hide();    
+    $('ul > .submit').hide();
   }
 
   $('.assignment_options').change(function(){
@@ -34,6 +34,16 @@
     } else {
       $('ul > .submit').toggle();
     }
+  });
+
+  $('.pass-fail-toggle label').click(function(){
+    if ($( ".pass-fail-toggle input:checked" ).length > 0) {
+      $('.pass-fail-contingent').css({ "visibility": "visible"});
+    } else {
+      $('.pass-fail-contingent').css({ "visibility": "hidden"});
+    };
+
+    //$('.pass-fail-contingent').toggle();
   });
 
   $(init);
