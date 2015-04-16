@@ -13,7 +13,7 @@ describe "assignments/show" do
   end
 
   before(:each) do
-    assign(:title, "Assignments")
+    assign(:title, @assignment.name)
     assign(:assignment, @assignment)
     view.stub(:current_course).and_return(@course)
     view.stub(:current_student_data).and_return(StudentData.new(@student, @course))
@@ -33,6 +33,15 @@ describe "assignments/show" do
       assign(:students, [@student])
       assign(:assignment_grades_by_student_id, {@student.id => nil})
       render
+      assert_select "h3", text: "#{@assignment.name} (#{ points @assignment.point_total} points)"
+    end
+
+    describe "pass fail assignments" do
+      it "renders pass/fail in the points field" do
+        @assignment.update(pass_fail: true)
+        render
+        assert_select "h3", text: "#{@assignment.name} (Pass/Fail)"
+      end
     end
   end
 end

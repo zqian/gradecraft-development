@@ -135,14 +135,20 @@
 
         .small-12.large-2.columns
           .switch-label Pass Fail
-          .switch.pass-fail-toggle
-            = f.check_box :pass_fail
-            = f.label :pass_fail, "Pass Fail"
+          .pass-fail-toggle
+            .switch
+              = f.check_box :pass_fail
+              = f.label :pass_fail, "Pass Fail"
 
         .small-12.large-3.columns
-          .pass-fail-contingent
-            = f.label :point_total, "Total Points Possible"
-            = f.text_field :point_total
+          - if @assignment.pass_fail?
+            .pass-fail-contingent{ :style => "visibility: hidden" }
+              = f.label :point_total, "Total Points Possible"
+              = f.text_field :point_total
+          - else
+            .pass-fail-contingent
+              = f.label :point_total, "Total Points Possible"
+              = f.text_field :point_total
 
 
       .small-12.large-12

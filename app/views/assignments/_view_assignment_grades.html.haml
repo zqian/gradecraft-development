@@ -1,5 +1,8 @@
 .small-12
-  %h3.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
+  - if @assignment.pass_fail?
+    %h3.pagetitle= "#{@title} (Pass/Fail)"
+  - else
+    %h3.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
 
 .small-12.columns
   %dl.tabs{:data => {'tab' => true}, "data-options" => "deep_linking: true; scroll_to_content: false"  }
@@ -23,7 +26,7 @@
   .tabs-content
     .content#tabt1.active
       = render 'assignments/guidelines'
-    
+
     - if @assignment.rubric and @assignment.rubric.designed?
       .content#tabt2
         = render 'assignments/rubric_preview'

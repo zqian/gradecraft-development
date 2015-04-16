@@ -1,7 +1,10 @@
 = content_nav_for @assignment
 
 .small-12
-  %h3.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
+  - if @assignment.pass_fail?
+    %h3.pagetitle= "#{@title} (Pass/Fail)"
+  - else
+    %h3.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
 
 .small-12.columns
   // Button bar at the top of the page
@@ -31,7 +34,7 @@
         = render 'assignments/individual_show'
     .content#tabt2
       = render 'assignments/guidelines'
-    
+
     - if @assignment.rubric and @assignment.rubric.designed?
       .content#tabt3
         %br

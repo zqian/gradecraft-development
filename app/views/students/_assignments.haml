@@ -45,31 +45,37 @@
                     %span.has-tip{:title => "This #{term_for :assignment} is required!", :data => {'tooltip' => true} }
                       !
                   %span.assignmentName= link_to assignment.name, assignment_path(assignment, :student_id => current_student)
-                
+
                 %td{:width => "25%"}
-                  - if assignment.assignment_type.student_weightable?
-                    - grade = current_student_data.grade_for_assignment(assignment)
-                    %span.has-tip{:title => "#{ points grade.score } / #{points grade.point_total} points (Multiplied), #{points grade.raw_score} / #{ points assignment.point_total } points (Raw)", :data => {'tooltip' => true}  }
-                      - if current_student_data.grade_released_for_assignment?(assignment)
-                        = "#{ points grade.score }  / "
-                        = "#{points grade.point_total} points earned"
-                      - else
-                        .italic.not_bold= "#{points grade.point_total} points possible"
-
-
-                  - else
+                  - if assignment.pass_fail?
                     - if current_student_data.grade_released_for_assignment?(assignment)
-                      .bold
-                        = "#{points current_student_data.score_for_assignment(assignment)}  / "
-                        = "#{points assignment.point_total} points earned"
+                      Pass/Fail
                     - else
-                      .italic.not_bold= "#{points assignment.point_total} points possible"
+                      Pass/Fail
+                  - else
+                    - if assignment.assignment_type.student_weightable?
+                      - grade = current_student_data.grade_for_assignment(assignment)
+                      %span.has-tip{:title => "#{ points grade.score } / #{points grade.point_total} points (Multiplied), #{points grade.raw_score} / #{ points assignment.point_total } points (Raw)", :data => {'tooltip' => true}  }
+                        - if current_student_data.grade_released_for_assignment?(assignment)
+                          = "#{ points grade.score }  / "
+                          = "#{points grade.point_total} points earned"
+                        - else
+                          .italic.not_bold= "#{points grade.point_total} points possible"
+
+
+                    - else
+                      - if current_student_data.grade_released_for_assignment?(assignment)
+                        .bold
+                          = "#{points current_student_data.score_for_assignment(assignment)}  / "
+                          = "#{points assignment.point_total} points earned"
+                      - else
+                        .italic.not_bold= "#{points assignment.point_total} points possible"
 
                 %td{:width => "25%"}
                   = "Due: #{assignment.due_at.strftime("%A, %b %d, %l:%M%p")}" if assignment.future?
                 %td
                   - if assignment.student_logged? && assignment.open? && current_user_is_student?
-                  
+
                     = simple_form_for current_student_data.grade_for_assignment(assignment), :url => self_log_grades_assignment_path(assignment), :method => :post do |f|
                       - present = current_student.self_reported_done?(assignment)
                       = hidden_field_tag :present, !present
@@ -91,7 +97,7 @@
                         - else
                           - if assignment.accepts_submissions?
                             = render "students/submissions", assignment: assignment
-                        
+
                       - if current_user_is_staff?
                         - if assignment.is_individual?
                           - if current_student_data.grade_released_for_assignment?(assignment)
@@ -113,7 +119,7 @@
   .challenge
 
     %h3.collapse #{term_for :challenges} #{ points current_student.team_for_course(current_course).try(:challenge_grade_score) }/#{points current_course_data.point_total_for_challenges}
-    
+
     .small-12.columns
       %table.responsive
         - current_course.challenges.each do |challenge|

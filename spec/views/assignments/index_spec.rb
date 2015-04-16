@@ -27,7 +27,17 @@ describe "assignments/index" do
     render
     assert_select ".content-nav", :count => 1
     assert_select "ul.breadcrumbs" do
-      assert_select "li", 2
+      assert_select "li", :count => 2
+    end
+  end
+
+  describe "pass fail assignments" do
+    it "renders pass/fail in the points field" do
+      @assignment_1.update(pass_fail: true)
+      render
+      assert_select "tr#assignment-#{@assignment_1.id}" do
+        assert_select "td", text: "Pass/Fail", :count => 1
+      end
     end
   end
 end
