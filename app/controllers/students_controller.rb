@@ -252,23 +252,23 @@ class StudentsController < ApplicationController
 
   def graded_students_in_current_course
     if course_team_membership_count > 0
-      User.graded_students_in_course_include_and_join_team(current_course.id)
+      User.unscoped.graded_students_in_course_include_and_join_team(current_course.id)
     else
-      User.graded_students_in_course(current_course.id)
+      User.unscoped.graded_students_in_course(current_course.id)
     end
   end
 
   def auditing_students_in_current_course
     if course_team_membership_count > 0
-      User.auditing_students_in_course_include_and_join_team(current_course.id)
+      User.unscoped.auditing_students_in_course_include_and_join_team(current_course.id)
     else
-      User.auditing_students_in_course(current_course.id)
+      User.unscoped.auditing_students_in_course(current_course.id)
     end
   end
 
   def graded_students_in_current_course_for_active_team
     if course_team_membership_count > 0
-      User.graded_students_in_course_include_and_join_team(current_course.id)
+      User.unscoped.graded_students_in_course_include_and_join_team(current_course.id)
         .where("team_memberships.team_id = ?", params[:team_id])
     else
       []
@@ -277,7 +277,7 @@ class StudentsController < ApplicationController
 
   def auditing_students_in_current_course_for_active_team
     if course_team_membership_count > 0
-      User.auditing_students_in_course_include_and_join_team(current_course.id)
+      User.unscoped.auditing_students_in_course_include_and_join_team(current_course.id)
         .where("team_memberships.team_id = ?", params[:team_id])
     else
       []
