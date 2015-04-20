@@ -30,13 +30,14 @@
               %button.button.select-none.tiny= "Uncheck All"
           %tbody
             - grades.each do |g|
+              - student = g.student              
               %tr
                 - if assignment.is_individual?
-                  %td= link_to g.student.try(:first_name), student_path(g.student)
-                  %td= link_to g.student.try(:last_name), student_path(g.student)
+                  %td= link_to student.try(:first_name), student_path(student)
+                  %td= link_to student.try(:last_name), student_path(student)
                   %td
-                    - if course.has_teams? && g.student.present? && g.student.team_for_course(course).present?
-                      = link_to g.student.team_for_course(course).try(:name), g.student.team_for_course(course)
+                    - if course.has_teams? && student.present? && student.team_for_course(course).present?
+                      = link_to student.team_for_course(course).try(:name), student.team_for_course(course)
                   %td= points g.score
                   %td= raw g.feedback
                 %td
@@ -44,7 +45,7 @@
                     %ul.button-group.right.radius
                       %li
                         = link_to "See Grade", assignment_grade_path(g.assignment, :student_id => g.student_id), :class => "button"
-                      %li= link_to 'Edit', edit_assignment_grade_path(:assignment_id => assignment.id, :student_id => g.student.try(:id)), :class => "button"
+                      %li= link_to 'Edit', edit_assignment_grade_path(:assignment_id => assignment.id, :student_id => student.try(:id)), :class => "button"
                 %td
                   .center= check_box_tag "grade_ids[]", g.id
       .right.form_buttons
