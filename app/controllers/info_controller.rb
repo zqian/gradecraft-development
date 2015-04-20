@@ -48,7 +48,7 @@ class InfoController < ApplicationController
     else
       @ungraded_submissions = current_course.submissions.ungraded
       @unreleased_grades = grades.not_released
-      @in_progress_grades = grades.in_progress      
+      @in_progress_grades = grades.in_progress
       @count_unreleased = @unreleased_grades.not_released.count
       @count_ungraded = @ungraded_submissions.count
       @count_in_progress = @in_progress_grades.count
