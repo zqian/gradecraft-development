@@ -38,14 +38,14 @@
                     %button.button.select-none.tiny= "Uncheck All"
         %tbody
           - grades.each do |g|
-            - grade_assignment = g.assignment
+            - graded_assignment = g.assignment
             - student = g.student
             %tr
-              - if grade_assignment.is_individual?
+              - if graded_assignment.is_individual?
                 %td= link_to student.try(:first_name), student_path(student)
                 %td= link_to student.try(:last_name), student_path(student)
-              - if grade_assignment.has_groups?
-                %td= link_to student.group_for_assignment(grade_assignment).try(:name), group_path(:id => student.group_for_assignment(grade_assignment))
+              - if graded_assignment.has_groups?
+                %td= link_to student.group_for_assignment(graded_assignment).try(:name), group_path(:id => student.group_for_assignment(graded_assignment))
               - if course.has_teams? && ! assignment.has_groups? 
                 %td
                   = link_to "#{student.team_for_course(course).try(:name)}", student.team_for_course(course)
@@ -56,7 +56,7 @@
                 .button-bar
                   %ul.button-group.right.radius
                     %li
-                      %a{:href => "#{assignment_grade_path(grade_assignment)}?student_id=#{g.student_id}", :class => "button"}
+                      %a{:href => "#{assignment_grade_path(graded_assignment)}?student_id=#{g.student_id}", :class => "button"}
                         See Grade
                         %span.sr-only for #{student.try(:first_name)} #{student.try(:last_name)}
                     %li
