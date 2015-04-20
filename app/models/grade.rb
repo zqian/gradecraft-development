@@ -36,10 +36,6 @@ class Grade < ActiveRecord::Base
   delegate :name, :description, :due_at, :assignment_type, :to => :assignment
 
   before_save :clean_html
-  #TODO: removed these callback check with cait
-  #after_save :save_student, :save_team
-  #after_destroy :save_student, :save_team
-  #TODO: called only destroy callback since worker is executing cache_student_and_team_scores
   after_destroy :cache_student_and_team_scores
 
   scope :completion, -> { where(order: "assignments.due_at ASC", :joins => :assignment) }
@@ -78,11 +74,6 @@ class Grade < ActiveRecord::Base
   def in_progress?
     self.status == 'In Progress'
   end
-
-  # DEPRECATED
-  # def self.excluding_auditing_students
-  #   joins('INNER JOIN course_memberships ON (grades.student_id = course_memberships.user_id AND grades.course_id = course_memberships.course_id AND course_memberships.auditing = ?)', false)
-  # end
 
   def score
     if student.weighted_assignments?
@@ -134,16 +125,6 @@ class Grade < ActiveRecord::Base
     student_id == user.id
   end
 
-  def self.to_csv(options = {})
-    #CSV.generate(options) do |csv|
-      #csv << ["First Name", "Last Name", "Score", "Grade"]
-      #students.each do |user|
-        #csv << [user.first_name, user.last_name]
-        #, user.earned_grades(course), user.grade_level(course)]
-      #end
-    #end
-  end
-
   def cache_student_and_team_scores
     self.student.cache_course_score(self.course.id)
     if self.course.has_teams? && self.student.team_for_course(self.course).present?
@@ -152,7 +133,7 @@ class Grade < ActiveRecord::Base
   end
 
   def altered?
-    self.score_changed? == true
+    self.score_changed? == true  || self.feedback_changed? == true
   end
 
   private

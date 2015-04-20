@@ -706,17 +706,10 @@ assignments << Assignment.create! do |a|
   a.grade_scope = "Individual"
   a.save
   students.each do |student|
-    a.tasks.each do |task|
-      submission = student.submissions.create! do |s|
-        s.task = task
-        s.text_comment = "Wingardium Leviosa"
-        s.link = "http://www.twitter.com"
-      end
-      student.grades.create! do |g|
-        g.submission = submission
-        g.raw_score = 80000 * [0,1].sample
-        g.status = "Graded"
-      end
+    submission = student.submissions.create! do |s|
+      s.assignment = a
+      s.text_comment = "Wingardium Leviosa"
+      s.link = "http://www.twitter.com"
     end
   end
 end
@@ -729,9 +722,16 @@ assignments << Assignment.create! do |a|
   a.point_total = 120000
   a.due_at = 1.week.ago
   a.accepts_submissions = true
-  a.release_necessary = false
+  a.release_necessary = true
   a.open_at = 2.week.ago
   a.grade_scope = "Individual"
+  students.each do |student|
+    student.grades.create! do |g|
+      g.assignment = a
+      g.raw_score = a.point_total * [0, 1].sample
+      g.status = "Graded"
+    end
+  end
 end
 puts "Game Play Update Paper 1 has been posted!"
 
@@ -745,6 +745,13 @@ assignments << Assignment.create! do |a|
   a.release_necessary = false
   a.open_at = 2.weeks.from_now
   a.grade_scope = "Individual"
+  students.each do |student|
+    student.grades.create! do |g|
+      g.assignment = a
+      g.raw_score = a.point_total * [0, 1].sample
+      g.status = "In Progress"
+    end
+  end
 end
 puts "Game Play Update Paper 2 has been posted!"
 
@@ -758,6 +765,13 @@ assignments << Assignment.create! do |a|
   a.release_necessary = true
   a.open_at = 4.weeks.from_now
   a.grade_scope = "Individual"
+  students.each do |student|
+    student.grades.create! do |g|
+      g.assignment = a
+      g.raw_score = a.point_total * [0, 1].sample
+      g.status = "Graded"
+    end
+  end
 end
 puts "Game Play Reflection Paper has been posted!"
 
