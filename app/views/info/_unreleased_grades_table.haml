@@ -40,15 +40,19 @@
           - grades.each do |g|
             - graded_assignment = g.assignment
             - student = g.student
+            - team = student.team_for_course(course)
+            - first_name = student.try(:first_name)
+            - last_name = student.try(:last_name)
             %tr
               - if graded_assignment.is_individual?
-                %td= link_to student.try(:first_name), student_path(student)
-                %td= link_to student.try(:last_name), student_path(student)
+                %td= link_to first_name, student_path(student)
+                %td= link_to last_name, student_path(student)
               - if graded_assignment.has_groups?
-                %td= link_to student.group_for_assignment(graded_assignment).try(:name), group_path(:id => student.group_for_assignment(graded_assignment))
+                - group_for_assignment = student.group_for_assignment(graded_assignment)
+                %td= link_to group_for_assignment.try(:name), group_path(:id => group_for_assignment)
               - if course.has_teams? && ! assignment.has_groups? 
                 %td
-                  = link_to "#{student.team_for_course(course).try(:name)}", student.team_for_course(course)
+                  = link_to "#{team.try(:name)}", team
               
               %td= g.try(:score)
               %td= raw g.feedback
@@ -58,16 +62,16 @@
                     %li
                       %a{:href => "#{assignment_grade_path(graded_assignment)}?student_id=#{g.student_id}", :class => "button"}
                         See Grade
-                        %span.sr-only for #{student.try(:first_name)} #{student.try(:last_name)}
+                        %span.sr-only for #{first_name} #{last_name}
                     %li
                       %a{:href => "#{edit_assignment_grade_path(:assignment_id => assignment.id)}?student_id=#{g.student_id}", :class => "button"}
                         Edit
-                        %span.sr-only record for #{student.try(:first_name)} #{student.try(:last_name)}
+                        %span.sr-only record for #{first_name} #{last_name}
               %td.center
                 %label
                   = check_box_tag "grade_ids[]", g.id
                   .sr-only
-                    Check/Uncheck #{student.try(:first_name)} #{student.try(:last_name)}
+                    Check/Uncheck #{first_name} #{last_name}
 
       .right.form_buttons
         = submit_tag "Update Selected Grade Statuses", :class => "button radius"
