@@ -22,7 +22,7 @@
               %th{:scope => "col", :width => "8%"} Last Name
             - if assignment.has_groups?
               %th{:scope => "col"}= "#{term_for :groups}"
-            - elsif current_course.has_teams?
+            - elsif course.has_teams?
               %th{:scope => "col", :width => "15%"}= "#{term_for :team}"
             %th{:scope => "col", "data-dynatable-column" => "score", :width => "8%"} Score
             %th{:scope => "col"} Feedback
@@ -38,15 +38,17 @@
                     %button.button.select-none.tiny= "Uncheck All"
         %tbody
           - grades.each do |g|
+            - grade_assignment = g.assignment
+            - student = g.student
             %tr
-              - if g.assignment.is_individual?
-                %td= link_to g.student.try(:first_name), student_path(g.student)
-                %td= link_to g.student.try(:last_name), student_path(g.student)
-              - if g.assignment.has_groups?
-                %td= link_to g.student.group_for_assignment(g.assignment).try(:name), group_path(:id => g.student.group_for_assignment(g.assignment))
-              - if current_course.has_teams? && ! assignment.has_groups? 
+              - if grade_assignment.is_individual?
+                %td= link_to student.try(:first_name), student_path(student)
+                %td= link_to student.try(:last_name), student_path(student)
+              - if grade_assignment.has_groups?
+                %td= link_to student.group_for_assignment(grade_assignment).try(:name), group_path(:id => student.group_for_assignment(grade_assignment))
+              - if course.has_teams? && ! assignment.has_groups? 
                 %td
-                  = link_to "#{g.student.team_for_course(current_course).try(:name)}", g.student.team_for_course(current_course)
+                  = link_to "#{student.team_for_course(course).try(:name)}", student.team_for_course(course)
               
               %td= g.try(:score)
               %td= raw g.feedback
@@ -54,18 +56,18 @@
                 .button-bar
                   %ul.button-group.right.radius
                     %li
-                      %a{:href => "#{assignment_grade_path(g.assignment)}?student_id=#{g.student_id}", :class => "button"}
+                      %a{:href => "#{assignment_grade_path(grade_assignment)}?student_id=#{g.student_id}", :class => "button"}
                         See Grade
-                        %span.sr-only for #{g.student.try(:first_name)} #{g.student.try(:last_name)}
+                        %span.sr-only for #{student.try(:first_name)} #{student.try(:last_name)}
                     %li
                       %a{:href => "#{edit_assignment_grade_path(:assignment_id => assignment.id)}?student_id=#{g.student_id}", :class => "button"}
                         Edit
-                        %span.sr-only record for #{g.student.try(:first_name)} #{g.student.try(:last_name)}
+                        %span.sr-only record for #{student.try(:first_name)} #{student.try(:last_name)}
               %td.center
                 %label
                   = check_box_tag "grade_ids[]", g.id
                   .sr-only
-                    Check/Uncheck #{g.student.try(:first_name)} #{g.student.try(:last_name)}
+                    Check/Uncheck #{student.try(:first_name)} #{student.try(:last_name)}
 
       .right.form_buttons
         = submit_tag "Update Selected Grade Statuses", :class => "button radius"

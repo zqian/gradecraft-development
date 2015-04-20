@@ -16,7 +16,7 @@
             - if assignment.is_individual?
               %th{:scope => "col", :width => "8%"} First Name
               %th{:scope => "col", :width => "8%"} Last Name
-              - if current_course.has_teams?
+              - if course.has_teams?
                 %th{:scope => "col", :width => "15%"}= "#{term_for :team}"
             - elsif assignment.has_groups?
               %th{:scope => "col"} Group
@@ -35,8 +35,8 @@
                   %td= link_to g.student.try(:first_name), student_path(g.student)
                   %td= link_to g.student.try(:last_name), student_path(g.student)
                   %td
-                    - if current_course.has_teams? && g.student.present? && g.student.team_for_course(current_course).present?
-                      = link_to g.student.team_for_course(current_course).try(:name), g.student.team_for_course(current_course)
+                    - if course.has_teams? && g.student.present? && g.student.team_for_course(course).present?
+                      = link_to g.student.team_for_course(course).try(:name), g.student.team_for_course(course)
                   %td= points g.score
                   %td= raw g.feedback
                 %td
