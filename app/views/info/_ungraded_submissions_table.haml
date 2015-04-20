@@ -24,10 +24,10 @@
           %th{:scope => "col", :style => "min-width: 200px"}
             %span.sr-only Actions
       %tbody
-        - submissions.each do |ug|
-          - student = ug.student
-          - team = student.team_for_course(course)          
+        - submissions.each do |ug|   
           - if ug.ungraded?
+            - student = ug.student
+            - team = student.team_for_course(course)       
             - ug_assignment = ug.assignment
             - ug_group = ug.group
             %tr
