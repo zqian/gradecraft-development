@@ -17,7 +17,7 @@
           %th{:scope => "col", :style => "min-width: 200px"}
             %span.sr-only Actions
       %tbody
-        - @ungraded_submissions.each do |submission|
+        - submissions.each do |submission|
           %tr
             %td= link_to submission.assignment.name, submission.assignment
             - if submission.assignment.is_individual?

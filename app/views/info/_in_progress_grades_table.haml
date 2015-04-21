@@ -2,7 +2,7 @@
   = "In Progress Grades"
   .label.alert.radius= @count_in_progress
 
-- @in_progress_grades.group_by(&:assignment).each do |assignment, grades|
+- @in_progress_grades_by_assignment.each do |assignment, grades|
   .small-12.columns
     %h5.section-title
       = link_to assignment.name, assignment
