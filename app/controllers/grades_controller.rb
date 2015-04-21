@@ -408,7 +408,7 @@ class GradesController < ApplicationController
       grade.update_attributes!(params[:grade].reject { |k,v| v.blank? })
       grade_ids << grade.id
     end
-    Resque.enqueue(GradeUpdater, grade_ids)
+    Resque.enqueue(MultipleGradeUpdater, grade_ids)
 
     if session[:return_to].present?
       redirect_to session[:return_to]
