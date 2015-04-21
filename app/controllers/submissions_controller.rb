@@ -104,9 +104,12 @@ class SubmissionsController < ApplicationController
     if current_user_is_student?
       @title = "My Submission for #{@assignment.name}"
     else
-      @title = "#{@student.first_name}'s #{@assignment.name} Submission"
-      @student = @submission.student
-
+      if @assignment.is_individual?
+        @title = "#{@student.first_name}'s #{@assignment.name} Submission"
+      else
+        @group = @submission.group
+        @title = "#{@group.name}'s #{@assignment.name} Submission"
+      end
     end
   end
 
