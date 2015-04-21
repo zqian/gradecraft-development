@@ -8,8 +8,7 @@
       %thead
         %tr
           %th{:scope => "col", :width => "10%"} Assignment
-          %th{:scope => "col", :width => "7%"} First Name
-          %th{:scope => "col", :width => "7%"} Last Name
+          %th{:scope => "col", :width => "7%", :colspan => 2} Name
           %th{"data-dynatable-sorts" => "dueDate"} Date Submitted
           %th Comment
           - if current_course.has_teams?
@@ -24,11 +23,12 @@
               %td= link_to submission.student.try(:first_name), student_path(submission.student)
               %td= link_to submission.student.try(:last_name), student_path(submission.student)
             - elsif submission.assignment.has_groups?
-              %td= link_to submission.group.try(:first_name), group_path(submission.group)
+              %td= link_to submission.group.try(:name), group_path(submission.group)
+              %td
             %td= submission.updated_at
             %td= submission.text_comment
             %td
-              - if current_course.has_teams? && submission.student.present? && submission.student.team_for_course(current_course).present?
+              - if current_course.has_teams? && submission.assignment.is_individual? && submission.student.present? && submission.student.team_for_course(current_course).present?
                 = link_to submission.student.team_for_course(current_course).try(:name), submission.student.team_for_course(current_course)
             - if submission.assignment.is_individual? 
               %td
@@ -45,8 +45,9 @@
                 .button-bar
                   %ul.button-group.right.radius
                     %li
-                      = link_to "See Submission", assignment_grade_path(submission.assignment, :group_id => submission.group.id), :class => "button"
-                      - if submission.submission_files.present?
-                        %i.fi-paperclip
+                      %a.button{:href => "#{assignment_submission_path(submission.assignment, :id => submission.id)}" }
+                        = "See Submission"
+                        - if submission.submission_files.present?
+                          %i.fi-paperclip
                     %li= link_to 'Grade', group_grade_assignment_path(submission.assignment, :group_id => submission.group), :class => "button"
     %br
