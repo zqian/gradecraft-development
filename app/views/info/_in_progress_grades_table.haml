@@ -30,8 +30,8 @@
               %button.button.select-none.tiny= "Uncheck All"
           %tbody
             - grades.each do |g|
-              - student = g.student    
-              - team = student.team_for_course(course)          
+              - student = g.student
+              - team = student.team_for_course(course)
               %tr
                 - if assignment.is_individual?
                   %td= link_to student.try(:first_name), student_path(student)
