@@ -20,6 +20,13 @@ def fixture_file(file, filetype='image/jpg')
   Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'files', file), filetype)
 end
 
+def clean_models
+  User.destroy_all
+  Course.destroy_all
+  AssignmentType.destroy_all
+  Assignment.destroy_all
+end
+
 RSpec.configure do |config|
 
  config.before(:suite) do

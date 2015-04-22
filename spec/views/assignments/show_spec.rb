@@ -3,16 +3,13 @@ require 'spec_helper'
 
 describe "assignments/show" do
 
-  before(:all) do
+  before(:each) do
     @course = create(:course)
     @assignment_type = create(:assignment_type, course: @course, max_value: 1000)
     @assignment = create(:assignment, :assignment_type => @assignment_type)
     @course.assignments << @assignment
     @student = create(:user)
     @student.courses << @course
-  end
-
-  before(:each) do
     assign(:title, @assignment.name)
     assign(:assignment, @assignment)
     view.stub(:current_course).and_return(@course)
@@ -20,9 +17,21 @@ describe "assignments/show" do
   end
 
   describe "as student" do
-    it "renders the assignment grades" do
+
+    before(:each) do
       view.stub(:current_user).and_return(@student)
+    end
+
+    it "renders the assignment grades" do
       render
+    end
+
+    describe "pass fail assignment" do
+      it "renders pass/fail instead of the points possible in the guidelines" do
+        @assignment.update(pass_fail: true)
+        render
+        assert_select ("div.italic.not_bold"), text: "Pass/Fail Assignment"
+      end
     end
   end
 

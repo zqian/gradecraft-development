@@ -3,16 +3,14 @@ require 'spec_helper'
 
 describe "students/syllabus" do
 
-  before(:all) do
+  before(:each) do
+    clean_models
     @course = create(:course)
     @assignment_type = create(:assignment_type, course: @course, max_value: 1000)
     @assignment = create(:assignment, :assignment_type => @assignment_type)
     @course.assignments << @assignment
     @student = create(:user)
     @student.courses << @course
-  end
-
-  before(:each) do
     view.stub(:current_course).and_return(@course)
     view.stub(:current_student).and_return(@student)
     view.stub(:current_student_data).and_return(StudentData.new(@student, @course))
@@ -32,8 +30,8 @@ describe "students/syllabus" do
 
     it "renders Passed or Failed in the points possible field when complete" do
       @assignment.update(pass_fail: true)
-      pending
       render
+      #TODO: change this to "Passing" or "Failing"
       assert_select "td", text: "Pass/Fail", count: 1
     end
   end
