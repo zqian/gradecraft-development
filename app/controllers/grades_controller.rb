@@ -6,7 +6,7 @@ class GradesController < ApplicationController
 
   def show
     @assignment = current_course.assignments.find(params[:assignment_id])
-    if @assignment.rubric.present?
+    if @assignment.rubric.present? && @assignment.is_individual?
       @rubric = @assignment.rubric
       @metrics = @rubric.metrics
       @rubric_grades = serialized_rubric_grades
