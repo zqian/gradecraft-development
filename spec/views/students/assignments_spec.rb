@@ -42,6 +42,56 @@ describe "students/_assignments" do
       @course.update(team_score_average: true)
       render
     end
+
+    it "renders a weightable assignment types that are open" do
+      pending
+    end
+
+    it "renders a weightable assignment types that are closed" do
+      pending
+    end
+
+    it "shows the predictor description if it's present" do
+      pending
+    end
+
+    it "highlights assignments that are required" do
+      pending
+    end
+
+    it "shows a grade if it's released" do
+      pending
+    end
+
+    it "shows the assignment submission if present" do
+      pending
+    end
+
+    it "shows the due date if it's in the future" do
+      pending
+    end
+
+    it "shows a button to see more results if the grade is released" do
+      pending
+    end
+
+    it "shows a button to see the group if a group exists" do
+      pending
+    end
+
+    it "shows a button to see their submission if one is present" do
+      pending
+    end
+
+    it "shows a button to see the group submission if one is present" do
+      pending
+    end
+
+    it "shows a button to create a group if no group is present" do
+      pending
+    end
+
+
   end
 
   describe "as faculty" do
@@ -53,5 +103,18 @@ describe "students/_assignments" do
       render
       assert_select "li", text: "Grade", :count => 1
     end
+
+    it "shows a button to grade an assignment if none is present" do
+      pending
+    end
+
+    it "shows a button to edit a grade for an assignment if one is present" do
+      pending
+    end
+
+    it "shows a button to see their submission if one is present" do
+      pending
+    end
+
   end
 end
