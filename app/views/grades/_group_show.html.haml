@@ -21,8 +21,9 @@
           - else
             %li= link_to student.name, student_path(student)
 
-      - if @group.grades.graded_or_released.present?
-        = link_to "Edit Grade", group_grade_assignment_path(@assignment, :group_id => @group), :class => 'button radius'
+        - if current_user_is_staff?
+          - if @group.grades.graded_or_released.present?
+            = link_to "Edit Grade", group_grade_assignment_path(@assignment, :group_id => @group), :class => 'button radius'
 
     - if current_user_is_student?
       - if current_student.grade_for_assignment(@assignment).present?

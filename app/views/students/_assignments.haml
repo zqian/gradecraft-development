@@ -12,12 +12,12 @@
     - if assignment_type.max_value?
       %h3.collapse #{assignment_type.try(:name)} • #{ points score_for_assignment_type }/#{points assignment_type.max_value}
     - else
-      %h3.collapse #{assignment_type.try(:name)} • #{ points score_for_assignment_type }/#{points score_for_assignment_type } 
+      %h3.collapse #{assignment_type.try(:name)} • #{ points score_for_assignment_type }/#{points score_for_assignment_type }
     .small-12.columns
 
       // If the course and particular assignment uses weights, display assignment weighting options
       // with appropriate terminology. If a student has already set a weight, give the option to change
-      // weight; else if the student has not yet set a weight, give the option to set weights for the assignment.      
+      // weight; else if the student has not yet set a weight, give the option to set weights for the assignment.
       - if assignment_type.student_weightable? && course.assignment_weight_open?
         .small-2.right
           - if student.weighted_assignments?
@@ -52,7 +52,7 @@
                     %span.has-tip{:title => "This #{term_for :assignment} is required!", :data => {'tooltip' => true} }
                       !
                   %span.assignmentName= link_to assignment.name, assignment_path(assignment, :student_id => student)
-                
+
                 %td{:width => "25%"}
                   - if assignment.assignment_type.student_weightable?
                     - grade = grade_for_assignment
@@ -76,7 +76,6 @@
                   = "Due: #{assignment.due_at.strftime("%A, %b %d, %l:%M%p")}" if assignment.future?
                 %td
                   - if assignment.student_logged? && assignment.open? && current_user_is_student?
-                  
                     = simple_form_for student_data.grade_for_assignment(assignment), :url => self_log_grades_assignment_path(assignment), :method => :post do |f|
                       - present = student.self_reported_done?(assignment)
                       = hidden_field_tag :present, !present
@@ -98,7 +97,7 @@
                         - else
                           - if assignment.accepts_submissions?
                             = render "students/submissions", assignment: assignment
-                        
+
                       - if current_user_is_staff?
                         - if assignment.is_individual?
                           - if grade_released_for_assignment
@@ -120,7 +119,7 @@
   .challenge
 
     %h3.collapse #{term_for :challenges} #{ points student.team.try(:challenge_grade_score) }/#{points current_course_data.point_total_for_challenges}
-    
+
     .small-12.columns
       %table.responsive
         - course.challenges.each do |challenge|
