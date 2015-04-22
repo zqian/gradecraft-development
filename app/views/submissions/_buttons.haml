@@ -1,0 +1,22 @@
+- if @assignment.is_individual?
+  .button-bar
+    %ul.button-group.radius
+      %li
+        %a{:href => "#{edit_assignment_submission_path(@assignment, @submission)}?student_id=#{@student.id}", :class => 'button'  }
+          Edit Submission
+          %span.sr-only #{@student.try(:first_name)}'s Submission
+      %li
+        = link_to "Delete Submission", assignment_submission_path(:assignment => @assignment, :submission => @submission ), :class => "button" , :data => { confirm: 'Are you sure?',  method: :delete }
+
+      %li= link_to "Grade", edit_assignment_grade_path(@assignment, @submission, :student_id => @student.id), :class => 'button'
+- elsif @assignment.has_groups?
+  .button-bar
+    %ul.button-group.radius
+      %li
+        %a{:href => "#{edit_assignment_submission_path(@assignment, @submission)}?group_id=#{@group}", :class => 'button'  }
+          Edit Submission
+          %span.sr-only #{@group.try(:name)}'s Submission
+      %li
+        = link_to "Delete Submission", assignment_submission_path(:assignment => @assignment, :submission => @submission ), :class => "button" , :data => { confirm: 'Are you sure?',  method: :delete }
+
+      %li= link_to "Grade", edit_assignment_grade_path(@assignment, @submission, :group_id => @group.id), :class => 'button'

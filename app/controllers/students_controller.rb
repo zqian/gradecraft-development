@@ -62,6 +62,7 @@ class StudentsController < ApplicationController
   def syllabus
     @assignment_types = current_course.assignment_types.sorted
     @assignments = current_course.assignments.sorted
+    @student = current_student
   end
 
   # Course timeline, displays all assignments that are determined by the instructor to belong on the timeline + team challenges if present
@@ -88,14 +89,12 @@ class StudentsController < ApplicationController
   #Displaying student profile to instructors
   def show
     self.current_student = current_course.students.where(id: params[:id]).first
+    @student = self.current_student
+    @student.load_team(current_course)
     @assignments = current_course.assignments.chronological.alphabetical
-    @assignment_type = current_course.assignment_types
+    @assignment_types = current_course.assignment_types.sorted
     if current_user_is_staff?
       @scores_for_current_course = current_student.scores_for_course(current_course)
-    end
-    scores = []
-    current_course.assignment_types.each do |assignment_type|
-      scores << { data: [current_student.grades.released.where(assignment_type: assignment_type).score], name: assignment_type.name }
     end
   end
 
@@ -253,23 +252,23 @@ class StudentsController < ApplicationController
 
   def graded_students_in_current_course
     if course_team_membership_count > 0
-      User.graded_students_in_course_include_and_join_team(current_course.id)
+      User.unscoped.graded_students_in_course_include_and_join_team(current_course.id)
     else
-      User.graded_students_in_course(current_course.id)
+      User.unscoped.graded_students_in_course(current_course.id)
     end
   end
 
   def auditing_students_in_current_course
     if course_team_membership_count > 0
-      User.auditing_students_in_course_include_and_join_team(current_course.id)
+      User.unscoped.auditing_students_in_course_include_and_join_team(current_course.id)
     else
-      User.auditing_students_in_course(current_course.id)
+      User.unscoped.auditing_students_in_course(current_course.id)
     end
   end
 
   def graded_students_in_current_course_for_active_team
     if course_team_membership_count > 0
-      User.graded_students_in_course_include_and_join_team(current_course.id)
+      User.unscoped.graded_students_in_course_include_and_join_team(current_course.id)
         .where("team_memberships.team_id = ?", params[:team_id])
     else
       []
@@ -278,7 +277,7 @@ class StudentsController < ApplicationController
 
   def auditing_students_in_current_course_for_active_team
     if course_team_membership_count > 0
-      User.auditing_students_in_course_include_and_join_team(current_course.id)
+      User.unscoped.auditing_students_in_course_include_and_join_team(current_course.id)
         .where("team_memberships.team_id = ?", params[:team_id])
     else
       []

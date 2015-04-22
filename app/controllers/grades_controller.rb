@@ -6,7 +6,7 @@ class GradesController < ApplicationController
 
   def show
     @assignment = current_course.assignments.find(params[:assignment_id])
-    if @assignment.rubric.present?
+    if @assignment.rubric.present? && @assignment.is_individual?
       @rubric = @assignment.rubric
       @metrics = @rubric.metrics
       @rubric_grades = serialized_rubric_grades
@@ -21,7 +21,7 @@ class GradesController < ApplicationController
       redirect_to @assignment
     end
     if @assignment.has_groups?
-      @group = current_student.group_for_assignment(@assignment)
+      @group = current_course.groups.find(params[:group_id])
       @title = "#{@group.name}'s Grade for #{ @assignment.name }"
       @grades_for_assignment = @assignment.grades.graded_or_released
     else
@@ -247,7 +247,6 @@ class GradesController < ApplicationController
       respond_to do |format|
         if @grade.save
           Resque.enqueue(GradeUpdater, [@grade.id])
-          #GradeUpdater.perform_async([@grade.id])
           format.html { redirect_to syllabus_path, notice: 'Nice job! Thanks for logging your grade!' }
         else
           format.html { redirect_to syllabus_path, notice: "We're sorry, this grade could not be added." }
@@ -284,12 +283,12 @@ class GradesController < ApplicationController
 
     if params[:team_id].present?
       @team = current_course.teams.find_by(team_params)
-      @students = current_course.students_being_graded.joins(:teams).where(:teams => team_params) 
-      @auditors = current_course.students_auditing.joins(:teams).where(:teams => team_params)           
+      @students = current_course.students_being_graded.joins(:teams).where(:teams => team_params)
+      @auditors = current_course.students_auditing.joins(:teams).where(:teams => team_params)
     else
       @students = current_course.students_being_graded
       @auditors = current_course.students_auditing
-    end    
+    end
 
     @grades = Grade.where(student_id: mass_edit_student_ids, assignment_id: @assignment[:id] ).includes(:student,:assignment)
     @auditor_grades = Grade.where(student_id: mass_edit_auditor_ids, assignment_id: @assignment[:id] ).includes(:student,:assignment)
@@ -306,7 +305,7 @@ class GradesController < ApplicationController
       @team_params ||= params[:team_id] ? { id: params[:team_id] } : {}
     end
 
-    def mass_edit_student_ids      
+    def mass_edit_student_ids
       @mass_edit_student_ids ||= @students.pluck(:id)
     end
 
@@ -386,7 +385,7 @@ class GradesController < ApplicationController
       grade_ids << grade.id
     end
 
-    Resque.enqueue(GradeUpdater, grade_ids)
+    Resque.enqueue(MultipleGradeUpdater, grade_ids)
 
     respond_with @assignment
   end
@@ -408,7 +407,7 @@ class GradesController < ApplicationController
       grade.update_attributes!(params[:grade].reject { |k,v| v.blank? })
       grade_ids << grade.id
     end
-    Resque.enqueue(GradeUpdater, grade_ids)
+    Resque.enqueue(MultipleGradeUpdater, grade_ids)
 
     if session[:return_to].present?
       redirect_to session[:return_to]
@@ -417,7 +416,7 @@ class GradesController < ApplicationController
     end
 
     flash[:notice] = "Updated Grades!"
-    
+
   end
 
   #upload grades for an assignment
