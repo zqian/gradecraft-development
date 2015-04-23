@@ -38,8 +38,8 @@ class InfoController < ApplicationController
     grades = current_course.grades
     unrealeased_grades = grades.not_released
     in_progress_grades = grades.in_progress
-    ungraded_submissions = current_course.submissions.ungraded
-    @ungraded_submissions_by_assignment = ungraded_submissions.group_by(&:assignment)
+    @ungraded_submissions = current_course.submissions.ungraded
+    @ungraded_submissions_by_assignment = @ungraded_submissions.group_by(&:assignment)
     @unreleased_grades_by_assignment = unrealeased_grades.group_by(&:assignment)
     @in_progress_grades_by_assignment = in_progress_grades.group_by(&:assignment)
     @count_unreleased = unrealeased_grades.not_released.count
