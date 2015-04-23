@@ -16,7 +16,7 @@
           %th{:scope => "col", :style => "min-width: 200px"}
             %span.sr-only Actions
       %tbody
-        - submissions.each do |submission|
+        - @ungraded_submissions.each do |submission|
           %tr
             %td= link_to submission.assignment.name, submission.assignment
             - if submission.assignment.is_individual?
@@ -30,7 +30,7 @@
             %td
               - if current_course.has_teams? && submission.assignment.is_individual? && submission.student.present? && submission.student.team_for_course(current_course).present?
                 = link_to submission.student.team_for_course(current_course).try(:name), submission.student.team_for_course(current_course)
-            - if submission.assignment.is_individual? 
+            - if submission.assignment.is_individual?
               %td
                 .button-bar
                   %ul.button-group.right.radius

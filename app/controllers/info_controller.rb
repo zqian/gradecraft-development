@@ -43,7 +43,7 @@ class InfoController < ApplicationController
     @unreleased_grades_by_assignment = unrealeased_grades.group_by(&:assignment)
     @in_progress_grades_by_assignment = in_progress_grades.group_by(&:assignment)
     @count_unreleased = unrealeased_grades.not_released.count
-    @count_ungraded = ungraded_submissions.count
+    @count_ungraded = @ungraded_submissions.count
     @count_in_progress = in_progress_grades.count
     @badges = current_course.badges.includes(:tasks)
   end
