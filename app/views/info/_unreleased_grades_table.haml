@@ -6,10 +6,10 @@
   .small-12.columns
     %h5.section-title
       = link_to assignment.name, assignment
-      .right 
+      .right
         - if assignment.is_individual?
           = link_to 'Quick Grade', mass_grade_assignment_path(assignment), :class => "button radius"
-        - else 
+        - else
           = link_to 'Grade', assignment, :class => "button radius"
 
   = form_tag edit_status_grades_assignment_path assignment do
@@ -50,10 +50,10 @@
               - if graded_assignment.has_groups?
                 - group_for_assignment = student.group_for_assignment(graded_assignment)
                 %td= link_to group_for_assignment.try(:name), group_path(:id => group_for_assignment)
-              - if course.has_teams? && ! assignment.has_groups? 
+              - if course.has_teams? && ! assignment.has_groups?
                 %td
                   = link_to "#{team.try(:name)}", team
-              
+
               %td= g.try(:score)
               %td= raw g.feedback
               %td
