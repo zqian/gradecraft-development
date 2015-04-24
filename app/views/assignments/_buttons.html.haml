@@ -14,11 +14,11 @@
         %a{:href => mass_grade_assignment_path(@assignment) }
           %i.fi-check
           Quick Grade
-    - if @assignment.submissions.present? 
-      %li
-        %a{:href => export_submissions_assignment_path(@assignment, :team_id => @team, format: 'zip') }
-          %i.fi-download
-          Download Submissions
+    / - if @assignment.submissions.present?
+    /   %li
+    /     %a{:href => export_submissions_assignment_path(@assignment, :team_id => @team, format: 'zip') }
+    /       %i.fi-download
+    /       Download Submissions
     %li
       %a{:href => import_grades_assignment_path(@assignment) }
         %i.fi-upload
