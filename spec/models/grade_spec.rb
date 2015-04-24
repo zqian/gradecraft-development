@@ -76,15 +76,15 @@ describe Grade do
 
   describe "when assignment is pass-fail" do
     before do
-      @grade.assignment_type.update(pass_fail: true)
+      @grade.assignment.update(pass_fail: true)
     end
 
     it "saves the grades as zero" do
       @grade.save!
-      expect(@grade.raw_score).to_be nil
-      expect(@grade.predicted_score).to_be >=1
-      expect(@grade.final_score).to_be nil or 0
-      expect(@grade.point_total).to_be 0
+      expect(@grade.raw_score).to be nil
+      expect(@grade.predicted_score).to be <= 1
+      expect(@grade.final_score).to be 0
+      expect(@grade.point_total).to be 0
     end
   end
 end

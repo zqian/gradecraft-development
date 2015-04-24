@@ -11,7 +11,7 @@
 
     .panel
       .small-12.medium-4.columns
-        = f.label :raw_score, "Raw Score (#{@assignment.point_total} points Possible)"
+        = f.label :raw_score, "Raw Score (#{@assignment.point_total} Points Possible)"
         - if @assignment.has_levels?
           = f.select :raw_score, @assignment_score_levels.map { |l| [l.formatted_name,l.value] }, :include_blank => true
         - else

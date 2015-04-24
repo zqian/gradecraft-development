@@ -6,8 +6,8 @@ describe "students/syllabus" do
   before(:each) do
     clean_models
     @course = create(:course)
-    @assignment_type = create(:assignment_type, course: @course, max_value: 1000)
-    @assignment = create(:assignment, :assignment_type => @assignment_type)
+    @assignment_types = [create(:assignment_type, course: @course, max_value: 1000)]
+    @assignment = create(:assignment, :assignment_type => @assignment_types[0])
     @course.assignments << @assignment
     @student = create(:user)
     @student.courses << @course
@@ -15,6 +15,9 @@ describe "students/syllabus" do
     view.stub(:current_student).and_return(@student)
     view.stub(:current_student_data).and_return(StudentData.new(@student, @course))
   end
+
+  #TODO: once merged, move to assignments_spec
+  # they are in here for now to avoid conflicts with the specs Max is currently writing.
 
   it "renders the points possible for the assignment" do
     render
@@ -33,15 +36,6 @@ describe "students/syllabus" do
       render
       #TODO: change this to "Passing" or "Failing"
       assert_select "td", text: "Pass/Fail", count: 1
-    end
-  end
-
-  # TODO define important implications for student weightable assigment types
-  describe "when an assignment is student weightable" do
-    it "renders" do
-      view.stub(:term_for).and_return "Weights"
-      @assignment_type.update(student_weightable: true)
-      render
     end
   end
 end

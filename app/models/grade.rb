@@ -9,6 +9,7 @@ class Grade < ActiveRecord::Base
                   :submission_id, :task, :task_id, :team_id
 
   STATUSES= ["In Progress", "Graded", "Released"]
+  PASS_FAIL_STATUS = ["Passed", "Failed"]
 
   belongs_to :course
   belongs_to :assignment, touch: true
@@ -27,6 +28,7 @@ class Grade < ActiveRecord::Base
 
   before_validation :cache_associations
   before_save :cache_score_and_point_total
+  before_save :zero_points_for_pass_fail
 
   has_many :grade_files, :dependent => :destroy
   accepts_nested_attributes_for :grade_files
@@ -167,5 +169,15 @@ class Grade < ActiveRecord::Base
     self.assignment_type_id ||= assignment.try(:assignment_type_id)
     self.course_id ||= assignment.try(:course_id)
     #self.team_id ||= student.team_for_course(course).try(:id)
+  end
+
+  def zero_points_for_pass_fail
+    if self.assignment.pass_fail?
+      self.raw_score = nil
+      self.final_score = 0
+      #self.point_total = 0
+      # use 1 for pass, 0 for fail
+      self.predicted_score = 1 if self.predicted_score > 1
+    end
   end
 end
