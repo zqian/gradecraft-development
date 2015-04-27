@@ -70,6 +70,7 @@ group :development do
   gem 'rubystats'
   gem 'spring'
   gem 'meta_request'
+  gem "bullet"
 end
 
 group :development, :test do

@@ -40,7 +40,7 @@
 
         // Display the assignments for each assignment type in a responsive table, below header.
         %table.responsive
-          - assignments = assignment_type.assignments.sorted
+          - assignments = assignment_type.assignments.sorted.includes(:assignment_type)
           - assignments.each do |assignment|
             - grade_released_for_assignment = student_data.grade_released_for_assignment?(assignment)
             - grade_for_assignment = student_data.grade_for_assignment(assignment)
