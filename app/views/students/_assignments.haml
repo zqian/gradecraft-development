@@ -91,7 +91,11 @@
                           - if group_for_assignment.present?
                             %li= link_to "See Group", group_path(group_for_assignment), :class => "button"
                             - if assignment.accepts_submissions?
-                              = render "students/group_submissions", assignment: assignment, group: group_for_assignment
+                              - if group_for_assignment && group_for_assignment.submission_for_assignment(assignment)
+                                %li= link_to "See Submission", assignment_path(assignment, :anchor => "fndtn-tabt3"), :class => 'button'
+                              - else
+                                - if group && group.approved?
+                                  %li= link_to "Submit", new_assignment_submission_path(assignment, :group_id => group), :class => 'button'
                           - else
                             %li= link_to "Create a Group", new_group_path, :class => "button"
                         - else

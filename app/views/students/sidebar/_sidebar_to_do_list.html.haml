@@ -4,18 +4,7 @@
   - if assignment.soon? && assignment.include_in_to_do?
     - if assignment.accepts_submissions?
       - if assignment.is_individual?
-        .right
-          - if current_user_is_student?
-            - if current_student.submission_for_assignment(assignment).present?
-              %li= link_to "See Submission", assignment_path(assignment, :anchor => "fndtn-tabt3"), :class => 'button'
-            - elsif assignment.open?
-              %li= link_to "Submit", new_assignment_submission_path(assignment, :student_id => current_student), :class => 'button'
-
-          - else
-            - if current_student.submission_for_assignment(assignment).present?
-              %li= link_to "See Submission", assignment_submission_path(assignment, current_student.submission_for_assignment(assignment).id), :class => 'button'
-            - else assignment.open?
-              %li= link_to "Submit", new_assignment_submission_path(assignment, :student_id => current_student), :class => 'button'
+        .right= render "students/submissions", assignment: assignment
       - else
         .right= render "students/group_submissions", assignment: assignment, group: current_student.group_for_assignment(assignment)
     - if current_student.submission_for_assignment(assignment).present?
