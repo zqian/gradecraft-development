@@ -425,7 +425,7 @@ class User < ActiveRecord::Base
   end
 
   def group_for_assignment(assignment)
-    assignment_groups.where(assignment: assignment).first.try(:group)
+    @group_for_assignment ||= assignment_groups.where(assignment: assignment).first.try(:group)
   end
 
   def team_for_course(course)
