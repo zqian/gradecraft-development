@@ -26,7 +26,7 @@ class StudentsController < ApplicationController
         s.load_team(current_course)
       end
     end
-    
+
     @student_ids = @students.collect {|s| s[:id] }
     @auditing_student_ids = @auditing_students.collect {|s| s[:id] }
     @teams_by_student_id = teams_by_student_id
@@ -61,7 +61,7 @@ class StudentsController < ApplicationController
   #Displaying the list of assignments and team challenges for the semester
   def syllabus
     @assignment_types = current_course.assignment_types.sorted
-    @assignments = current_course.assignments.sorted
+    # @assignments = current_course.assignments.sorted
     @student = current_student
   end
 
@@ -89,7 +89,7 @@ class StudentsController < ApplicationController
   #Displaying student profile to instructors
   def show
     self.current_student = current_course.students.where(id: params[:id]).first
-    @student = self.current_student
+    @student = current_student
     @student.load_team(current_course)
     @assignments = current_course.assignments.chronological.alphabetical
     @assignment_types = current_course.assignment_types.sorted
@@ -174,7 +174,7 @@ class StudentsController < ApplicationController
     redirect_to session[:return_to]
   end
 
-  
+
   protected
 
   def course_grade_scheme_by_student_id
