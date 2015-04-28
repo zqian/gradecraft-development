@@ -42,6 +42,7 @@
             - grade_released_for_assignment = current_student_data.grade_released_for_assignment?(assignment)
             - grade_for_assignment = current_student_data.grade_for_assignment(assignment)
             - group_for_assignment = @student.group_for_assignment(assignment)
+            - student_submission = @student.submission_for_assignment(assignment)
             - if assignment.visible? || grade_released_for_assignment
               %tr
                 %td{:width => "30%"}
@@ -98,16 +99,16 @@
                         - else
                           - if assignment.accepts_submissions?
                             - if current_user_is_student?
-                              - if current_student.submission_for_assignment(assignment).present?
+                              - if student_submission.present?
                                 %li= link_to "See Submission", assignment_path(assignment, :anchor => "fndtn-tabt3"), :class => 'button'
                               - elsif assignment.open?
-                                %li= link_to "Submit", new_assignment_submission_path(assignment, :student_id => current_student), :class => 'button'
+                                %li= link_to "Submit", new_assignment_submission_path(assignment, :student_id => @student), :class => 'button'
 
                             - else
-                              - if current_student.submission_for_assignment(assignment).present?
-                                %li= link_to "See Submission", assignment_submission_path(assignment, current_student.submission_for_assignment(assignment).id), :class => 'button'
+                              - if student_submission.present?
+                                %li= link_to "See Submission", assignment_submission_path(assignment, student_submission.id), :class => 'button'
                               - else assignment.open?
-                                %li= link_to "Submit", new_assignment_submission_path(assignment, :student_id => current_student), :class => 'button'
+                                %li= link_to "Submit", new_assignment_submission_path(assignment, :student_id => @student), :class => 'button'
 
                       - if current_user_is_staff?
                         - if assignment.is_individual?
@@ -124,16 +125,16 @@
                             %li= link_to 'Grade', group_grade_assignment_path(assignment, :group_id => group_for_assignment), :class => 'button'
                         - if assignment.accepts_submissions?
                           - if current_user_is_student?
-                            - if current_student.submission_for_assignment(assignment).present?
+                            - if student_submission.present?
                               %li= link_to "See Submission", assignment_path(assignment, :anchor => "fndtn-tabt3"), :class => 'button'
                             - elsif assignment.open?
-                              %li= link_to "Submit", new_assignment_submission_path(assignment, :student_id => current_student), :class => 'button'
+                              %li= link_to "Submit", new_assignment_submission_path(assignment, :student_id => @student), :class => 'button'
 
                           - else
-                            - if current_student.submission_for_assignment(assignment).present?
-                              %li= link_to "See Submission", assignment_submission_path(assignment, current_student.submission_for_assignment(assignment).id), :class => 'button'
+                            - if student_submission.present?
+                              %li= link_to "See Submission", assignment_submission_path(assignment, student_submission.id), :class => 'button'
                             - else assignment.open?
-                              %li= link_to "Submit", new_assignment_submission_path(assignment, :student_id => current_student), :class => 'button'
+                              %li= link_to "Submit", new_assignment_submission_path(assignment, :student_id => @student), :class => 'button'
 
 - if current_course.team_challenges? && current_course.team_score_average?
 
