@@ -28,7 +28,6 @@ describe "assignments/new" do
 
       # TODO: get login to work in order to visit the page
       visit(syllabus_path)
-      require 'pry'; binding.pry
       find("pass-fail-toggle").click
       expect(page).to have_selector(".pass-fail-contingent", visible: false)
     end

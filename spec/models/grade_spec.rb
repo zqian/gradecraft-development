@@ -81,7 +81,7 @@ describe Grade do
 
     it "saves the grades as zero" do
       @grade.save!
-      expect(@grade.raw_score).to be nil
+      expect(@grade.raw_score).to be 0
       expect(@grade.predicted_score).to be <= 1
       expect(@grade.final_score).to be 0
       expect(@grade.point_total).to be 0

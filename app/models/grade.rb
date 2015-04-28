@@ -173,9 +173,10 @@ class Grade < ActiveRecord::Base
 
   def zero_points_for_pass_fail
     if self.assignment.pass_fail?
-      self.raw_score = nil
+      self.raw_score = 0
       self.final_score = 0
-      #self.point_total = 0
+      self.point_total = 0
+
       # use 1 for pass, 0 for fail
       self.predicted_score = 1 if self.predicted_score > 1
     end

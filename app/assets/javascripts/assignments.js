@@ -42,8 +42,6 @@
     } else {
       $('.pass-fail-contingent').css({ "visibility": "hidden"});
     };
-
-    //$('.pass-fail-contingent').toggle();
   });
 
   $(init);

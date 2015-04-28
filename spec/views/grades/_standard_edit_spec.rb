@@ -1,7 +1,7 @@
 # encoding: utf-8
 require 'spec_helper'
 
-describe "grades/_standard_edit", focus: true do
+describe "grades/_standard_edit" do
 
   before(:each) do
     clean_models
@@ -19,10 +19,9 @@ describe "grades/_standard_edit", focus: true do
   end
 
   describe "when an assignment has point values" do
-    it "renders Pass/Fail in the points possible field when incomplete" do
-      @assignment.update(pass_fail: true)
+    it "renders the points possible when incomplete" do
       render
-      assert_select "label", text: "Raw Score (0 Points Possible)", count: 1
+      assert_select "label", text: "Raw Score (#{@assignment.point_total} Points Possible)", count: 1
     end
   end
 
@@ -31,7 +30,7 @@ describe "grades/_standard_edit", focus: true do
       @assignment.update(pass_fail: true)
       render
       assert_select "label", text: "Raw Score (0 Points Possible)", count: 0
-      assert_select "td", text: "Pass/Fail", count: 1
+      assert_select "label", text: "Pass fail status", count: 1
     end
   end
 end
