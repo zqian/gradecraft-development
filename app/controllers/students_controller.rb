@@ -89,7 +89,7 @@ class StudentsController < ApplicationController
   #Displaying student profile to instructors
   def show
     self.current_student = current_course.students.where(id: params[:id]).first
-    @student = self.current_student
+    @student = current_student
     @student.load_team(current_course)
     @assignments = current_course.assignments.chronological.alphabetical
     @assignment_types = current_course.assignment_types.sorted
