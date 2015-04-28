@@ -23,19 +23,4 @@ describe "students/syllabus" do
     render
     assert_select "div.italic.not_bold", text: "#{points @assignment.point_total} points possible", count: 1
   end
-
-  describe "when an assignment is pass fail" do
-    it "renders Pass/Fail in the points possible field when incomplete" do
-      @assignment.update(pass_fail: true)
-      render
-      assert_select "td", text: "Pass/Fail", count: 1
-    end
-
-    it "renders Passed or Failed in the points possible field when complete" do
-      @assignment.update(pass_fail: true)
-      render
-      #TODO: change this to "Passing" or "Failing"
-      assert_select "td", text: "Pass/Fail", count: 1
-    end
-  end
 end
