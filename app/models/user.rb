@@ -206,7 +206,7 @@ class User < ActiveRecord::Base
   end
 
   def team_leaders(course)
-    course_team(course).leaders rescue nil
+    @team_leaders ||= course_team(course).leaders rescue nil
   end
 
   ROLES.each do |role|

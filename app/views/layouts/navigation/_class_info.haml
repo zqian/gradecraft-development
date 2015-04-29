@@ -4,8 +4,9 @@
     %li
       %i.fi-crown
       Professor #{ current_course.professor.try(:name) }
-    - if current_user_is_student? && current_student.team_leaders(current_course).present?
-      - current_student.team_leaders(current_course).each do |team_leader|
+    - team_leaders = current_student.team_leaders(current_course).includes(:leaders)
+    - if current_user_is_student? && team_leaders.present?
+      - team_leaders.each do |team_leader|
         %li
           %i.fi-torso-business
           = "#{current_course.team_leader_term} #{team_leader.first_name}"
