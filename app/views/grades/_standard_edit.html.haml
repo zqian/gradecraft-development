@@ -16,7 +16,7 @@
             = @grade.pass_fail_status || "Passed"
           .passed-failed-grade-toggle
             .switch
-              = f.check_box :pass_fail_status, {}, checked_value = "Passed", unchecked_value = "Failed"
+              = f.check_box :pass_fail_status, { :checked=> @grade.pass_fail_status == "Failed" ? false : true }, checked_value = "Passed", unchecked_value = "Failed"
               = f.label :pass_fail_status
         - else
           = f.label :raw_score, "Raw Score (#{@assignment.point_total} Points Possible)"

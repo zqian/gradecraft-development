@@ -26,11 +26,41 @@ describe "grades/_standard_edit" do
   end
 
   describe "when an assignment is pass fail" do
-    it "renders Pass/Fail in the points possible field when incomplete" do
+
+    before(:each) do
       @assignment.update(pass_fail: true)
+    end
+
+    it "renders Pass/Fail in the points possible field when incomplete" do
       render
       assert_select "label", text: "Raw Score (0 Points Possible)", count: 0
       assert_select "label", text: "Pass fail status", count: 1
+    end
+
+    it "renders the switch in the passed position when not yet graded" do
+      render
+      assert_select ".switch-label", text: "Passed", count: 1
+      assert_select ".switch" do
+        assert_select "#grade_pass_fail_status[value=Passed]", count: 1
+      end
+    end
+
+    it "renders the switch in the passed position when grade status is 'Passed'" do
+      @grade.update(pass_fail_status: "Passed")
+      render
+      assert_select ".switch-label", text: "Passed", count: 1
+      assert_select ".switch" do
+        assert_select "#grade_pass_fail_status[value=Passed]", count: 1
+      end
+    end
+
+    it "renders the switch in the failed position when the grade is 'Failed'" do
+      @grade.update(pass_fail_status: "Failed")
+      render
+      assert_select ".switch-label", text: "Failed", count: 1
+      assert_select ".switch" do
+        assert_select "#grade_pass_fail_status[value=Passed]", count: 1
+      end
     end
   end
 end
