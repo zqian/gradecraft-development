@@ -38,9 +38,20 @@ describe "students/predictor/_assignments" do
     end
 
     describe "with a pass fail assignment" do
-      it "renders a pass/fail switch" do
+
+      before(:each) do
+        @assignment.update(pass_fail: true)
+      end
+
+      it "renders a pass/fail predictor switch defaulting to fail" do
         render
-        assert_select "div.right.radius.label.fade", count: 1
+        assert_select "div.switch-label", text: "Fail", count: 1
+      end
+
+      it "persists a Pass prediction in the pass/fail switch" do
+        @grade = create(:grade, assignment: @assignment, student: @student, predicted_score: 1)
+        render
+        assert_select "div.switch-label", text: "Pass", count: 1
       end
     end
   end

@@ -7,7 +7,6 @@ describe "students/predictor/_badges" do
     clean_models
     @course = create(:course)
     badge = create(:badge, course: @course)
-    #@course.badges << @badge
     student = create(:user)
     student.courses << @course
     view.stub(:current_course).and_return(@course)

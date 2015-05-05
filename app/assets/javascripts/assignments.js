@@ -36,13 +36,5 @@
     }
   });
 
-  $('.pass-fail-toggle label').click(function(){
-    if ($( ".pass-fail-toggle input:checked" ).length > 0) {
-      $('.pass-fail-contingent').css({ "visibility": "visible"});
-    } else {
-      $('.pass-fail-contingent').css({ "visibility": "hidden"});
-    };
-  });
-
   $(init);
 }(jQuery);

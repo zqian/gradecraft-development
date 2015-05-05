@@ -35,7 +35,7 @@
 //= require analytics_dashboard
 //= require assignment_types
 //= require assignments
-//= require grade_edit
+//= require pass_fail
 //= require grade_scheme_elements
 //= require nested_fields
 //= require student_dashboard
