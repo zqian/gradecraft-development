@@ -120,8 +120,8 @@ class StudentsController < ApplicationController
   def badges
     @title = "#{term_for :badges}"
 
-    @earned_badges = current_student.student_visible_earned_badges(current_course)
-    @unearned_badges = current_student.student_visible_unearned_badges(current_course)
+    @earned_badges = current_student.student_visible_earned_badges(current_course).includes(:badge_files)
+    @unearned_badges = current_student.student_visible_unearned_badges(current_course).includes(:badge_files)
     @badges = [] << @earned_badges.collect(&:badge) << @unearned_badges
 
     @badges = @badges.flatten.uniq.sort_by(&:position)
