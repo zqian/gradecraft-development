@@ -61,7 +61,7 @@ class StudentsController < ApplicationController
   #Displaying the list of assignments and team challenges for the semester
   def syllabus
     @assignment_types = current_course.assignment_types.sorted
-    # @assignments = current_course.assignments.sorted
+    @assignments = current_course.assignments.sorted
     @student = current_student
   end
 
