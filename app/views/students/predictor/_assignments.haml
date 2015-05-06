@@ -22,7 +22,7 @@
         .collapse-hidden
           .small-12.columns
             .clear
-            - assignments = assignment_type.assignments.sorted
+            - assignments = assignment_type.assignments.includes(:assignment_score_levels, :assignment_type).sorted
             - assignments.each do |assignment|
               - grade_for_assignment = current_student_data.grade_for_assignment(assignment)
               - point_total_for_assignment = current_student_data.point_total_for_assignment(assignment)
