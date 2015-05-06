@@ -33,14 +33,6 @@ GradeCraft::Application.configure do
   config.session_store :active_record_store, :expire_after => 60.minutes
 end
 
-Sidekiq.configure_server do |config|
-  config.redis = { :url => ENV['REDIS_URL'], :namespace => 'gradecraft_production' }
-end
-
-Sidekiq.configure_client do |config|
-  config.redis = { :url => ENV['REDIS_URL'], :namespace => 'gradecraft_production' }
-end
-
 CarrierWave.configure do |config|
   config.storage = :fog
 end
