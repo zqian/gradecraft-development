@@ -110,7 +110,6 @@ class StudentsController < ApplicationController
   # Displaying the course grading scheme and professor's grading philosophy
   def course_progress
     @grade_scheme_elements = current_course.grade_scheme_elements
-    @assignments = current_course.assignments.visible.chronological.includes(:assignment_type)
     @title = "Your Course Progress"
     if current_user_is_staff?
       @scores_for_current_course = current_student.scores_for_course(current_course)

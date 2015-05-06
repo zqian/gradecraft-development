@@ -1,6 +1,6 @@
 %h3.text-center Due This Week
 %hr
-- @assignments.each do |assignment|
+- current_course.assignments.visible.chronological.includes(:assignment_type).each do |assignment|
   - if assignment.soon? && assignment.include_in_to_do?
     - if assignment.accepts_submissions?
       - if assignment.is_individual?
