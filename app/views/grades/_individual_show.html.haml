@@ -13,9 +13,15 @@
     - grade = current_student.grade_for_assignment(@assignment)
     - if grade
       %p
-        %span You earned
-        %span.bold= "#{points grade.try(:raw_score) }"
-        %span=" out of #{points @assignment.point_total } possible points."
+        - if grade.pass_fail_status
+          %span You
+          %span.bold= "#{ term_for(grade.pass_fail_status) }"
+          %span the assignment.
+        - else
+          %span You earned
+          %span.bold= "#{points grade.try(:raw_score) }"
+          %span=" out of #{points @assignment.point_total } possible points."
+
       - if @assignment.release_necessary? && current_user_is_staff?
         %p
           %span.small_uppercase Status:

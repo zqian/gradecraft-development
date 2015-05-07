@@ -3,21 +3,18 @@ require 'spec_helper'
 
 describe "students/_assignments" do
 
-  before(:all) do
+  before(:each) do
+    clean_models
     @course = create(:course)
     @assignment_types = [create(:assignment_type, course: @course, max_value: 1000)]
     @assignment = create(:assignment, :assignment_type => @assignment_types[0])
     @course.assignments << @assignment
     @student = create(:user)
-  end
-
-  before(:each) do
     assign(:title, "Assignment Types")
     assign(:assignment_types, @assignment_types)
     view.stub(:current_course).and_return(@course)
     view.stub(:current_student_data).and_return(StudentData.new(@student, @course))
     view.stub(:current_course_data).and_return(CourseData.new(@course))
-    view.stub(:term_for).and_return("custom_term")
   end
 
   describe "as student" do
@@ -43,6 +40,50 @@ describe "students/_assignments" do
       render
     end
 
+    describe "when an assignment has points" do
+
+      it "renders the points possible when grade is not released" do
+        render
+        assert_select "td", text: "#{points @assignment.point_total} points possible", count: 1
+      end
+
+      it "renders the points out of points possible when the grade is released for assignment" do
+        @assignment.update(release_necessary: false)
+        @grade = create(:grade, course: @course, assignment: @assignment, student: @student, raw_score: @assignment.point_total, status: "Graded")
+
+        # To verify we have satisfied the released condition:
+        StudentData.new(@student, @course).grade_released_for_assignment?(@assignment).should be_true
+        render
+        assert_select "td" do
+          assert_select "div", text: "#{ points @grade.score } / #{points @grade.point_total} points earned", count: 1
+        end
+      end
+    end
+
+    describe "when an assignment is pass fail" do
+
+      before(:each) do
+        @assignment.update(pass_fail: true)
+      end
+
+      it "renders Pass/Fail in the points possible field when grade is not released" do
+        render
+        assert_select "td", text: "Pass/Fail", count: 1
+      end
+
+      it "renders Pass or Fail in the points possible field when a grade is released for assignment" do
+        @grade = create(:grade, course: @course, assignment: @assignment, student: @student, pass_fail_status: "Pass", status: "Graded")
+
+        # To verify we have satisfied the released condition:
+        StudentData.new(@student, @course).grade_released_for_assignment?(@assignment).should be_true
+
+        render
+        assert_select "td" do
+          assert_select "div", text: "Pass", count: 1
+        end
+      end
+    end
+
     it "renders a weightable assignment types that are open" do
       pending
     end
@@ -56,10 +97,6 @@ describe "students/_assignments" do
     end
 
     it "highlights assignments that are required" do
-      pending
-    end
-
-    it "shows a grade if it's released" do
       pending
     end
 

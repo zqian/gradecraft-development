@@ -5,8 +5,8 @@ FactoryGirl.define do
     association :student, factory: :user
 
     factory :scored_grade do
-      #TODO: add minimum requirements to pass submission.graded?
-      score { Faker::Number.number(5) }
+      raw_score { Faker::Number.number(5) }
+      status "Released"
     end
 
     factory :unreleased_grade do

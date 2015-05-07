@@ -1,11 +1,11 @@
 # encoding: utf-8
 require 'spec_helper'
+require 'capybara/rspec'
 
 describe "assignments/new" do
 
   before(:all) do
     @course = create(:course)
-    #@assignment_type = create(:assignment_type, course: @course, max_value: 1000)
     @assignment = create(:assignment)
   end
 
@@ -19,5 +19,17 @@ describe "assignments/new" do
   it "renders successfully" do
     render
     assert_select "h3", text: "New Assignment", :count => 1
+  end
+
+  describe "pass-fail options", :type => :feature do
+
+    it "hides the points field when pass-fail is activated" do
+      pending
+
+      # TODO: get login to work in order to visit the page
+      visit(syllabus_path)
+      find("pass-fail-toggle").click
+      expect(page).to have_selector(".pass-fail-contingent", visible: false)
+    end
   end
 end
