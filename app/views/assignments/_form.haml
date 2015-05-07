@@ -129,13 +129,27 @@
 
       .small-12
 
-        .small-12.large-8.columns
+        .small-12.large-7.columns
           = f.label :name
-          = f.text_field :name
+          = f.text_field :name\
 
-        .small-12.large-4.columns
-          = f.label :point_total, "Total Points Possible"
-          = f.text_field :point_total
+        .small-12.large-2.columns
+          .switch-label Pass Fail
+          .pass-fail-toggle
+            .switch
+              = f.check_box :pass_fail
+              = f.label :pass_fail, "Pass Fail"
+
+        .small-12.large-3.columns
+          - if @assignment.pass_fail?
+            .pass-fail-contingent{ :style => "visibility: hidden" }
+              = f.label :point_total, "Total Points Possible"
+              = f.text_field :point_total
+          - else
+            .pass-fail-contingent
+              = f.label :point_total, "Total Points Possible"
+              = f.text_field :point_total
+
 
       .small-12.large-12
 

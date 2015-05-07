@@ -262,7 +262,7 @@ $(document).ready(function() {
               closest = this;
             }
           });
-          $(this).slider("value", closest); 
+          $(this).slider("value", closest);
           $(slider).siblings("div.assignmentData > span.pScore").html(closest);
           $(slider).siblings("div.assignmentData > span.score-level-name").html("(Level: " + scoreNames[scoreValues.indexOf(+closest)] + ")");
           return false;
@@ -301,7 +301,12 @@ $(document).ready(function() {
   $('#predictorPage').on('click', ':checkbox', function() {
     var assignment_id = $(this).parent().data("assignment");
     if(this.checked){
-      var value = $(this).val();
+      // pass-fail
+      if($(this).parent().hasClass("switch")){
+        var value = 1;
+      }else{
+        var value = $(this).val();
+      }
     }else{
       var value = 0;
     }

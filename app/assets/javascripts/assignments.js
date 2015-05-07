@@ -23,9 +23,9 @@
   };
 
   if($('.assignment_options > input').is(':checked')) {
-    $('ul > .submit').show();    
+    $('ul > .submit').show();
   } else {
-    $('ul > .submit').hide();    
+    $('ul > .submit').hide();
   }
 
   $('.assignment_options').change(function(){

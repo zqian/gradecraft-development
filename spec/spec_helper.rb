@@ -3,6 +3,7 @@ ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
+require 'capybara/rspec'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -17,6 +18,13 @@ ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
 # http://stackoverflow.com/questions/9011425/fixture-file-upload-has-file-does-not-exist-error
 def fixture_file(file, filetype='image/jpg')
   Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'files', file), filetype)
+end
+
+def clean_models
+  User.destroy_all
+  Course.destroy_all
+  AssignmentType.destroy_all
+  Assignment.destroy_all
 end
 
 RSpec.configure do |config|

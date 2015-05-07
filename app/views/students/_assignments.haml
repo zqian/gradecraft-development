@@ -52,23 +52,26 @@
                   %span.assignmentName= link_to assignment.name, assignment_path(assignment, :student_id => @student)
 
                 %td{:width => "25%"}
-                  - if assignment.assignment_type.student_weightable?
-                    - grade = grade_for_assignment
-                    %span.has-tip{:title => "#{ points grade.score } / #{points grade.point_total} points (Multiplied), #{points grade.raw_score} / #{ points assignment.point_total } points (Raw)", :data => {'tooltip' => true}  }
-                      - if grade_released_for_assignment
-                        = "#{ points grade.score }  / "
-                        = "#{points grade.point_total} points earned"
-                      - else
-                        .italic.not_bold= "#{points grade.point_total} points possible"
-
-
-                  - else
-                    - if grade_released_for_assignment
+                  - if assignment.pass_fail?
+                    - if current_student_data.grade_released_for_assignment?(assignment)
                       .bold
-                        = "#{points current_student_data.score_for_assignment(assignment)}  / "
-                        = "#{points assignment.point_total} points earned"
+                        = "#{term_for grade_for_assignment.pass_fail_status}"
                     - else
-                      .italic.not_bold= "#{points assignment.point_total} points possible"
+                      = "#{term_for :pass}/#{term_for :fail}"
+                  - else
+                    - if assignment.assignment_type.student_weightable?
+                      - grade = grade_for_assignment
+                      %span.has-tip{:title => "#{ points grade.score } / #{points grade.point_total} points (Multiplied), #{points grade.raw_score} / #{ points assignment.point_total } points (Raw)", :data => {'tooltip' => true}  }
+                        - if grade_released_for_assignment
+                          = "#{ points grade.score } / #{points grade.point_total} points earned"
+                        - else
+                          .italic.not_bold= "#{points grade.point_total} points possible"
+                    - else
+                      - if grade_released_for_assignment
+                        .bold
+                          = "#{points current_student_data.score_for_assignment(assignment)} / #{points assignment.point_total} points earned"
+                      - else
+                        .italic.not_bold= "#{points assignment.point_total} points possible"
 
                 %td{:width => "25%"}
                   = "Due: #{assignment.due_at.strftime("%A, %b %d, %l:%M%p")}" if assignment.future?
@@ -92,7 +95,7 @@
                               - if group_for_assignment && group_for_assignment.submission_for_assignment(assignment)
                                 %li= link_to "See Submission", assignment_path(assignment, :anchor => "fndtn-tabt3"), :class => 'button'
                               - else
-                                - if group && group.approved?
+                                - if group_for_assignment && group_for_assignment.approved?
                                   %li= link_to "Submit", new_assignment_submission_path(assignment, :group_id => group), :class => 'button'
                           - else
                             %li= link_to "Create a Group", new_group_path, :class => "button"

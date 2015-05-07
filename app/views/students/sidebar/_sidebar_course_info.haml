@@ -1,10 +1,10 @@
 .small-12
   %h3.text-center Class Info
-  
+
   .small-12
     %i.fi-crown
     Professor #{ current_course.professor.try(:name) }
-  
+
   - if current_user_is_student?
     - if current_student.team_leaders(current_course).present?
       - current_student.team_leaders(current_course).each do |team_leader|

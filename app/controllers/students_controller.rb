@@ -61,7 +61,7 @@ class StudentsController < ApplicationController
   #Displaying the list of assignments and team challenges for the semester
   def syllabus
     @assignment_types = current_course.assignment_types.sorted
-    # @assignments = current_course.assignments.sorted
+    @assignments = current_course.assignments.sorted
     @student = current_student
   end
 
@@ -120,8 +120,8 @@ class StudentsController < ApplicationController
   def badges
     @title = "#{term_for :badges}"
 
-    @earned_badges = current_student.student_visible_earned_badges(current_course)
-    @unearned_badges = current_student.student_visible_unearned_badges(current_course)
+    @earned_badges = current_student.student_visible_earned_badges(current_course).includes(:badge_files)
+    @unearned_badges = current_student.student_visible_unearned_badges(current_course).includes(:badge_files)
     @badges = [] << @earned_badges.collect(&:badge) << @unearned_badges
 
     @badges = @badges.flatten.uniq.sort_by(&:position)
@@ -227,7 +227,7 @@ class StudentsController < ApplicationController
   end
 
   def course_team_membership_count
-    TeamMembership.joins(:team).where("teams.course_id = ?", current_course[:id]).count
+    @course_team_membership_count = TeamMembership.joins(:team).where("teams.course_id = ?", current_course[:id]).count
   end
 
   def student_earned_badges_for_entire_course

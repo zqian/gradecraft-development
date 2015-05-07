@@ -1,11 +1,12 @@
 - if current_user_is_student?
-  - if current_student.submission_for_assignment(assignment).present?
+  - student_submission = current_student.submission_for_assignment(assignment)
+  - if student_submission.present?
     %li= link_to "See Submission", assignment_path(assignment, :anchor => "fndtn-tabt3"), :class => 'button'
   - elsif assignment.open?
     %li= link_to "Submit", new_assignment_submission_path(assignment, :student_id => current_student), :class => 'button'
 
 - else
-  - if current_student.submission_for_assignment(assignment).present?
-    %li= link_to "See Submission", assignment_submission_path(assignment, current_student.submission_for_assignment(assignment).id), :class => 'button'
+  - if student_submission.present?
+    %li= link_to "See Submission", assignment_submission_path(assignment, student_submission.id), :class => 'button'
   - else assignment.open?
     %li= link_to "Submit", new_assignment_submission_path(assignment, :student_id => current_student), :class => 'button'

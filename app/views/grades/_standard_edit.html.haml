@@ -11,14 +11,25 @@
 
     .panel
       .small-12.medium-4.columns
-        = f.label :raw_score, "Raw Score (#{@assignment.point_total} points Possible)"
-        - if @assignment.has_levels?
-          = f.select :raw_score, @assignment_score_levels.map { |l| [l.formatted_name,l.value] }, :include_blank => true
+        - if @assignment.pass_fail?
+          .switch-label.pass-fail-contingent{:data => {:on => "#{term_for :pass}", :off => "#{term_for :fail}"}}
+            - if @grade.pass_fail_status
+              = term_for @grade.pass_fail_status
+            - else
+              = term_for :fail
+          .pass-fail-grade-toggle
+            .switch
+              = f.check_box :pass_fail_status, { :checked=> @grade.pass_fail_status == "Pass" }, checked_value = "Pass", unchecked_value = "Fail"
+              = f.label :pass_fail_status
         - else
-          - if @grade.instructor_modified || @grade.status.present?
-            = f.text_field :raw_score, :default => @assignment.point_total, :label => "Score", :hint => "Total Assignment Points: #{ points @assignment.point_total }", data: {autonumeric: true, "m-dec" => "0"}
+          = f.label :raw_score, "Raw Score (#{@assignment.point_total} Points Possible)"
+          - if @assignment.has_levels?
+            = f.select :raw_score, @assignment_score_levels.map { |l| [l.formatted_name,l.value] }, :include_blank => true
           - else
-            = f.text_field :raw_score, :value => nil, :label => "Score", :hint => "Total Assignment Points: #{ points @assignment.point_total }", data: {autonumeric: true, "m-dec" => "0"}
+            - if @grade.instructor_modified || @grade.status.present?
+              = f.text_field :raw_score, :default => @assignment.point_total, :label => "Score", :hint => "Total Assignment Points: #{ points @assignment.point_total }", data: {autonumeric: true, "m-dec" => "0"}
+            - else
+              = f.text_field :raw_score, :value => nil, :label => "Score", :hint => "Total Assignment Points: #{ points @assignment.point_total }", data: {autonumeric: true, "m-dec" => "0"}
 
       - if @assignment.release_necessary?
         .small-12.medium-4.columns

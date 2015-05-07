@@ -52,7 +52,10 @@
                       %td{:style => "display: none"}
                         - if assignment.due_at.present?
                           = assignment.try(:due_at).to_formatted_s(:db)
-                      %td= assignment.point_total
+                      - if assignment.pass_fail?
+                        %td.foobers= "#{term_for :pass}/#{term_for :fail}"
+                      - else
+                        %td.doobers= assignment.point_total
                       %td= "Yes" if assignment.rubric and assignment.rubric.designed?
                       %td
                         .button-bar
