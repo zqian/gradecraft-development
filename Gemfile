@@ -51,7 +51,6 @@ gem 'sampler'
 gem 'sanitize'
 gem 'sass-rails'
 gem 'select2-rails'
-gem 'sidekiq'
 gem 'simple_form'
 gem 'sorcery'
 gem 'timelineJS-rails', '~> 1.1.5'
@@ -70,6 +69,7 @@ group :development do
   gem 'rubystats'
   gem 'spring'
   gem 'meta_request'
+  gem "bullet"
 end
 
 group :development, :test do

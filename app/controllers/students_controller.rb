@@ -26,7 +26,7 @@ class StudentsController < ApplicationController
         s.load_team(current_course)
       end
     end
-    
+
     @student_ids = @students.collect {|s| s[:id] }
     @auditing_student_ids = @auditing_students.collect {|s| s[:id] }
     @teams_by_student_id = teams_by_student_id
@@ -89,7 +89,7 @@ class StudentsController < ApplicationController
   #Displaying student profile to instructors
   def show
     self.current_student = current_course.students.where(id: params[:id]).first
-    @student = self.current_student
+    @student = current_student
     @student.load_team(current_course)
     @assignments = current_course.assignments.chronological.alphabetical
     @assignment_types = current_course.assignment_types.sorted
@@ -120,8 +120,8 @@ class StudentsController < ApplicationController
   def badges
     @title = "#{term_for :badges}"
 
-    @earned_badges = current_student.student_visible_earned_badges(current_course)
-    @unearned_badges = current_student.student_visible_unearned_badges(current_course)
+    @earned_badges = current_student.student_visible_earned_badges(current_course).includes(:badge_files)
+    @unearned_badges = current_student.student_visible_unearned_badges(current_course).includes(:badge_files)
     @badges = [] << @earned_badges.collect(&:badge) << @unearned_badges
 
     @badges = @badges.flatten.uniq.sort_by(&:position)
@@ -174,7 +174,7 @@ class StudentsController < ApplicationController
     redirect_to session[:return_to]
   end
 
-  
+
   protected
 
   def course_grade_scheme_by_student_id
@@ -227,7 +227,7 @@ class StudentsController < ApplicationController
   end
 
   def course_team_membership_count
-    TeamMembership.joins(:team).where("teams.course_id = ?", current_course[:id]).count
+    @course_team_membership_count = TeamMembership.joins(:team).where("teams.course_id = ?", current_course[:id]).count
   end
 
   def student_earned_badges_for_entire_course

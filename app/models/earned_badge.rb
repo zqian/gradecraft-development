@@ -9,11 +9,12 @@ class EarnedBadge < ActiveRecord::Base
   belongs_to :task # Optional
   belongs_to :grade # Optional
   belongs_to :group, :polymorphic => true # Optional
+  has_many :badge_files, :through => :badge
 
   before_validation :cache_associations
 
   validates_presence_of :badge, :course, :student
-  
+
   #Some badges can only be earned once - we check on award if that's the case
   validate :multiple_allowed
 

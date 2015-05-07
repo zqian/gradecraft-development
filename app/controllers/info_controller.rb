@@ -35,25 +35,17 @@ class InfoController < ApplicationController
   def grading_status
     @title = "Grading Status"
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
-
-    if @team
-      @ungraded_submissions = current_course.submissions.ungraded
-      @unreleased_grades = current_course.grades.not_released
-      @in_progress_grades = current_course.grades.in_progress
-      @count_unreleased = @unreleased_grades.not_released.count
-      @count_ungraded = @ungraded_submissions.count
-      @count_in_progress = @in_progress_grades.count
-      @badges = current_course.badges.includes(:tasks)
-    else
-      @ungraded_submissions = current_course.submissions.ungraded
-      @unreleased_grades = current_course.grades.not_released
-      @in_progress_grades = current_course.grades.in_progress
-      @count_unreleased = @unreleased_grades.not_released.count
-      @count_ungraded = @ungraded_submissions.count
-      @count_in_progress = @in_progress_grades.count
-      @badges = current_course.badges.includes(:tasks)
-    end
-
+    grades = current_course.grades
+    unrealeased_grades = grades.not_released
+    in_progress_grades = grades.in_progress
+    @ungraded_submissions = current_course.submissions.ungraded
+    @ungraded_submissions_by_assignment = @ungraded_submissions.group_by(&:assignment)
+    @unreleased_grades_by_assignment = unrealeased_grades.group_by(&:assignment)
+    @in_progress_grades_by_assignment = in_progress_grades.group_by(&:assignment)
+    @count_unreleased = unrealeased_grades.not_released.count
+    @count_ungraded = @ungraded_submissions.count
+    @count_in_progress = in_progress_grades.count
+    @badges = current_course.badges.includes(:tasks)
   end
 
   # Displaying all resubmisisons
@@ -73,7 +65,7 @@ class InfoController < ApplicationController
   #grade index export
   def gradebook
     session[:return_to] = request.referer
-    Resque.enqueue(GradebookExporter, current_user.id, current_course.id) 
+    Resque.enqueue(GradebookExporter, current_user.id, current_course.id)
     flash[:notice]="Your request to export the gradebook for \"#{current_course.name}\" is currently being processed. We will email you the data shortly."
     redirect_to session[:return_to]
   end
@@ -87,7 +79,7 @@ class InfoController < ApplicationController
 
   #downloadable grades for course with  export
   def research_gradebook
-    Resque.enqueue(GradeExporter, current_user.id, current_course.id) 
+    Resque.enqueue(GradeExporter, current_user.id, current_course.id)
     flash[:notice]="Your request to export grade data from course \"#{current_course.name}\" is currently being processed. We will email you the data shortly."
     redirect_to courses_path
   end

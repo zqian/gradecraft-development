@@ -30,7 +30,7 @@
             %td
               - if current_course.has_teams? && submission.assignment.is_individual? && submission.student.present? && submission.student.team_for_course(current_course).present?
                 = link_to submission.student.team_for_course(current_course).try(:name), submission.student.team_for_course(current_course)
-            - if submission.assignment.is_individual? 
+            - if submission.assignment.is_individual?
               %td
                 .button-bar
                   %ul.button-group.right.radius
