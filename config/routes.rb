@@ -1,9 +1,7 @@
 GradeCraft::Application.routes.draw do
 
 
-  require 'sidekiq/web'
   require 'admin_constraint'
-  mount Sidekiq::Web => '/sidekiq', :constraints => AdminConstraint.new
   mount Bootsy::Engine => '/bootsy', as: 'bootsy'
   #1. Analytics & Charts
   #2. Assignments, Submissions, Tasks, Grades
