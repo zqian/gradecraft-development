@@ -30,7 +30,7 @@ class TeamsController < ApplicationController
     @team =  current_course.teams.new(params[:team])
     @team.save
     @team.team_memberships.build
-    respond_with @team, :notice => "Team #{@team.name} successfully created" 
+    respond_with @team, :notice => "Team #{@team.name} successfully created"
   end
 
   def edit

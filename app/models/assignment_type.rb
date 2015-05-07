@@ -1,10 +1,10 @@
 class AssignmentType < ActiveRecord::Base
   acts_as_list scope: :course
-  
+
   attr_accessible :due_date_present, :levels, :max_value, :name,
     :percentage_course, :point_setting, :points_predictor_display,
-    :predictor_description, :resubmission, :universal_point_value, :order_placement, 
-    :student_weightable, :mass_grade, :score_levels_attributes, :score_level, :mass_grade_type, 
+    :predictor_description, :resubmission, :universal_point_value, :order_placement,
+    :student_weightable, :mass_grade, :score_levels_attributes, :score_level, :mass_grade_type,
     :student_logged_revert_button_text, :student_logged_button_text, :position
 
   belongs_to :course
@@ -143,7 +143,7 @@ class AssignmentType < ActiveRecord::Base
         student_data << student.username
         student_data << student.team_for_course(course).try(:name)
         course.assignment_types.sort_by { |assignment_type| assignment_type.position }.each do |a|
-          student_data << a.score_for_student(student) 
+          student_data << a.score_for_student(student)
         end
         csv << student_data
       end

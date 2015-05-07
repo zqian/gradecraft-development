@@ -10,7 +10,7 @@
         %th Point total
 
   %tbody
-    - current_course.challenges.each do |challenge|
+    - current_course.challenges.includes(:challenge_files, :challenge_grades).each do |challenge|
       - if challenge.visible?
         %tr
           %td
