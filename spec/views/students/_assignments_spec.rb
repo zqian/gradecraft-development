@@ -15,7 +15,6 @@ describe "students/_assignments" do
     view.stub(:current_course).and_return(@course)
     view.stub(:current_student_data).and_return(StudentData.new(@student, @course))
     view.stub(:current_course_data).and_return(CourseData.new(@course))
-    view.stub(:term_for).and_return("custom_term")
   end
 
   describe "as student" do
@@ -72,15 +71,15 @@ describe "students/_assignments" do
         assert_select "td", text: "Pass/Fail", count: 1
       end
 
-      it "renders Passed or Failed in the points possible field when a grade is released for assignment" do
-        @grade = create(:grade, course: @course, assignment: @assignment, student: @student, pass_fail_status: "Passed", status: "Graded")
+      it "renders Pass or Fail in the points possible field when a grade is released for assignment" do
+        @grade = create(:grade, course: @course, assignment: @assignment, student: @student, pass_fail_status: "Pass", status: "Graded")
 
         # To verify we have satisfied the released condition:
         StudentData.new(@student, @course).grade_released_for_assignment?(@assignment).should be_true
 
         render
         assert_select "td" do
-          assert_select "div", text: "Passed", count: 1
+          assert_select "div", text: "Pass", count: 1
         end
       end
     end

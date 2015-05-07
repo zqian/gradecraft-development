@@ -15,6 +15,8 @@ describe "grades/_individual_show" do
     view.stub(:current_student).and_return(student)
     student_data = StudentData.new(student, course)
     view.stub(:current_student_data).and_return(student_data)
+    view.stub(:current_course).and_return(course)
+
   end
 
   describe "viewed by staff" do
@@ -36,10 +38,10 @@ describe "grades/_individual_show" do
     describe "with a pass fail grade" do
       it "renders pass/fail status" do
         @assignment.update(pass_fail: true)
-        @grade.update(status: "Graded", pass_fail_status: "Passed")
+        @grade.update(status: "Graded", pass_fail_status: "Pass")
         render
         assert_select "p" do
-          assert_select "span", text: "Passed", count: 1
+          assert_select "span", text: "Pass", count: 1
           # TODO: change to term for assignment?
           assert_select "span", text: "the assignment.", count: 1
         end

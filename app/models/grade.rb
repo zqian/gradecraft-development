@@ -9,7 +9,9 @@ class Grade < ActiveRecord::Base
                   :submission_id, :task, :task_id, :team_id
 
   STATUSES= ["In Progress", "Graded", "Released"]
-  PASS_FAIL_STATUS = ["Passed", "Failed"]
+
+  # Note Pass and Fail use term_for in the views
+  PASS_FAIL_STATUS = ["Pass", "Fail"]
 
   belongs_to :course
   belongs_to :assignment, touch: true

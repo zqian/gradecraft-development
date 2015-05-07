@@ -4,7 +4,9 @@ require 'spec_helper'
 describe "submissions/_assignment_guidelines" do
 
   before(:each) do
+    @course = create(:course)
     @assignment = create(:assignment)
+    view.stub(:current_course).and_return(@course)
   end
 
   describe "with a graded assignment" do
@@ -14,7 +16,7 @@ describe "submissions/_assignment_guidelines" do
     end
   end
 
-  describe "with a pass fail assignment" do
+  describe "with a pass fail assignment"  do
     it "renders Pass/Fail and not the points total" do
       @assignment.update(pass_fail: true)
       render

@@ -6,7 +6,7 @@
     %td= link_to student.last_name, student_path(student)
     %td{:data => { :"sort-value" => "#{grade.raw_score}"} }
       - if @assignment.pass_fail
-        = grade.pass_fail_status if ( grade.status? || grade.instructor_modified)
+        = term_for(grade.pass_fail_status) if ( grade.status? || grade.instructor_modified)
       - else
         = points grade.raw_score if ( grade.status? || grade.instructor_modified)
 

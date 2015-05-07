@@ -12,11 +12,14 @@
     .panel
       .small-12.medium-4.columns
         - if @assignment.pass_fail?
-          .switch-label.pass-fail-contingent{:data => {:on => "Passed", :off => "Failed"}}
-            = @grade.pass_fail_status || "Passed"
-          .passed-failed-grade-toggle
+          .switch-label.pass-fail-contingent{:data => {:on => "#{term_for :pass}", :off => "#{term_for :fail}"}}
+            - if @grade.pass_fail_status
+              = term_for @grade.pass_fail_status
+            - else
+              = term_for :fail
+          .pass-fail-grade-toggle
             .switch
-              = f.check_box :pass_fail_status, { :checked=> @grade.pass_fail_status == "Failed" ? false : true }, checked_value = "Passed", unchecked_value = "Failed"
+              = f.check_box :pass_fail_status, { :checked=> @grade.pass_fail_status == "Pass" }, checked_value = "Pass", unchecked_value = "Fail"
               = f.label :pass_fail_status
         - else
           = f.label :raw_score, "Raw Score (#{@assignment.point_total} Points Possible)"

@@ -57,11 +57,10 @@
                   - if assignment.pass_fail?
                     - if current_student_data.grade_released_for_assignment?(assignment)
                       .bold
-                        = grade_for_assignment.pass_fail_status
+                        = "#{term_for grade_for_assignment.pass_fail_status}"
                     - else
-                      Pass/Fail
+                      = "#{term_for :pass}/#{term_for :fail}"
                   - else
-
                     - if assignment.assignment_type.student_weightable?
                       - grade = grade_for_assignment
                       %span.has-tip{:title => "#{ points grade.score } / #{points grade.point_total} points (Multiplied), #{points grade.raw_score} / #{ points assignment.point_total } points (Raw)", :data => {'tooltip' => true}  }
@@ -69,8 +68,6 @@
                           = "#{ points grade.score } / #{points grade.point_total} points earned"
                         - else
                           .italic.not_bold= "#{points grade.point_total} points possible"
-
-
                     - else
                       - if grade_released_for_assignment
                         .bold

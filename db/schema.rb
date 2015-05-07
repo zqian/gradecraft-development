@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150420183705) do
+ActiveRecord::Schema.define(version: 20150506141315) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -380,6 +380,8 @@ ActiveRecord::Schema.define(version: 20150420183705) do
     t.boolean  "badge_emails",                                                      default: false
     t.datetime "start_date"
     t.datetime "end_date"
+    t.string   "pass_term",                     limit: 255
+    t.string   "fail_term",                     limit: 255
   end
 
   add_index "courses", ["lti_uid"], name: "index_courses_on_lti_uid", using: :btree

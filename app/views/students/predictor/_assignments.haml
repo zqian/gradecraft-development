@@ -33,7 +33,7 @@
                     %span.bold= assignment.name
                     - if current_student_data.grade_released_for_assignment?(assignment)
                       - if assignment.pass_fail?
-                        = current_student_data.grade_for_assignment(assignment).pass_fail_status
+                        = term_for current_student_data.grade_for_assignment(assignment).pass_fail_status
                       -else
                         - grade = current_student_data.grade_for_assignment(assignment)
                         %span.earned= points grade.score
@@ -52,9 +52,9 @@
 
                     - if ! current_student_data.grade_released_for_assignment?(assignment)
                       - if assignment.pass_fail?
-                        .switch-label.pass-fail-contingent{:data => {:on => "Pass", :off => "Fail"}}
-                          = pass_fail_prediction = current_student_data.grade_for_assignment(assignment).predicted_score > 0 ? "Pass": "Fail"
-                        .passed-failed-grade-toggle
+                        .switch-label.pass-fail-contingent{:data => {:on => "#{term_for :pass}", :off => "#{term_for :fail}"}}
+                          = pass_fail_prediction = current_student_data.grade_for_assignment(assignment).predicted_score > 0 ? "#{term_for :pass}": "#{term_for :fail}"
+                        .pass-fail-grade-toggle
                           .switch.small.predictor{:data => {:assignment => assignment.id}}
                             %input{:type => "checkbox", :name => assignment.name, :value => "#{current_student_data.grade_for_assignment(assignment).predicted_score}", :id => "slider-#{assignment.id}", :checked => (pass_fail_prediction == "Pass" ? true: false)}
                             %label.checkbox{ :for => "slider-#{assignment.id}" }

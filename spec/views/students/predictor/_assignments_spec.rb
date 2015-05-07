@@ -1,5 +1,6 @@
 # encoding: utf-8
 require 'spec_helper'
+include CourseTerms
 
 describe "students/predictor/_assignments" do
 
@@ -52,6 +53,19 @@ describe "students/predictor/_assignments" do
         @grade = create(:grade, assignment: @assignment, student: @student, predicted_score: 1)
         render
         assert_select "div.switch-label", text: "Pass", count: 1
+      end
+
+      it "uses the course term for Fail when present" do
+        @course.update(fail_term: "No Pass For You!")
+        render
+        assert_select "div.switch-label", text: "No Pass For You!", count: 1
+      end
+
+      it "uses the course term for Pass when present" do
+        @course.update(pass_term: "Pwned")
+        @grade = create(:grade, assignment: @assignment, student: @student, predicted_score: 1)
+        render
+        assert_select "div.switch-label", text: "Pwned", count: 1
       end
     end
   end

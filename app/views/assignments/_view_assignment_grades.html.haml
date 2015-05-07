@@ -1,6 +1,6 @@
 .small-12
   - if @assignment.pass_fail?
-    %h3.pagetitle= "#{@title} (Pass/Fail)"
+    %h3.pagetitle= "#{@title} (#{term_for :pass}/#{term_for :fail})"
   - else
     %h3.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
 

@@ -1,7 +1,7 @@
 .small-12.panel.mainContent
 
   - if @assignment.pass_fail?
-    .italic.not_bold= "Pass/Fail Assignment"
+    .italic.not_bold= "#{term_for :pass}/#{term_for :fail} Assignment"
   - else
     .italic.not_bold= "#{points @assignment.point_total} points possible"
 

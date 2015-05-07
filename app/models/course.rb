@@ -50,7 +50,7 @@ class Course < ActiveRecord::Base
     :team_challenges, :team_leader_term, :max_assignment_types_weighted,
     :point_total, :in_team_leaderboard, :grade_scheme_elements_attributes,
     :add_team_score_to_student, :status, :assignments_attributes,
-    :start_date, :end_date
+    :start_date, :end_date, :pass_term, :fail_term
 
   with_options :dependent => :destroy do |c|
     c.has_many :assignment_types
@@ -91,16 +91,32 @@ class Course < ActiveRecord::Base
 
   scope :alphabetical, -> { order('courseno ASC') }
 
-  def user_term
-    super.presence || 'Player'
+  def assignment_term
+    super.presence || 'Assignment'
   end
 
-  def team_term
-    super.presence || 'Team'
+  def badge_term
+    super.presence || 'Badge'
+  end
+
+  def challenge_term
+    super.presence || 'Challenge'
+  end
+
+  def fail_term
+    super.presence || 'Fail'
   end
 
   def group_term
     super.presence || 'Group'
+  end
+
+  def pass_term
+    super.presence || "Pass"
+  end
+
+  def team_term
+    super.presence || 'Team'
   end
 
   def team_leader_term
@@ -111,16 +127,8 @@ class Course < ActiveRecord::Base
     super.presence || 'Multiplier'
   end
 
-  def badge_term
-    super.presence || 'Badge'
-  end
-
-  def assignment_term
-    super.presence || 'Assignment'
-  end
-
-  def challenge_term
-    super.presence || 'Challenge'
+  def user_term
+    super.presence || 'Player'
   end
 
   def has_teams?

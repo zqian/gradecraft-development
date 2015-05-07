@@ -1,9 +1,11 @@
 # encoding: utf-8
 require 'spec_helper'
+include CourseTerms
 
 describe "assignments/index" do
 
   before(:all) do
+    clean_models
     @course = create(:course)
     @assignment_type_1 = create(:assignment_type, course: @course, max_value: 1000)
     @assignment_type_2 = create(:assignment_type, course: @course, max_value: 2000)
@@ -15,7 +17,7 @@ describe "assignments/index" do
   before(:each) do
     assign(:title, "Assignments")
     assign(:assignment_types, [@assignment_type_1,@assignment_type_2])
-    view.stub(:term_for).and_return("Assignment")
+    view.stub(:current_course).and_return(@course)
   end
 
   it "renders successfully" do

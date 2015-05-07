@@ -1,5 +1,6 @@
 # encoding: utf-8
 require 'spec_helper'
+include CourseTerms
 
 describe "assignments/individual/graded/_table_body" do
 
@@ -14,6 +15,7 @@ describe "assignments/individual/graded/_table_body" do
     @grade = create(:grade, course: course, assignment: @assignment, student: student)
     @students = [student]
     @assignment_grades_by_student_id = {student.id => @grade}
+    view.stub(:current_course).and_return(course)
   end
 
   it "renders successfully" do
@@ -38,7 +40,7 @@ describe "assignments/individual/graded/_table_body" do
     describe "with a pass fail assignment type" do
       it "renders pass/fail status" do
         @assignment.update(pass_fail: true)
-        @grade.update(pass_fail_status: "Passed")
+        @grade.update(pass_fail_status: "Pass")
         render
         assert_select "td", text: @grade.pass_fail_status
       end

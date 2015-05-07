@@ -1,5 +1,6 @@
 # encoding: utf-8
 require 'spec_helper'
+include CourseTerms
 
 describe "grades/_standard_edit" do
 
@@ -16,6 +17,7 @@ describe "grades/_standard_edit" do
     current_user = double()
     current_user.stub(:id) {0}
     view.stub(:current_user).and_return(current_user)
+    view.stub(:current_course).and_return(@course)
   end
 
   describe "when an assignment has point values" do
@@ -37,30 +39,37 @@ describe "grades/_standard_edit" do
       assert_select "label", text: "Pass fail status", count: 1
     end
 
-    it "renders the switch in the passed position when not yet graded" do
+    it "renders the switch in the fail position when not yet graded" do
       render
-      assert_select ".switch-label", text: "Passed", count: 1
+      assert_select ".switch-label", text: "Fail", count: 1
+    end
+
+    it "renders the switch in the pass position when grade status is 'Pass'" do
+      @grade.update(pass_fail_status: "Pass")
+      render
+      assert_select ".switch-label", text: "Pass", count: 1
       assert_select ".switch" do
-        assert_select "#grade_pass_fail_status[value=Passed]", count: 1
+        assert_select "#grade_pass_fail_status[value=Pass]", count: 1
       end
     end
 
-    it "renders the switch in the passed position when grade status is 'Passed'" do
-      @grade.update(pass_fail_status: "Passed")
+    it "renders the switch in the fail position when the grade is 'Fail'" do
+      @grade.update(pass_fail_status: "Fail")
       render
-      assert_select ".switch-label", text: "Passed", count: 1
-      assert_select ".switch" do
-        assert_select "#grade_pass_fail_status[value=Passed]", count: 1
-      end
+      assert_select ".switch-label", text: "Fail", count: 1
     end
 
-    it "renders the switch in the failed position when the grade is 'Failed'" do
-      @grade.update(pass_fail_status: "Failed")
+    it "uses the course term for Fail when present" do
+      @course.update(fail_term: "No Pass For You!")
       render
-      assert_select ".switch-label", text: "Failed", count: 1
-      assert_select ".switch" do
-        assert_select "#grade_pass_fail_status[value=Passed]", count: 1
-      end
+      assert_select ".switch-label", text: "No Pass For You!", count: 1
+    end
+
+    it "uses the course term for Pass when present" do
+      @course.update(pass_term: "Pwned")
+      @grade.update(pass_fail_status: "Pass")
+      render
+      assert_select ".switch-label", text: "Pwned", count: 1
     end
   end
 end

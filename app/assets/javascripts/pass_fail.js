@@ -16,10 +16,10 @@
   //   grades/_standard_edit.html.haml
   //   students/predictor/_assignments.haml
 
-  $('.passed-failed-grade-toggle label').click(function(){
+  $('.pass-fail-grade-toggle label').click(function(){
     var on = $('.pass-fail-contingent').data("on");
     var off = $('.pass-fail-contingent').data("off");
-    if ($( ".passed-failed-grade-toggle input:checked" ).length > 0) {
+    if ($( ".pass-fail-grade-toggle input:checked" ).length > 0) {
       $('.pass-fail-contingent').text(off);
     } else {
       $('.pass-fail-contingent').text(on);;

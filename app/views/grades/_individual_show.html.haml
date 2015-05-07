@@ -15,7 +15,7 @@
       %p
         - if grade.pass_fail_status
           %span You
-          %span.bold= "#{ grade.pass_fail_status }"
+          %span.bold= "#{ term_for(grade.pass_fail_status) }"
           %span the assignment.
         - else
           %span You earned
