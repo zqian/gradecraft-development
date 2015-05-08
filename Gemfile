@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.0.0'
+ruby '2.2.2'
 
 gem 'rails'
 gem "resque", "1.25.2", git: "https://github.com/resque/resque.git", :branch => "1-x-stable"
