@@ -58,7 +58,7 @@ class InfoController < ApplicationController
 
   def ungraded_submissions
     @title = "Ungraded Assignment Submissions"
-    @ungraded_submissions = current_course.submissions.ungraded.date_submitted
+    @ungraded_submissions = current_course.submissions.ungraded.date_submitted.includes(:assignment, :student, :submission_files)
     @count_ungraded = @ungraded_submissions.count
   end
 
