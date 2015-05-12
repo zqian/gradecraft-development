@@ -40,7 +40,7 @@ class AnalyticsController < ApplicationController
 
   # Displaying per assignment summary outcome statistics
   def per_assign
-    @assignment_types = current_course.assignment_types.sorted
+    @assignment_types = current_course.assignment_types.includes(:assignments).sorted
   end
 
   # Display per team summary scores
