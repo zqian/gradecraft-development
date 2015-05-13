@@ -15,7 +15,7 @@ class CoursesController < ApplicationController
 
   def show
     @title = "Course Settings"
-    @course = current_course
+    @course = Course.find(params[:id])
   end
 
   def new
@@ -53,8 +53,8 @@ class CoursesController < ApplicationController
           na.save
           if a.assignment_score_levels.present?
             a.assignment_score_levels.each do |asl|
-              nasl = asl.dup 
-              nasl.assignment_id = na.id 
+              nasl = asl.dup
+              nasl.assignment_id = na.id
               nasl.save
             end
           end
@@ -85,7 +85,7 @@ class CoursesController < ApplicationController
         format.json { render json: @course.errors, status: :unprocessable_entity }
       end
     end
-    
+
   end
 
   def create
