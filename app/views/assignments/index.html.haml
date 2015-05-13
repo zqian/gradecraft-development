@@ -41,7 +41,7 @@
                     %th Rubric?
                     %th{ :style => "min-width: 300px" }
                 %tbody.sort-assignments
-                  - assignments = assignment_type.assignments.sorted
+                  - assignments = assignment_type.assignments.includes(:rubric, :assignment_type).sorted
                   - assignments.each do |assignment|
                     %tr{:id => "assignment-#{assignment.id}"}
                       %td

@@ -9,8 +9,8 @@ class AssignmentsController < ApplicationController
       redirect_to syllabus_path
     else
       @title = "#{term_for :assignments}"
-      @assignment_types = current_course.assignment_types.sorted
-      @assignments = current_course.assignments.includes(:rubric)
+      @assignment_types = current_course.assignment_types.includes(:assignments).sorted
+      #@assignments = current_course.assignments.includes(:rubric)
 
       respond_to do |format|
         format.html
