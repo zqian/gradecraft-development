@@ -57,6 +57,8 @@ module BreadcrumbsHelper
     case object
     when :dashboard, :root, :home
       'Home'
+    when :analytics_root
+      'Analytics'
     when Array
       breadcrumb_text_for(object[0], options = {})
     when Class

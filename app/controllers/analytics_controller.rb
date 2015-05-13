@@ -12,7 +12,7 @@ class AnalyticsController < ApplicationController
   end
 
   def staff
-    @title = "Staff Analytics"
+    @title = "#{term_for :team_leader} Analytics"
   end
 
   def all_events
