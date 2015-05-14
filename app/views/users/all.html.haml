@@ -25,7 +25,7 @@
               = link_to user.last_name, student_path(user) if user.is_student?(current_course)
               = link_to user.last_name, staff_path(user) if user.is_staff?(current_course)
             %td= user.email
-            / %td= user.role(current_course).capitalize
+            %td= user.role(current_course).capitalize
             %td
               %ul
                 - user.course_memberships.includes(:course).each do |cm|

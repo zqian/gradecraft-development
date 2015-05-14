@@ -21,7 +21,7 @@ class UsersController < ApplicationController
 
   # Admin only view of all users
   def all
-    @users = User.all.order('last_name ASC')
+    @users =  current_course.users
     @title = "All Users"
   end
 

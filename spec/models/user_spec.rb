@@ -20,13 +20,6 @@ describe User do
     end
   end
 
-  context "role" do
-    it "should return capitalized role for student"
-      student = create(:user, last_name: 'Zed')
-
-    end
-  end
-
   context "earn_badges" do
     it "should be able to earn badges" do
       @badges = create_list(:badge, 2, course: @course)
