@@ -10,7 +10,7 @@ class AssignmentsController < ApplicationController
     else
       @title = "#{term_for :assignments}"
       @assignment_types = current_course.assignment_types.includes(:assignments).sorted
-      #@assignments = current_course.assignments.includes(:rubric)
+      @assignments = current_course.assignments.includes(:rubric)
 
       respond_to do |format|
         format.html
