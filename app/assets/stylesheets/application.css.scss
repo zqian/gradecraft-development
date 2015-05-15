@@ -7,11 +7,11 @@
  *= require foundation-icons
  *= require bootstrap
  *= require jquery.dynatable
- 
+
 /* Branding colors */
 
 $primary-color: #002d62;
-$primary-color-2: #234879;
+$primary-color-2: #269ECC;
 $primary-color-3: #55a9bc;
 $primary-color-4: #72cdf4;
 $primary-color-5: #0079c0;
@@ -36,7 +36,7 @@ $badass_blue: #269ECC;
 $badge_blue: #009BD6;
 $badge_green: #54B141;
 $badge_green_border: #439A31;
-$global-radius: 5px;
+$global-radius: 3px;
 
 @mixin transition($property, $duration) {
   -webkit-transition: $property $duration;

@@ -7,8 +7,8 @@
   padding: .5rem
   font-size: .9rem
   cursor: pointer
-  background-color: #64b3c1
-  @include linear-gradient(#64b3c1, #53a2b0)
+  background-color: $secondary-color-2
+  @include linear-gradient($secondary-color-2, $secondary-color-2)
 
   &:hover
     @include linear-gradient(#385b83, #264971)
@@ -17,11 +17,14 @@
     @include linear-gradient(#5daa72, #66cc99)
 
 .button.alert
-  @include linear-gradient($secondary-color, $secondary-color)
+  @include linear-gradient($secondary-color-2, $secondary-color-2)
   padding: .45rem !important
   font-size: 1rem
 
-.button-group li, .button-group li a, .button-group li a:hover 
+  &:hover
+    @include linear-gradient($primary-color-2, $primary-color-2)
+
+.button-group li, .button-group li a, .button-group li a:hover
   color: #FFF
 
 .button-bar.aindex
@@ -35,8 +38,8 @@
       padding: .5rem
 
 .button-bar ul
-  white-space: nowrap 
-  display: inline 
+  white-space: nowrap
+  display: inline
 
 th.center button.button
   margin: 0
@@ -126,10 +129,10 @@ table
 .dragBadge img.badge-icon
   max-width: 100px
 
-/* Responsive outer container */ 
-@media (max-width: 1270px) 
-  .button 
-    float: left 
+/* Responsive outer container */
+@media (max-width: 1270px)
+  .button
+    float: left
     clear: both
     display: block
     white-space: wrap
