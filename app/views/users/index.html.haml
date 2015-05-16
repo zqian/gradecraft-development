@@ -22,15 +22,18 @@
       %tbody
         - @users.each do |user|
           %tr
+            - user_is_student = user.is_student?(current_course)
+            - user_is_staff = user.is_staff?(current_course)
+            - course_membership = user.course_memberships.where(:course_id => current_course.id).first
             %td
               - if user.avatar_file_name.present?
-                %img.img-rounded{:src => user.avatar_file_name, :width => 30} 
-              = link_to user.first_name, student_path(user) if user.is_student?(current_course)
-              = link_to user.first_name, staff_path(user) if user.is_staff?(current_course)
+                %img.img-rounded{:src => user.avatar_file_name, :width => 30}
+              = link_to user.first_name, student_path(user) if user_is_student
+              = link_to user.first_name, staff_path(user) if user_is_staff
             %td
-              = link_to user.last_name, student_path(user) if user.is_student?(current_course)
-              = link_to user.last_name, staff_path(user) if user.is_staff?(current_course)
-            %td= user.course_memberships.where(:course_id => current_course.id).first.role.capitalize
+              = link_to user.last_name, student_path(user) if user_is_student
+              = link_to user.last_name, staff_path(user) if user_is_staff
+            %td= course_membership.role.capitalize
             %td
               - user.courses.each do |course|
                 %li= link_to course.name
@@ -38,13 +41,13 @@
               - user.teams.each do |team|
                 %li= link_to team.name, team
             %td
-              - if user.is_student?(current_course)
+              - if user_is_student
                 = points user.score_for_course(current_course) if user.respond_to?(:grades)
             %td
               .button-bar
                 %ul.button-group.right.radius
                   %li
-                    = link_to "Dashboard", student_path(user), :class => 'button' if user.is_student?(current_course)
-                    = link_to "Dashboard", staff_path(user), :class => 'button' if user.is_staff?(current_course)
+                    = link_to "Dashboard", student_path(user), :class => 'button' if user_is_student
+                    = link_to "Dashboard", staff_path(user), :class => 'button' if user_is_staff
                   %li= link_to 'Edit', edit_user_path(user), :class => 'button'
-                  %li= link_to 'Delete', user.course_memberships.where(:course_id => current_course.id).first, :class => 'button', :data => { confirm: 'This will delete the student from your course - Are you sure?' }, :method => :delete
+                  %li= link_to 'Delete', course_membership, :class => 'button', :data => { confirm: 'This will delete the student from your course - Are you sure?' }, :method => :delete

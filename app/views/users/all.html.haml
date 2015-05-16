@@ -28,7 +28,7 @@
             %td= user.role(current_course).capitalize
             %td
               %ul
-                - user.course_memberships.each do |cm|
+                - user.course_memberships.includes(:course).each do |cm|
                   %li= cm.course.name
             %td
               - if user.is_student?(current_course)
