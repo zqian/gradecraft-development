@@ -5,7 +5,7 @@
         %th{:width => "20%"} #{term_for :group} Name
         %th{:style => "min-width: 200px"}= "#{current_course.user_term}s"
         %th{:width => "20%"} Status
-        %th{:style => "min-width: 200px"} #{term_for :assignments} 
+        %th{:style => "min-width: 200px"} #{term_for :assignments}
         %th{:style => "min-width: 200px"}
     %tbody
       - groups.each do |group|
@@ -22,4 +22,5 @@
             .button-bar
               %ul.button-group.radius.right
                 %li= link_to "Review #{term_for :group}", review_groups_path(:id => group), :class => 'button'
+                %li= link_to "Edit #{term_for :group}", edit_group_path(:id => group), :class => 'button'
                 %li= link_to 'Delete', group_path(group), :class => 'button', :data => { confirm: 'Are you sure?' }, :method => :delete

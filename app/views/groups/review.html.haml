@@ -1,14 +1,14 @@
 .small-12.columns.mainContent
-  
+
   = content_nav_for @group, "Review Group"
 
   %h3.pagetitle= @title
-  
+
   .small-12.columns
     .button-bar
-      %ul.button-group.context_menu
+      %ul.button-group.context_menu.radius
         %li
-          %a{:href => group_path(@group) }
+          %a.button{:href => group_path(@group) }
             %i.fi-list-thumbnails
             See #{term_for :group}
 
@@ -35,7 +35,7 @@
         - @group.proposals.order_by_creation_date.each_with_index do |p, index|
           - if p.proposal.present?
             .panel.callout
-              %h4.bold= "Proposal ##{index + 1}: #{p.title}" 
+              %h4.bold= "Proposal ##{index + 1}: #{p.title}"
               %h6= "Created: #{p.created_at}"
               %p= p.proposal
 

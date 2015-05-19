@@ -7,9 +7,9 @@
 
   .small-12.columns
     .button-bar
-      %ul.button-group.context_menu
+      %ul.button-group.context_menu.radius
         %li
-          %a{:href => new_group_path }
+          %a.button{:href => new_group_path }
             %i.fi-plus
             New #{term_for :group}
 
@@ -30,7 +30,7 @@
     .clear
 
   - if @approved_groups.present?
-    
+
     %h4.subtitle.success= "Approved #{term_for :groups}"
 
     = render 'groups_table', :course => current_course, :groups => @approved_groups

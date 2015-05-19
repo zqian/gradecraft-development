@@ -1,16 +1,17 @@
 .small-12.panel.mainContent
 
   = content_nav_for @group, "Edit #{term_for :group}"
-  
+
   %h3.pagetitle= @title
 
   .small-12.columns
     .button-bar
-      %ul.button-group.context_menu
+      %ul.button-group.context_menu.radius
         %li
-          %a{:href => group_path(@group) }
+          %a.button{:href => group_path(@group) }
             %i.fi-list-thumbnails
             See #{term_for :group}
+    %br
 
   .small-12.columns
     = render 'form'
