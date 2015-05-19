@@ -15,6 +15,11 @@
       %li
         %i.fi-torsos-all
         = "#{(term_for :team).titleize} #{current_user.team_for_course(current_course).name}"
+    - if current_course.syllabus.present?
+      %a{:href => current_course.syllabus_url }
+        %li
+          %i.fi-page-pdf
+          Course Syllabus
     - if current_course.phone.present?
       %li
         %i.fi-telephone
