@@ -9,17 +9,17 @@
 
   - if current_user_is_staff?
     .small-12.columns
-      .button-bar.right
-        %ul.button-group.context_menu
+      .button-bar
+        %ul.button-group.context_menu.radius
           %li
-            %a{:href => new_group_path }
+            %a.button{:href => new_group_path }
               %i.fi-plus
               New #{(term_for :group).titleize}
           %li
-            %a{:href => review_groups_path(:id => @group) }
+            %a.button{:href => review_groups_path(:id => @group) }
               %i.fi-pencil
               Review #{term_for :group}
-      %br 
+      %br
 
   .small-12.columns
     %h4
@@ -33,10 +33,10 @@
         .label.right.radius
           %span.has-tip{:title => "This #{term_for :group} must be approved by your instructor before you can proceed", :data => {'tooltip' => true}}
             %i.fi-flag
-            Status: Pending 
+            Status: Pending
 
     .small-12.medium-3.columns
-      %h4 #{term_for :assignments}: 
+      %h4 #{term_for :assignments}:
       %ul
         - @group.assignment_groups.each do |ag|
           %li= link_to ag.assignment.name, ag.assignment
