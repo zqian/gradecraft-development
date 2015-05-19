@@ -50,7 +50,7 @@ class Course < ActiveRecord::Base
     :team_challenges, :team_leader_term, :max_assignment_types_weighted,
     :point_total, :in_team_leaderboard, :grade_scheme_elements_attributes,
     :add_team_score_to_student, :status, :assignments_attributes,
-    :start_date, :end_date, :pass_term, :fail_term
+    :start_date, :end_date, :pass_term, :fail_term, :syllabus
 
   with_options :dependent => :destroy do |c|
     c.has_many :assignment_types
@@ -74,6 +74,7 @@ class Course < ActiveRecord::Base
   accepts_nested_attributes_for :assignments
 
   mount_uploader :media_file, CourseMediaUploader
+  mount_uploader :syllabus, CourseSyllabusUploader
 
   accepts_nested_attributes_for :grade_scheme_elements, allow_destroy: true
 

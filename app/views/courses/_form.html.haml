@@ -116,6 +116,12 @@
 
     .panel.callout.radius
       %h4.uppercase COURSE SETTINGS
+      = f.label :syllabus
+      = f.file_field :syllabus
+      - if current_course.syllabus.present?
+        .italic= link_to "Current Syllabus", current_course.syllabus_url
+      %br
+      = f.label :media_file
       = f.file_field :media_file
       = f.input :media_credit
       = f.input :media_caption
