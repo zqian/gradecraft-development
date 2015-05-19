@@ -28,8 +28,8 @@ describe "assignments/index" do
   it "renders the breadcrumbs" do
     render
     assert_select ".content-nav", :count => 1
-    assert_select "ul.breadcrumbs" do
-      assert_select "li", :count => 2
+    assert_select ".breadcrumbs" do
+      assert_select "a", :count => 2
     end
   end
 

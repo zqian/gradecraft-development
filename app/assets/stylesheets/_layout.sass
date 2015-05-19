@@ -1,9 +1,10 @@
 
 /* Background image for site, this is declared because otherwise it overrides the text editor's bkg */
 body.logged-in, body.logged-out
-  background: image-url("cloud_bg.gif")
+  /*background: image-url("cloud_bg.gif")*/
+  background-color: $badass_blue
 
-/* Primary page content */ 
+/* Primary page content */
 .mainContent, body.logged-in .info_pages
   background-color: #FFF
   position: relative
@@ -49,7 +50,7 @@ body.logged-in, body.logged-out
   display: none
 
 .clear, .clearfix
-  clear: both 
+  clear: both
 
 form .tabs-content .content
   min-height: 400px
@@ -91,11 +92,11 @@ form .tabs-content .content
     width: 23%
 
 @media (min-width: 400px)
-  
+
   .mainContent
     min-height: 750px
 
-/* Responsive outer container */ 
+/* Responsive outer container */
 @media (min-width: 1000px)
 
   .outerContainer
@@ -113,7 +114,7 @@ form .tabs-content .content
   .row.panel.publicContent
     margin-top: 0 !important
 
-@media (max-width:787px) 
+@media (max-width:787px)
   .badge-icon
     height: 25px
     width: 25px

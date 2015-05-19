@@ -1,34 +1,34 @@
 .button-bar(ng-app="gradecraft" ng-controller="AssignmentCtrl" ng-init="init(#{@assignment[:id]}, #{@assignment.use_rubric})")
-  %ul.button-group.context_menu
+  %ul.button-group.context_menu.radius
     %li
-      %a{:href => edit_assignment_path(@assignment) }
+      %a.button{:href => edit_assignment_path(@assignment) }
         %i.fi-pencil
         Edit
     - if @team.present? && ! ( @assignment.rubric and @assignment.rubric.designed? and @assignment.use_rubric? )
       %li
-        %a{:href => mass_grade_assignment_path(@assignment, :team_id => @team) }
+        %a.button{:href => mass_grade_assignment_path(@assignment, :team_id => @team) }
           %i.fi-list-thumbnails
           Quick Grade
     - elsif ! ( @assignment.rubric and @assignment.rubric.designed? and @assignment.use_rubric? )
       %li
-        %a{:href => mass_grade_assignment_path(@assignment) }
+        %a.button{:href => mass_grade_assignment_path(@assignment) }
           %i.fi-check
           Quick Grade
-    / - if @assignment.submissions.present?
-    /   %li
-    /     %a{:href => export_submissions_assignment_path(@assignment, :team_id => @team, format: 'zip') }
-    /       %i.fi-download
-    /       Download Submissions
+    - if @assignment.submissions.present?
+      %li
+        %a.button{:href => export_submissions_assignment_path(@assignment, :team_id => @team, format: 'zip') }
+          %i.fi-download
+          Download Submissions
     %li
-      %a{:href => import_grades_assignment_path(@assignment) }
+      %a.button{:href => import_grades_assignment_path(@assignment) }
         %i.fi-upload
         Import Grades
     %li
-      %a{:href => export_grades_assignment_path(@assignment, format: 'csv') }
+      %a.button{:href => export_grades_assignment_path(@assignment, format: 'csv') }
         %i.fi-page-export-csv
         Download Grades
     %li
-      %a{:href => design_assignment_rubric_path(@assignment) }
+      %a.button{:href => design_assignment_rubric_path(@assignment) }
         %i.fi-list-thumbnails
         - if @assignment.rubric and @assignment.rubric.designed?
           Edit Rubric
@@ -39,14 +39,14 @@
       - if @assignment.grades.instructor_modified.present?
         %li= link_to "Review Grades", rubric_grades_review_assignment_path(@assignment)
       %li.loading(ng-cloak ng-hide="window.angular")
-        %a(ng-click="")
+        %a.button(ng-click="")
           %i.fi-list-thumbnails
           Rubrics
       %li.on(ng-cloak ng-show="useRubric")
-        %a(ng-click="rubricsOff()")
+        %a.button(ng-click="rubricsOff()")
           %i.fi-list-thumbnails
           Rubrics On
       %li.off(ng-cloak ng-hide="useRubric")
-        %a(ng-click="rubricsOn()")
+        %a.button(ng-click="rubricsOn()")
           %i.fi-list-thumbnails
           Rubrics Off

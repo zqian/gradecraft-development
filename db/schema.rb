@@ -15,13 +15,14 @@ ActiveRecord::Schema.define(version: 20150506141315) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
 
   create_table "assignment_files", force: :cascade do |t|
-    t.string   "filename"
+    t.string   "filename",        limit: 255
     t.integer  "assignment_id"
-    t.string   "filepath"
-    t.string   "file"
-    t.boolean  "file_processing", default: false, null: false
+    t.string   "filepath",        limit: 255
+    t.string   "file",            limit: 255
+    t.boolean  "file_processing",             default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -32,58 +33,58 @@ ActiveRecord::Schema.define(version: 20150506141315) do
   end
 
   create_table "assignment_score_levels", force: :cascade do |t|
-    t.integer  "assignment_id", null: false
-    t.string   "name",          null: false
-    t.integer  "value",         null: false
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.integer  "assignment_id",             null: false
+    t.string   "name",          limit: 255, null: false
+    t.integer  "value",                     null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   create_table "assignment_submissions", force: :cascade do |t|
     t.integer  "assignment_id"
     t.integer  "user_id"
-    t.string   "feedback"
-    t.string   "comment"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.string   "attachment_file_name"
-    t.string   "attachment_content_type"
+    t.string   "feedback",                limit: 255
+    t.string   "comment",                 limit: 255
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.string   "attachment_file_name",    limit: 255
+    t.string   "attachment_content_type", limit: 255
     t.integer  "attachment_file_size"
     t.datetime "attachment_updated_at"
-    t.string   "link"
+    t.string   "link",                    limit: 255
     t.integer  "submittable_id"
-    t.string   "submittable_type"
+    t.string   "submittable_type",        limit: 255
     t.text     "text_feedback"
     t.text     "text_comment"
   end
 
   create_table "assignment_types", force: :cascade do |t|
-    t.string   "name"
-    t.string   "point_setting"
+    t.string   "name",                              limit: 255
+    t.string   "point_setting",                     limit: 255
     t.boolean  "levels"
-    t.string   "points_predictor_display"
+    t.string   "points_predictor_display",          limit: 255
     t.integer  "resubmission"
     t.integer  "max_value"
     t.integer  "percentage_course"
     t.text     "predictor_description"
-    t.datetime "created_at",                                       null: false
-    t.datetime "updated_at",                                       null: false
+    t.datetime "created_at",                                                   null: false
+    t.datetime "updated_at",                                                   null: false
     t.integer  "course_id"
     t.integer  "universal_point_value"
     t.integer  "minimum_score"
-    t.integer  "step_value",                        default: 1
+    t.integer  "step_value",                                    default: 1
     t.integer  "grade_scheme_id"
     t.boolean  "due_date_present"
     t.integer  "order_placement"
     t.boolean  "mass_grade"
-    t.string   "mass_grade_type"
+    t.string   "mass_grade_type",                   limit: 255
     t.boolean  "student_weightable"
-    t.string   "student_logged_button_text"
-    t.string   "student_logged_revert_button_text"
-    t.boolean  "notify_released",                   default: true
-    t.boolean  "include_in_timeline",               default: true
-    t.boolean  "include_in_predictor",              default: true
-    t.boolean  "include_in_to_do",                  default: true
+    t.string   "student_logged_button_text",        limit: 255
+    t.string   "student_logged_revert_button_text", limit: 255
+    t.boolean  "notify_released",                               default: true
+    t.boolean  "include_in_timeline",                           default: true
+    t.boolean  "include_in_predictor",                          default: true
+    t.boolean  "include_in_to_do",                              default: true
     t.boolean  "is_attendance"
     t.boolean  "has_winners"
     t.integer  "num_winner_levels"
@@ -107,69 +108,69 @@ ActiveRecord::Schema.define(version: 20150506141315) do
   add_index "assignment_weights", ["student_id", "assignment_type_id"], name: "index_assignment_weights_on_student_id_and_assignment_type_id", using: :btree
 
   create_table "assignments", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",                              limit: 255
     t.text     "description"
     t.integer  "point_total"
     t.datetime "due_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "level"
+    t.string   "level",                             limit: 255
     t.boolean  "present"
     t.integer  "course_id"
     t.integer  "assignment_type_id"
     t.integer  "grade_scheme_id"
-    t.string   "grade_scope",                       default: "Individual", null: false
+    t.string   "grade_scope",                       limit: 255, default: "Individual", null: false
     t.datetime "close_time"
     t.datetime "open_time"
     t.boolean  "required"
     t.boolean  "accepts_submissions"
     t.boolean  "student_logged"
-    t.boolean  "release_necessary",                 default: false,        null: false
+    t.boolean  "release_necessary",                             default: false,        null: false
     t.datetime "open_at"
-    t.string   "icon"
+    t.string   "icon",                              limit: 255
     t.boolean  "can_earn_multiple_times"
-    t.boolean  "visible",                           default: true
+    t.boolean  "visible",                                       default: true
     t.integer  "category_id"
     t.boolean  "resubmissions_allowed"
     t.integer  "max_submissions"
     t.datetime "accepts_submissions_until"
     t.datetime "accepts_resubmissions_until"
     t.datetime "grading_due_at"
-    t.string   "role_necessary_for_release"
-    t.string   "media"
-    t.string   "thumbnail"
-    t.string   "media_credit"
-    t.string   "media_caption"
-    t.string   "points_predictor_display"
-    t.boolean  "notify_released",                   default: true
-    t.string   "mass_grade_type"
-    t.boolean  "include_in_timeline",               default: true
-    t.boolean  "include_in_predictor",              default: true
+    t.string   "role_necessary_for_release",        limit: 255
+    t.string   "media",                             limit: 255
+    t.string   "thumbnail",                         limit: 255
+    t.string   "media_credit",                      limit: 255
+    t.string   "media_caption",                     limit: 255
+    t.string   "points_predictor_display",          limit: 255
+    t.boolean  "notify_released",                               default: true
+    t.string   "mass_grade_type",                   limit: 255
+    t.boolean  "include_in_timeline",                           default: true
+    t.boolean  "include_in_predictor",                          default: true
     t.integer  "position"
-    t.boolean  "include_in_to_do",                  default: true
-    t.string   "student_logged_button_text"
-    t.string   "student_logged_revert_button_text"
-    t.boolean  "use_rubric",                        default: true
-    t.boolean  "accepts_attachments",               default: true
-    t.boolean  "accepts_text",                      default: true
-    t.boolean  "accepts_links",                     default: true
-    t.boolean  "pass_fail",                         default: false
+    t.boolean  "include_in_to_do",                              default: true
+    t.boolean  "use_rubric",                                    default: true
+    t.string   "student_logged_button_text",        limit: 255
+    t.string   "student_logged_revert_button_text", limit: 255
+    t.boolean  "accepts_attachments",                           default: true
+    t.boolean  "accepts_text",                                  default: true
+    t.boolean  "accepts_links",                                 default: true
+    t.boolean  "pass_fail",                                     default: false
   end
 
   add_index "assignments", ["course_id"], name: "index_assignments_on_course_id", using: :btree
 
   create_table "badge_files", force: :cascade do |t|
-    t.string   "filename"
+    t.string   "filename",        limit: 255
     t.integer  "badge_id"
-    t.string   "filepath"
-    t.string   "file"
-    t.boolean  "file_processing", default: false, null: false
+    t.string   "filepath",        limit: 255
+    t.string   "file",            limit: 255
+    t.boolean  "file_processing",             default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "badge_sets", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",        limit: 255
     t.integer  "course_id"
     t.text     "description"
     t.datetime "created_at"
@@ -182,50 +183,50 @@ ActiveRecord::Schema.define(version: 20150506141315) do
   end
 
   create_table "badges", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",                    limit: 255
     t.text     "description"
     t.integer  "point_total"
     t.integer  "course_id"
     t.integer  "assignment_id"
     t.integer  "badge_set_id"
-    t.string   "icon"
+    t.string   "icon",                    limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "visible",                 default: true
-    t.boolean  "can_earn_multiple_times", default: true
+    t.boolean  "visible",                             default: true
+    t.boolean  "can_earn_multiple_times",             default: true
     t.integer  "position"
   end
 
   create_table "bootsy_image_galleries", force: :cascade do |t|
     t.integer  "bootsy_resource_id"
-    t.string   "bootsy_resource_type"
+    t.string   "bootsy_resource_type", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "bootsy_images", force: :cascade do |t|
-    t.string   "image_file"
+    t.string   "image_file",       limit: 255
     t.integer  "image_gallery_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "categories", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",        limit: 255
     t.text     "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
     t.integer  "course_id"
   end
 
   add_index "categories", ["course_id"], name: "index_categories_on_course_id", using: :btree
 
   create_table "challenge_files", force: :cascade do |t|
-    t.string   "filename"
+    t.string   "filename",        limit: 255
     t.integer  "challenge_id"
-    t.string   "filepath"
-    t.string   "file"
-    t.boolean  "file_processing", default: false, null: false
+    t.string   "filepath",        limit: 255
+    t.string   "file",            limit: 255
+    t.boolean  "file_processing",             default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -233,43 +234,43 @@ ActiveRecord::Schema.define(version: 20150506141315) do
   create_table "challenge_grades", force: :cascade do |t|
     t.integer  "challenge_id"
     t.integer  "score"
-    t.string   "feedback"
-    t.string   "status"
+    t.string   "feedback",      limit: 255
+    t.string   "status",        limit: 255
     t.integer  "team_id"
     t.integer  "final_score"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
     t.text     "text_feedback"
   end
 
   create_table "challenge_score_levels", force: :cascade do |t|
     t.integer  "challenge_id"
-    t.string   "name"
+    t.string   "name",         limit: 255
     t.integer  "value"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "challenges", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",                     limit: 255
     t.text     "description"
     t.integer  "point_total"
     t.datetime "due_at"
     t.integer  "course_id"
-    t.string   "points_predictor_display"
-    t.boolean  "visible",                  default: true
+    t.string   "points_predictor_display", limit: 255
+    t.boolean  "visible",                              default: true
     t.boolean  "accepts_submissions"
     t.boolean  "release_necessary"
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.datetime "created_at",                                          null: false
+    t.datetime "updated_at",                                          null: false
     t.datetime "open_at"
     t.boolean  "mass_grade"
-    t.string   "mass_grade_type"
+    t.string   "mass_grade_type",          limit: 255
     t.boolean  "levels"
-    t.string   "media"
-    t.string   "thumbnail"
-    t.string   "media_credit"
-    t.string   "media_caption"
+    t.string   "media",                    limit: 255
+    t.string   "thumbnail",                limit: 255
+    t.string   "media_credit",             limit: 255
+    t.string   "media_caption",            limit: 255
   end
 
   create_table "course_badge_sets", force: :cascade do |t|
@@ -283,31 +284,31 @@ ActiveRecord::Schema.define(version: 20150506141315) do
   end
 
   create_table "course_grade_scheme_elements", force: :cascade do |t|
-    t.string   "name"
-    t.string   "letter_grade"
+    t.string   "name",                   limit: 255
+    t.string   "letter_grade",           limit: 255
     t.integer  "low_range"
     t.integer  "high_range"
     t.integer  "course_grade_scheme_id"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
   end
 
   create_table "course_grade_schemes", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.integer  "course_id"
   end
 
   create_table "course_memberships", force: :cascade do |t|
     t.integer  "course_id"
     t.integer  "user_id"
-    t.integer  "score",             default: 0,         null: false
+    t.integer  "score",                         default: 0,         null: false
     t.boolean  "shared_badges"
     t.text     "character_profile"
     t.datetime "last_login_at"
-    t.boolean  "auditing",          default: false,     null: false
-    t.string   "role",              default: "student", null: false
+    t.boolean  "auditing",                      default: false,     null: false
+    t.string   "role",              limit: 255, default: "student", null: false
   end
 
   add_index "course_memberships", ["course_id", "user_id"], name: "index_course_memberships_on_course_id_and_user_id", unique: true, using: :btree
@@ -315,30 +316,30 @@ ActiveRecord::Schema.define(version: 20150506141315) do
   add_index "course_memberships", ["user_id", "course_id"], name: "index_courses_users_on_user_id_and_course_id", using: :btree
 
   create_table "courses", force: :cascade do |t|
-    t.string   "name"
-    t.string   "courseno"
-    t.string   "year"
-    t.string   "semester"
+    t.string   "name",                          limit: 255
+    t.string   "courseno",                      limit: 255
+    t.string   "year",                          limit: 255
+    t.string   "semester",                      limit: 255
     t.integer  "grade_scheme_id"
     t.datetime "created_at",                                                                        null: false
     t.datetime "updated_at",                                                                        null: false
     t.boolean  "badge_setting",                                                     default: true
     t.boolean  "team_setting",                                                      default: false
-    t.string   "user_term"
-    t.string   "team_term"
-    t.string   "homepage_message"
+    t.string   "user_term",                     limit: 255
+    t.string   "team_term",                     limit: 255
+    t.string   "homepage_message",              limit: 255
     t.boolean  "status",                                                            default: true
     t.boolean  "group_setting"
     t.integer  "badge_set_id"
     t.datetime "assignment_weight_close_at"
     t.boolean  "team_roles"
-    t.string   "team_leader_term"
-    t.string   "group_term"
-    t.string   "assignment_weight_type"
+    t.string   "team_leader_term",              limit: 255
+    t.string   "group_term",                    limit: 255
+    t.string   "assignment_weight_type",        limit: 255
     t.boolean  "accepts_submissions"
     t.boolean  "teams_visible"
-    t.string   "badge_use_scope"
-    t.string   "weight_term"
+    t.string   "badge_use_scope",               limit: 255
+    t.string   "weight_term",                   limit: 255
     t.boolean  "predictor_setting"
     t.boolean  "badges_value"
     t.integer  "max_group_size"
@@ -346,29 +347,29 @@ ActiveRecord::Schema.define(version: 20150506141315) do
     t.boolean  "shared_badges"
     t.boolean  "graph_display"
     t.decimal  "default_assignment_weight",                 precision: 4, scale: 1, default: 1.0
-    t.string   "tagline"
+    t.string   "tagline",                       limit: 255
     t.boolean  "academic_history_visible"
-    t.string   "office"
-    t.string   "phone"
-    t.string   "class_email"
-    t.string   "twitter_handle"
-    t.string   "twitter_hashtag"
-    t.string   "location"
-    t.string   "office_hours"
+    t.string   "office",                        limit: 255
+    t.string   "phone",                         limit: 255
+    t.string   "class_email",                   limit: 255
+    t.string   "twitter_handle",                limit: 255
+    t.string   "twitter_hashtag",               limit: 255
+    t.string   "location",                      limit: 255
+    t.string   "office_hours",                  limit: 255
     t.text     "meeting_times"
-    t.string   "media_file"
-    t.string   "media_credit"
-    t.string   "media_caption"
-    t.string   "badge_term"
-    t.string   "assignment_term"
-    t.string   "challenge_term"
+    t.string   "media_file",                    limit: 255
+    t.string   "media_credit",                  limit: 255
+    t.string   "media_caption",                 limit: 255
+    t.string   "badge_term",                    limit: 255
+    t.string   "assignment_term",               limit: 255
+    t.string   "challenge_term",                limit: 255
     t.boolean  "use_timeline"
     t.text     "grading_philosophy"
     t.integer  "total_assignment_weight"
     t.integer  "max_assignment_weight"
     t.boolean  "check_final_grade"
     t.boolean  "character_profiles"
-    t.string   "lti_uid"
+    t.string   "lti_uid",                       limit: 255
     t.boolean  "team_score_average"
     t.boolean  "team_challenges"
     t.integer  "max_assignment_types_weighted"
@@ -390,8 +391,8 @@ ActiveRecord::Schema.define(version: 20150506141315) do
 
   create_table "duplicated_users", id: false, force: :cascade do |t|
     t.integer "id"
-    t.string  "last_name"
-    t.string  "role"
+    t.string  "last_name",   limit: 255
+    t.string  "role",        limit: 255
     t.integer "submissions", limit: 8
   end
 
@@ -403,7 +404,7 @@ ActiveRecord::Schema.define(version: 20150506141315) do
     t.integer  "task_id"
     t.integer  "grade_id"
     t.integer  "group_id"
-    t.string   "group_type"
+    t.string   "group_type",      limit: 255
     t.integer  "score"
     t.text     "feedback"
     t.datetime "created_at"
@@ -414,59 +415,59 @@ ActiveRecord::Schema.define(version: 20150506141315) do
     t.integer  "metric_id"
     t.integer  "tier_id"
     t.integer  "tier_badge_id"
-    t.boolean  "student_visible", default: true
+    t.boolean  "student_visible",             default: true
   end
 
   create_table "elements", force: :cascade do |t|
-    t.string   "name"
-    t.string   "description"
+    t.string   "name",        limit: 255
+    t.string   "description", limit: 255
     t.integer  "badge_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "events", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",          limit: 255
     t.text     "description"
     t.datetime "open_at"
     t.datetime "due_at"
     t.text     "media"
     t.text     "thumbnail"
     t.text     "media_credit"
-    t.string   "media_caption"
+    t.string   "media_caption", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "course_id"
   end
 
   create_table "faqs", force: :cascade do |t|
-    t.string   "question"
+    t.string   "question",   limit: 255
     t.text     "answer"
     t.integer  "order"
-    t.string   "category"
-    t.string   "audience"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "category",   limit: 255
+    t.string   "audience",   limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "grade_files", force: :cascade do |t|
     t.integer  "grade_id"
-    t.string   "filename"
-    t.string   "filepath"
-    t.string   "file"
-    t.boolean  "file_processing", default: false, null: false
+    t.string   "filename",        limit: 255
+    t.string   "filepath",        limit: 255
+    t.string   "file",            limit: 255
+    t.boolean  "file_processing",             default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "grade_scheme_elements", force: :cascade do |t|
-    t.string   "level"
+    t.string   "level",           limit: 255
     t.integer  "low_range"
-    t.string   "letter"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.string   "letter",          limit: 255
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.integer  "grade_scheme_id"
-    t.string   "description"
+    t.string   "description",     limit: 255
     t.integer  "high_range"
     t.integer  "course_id"
   end
@@ -476,12 +477,12 @@ ActiveRecord::Schema.define(version: 20150506141315) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "course_id"
-    t.string   "name"
+    t.string   "name",          limit: 255
     t.text     "description"
   end
 
   create_table "grades", force: :cascade do |t|
-    t.integer  "raw_score",           default: 0,     null: false
+    t.integer  "raw_score",                       default: 0,     null: false
     t.integer  "assignment_id"
     t.text     "feedback"
     t.datetime "created_at"
@@ -489,8 +490,8 @@ ActiveRecord::Schema.define(version: 20150506141315) do
     t.boolean  "complete"
     t.boolean  "semis"
     t.boolean  "finals"
-    t.string   "type"
-    t.string   "status"
+    t.string   "type",                limit: 255
+    t.string   "status",              limit: 255
     t.boolean  "attempted"
     t.boolean  "substantial"
     t.integer  "final_score"
@@ -500,15 +501,15 @@ ActiveRecord::Schema.define(version: 20150506141315) do
     t.integer  "student_id"
     t.integer  "task_id"
     t.integer  "group_id"
-    t.string   "group_type"
+    t.string   "group_type",          limit: 255
     t.integer  "score"
     t.integer  "assignment_type_id"
     t.integer  "point_total"
     t.text     "admin_notes"
     t.integer  "graded_by_id"
     t.integer  "team_id"
-    t.integer  "predicted_score",     default: 0,     null: false
-    t.boolean  "instructor_modified", default: false
+    t.integer  "predicted_score",                 default: 0,     null: false
+    t.boolean  "instructor_modified",             default: false
     t.string   "pass_fail_status"
   end
 
@@ -524,11 +525,11 @@ ActiveRecord::Schema.define(version: 20150506141315) do
   create_table "group_memberships", force: :cascade do |t|
     t.integer  "group_id"
     t.integer  "student_id"
-    t.string   "accepted"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "accepted",   limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.integer  "course_id"
-    t.string   "group_type"
+    t.string   "group_type", limit: 255
   end
 
   add_index "group_memberships", ["course_id"], name: "index_group_memberships_on_course_id", using: :btree
@@ -536,21 +537,21 @@ ActiveRecord::Schema.define(version: 20150506141315) do
   add_index "group_memberships", ["student_id"], name: "index_group_memberships_on_student_id", using: :btree
 
   create_table "groups", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",          limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "course_id"
-    t.string   "approved"
+    t.string   "approved",      limit: 255
     t.text     "text_feedback"
     t.text     "text_proposal"
   end
 
   create_table "lti_providers", force: :cascade do |t|
-    t.string   "name"
-    t.string   "uid"
-    t.string   "consumer_key"
-    t.string   "consumer_secret"
-    t.string   "launch_url"
+    t.string   "name",            limit: 255
+    t.string   "uid",             limit: 255
+    t.string   "consumer_key",    limit: 255
+    t.string   "consumer_secret", limit: 255
+    t.string   "launch_url",      limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -563,8 +564,8 @@ ActiveRecord::Schema.define(version: 20150506141315) do
   end
 
   create_table "metrics", force: :cascade do |t|
-    t.string   "name"
-    t.string   "description"
+    t.string   "name",                limit: 255
+    t.string   "description",         limit: 255
     t.integer  "max_points"
     t.integer  "rubric_id"
     t.integer  "order"
@@ -574,7 +575,7 @@ ActiveRecord::Schema.define(version: 20150506141315) do
   end
 
   create_table "proposals", force: :cascade do |t|
-    t.string   "title"
+    t.string   "title",        limit: 255
     t.text     "proposal"
     t.integer  "group_id"
     t.text     "feedback"
@@ -586,15 +587,15 @@ ActiveRecord::Schema.define(version: 20150506141315) do
 
   create_table "rubric_categories", force: :cascade do |t|
     t.integer "rubric_id"
-    t.string  "name"
+    t.string  "name",      limit: 255
   end
 
   create_table "rubric_grades", force: :cascade do |t|
-    t.string   "metric_name"
+    t.string   "metric_name",        limit: 255
     t.text     "metric_description"
     t.integer  "max_points"
     t.integer  "order"
-    t.string   "tier_name"
+    t.string   "tier_name",          limit: 255
     t.text     "tier_description"
     t.integer  "points"
     t.integer  "submission_id"
@@ -614,16 +615,16 @@ ActiveRecord::Schema.define(version: 20150506141315) do
   end
 
   create_table "score_levels", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",               limit: 255
     t.integer  "value"
     t.integer  "assignment_type_id"
     t.integer  "assignment_id"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
   end
 
   create_table "sessions", force: :cascade do |t|
-    t.string   "session_id", null: false
+    t.string   "session_id", limit: 255, null: false
     t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -632,15 +633,26 @@ ActiveRecord::Schema.define(version: 20150506141315) do
   add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", unique: true, using: :btree
   add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
 
+  create_table "shared_earned_badges", force: :cascade do |t|
+    t.integer  "course_id"
+    t.text     "student_name"
+    t.integer  "user_id"
+    t.string   "icon",         limit: 255
+    t.string   "name",         limit: 255
+    t.integer  "badge_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "student_academic_histories", force: :cascade do |t|
     t.integer "student_id"
-    t.string  "major"
+    t.string  "major",                limit: 255
     t.decimal "gpa"
     t.integer "current_term_credits"
     t.integer "accumulated_credits"
-    t.string  "year_in_school"
-    t.string  "state_of_residence"
-    t.string  "high_school"
+    t.string  "year_in_school",       limit: 255
+    t.string  "state_of_residence",   limit: 255
+    t.string  "high_school",          limit: 255
     t.boolean "athlete"
     t.integer "act_score"
     t.integer "sat_score"
@@ -655,36 +667,36 @@ ActiveRecord::Schema.define(version: 20150506141315) do
   end
 
   create_table "submission_files", force: :cascade do |t|
-    t.string   "filename",                        null: false
-    t.integer  "submission_id",                   null: false
-    t.string   "filepath"
-    t.string   "file"
-    t.boolean  "file_processing", default: false, null: false
+    t.string   "filename",        limit: 255,                 null: false
+    t.integer  "submission_id",                               null: false
+    t.string   "filepath",        limit: 255
+    t.string   "file",            limit: 255
+    t.boolean  "file_processing",             default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "submission_files_duplicate", id: false, force: :cascade do |t|
-    t.string  "key"
-    t.string  "format"
+    t.string  "key",        limit: 255
+    t.string  "format",     limit: 255
     t.integer "upload_id"
-    t.string  "full_name"
-    t.string  "last_name"
-    t.string  "first_name"
+    t.string  "full_name",  limit: 255
+    t.string  "last_name",  limit: 255
+    t.string  "first_name", limit: 255
   end
 
   create_table "submissions", force: :cascade do |t|
     t.integer  "assignment_id"
     t.integer  "student_id"
-    t.string   "feedback"
-    t.string   "comment"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.string   "attachment_file_name"
-    t.string   "attachment_content_type"
+    t.string   "feedback",                limit: 255
+    t.string   "comment",                 limit: 255
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.string   "attachment_file_name",    limit: 255
+    t.string   "attachment_content_type", limit: 255
     t.integer  "attachment_file_size"
     t.datetime "attachment_updated_at"
-    t.string   "link"
+    t.string   "link",                    limit: 255
     t.text     "text_feedback"
     t.text     "text_comment"
     t.integer  "creator_id"
@@ -694,7 +706,7 @@ ActiveRecord::Schema.define(version: 20150506141315) do
     t.integer  "task_id"
     t.integer  "course_id"
     t.integer  "assignment_type_id"
-    t.string   "assignment_type"
+    t.string   "assignment_type",         limit: 255
   end
 
   add_index "submissions", ["assignment_type"], name: "index_submissions_on_assignment_type", using: :btree
@@ -702,7 +714,7 @@ ActiveRecord::Schema.define(version: 20150506141315) do
 
   create_table "tasks", force: :cascade do |t|
     t.integer  "assignment_id"
-    t.string   "name"
+    t.string   "name",                limit: 255
     t.text     "description"
     t.datetime "due_at"
     t.boolean  "accepts_submissions"
@@ -710,9 +722,9 @@ ActiveRecord::Schema.define(version: 20150506141315) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "course_id"
-    t.string   "assignment_type"
-    t.string   "type"
-    t.string   "taskable_type"
+    t.string   "assignment_type",     limit: 255
+    t.string   "type",                limit: 255
+    t.string   "taskable_type",       limit: 255
   end
 
   add_index "tasks", ["assignment_id", "assignment_type"], name: "index_tasks_on_assignment_id_and_assignment_type", using: :btree
@@ -734,22 +746,22 @@ ActiveRecord::Schema.define(version: 20150506141315) do
   end
 
   create_table "teams", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",                limit: 255
     t.integer  "course_id"
     t.integer  "rank"
     t.integer  "score"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "teams_leaderboard",   default: false
-    t.boolean  "in_team_leaderboard", default: false
-    t.string   "banner"
+    t.boolean  "teams_leaderboard",               default: false
+    t.boolean  "in_team_leaderboard",             default: false
+    t.string   "banner",              limit: 255
   end
 
   create_table "themes", force: :cascade do |t|
-    t.string   "name"
-    t.string   "filename"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",       limit: 255
+    t.string   "filename",   limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "tier_badges", force: :cascade do |t|
@@ -760,7 +772,7 @@ ActiveRecord::Schema.define(version: 20150506141315) do
   end
 
   create_table "tiers", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",        limit: 255
     t.text     "description"
     t.integer  "points"
     t.integer  "metric_id"
@@ -773,39 +785,39 @@ ActiveRecord::Schema.define(version: 20150506141315) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "username",                                            null: false
-    t.string   "email"
-    t.string   "crypted_password"
-    t.string   "salt"
+    t.string   "username",                        limit: 255,                     null: false
+    t.string   "email",                           limit: 255
+    t.string   "crypted_password",                limit: 255
+    t.string   "salt",                            limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "reset_password_token"
+    t.string   "reset_password_token",            limit: 255
     t.datetime "reset_password_token_expires_at"
     t.datetime "reset_password_email_sent_at"
-    t.string   "remember_me_token"
+    t.string   "remember_me_token",               limit: 255
     t.datetime "remember_me_token_expires_at"
-    t.string   "avatar_file_name"
-    t.string   "avatar_content_type"
+    t.string   "avatar_file_name",                limit: 255
+    t.string   "avatar_content_type",             limit: 255
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
-    t.string   "role",                            default: "student", null: false
-    t.string   "first_name"
-    t.string   "last_name"
+    t.string   "role",                            limit: 255, default: "student", null: false
+    t.string   "first_name",                      limit: 255
+    t.string   "last_name",                       limit: 255
     t.integer  "rank"
-    t.string   "display_name"
-    t.boolean  "private_display",                 default: false
+    t.string   "display_name",                    limit: 255
+    t.boolean  "private_display",                             default: false
     t.integer  "default_course_id"
-    t.string   "final_grade"
+    t.string   "final_grade",                     limit: 255
     t.integer  "visit_count"
     t.integer  "predictor_views"
     t.integer  "page_views"
-    t.string   "team_role"
+    t.string   "team_role",                       limit: 255
     t.datetime "last_login_at"
     t.datetime "last_logout_at"
     t.datetime "last_activity_at"
-    t.string   "lti_uid"
-    t.string   "last_login_from_ip_address"
-    t.string   "kerberos_uid"
+    t.string   "lti_uid",                         limit: 255
+    t.string   "last_login_from_ip_address",      limit: 255
+    t.string   "kerberos_uid",                    limit: 255
   end
 
   add_index "users", ["kerberos_uid"], name: "index_users_on_kerberos_uid", using: :btree

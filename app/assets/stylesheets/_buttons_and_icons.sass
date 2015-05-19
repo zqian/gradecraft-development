@@ -1,14 +1,13 @@
 .button
   /*margin-bottom: 0*/
   text-transform: capitalize
-  border: none
-  text-shadow: 0px 0px 1px #222
+  border: 0
   color: #FFF
-  padding: .5rem
-  font-size: .9rem
+  padding: .4rem
+  font-size: .7rem !important
   cursor: pointer
-  background-color: #64b3c1
-  @include linear-gradient(#64b3c1, #53a2b0)
+  background-color: $primary-color-2
+  margin: 0 !important
 
   &:hover
     @include linear-gradient(#385b83, #264971)
@@ -16,134 +15,5 @@
   &:active
     @include linear-gradient(#5daa72, #66cc99)
 
-.button.alert
-  @include linear-gradient($secondary-color, $secondary-color)
-  padding: .45rem !important
-  font-size: 1rem
-
-.button-group li, .button-group li a, .button-group li a:hover 
-  color: #FFF
-
-.button-bar.aindex
-  margin-top: -2.5rem
-  padding-right: .5rem
-
-  .button
-    padding: .35rem
-
-    a
-      padding: .5rem
-
-.button-bar ul
-  white-space: nowrap 
-  display: inline 
-
-th.center button.button
-  margin: 0
-
-.sideBar .button, .panel a.button.radius
-  font-size: .7rem
-  padding: .4rem
-
-ul.button-group.context_menu
-
-  li
-    background-color: #64b3c1
-    @include linear-gradient(#64b3c1, #53a2b0)
-    text-transform: capitalize
-
-  li a
-    display: block
-    padding: .5rem
-    font-size: 1rem
-
-  li a:hover
-    @include linear-gradient(#385b83, #264971)
-
-  li:first-child, li:first-child a
-    border-bottom-left-radius: $global-radius
-    border-top-left-radius: $global-radius
-
-  li:last-child, li:last-child a
-    border-top-right-radius: $global-radius
-    border-bottom-right-radius: $global-radius
-
-  /* styles for rubric on/off button, use for anything that needs to show toggle state */
-  li.loading
-    background-color: #666
-    display: none
-    @include linear-gradient(#888, #666)
-
-  li.loading a:hover
-    background-color: #888
-    display: none
-    @include linear-gradient(#AAA, #888)
-
-  [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak
-    display: none !important
-
-    &.loading
-      display: block !important
-
-  li.off
-    background-color: $dark_red !important
-    @include linear-gradient($dark_red + #333, $dark_red)
-
-  li.off a:hover
-    background-color: $dark_red !important
-    @include linear-gradient($dark_red + #555, $dark_red + #222)
-
-  li.on
-    background-color: $dark_green !important
-    @include linear-gradient($secondary-color-4, $secondary-color)
-    border-top-right-radius: $global-radius
-    border-bottom-right-radius: $global-radius
-
-  li.on a:hover
-    background-color: $dark_green !important
-    @include linear-gradient($dark_green + #333, $dark_green)
-    border-top-right-radius: $global-radius
-    border-bottom-right-radius: $global-radius
-
-table
-  .button
-    padding: .3rem !important
-    font-size: .9rem
-
-  button.select-all.button.tiny
-    border-top-left-radius: $global-radius
-    border-bottom-left-radius: $global-radius
-
-  button.select-none.button.tiny
-    left: -4px
-    border-top-right-radius: $global-radius
-    border-bottom-right-radius: $global-radius
-
-  .button:hover, .button:focus
-    background-color: darken($secondary-color-2, 15%)
-
-
-.dragBadge img.badge-icon
-  max-width: 100px
-
-/* Responsive outer container */ 
-@media (max-width: 1270px) 
-  .button 
-    float: left 
-    clear: both
-    display: block
-    white-space: wrap
-
-  .button-bar.right li
-    font-size: 80%
-
-  .button-bar.right li a:hover
-    border-radius: $global-radius
-
-@media (max-width: 550px)
-  .button-bar.right li
-    border-radius: $global-radius
-    font-size: 80%
-    margin-right: 0.5rem !important
-    margin-bottom: 0.5rem !important
-
+ul.button-group
+  font-size: .7rem !important

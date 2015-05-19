@@ -1,3 +1,95 @@
+.breadcrumbs
+  padding: 0
+  margin-left: 1rem
+  margin-bottom: 1rem
+  overflow: hidden
+  border-radius: 5px
+
+  a
+    text-decoration: none
+    outline: none
+    display: block
+    float: left
+    line-height: 28px
+    margin-right: .4rem
+    color: white
+    /*need more margin on the left of links to accomodate the numbers*/
+    padding: 0 .5rem 0 1rem
+    background: #666
+    background: linear-gradient($secondary-color-2, $secondary-color-2)
+    position: relative
+    text-indent: 18px
+
+  /*since the first link does not have a triangle before it we can reduce the left padding to make it look consistent with other links*/
+  a:first-child
+    border-radius: 5px 0 0 5px /*to match with the parent's radius*/
+    text-indent: 0
+
+  a:first-child:before
+    z-index: -1
+
+  a:last-child
+    border-radius: 0 5px 5px 0 /*this was to prevent glitches on hover*/
+    padding-right: 20px
+
+  /*hover/active styles*/
+  a.active, a:hover
+    background: #333
+    color: #FFF
+    background: linear-gradient($primary-color-2, $primary-color-2)
+
+  a.active:after, a:hover:after
+    background: #333
+    background: linear-gradient(135deg, $primary-color-2, $primary-color-2)
+
+
+  /*adding the arrows for the breadcrumbs using rotated pseudo elements*/
+  a:after
+    content: ''
+    position: absolute
+    top: 0
+    right: -18px /*half of square's length*/
+    /*same dimension as the line-height of .breadcrumb a */
+    width: 36px
+    height: 28px
+    transform: scale(0.707) rotate(45deg)
+    /*we need to prevent the arrows from getting buried under the next link*/
+    z-index: 2
+    /*background same as links but the gradient will be rotated to compensate with the transform applied*/
+    background: #666
+    background: linear-gradient(135deg, $secondary-color-2, $secondary-color-2)
+    /*stylish arrow design using box shadow*/
+    /*box-shadow: 2px -2px 0 2px rgba(0, 0, 0, 0.2), 3px -3px 0 2px rgba(255, 255, 255, 1)*/
+    /*
+      5px - for rounded arrows and
+      50px - to prevent hover glitches on the border created using shadows*/
+    border-radius: 0 5px 0 50px
+
+  /*adding the arrows for the breadcrumbs using rotated pseudo elements*/
+  a:before
+    content: ''
+    position: absolute
+    top: 0
+    left: -30px /*half of square's length*/
+    /*same dimension as the line-height of .breadcrumb a */
+    width: 36px
+    height: 28px
+    transform: scale(0.707) rotate(-135deg)
+    /*we need to prevent the arrows from getting buried under the next link*/
+    z-index: 1
+    /*background same as links but the gradient will be rotated to compensate with the transform applied*/
+    background: #666
+    background: linear-gradient(45deg, #FFF, #FFF)
+    /*stylish arrow design using box shadow*/
+    /*
+      5px - for rounded arrows and
+      50px - to prevent hover glitches on the border created using shadows*/
+    border-radius: 0 150px 0 5px
+
+  /*we dont need an arrow after the last link*/
+  a:last-child:after
+    content: none
+
 /* Tab menu system */
 .sub-nav
   height: 32px
@@ -20,10 +112,10 @@
       a
         padding: 1em !important
         color: #FFF !important
-    li.active 
+    li.active
       padding: .5rem !important
 
-    li a:hover, li:hover a 
+    li a:hover, li:hover a
       color: #FFF !important
 
 /* Setting the active tab and hover styles to be the dark green */
@@ -33,18 +125,18 @@
 
 /* Reducing padding and font size for small screens */
 @media (max-width: 1000px)
-  .sub-nav 
+  .sub-nav
     .navbar-nav
-      margin-left: 0em 
+      margin-left: 0em
       li
         font-size: 90%
         padding: 0.25rem
         border: 1px solid $primary-color-4
         margin: 0
         padding: 0.35rem
-        a 
+        a
           padding: 1em 0 !important
 
-      li.active 
+      li.active
         padding: .35rem !important
 

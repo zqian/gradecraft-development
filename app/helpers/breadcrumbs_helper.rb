@@ -2,7 +2,7 @@ module BreadcrumbsHelper
   def breadcrumbs_for(*breadcrumbs)
     breadcrumbs = expand_breadcrumbs(breadcrumbs)
     capture_haml do
-      haml_tag :ul, class: 'breadcrumbs' do
+      haml_tag :div, class: 'breadcrumbs' do
         breadcrumbs.each_with_index do |breadcrumb, i|
           previous = breadcrumbs[i - 1] if i > 0
           haml_concat breadcrumb_for breadcrumb, previous: previous, active: breadcrumbs.last == breadcrumb
@@ -31,9 +31,9 @@ module BreadcrumbsHelper
   def breadcrumb_for(object, options = {})
     capture_haml do
       if options[:active]
-        haml_tag :li, breadcrumb_text_for(object, options), class: 'active'
+        haml_tag :a, breadcrumb_text_for(object, options), class: 'active'
       else
-        haml_tag :li, breadcrumb_link_for(object, options)
+        breadcrumb_link_for(object, options)
       end
     end
   end
@@ -57,6 +57,8 @@ module BreadcrumbsHelper
     case object
     when :dashboard, :root, :home
       'Home'
+    when :analytics_root
+      'Analytics'
     when Array
       breadcrumb_text_for(object[0], options = {})
     when Class

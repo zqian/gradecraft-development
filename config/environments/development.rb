@@ -12,7 +12,7 @@ GradeCraft::Application.configure do
   config.cache_store = :null_store
   config.consider_all_requests_local = true
   config.eager_load = false
-  config.session_store :cookie_store, key: '_gradecraft_session', :expire_after => 60.minutes
+  config.session_store :cookie_store, key: '_gradecraft_session'
   config.active_record.mass_assignment_sanitizer = :strict
   config.after_initialize do
     Bullet.enable = true

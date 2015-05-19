@@ -4,12 +4,12 @@
       %li{class: ("active" if current_page?(analytics_students_path)) }
         %a{:href => analytics_students_path }
           %i.fi-torsos-all
-          Student Analytics
+          = "#{term_for :student} Analytics"
       %li{class: ("active" if current_page?(analytics_staff_path)) }
         %a{:href => analytics_staff_path }
           %i.fi-torso-business
-          Staff Analytics
-      / %li
-      /   %a{:href => analytics_export_path(format: 'zip')}
-      /     %i.fi-download
-      /     Download Analytics
+          = "#{term_for :team_leader} Analytics"
+      %li
+        %a{:href => analytics_export_path(format: 'zip')}
+          %i.fi-download
+          Download Analytics

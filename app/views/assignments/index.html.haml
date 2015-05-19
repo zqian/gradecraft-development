@@ -7,9 +7,9 @@
 
   .small-12.columns
     .button-bar
-      %ul.button-group.context_menu
+      %ul.button-group.context_menu.radius
         %li
-          %a{:href => new_assignment_path }
+          %a.button{:href => new_assignment_path }
             %i.fi-plus
             New #{(term_for :assignment).titleize}
 
@@ -23,12 +23,6 @@
             = image_tag "draggable_transparent.png", :width => 10, :style => "margin-top: -6px"
             #{assignment_type.name} – #{points assignment_type.max_value} points
           .collapse-hidden
-            .small-12.medium-3.right.hide-for-small
-              .button-bar.aindex
-                %ul.button-group.radius.right
-                  %li.button.tiny
-                    %i.fi-pencil
-                    = link_to "Edit", edit_assignment_type_path(assignment_type)
 
             .columns{:style => "overflow: auto"}
               %table.responsive{"aria-describedby" => "assignment-type-#{assignment_type.id}"}
