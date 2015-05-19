@@ -1,5 +1,5 @@
-@gradecraft.factory 'CourseBadgePrototype', ->
-  class CourseBadgePrototype
+@gradecraft.factory 'CourseBadge', ->
+  class CourseBadge
 	  constructor: (attrs={}) ->
 	  	@id = attrs.id
 	  	@name = attrs.name

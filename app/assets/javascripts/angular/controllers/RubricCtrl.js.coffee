@@ -1,11 +1,4 @@
-@gradecraft.controller 'RubricCtrl', ['$scope', 'Restangular', 'MetricPrototype', 'CourseBadgePrototype', '$http', ($scope, Restangular, MetricPrototype, CourseBadgePrototype, $http) -> 
- # hide modal window by default
-  $scope.modalShown = false
-  $scope.toggleModal = ->
-    $scope.modalShown = not $scope.modalShown
-    return
-
-  INTEGER_REGEXP = /^\-?\d+$/
+@gradecraft.controller 'RubricCtrl', ['$scope', 'Restangular', 'Metric', 'CourseBadge', '$http', ($scope, Restangular, Metric, CourseBadge, $http) ->
   Restangular.setRequestSuffix('.json')
   $scope.metrics = []
   $scope.courseBadges = {}
@@ -27,7 +20,7 @@
 
   $scope.pointsDifference = ()->
     $scope.pointTotal - $scope.pointsAssigned()
- 
+
   $scope.pointsRemaining = ()->
     pointsRemaining = $scope.pointsDifference()
     if pointsRemaining > 0 then pointsRemaining else 0
@@ -48,26 +41,26 @@
     $scope.pointsDifference() < 0
 
   $scope.showMetric = (attrs)->
-    new MetricPrototype(attrs, $scope)
+    new Metric(attrs, $scope)
 
   $scope.countSavedMetric = () ->
     $scope.savedMetricCount += 1
 
   $scope.addCourseBadges = (courseBadges)->
     angular.forEach(courseBadges, (badge, index)->
-      courseBadge = new CourseBadgePrototype(badge)
+      courseBadge = new CourseBadge(badge)
       $scope.courseBadges[badge.id] = courseBadge
-    ) 
+    )
 
   $scope.addMetrics = (existingMetrics)->
     angular.forEach(existingMetrics, (em, index)->
-      emProto = new MetricPrototype(em, $scope)
+      emProto = new Metric(em, $scope)
       $scope.countSavedMetric() # indicate saved metric present
       $scope.metrics.push emProto
     )
 
   $scope.newMetric = ()->
-    m = new MetricPrototype(null, $scope)
+    m = new Metric(null, $scope)
     $scope.metrics.push m
 
   $scope.getNewMetric = ()->

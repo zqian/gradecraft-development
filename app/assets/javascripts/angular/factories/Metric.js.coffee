@@ -1,5 +1,5 @@
-@gradecraft.factory 'MetricPrototype', ['$http', 'Restangular', 'TierPrototype', 'MetricBadgePrototype', ($http, Restangular, TierPrototype, MetricBadgePrototype) ->
-  class MetricPrototype
+@gradecraft.factory 'Metric', ['$http', 'Restangular', 'Tier', 'MetricBadge', ($http, Restangular, Tier, MetricBadge) ->
+  class Metric
     constructor: (attrs={}, $scope)->
       @$scope = $scope
       @tiers = []
@@ -18,12 +18,12 @@
 
       ## graderubric
       @selectedTier = null
-      
+
       # look for a rubric grade by metric_id if there are rubric grades present
       if @$scope.rubricGrades
         @rubricGrade = @$scope.rubricGrades[@id]
 
-      # if there are rubric grades, select the 
+      # if there are rubric grades, select the
       if @rubricGrade
         @rubricGradeTierId = @rubricGrade.tier_id
       else
@@ -37,9 +37,9 @@
       @addTiers(attrs["tiers"]) if attrs["tiers"] #add tiers if passed on init
       # would this always have an id?
     alert: ()->
-      alert("snakes!")    
+      alert("snakes!")
     addTier: (attrs={})->
-      newTier = new TierPrototype(@, attrs, @$scope)
+      newTier = new Tier(@, attrs, @$scope)
       @tiers.push newTier
       if @rubricGradeTierId and @rubricGradeTierId == newTier.id
         @selectedTier = newTier
@@ -55,7 +55,7 @@
 
     loadMetricBadge: (metricBadge)->
       courseBadge = @availableBadges[metricBadge.badge_id]
-      loadedBadge = new MetricBadgePrototype(@, angular.copy(courseBadge))
+      loadedBadge = new MetricBadge(@, angular.copy(courseBadge))
       @badges[courseBadge.id] = loadedBadge # add metric badge to metric
       delete @availableBadges[courseBadge.id] # remove badge from available badges on metric
 
@@ -92,7 +92,7 @@
         comments: @comments
       }
     selectBadge: ()->
-      newBadge = new MetricBadgePrototype(@, angular.copy(@selectedBadge))
+      newBadge = new MetricBadge(@, angular.copy(@selectedBadge))
       @badges[newBadge.badge.id] = newBadge # add metric badge to metric
       delete @availableBadges[@selectedBadge.id] # remove badge from available badges on metric
       @selectedBadge = "" # reset selected badge
@@ -175,5 +175,5 @@
             alert("delete failed!")
           )
       else
-        @remove(index)            
-]  
+        @remove(index)
+]

@@ -1,4 +1,4 @@
-@gradecraft.controller 'GradeRubricCtrl', ['$scope', 'Restangular', 'MetricPrototype', 'CourseBadgePrototype', 'RubricGradePrototype', '$http', ($scope, Restangular, MetricPrototype, CourseBadgePrototype, RubricGradePrototype, $http) -> 
+@gradecraft.controller 'GradeRubricCtrl', ['$scope', 'Restangular', 'Metric', 'CourseBadge', 'RubricGrade', '$http', ($scope, Restangular, Metric, CourseBadge, RubricGrade, $http) ->
 
   $scope.metrics = []
   $scope.courseBadges = {}
@@ -53,7 +53,7 @@
     $scope.pointsDifference() < 0
 
   $scope.showMetric = (attrs)->
-    new MetricPrototype(attrs, $scope)
+    new Metric(attrs, $scope)
 
   # count how many tiers have been selected in the UI
   $scope.tiersSelected = []
@@ -95,7 +95,7 @@
       if metric.selectedTier
         points += metric.selectedTier.points
     )
-    points 
+    points
 
   $scope.gradedMetrics = ()->
     metrics = []
@@ -103,7 +103,7 @@
       if metric.selectedTier
         metrics.push metric
     )
-    metrics 
+    metrics
 
   $scope.selectedMetrics = ()->
     metrics = []
@@ -112,7 +112,7 @@
         metrics.push metric
     )
     $scope.selectedMetrics = metrics
-    metrics 
+    metrics
 
   $scope.gradedMetricsParams = ()->
     params = []
@@ -196,19 +196,19 @@
 
   $scope.addRubricGrades = (rubricGrades)->
     angular.forEach(rubricGrades, (rg, index)->
-      rubricGrade = new RubricGradePrototype(rg)
+      rubricGrade = new RubricGrade(rg)
       $scope.rubricGrades[rg.metric_id] = rubricGrade
     )
 
   $scope.addCourseBadges = (courseBadges)->
     angular.forEach(courseBadges, (badge, index)->
-      courseBadge = new CourseBadgePrototype(badge)
+      courseBadge = new CourseBadge(badge)
       $scope.courseBadges[badge.id] = courseBadge
     )
 
   $scope.addMetrics = (existingMetrics)->
     angular.forEach(existingMetrics, (metric, index)->
-      metricObject = new MetricPrototype(metric, $scope)
+      metricObject = new Metric(metric, $scope)
       $scope.metrics.push metricObject
       $scope.pointsPossible += metricObject.max_points
     )
