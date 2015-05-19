@@ -1,6 +1,6 @@
-@gradecraft.factory 'MetricBadgePrototype', ->
+@gradecraft.factory 'MetricBadge', ->
   # deprecated
-  # class MetricBadgePrototype
+  # class MetricBadge
   #   constructor: (metric, badge, attrs={}) ->
   #     @metric = metric
   #     @badge = badge
@@ -11,10 +11,10 @@
   #     @point_total = badge.point_total
   #     @icon = badge.icon
   #     @multiple = badge.multiple
- 
+
   #   create: ()->
   #     self = this
- 
+
   #     $http.post("/metric_badges", self.createParams()).success(
   #       (data, status)->
   #         self.id = data.existing_metric_badge.id
@@ -23,7 +23,7 @@
   #       alert("create failed!")
   #       return false
   #     )
- 
+
   #     createParams: ()->
   #       metric_id: this.metric.id,
   #       badge_id: this.badge.id

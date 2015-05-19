@@ -1,5 +1,5 @@
-@gradecraft.factory 'TierPrototype', ['$http', 'Restangular', 'TierBadgePrototype', ($http, Restangular, TierBadgePrototype) ->
-  class TierPrototype
+@gradecraft.factory 'Tier', ['$http', 'Restangular', 'TierBadge', ($http, Restangular, TierBadge) ->
+  class Tier
     constructor: (metric, attrs={}, $scope)->
       @$scope = $scope
       @id = attrs.id or null
@@ -28,7 +28,7 @@
       if @isSaved()
         @hasChanges = true
     alert: ()->
-      alert("snakes!")        
+      alert("snakes!")
     resetChanges: ()->
       @hasChanges = false
     params: ()->
@@ -40,23 +40,23 @@
       alert @metric.name
     removeFromMetric: (index)->
       @metric.tiers.splice(index,1)
-    
+
     ##grade rubric ctrl
     # loadTierBadge: (tierBadge)->
     #   self = this
     #   courseBadge = self.availableBadges[tierBadge.badge_id]
-    #   loadedBadge = new TierBadgePrototype(self, angular.copy(courseBadge))
+    #   loadedBadge = new TierBadge(self, angular.copy(courseBadge))
     #   self.badges[courseBadge.id] = loadedBadge # add tier badge to tier
     #   delete self.availableBadges[courseBadge.id] # remove badge from available badges on tier
 
-    ##rubric ctrl  
+    ##rubric ctrl
     loadTierBadge: (tierBadge)->
       courseBadge = @availableBadges[tierBadge.badge_id]
-      loadedBadge = new TierBadgePrototype(@, angular.copy(courseBadge))
+      loadedBadge = new TierBadge(@, angular.copy(courseBadge))
       loadedBadge.id = tierBadge.id
       @badges[courseBadge.id] = loadedBadge # add tier badge to tier
       delete @availableBadges[courseBadge.id] # remove badge from available badges on tier
-      
+
     # Badges
     loadTierBadges: (tierBadges)->
       angular.forEach(tierBadges, (tierBadge, index)=>
@@ -66,14 +66,14 @@
     #rubric ctrl
     # Badges
     addBadge: (attrs={})->
-      newBadge = new TierBadgePrototype(@, attrs)
+      newBadge = new TierBadge(@, attrs)
       @badges.splice(-1, 0, newBadge)
     addBadges: (tiers)->
       angular.forEach(badges, (badge,index)=>
         @loadBadge(badge)
       )
     selectBadge: ()->
-      newBadge = new TierBadgePrototype(@, angular.copy(@selectedBadge), {create: true})
+      newBadge = new TierBadge(@, angular.copy(@selectedBadge), {create: true})
 
     deleteTierBadge: (tierBadge)->
       if confirm("Are you sure you want to delete this badge from the tier?")
@@ -135,5 +135,5 @@
       else
         @removeFromMetric(index)
     removeFromMetric: (index)->
-      @metric.tiers.splice(index,1) 
+      @metric.tiers.splice(index,1)
 ]

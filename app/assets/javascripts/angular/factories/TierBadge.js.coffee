@@ -1,6 +1,6 @@
-@gradecraft.factory 'TierBadgePrototype', ['$http', ($http) ->
-  class TierBadgePrototype
-    constructor: (tier, badge, attrs={create:false}) ->  
+@gradecraft.factory 'TierBadge', ['$http', ($http) ->
+  class TierBadge
+    constructor: (tier, badge, attrs={create:false}) ->
       @tier = tier
       @badge = badge
       if badge.name
@@ -14,7 +14,7 @@
       @id = null
       if attrs.create
         @create()
- 
+
     create: ()->
       $http.post("/tier_badges", @createParams()).success(
         (data,status)=>

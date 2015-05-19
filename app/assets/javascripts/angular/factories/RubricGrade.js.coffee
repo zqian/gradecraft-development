@@ -1,5 +1,5 @@
-@gradecraft.factory 'RubricGradePrototype', ->
-	class RubricGradePrototype
+@gradecraft.factory 'RubricGrade', ->
+	class RubricGrade
 		constructor: (attrs={})->
 		  @id = attrs.id
 		  @metric_id = attrs.metric_id
