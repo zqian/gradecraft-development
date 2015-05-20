@@ -24,6 +24,7 @@ describe "assignments/show" do
 
     it "renders the assignment grades" do
       render
+      assert_select "h3", :count => 1
     end
 
     describe "pass fail assignment" do
@@ -37,6 +38,16 @@ describe "assignments/show" do
 
   describe "as faculty" do
     it "renders the assignment management view" do
+      view.stub(:current_user_is_staff?).and_return(true)
+      view.stub(:term_for).and_return("Assignment")
+      assign(:students, [@student])
+      assign(:assignment_grades_by_student_id, {@student.id => nil})
+      render
+      assert_select "h3", text: "#{@assignment.name} (#{ points @assignment.point_total} points)"
+    end
+
+    it "renders the assignment management view when submissions are on" do
+      @assignment.update(accepts_submissions: true)
       view.stub(:current_user_is_staff?).and_return(true)
       view.stub(:term_for).and_return("Assignment")
       assign(:students, [@student])
