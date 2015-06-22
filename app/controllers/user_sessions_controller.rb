@@ -38,6 +38,8 @@ class UserSessionsController < ApplicationController
     session[:course_id] = @course.id
     auto_login @user
     User.increment_counter(:visit_count, @user.id)
+    #login event
+    log_course_login_event
     respond_with @user, location: dashboard_path
   end
 

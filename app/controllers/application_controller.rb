@@ -1,6 +1,10 @@
 require 'application_responder'
+include ZipDownloads
+require_relative 'caliper_integration'
 
 class ApplicationController < ActionController::Base
+  include CaliperIntegration
+
   self.responder = ApplicationResponder
   #Canable details
   include Canable::Enforcers
@@ -121,6 +125,9 @@ class ApplicationController < ActionController::Base
     Resque.enqueue(EventLogger,'login', course_id: current_course.id, user_id: current_user.id, student_id: current_student.try(:id), user_role: current_user.role(current_course), last_login_at: membership.last_login_at.to_i, created_at: Time.now)
     #EventLogger.perform_async('login', course_id: current_course.id, user_id: current_user.id, student_id: current_student.try(:id), user_role: current_user.role(current_course), last_login_at: membership.last_login_at.to_i, created_at: Time.now)
     membership.update_attribute(:last_login_at, Time.now)
+    
+    # log the user login event
+    log_gradecraft_course_navigation_event(current_user, current_course)
   end
 
 end

@@ -1,7 +1,10 @@
+#require_relative 'caliper_integration'
+
 class AnalyticsEventsController < ApplicationController
   skip_before_filter :increment_page_views
 
   def predictor_event
+    log_gradecraft_predict_grade_event(current_course, current_user, current_user.role(current_course), params[:assignment], params[:score], params[:possible] )
     Resque.enqueue(EventLogger, 'predictor',
                                 course_id: current_course.id,
                                 user_id: current_user.id,
