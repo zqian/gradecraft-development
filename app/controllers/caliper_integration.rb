@@ -55,8 +55,8 @@ module Caliper_Integration
 		course_section.name = current_course.name
 		course_section.course_number = current_course.courseno
 		course_section.label = current_course.name
-		course_section.date_created = ""
-		course_section.date_modified = ""
+		course_section.date_created = Time.now.utc
+		course_section.date_modified = nil
 		return course_section
 	end
 
@@ -65,7 +65,7 @@ module Caliper_Integration
 		software_application.id = "https://github.com/UM-USElab/gradecraft-development"
 		software_application.name = "Gradecraft"
 		software_application.date_created = Time.now.utc
-		software_application.date_modified = Time.now.utc
+		software_application.date_modified = nil
 		software_application.description = nil
 		return software_application
 	end
@@ -74,7 +74,7 @@ module Caliper_Integration
 		person = Caliper::Entities::LIS::Person.new
 		person.id = current_user_id
 		person.name = nil
-		person.date_modified = Time.now.utc
+		person.date_modified = nil
 		return person
 	end
 
@@ -86,7 +86,7 @@ module Caliper_Integration
 		session.actor = build_user(user_id)
 		now_time = Time.now.utc
 		session.date_created = now_time
-		session.date_modified = now_time
+		session.date_modified = nil
 		session.started_at_time = now_time
 		return session
 	end
